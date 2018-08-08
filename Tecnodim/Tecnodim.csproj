@@ -148,6 +148,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataEF\DataEF.csproj">
+      <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
+      <Name>DataEF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\i18n\i18n.csproj">
+      <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
