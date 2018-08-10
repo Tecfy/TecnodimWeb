@@ -129,6 +129,9 @@
   <data name="DeletedDate" xml:space="preserve">
     <value>Data de Exclusão</value>
   </data>
+  <data name="Document" xml:space="preserve">
+    <value>Documento</value>
+  </data>
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
   </data>
@@ -137,6 +140,27 @@
   </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
+  </data>
+  <data name="MaxLengthMessage" xml:space="preserve">
+    <value>O campo {0} tem um limite de {1} carecteres.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Página</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>O campo {0} é obrigatório!</value>
+  </data>
+  <data name="RequiredFieldInt" xml:space="preserve">
+    <value>O valor para {0} deve estar entre {1} e {2}.</value>
+  </data>
+  <data name="Rotation" xml:space="preserve">
+    <value>Rotação</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Erro desconhecido!</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>Usuário</value>
