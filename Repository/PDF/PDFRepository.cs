@@ -1,5 +1,4 @@
 ﻿using ApiTecnodim;
-using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -7,9 +6,9 @@ using System;
 using System.Linq;
 using WebSupergoo.ABCpdf11;
 
-namespace Repository.RegisterEvent
+namespace Repository
 {
-    public class PDFRepository
+    public partial class PDFRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
@@ -19,9 +18,9 @@ namespace Repository.RegisterEvent
         public PDFsOut GetPDFs(DocumentIn documentIn)
         {
             PDFsOut pdfOut = new PDFsOut();
-            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - Start", "Repository.RegisterEvent.PDFRepository.GetPDFs", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
 
-            DocumentOut documentOut = documentApi.Get(documentIn);
+            DocumentOut documentOut = documentApi.GetDocument(documentIn);
 
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));
@@ -33,12 +32,14 @@ namespace Repository.RegisterEvent
 
             theDoc.Clear();
 
-            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - End", "Repository.RegisterEvent.PDFRepository.GetPDFs", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.PDFRepository.GetPDFs", "");
             return pdfOut;
         }
 
         public void Rotate(PDFIn pdfIn)
         {
+            //TODO Ajustar o Método de Rotação
+            /*
             Doc theDoc = new Doc();
             //theDoc.Read(documentOut.result.archive);
 
@@ -58,6 +59,7 @@ namespace Repository.RegisterEvent
             theDoc.Save(@"C:\\Temp\\Tecnodim\\RemapPages.pdf");
 
             theDoc.Clear();
+            */
         }
 
         #endregion

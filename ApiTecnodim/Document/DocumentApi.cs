@@ -12,11 +12,11 @@ namespace ApiTecnodim
     {
         #region .: Custom Methods :.
 
-        public DocumentOut Get(DocumentIn documentIn)
+        public DocumentOut GetDocument(DocumentIn documentIn)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.Get"].ToString(), documentIn.documentId.ToString()));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocument"].ToString(), documentIn.documentId.ToString()));
 
                 var request = RestRequestHelper.Get(Method.GET);
 
@@ -30,6 +30,31 @@ namespace ApiTecnodim
                 }
 
                 return documentOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public DocumentsOut GetDocuments(DocumentsIn documentsIn)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocuments"].ToString(), documentsIn.documentId.ToString()));
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                DocumentsOut documentsOut = SimpleJson.SimpleJson.DeserializeObject<DocumentsOut>(response.Content);
+
+                if (!documentsOut.success)
+                {
+                    throw new Exception(documentsOut.messages.FirstOrDefault());
+                }
+
+                return documentsOut;
             }
             catch (Exception ex)
             {

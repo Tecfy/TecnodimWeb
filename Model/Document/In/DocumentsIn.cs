@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class DocumentIn : baseIn
+    public class DocumentsIn : baseIn
     {
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]

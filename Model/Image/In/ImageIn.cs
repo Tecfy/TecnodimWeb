@@ -3,13 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class ImageIn
+    public class ImageIn : baseIn
     {
         public int documentId { get; set; }
-
-        public Guid userId { get; set; }
-
-        public Guid key { get; set; }
 
         public int pageId { get; set; }
 

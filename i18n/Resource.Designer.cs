@@ -115,6 +115,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Externo.
+        /// </summary>
+        public static string External {
+            get {
+                return ResourceManager.GetString("External", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hash.
         /// </summary>
         public static string Hash {
@@ -183,6 +192,15 @@ namespace i18n {
         public static string PageNotExist {
             get {
                 return ResourceManager.GetString("PageNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Páginas.
+        /// </summary>
+        public static string Pages {
+            get {
+                return ResourceManager.GetString("Pages", resourceCulture);
             }
         }
         

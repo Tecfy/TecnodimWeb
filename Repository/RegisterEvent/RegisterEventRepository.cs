@@ -1,9 +1,9 @@
 ﻿using DataEF.DataAccess;
 using System;
 
-namespace Repository.RegisterEvent
+namespace Repository
 {
-    public class RegisterEventRepository
+    public partial class RegisterEventRepository
     {
         #region .: Methods :.
 

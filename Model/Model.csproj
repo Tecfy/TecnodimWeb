@@ -41,9 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ResultServiceVM.cs" />
+    <Compile Include="Clipping\In\ClippingsIn.cs" />
+    <Compile Include="Clipping\In\ClippingIn.cs" />
+    <Compile Include="Clipping\Out\ClippingsOut.cs" />
+    <Compile Include="Clipping\Out\ClippingOut.cs" />
+    <Compile Include="Clipping\VM\ClippingsVM.cs" />
+    <Compile Include="Clipping\VM\ClippingVM.cs" />
+    <Compile Include="Common\In\BaseIn.cs" />
+    <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Document\In\DocumentsIn.cs" />
     <Compile Include="Document\In\DocumentIn.cs" />
+    <Compile Include="Document\Out\DocumentsOut.cs" />
     <Compile Include="Document\Out\DocumentOut.cs" />
+    <Compile Include="Document\VM\DocumentsVM.cs" />
     <Compile Include="Document\VM\DocumentVM.cs" />
     <Compile Include="Image\In\ImageIn.cs" />
     <Compile Include="Image\Out\ImageOut.cs" />
@@ -57,6 +67,7 @@
     <Compile Include="User\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Common\Out\" />
     <Folder Include="Page\Out\" />
     <Folder Include="Page\VM\" />
   </ItemGroup>

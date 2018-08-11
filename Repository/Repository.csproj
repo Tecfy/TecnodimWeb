@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Document\DocumentRepository.cs" />
+    <Compile Include="Clipping\ClippingRepository.cs" />
     <Compile Include="Image\ImageRepository.cs" />
     <Compile Include="PDF\PDFRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

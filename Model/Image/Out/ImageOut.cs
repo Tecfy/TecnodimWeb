@@ -1,5 +1,4 @@
-﻿using Model.Common;
-using Model.VM;
+﻿using Model.VM;
 
 namespace Model.Out
 {

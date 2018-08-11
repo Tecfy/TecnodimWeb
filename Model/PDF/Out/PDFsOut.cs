@@ -1,5 +1,4 @@
-﻿using Model.Common;
-using Model.VM;
+﻿using Model.VM;
 using System.Collections.Generic;
 
 namespace Model.Out

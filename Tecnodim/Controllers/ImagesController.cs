@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
-using Repository.RegisterEvent;
+using Repository;
 using System;
 using System.IO;
 using System.Net;
@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace Tecnodim.Controllers
 {
-    [RoutePrefix("api/Images")]
+    [RoutePrefix("api/images")]
     public class ImagesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
@@ -35,7 +35,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ImagesController.Get", ex.Message);
 
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
                 return response;

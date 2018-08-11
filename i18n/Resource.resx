@@ -135,6 +135,9 @@
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
   </data>
+  <data name="External" xml:space="preserve">
+    <value>Externo</value>
+  </data>
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="PageNotExist" xml:space="preserve">
     <value>O documento não possui a página solicitada.</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Páginas</value>
   </data>
   <data name="RequiredField" xml:space="preserve">
     <value>O campo {0} é obrigatório!</value>

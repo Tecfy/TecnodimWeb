@@ -4,17 +4,6 @@ using System.ComponentModel.DataAnnotations;
 namespace Model.In
 {
     public class PDFIn
-    {
-        [Required]
-        [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
-        [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
-        public int documentId { get; set; }
-
-        [Required]
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-        [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
-        public string dame { get; set; }
-
-        public List<PageIn> pages { get; set; }
+    {       
     }
 }

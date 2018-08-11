@@ -1,16 +1,13 @@
 ﻿using ApiTecnodim;
-using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
-using Model.VM;
 using System;
-using System.Linq;
 using WebSupergoo.ABCpdf11;
 using WebSupergoo.ABCpdf11.Objects;
 
-namespace Repository.RegisterEvent
+namespace Repository
 {
-    public class ImageRepository
+    public partial class ImageRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
@@ -21,7 +18,7 @@ namespace Repository.RegisterEvent
         {
             ImageOut imageOut = new ImageOut();
 
-            DocumentOut documentOut = documentApi.Get(new DocumentIn() { documentId = imageIn.documentId, userId = imageIn.userId, key = imageIn.key });
+            DocumentOut documentOut = documentApi.GetDocument(new DocumentIn() { documentId = imageIn.documentId, userId = imageIn.userId, key = imageIn.key });
 
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));

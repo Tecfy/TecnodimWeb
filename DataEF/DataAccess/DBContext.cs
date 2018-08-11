@@ -36,6 +36,8 @@ namespace DataEF.DataAccess
         IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        IDbSet<Clippings> Clippings { get; set; } // Clippings
+        IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
 
         int SaveChanges();
@@ -51,6 +53,8 @@ namespace DataEF.DataAccess
         public IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         public IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         public IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        public IDbSet<Clippings> Clippings { get; set; } // Clippings
+        public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
 
         static DBContext()
@@ -79,6 +83,8 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new AspNetUserLoginsConfiguration());
             modelBuilder.Configurations.Add(new AspNetUserRolesConfiguration());
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration());
+            modelBuilder.Configurations.Add(new ClippingsConfiguration());
+            modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
@@ -389,6 +395,137 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class ClippingsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int ClippingId { get; set; } // ClippingId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
+		public int DocumentId { get; set; } // DocumentId
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Pages", ResourceType = typeof(i18n.Resource))]
+		public string Pages { get; set; } // Pages
+
+		*/
+	}
+
+    // Clippings
+	[MetadataType(typeof(ClippingsMetadataType))]
+    public partial class Clippings
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int ClippingId { get; set; } // ClippingId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int DocumentId { get; set; } // DocumentId
+
+        public string Name { get; set; } // Name
+
+        public string Pages { get; set; } // Pages
+
+        // Foreign keys
+        public virtual Documents Documents { get; set; } //  DocumentId - FK_Clippings_Documents
+
+        public Clippings()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class DocumentsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int DocumentId { get; set; } // DocumentId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
+		public int ExternalId { get; set; } // ExternalId
+
+		*/
+	}
+
+    // Documents
+	[MetadataType(typeof(DocumentsMetadataType))]
+    public partial class Documents
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int DocumentId { get; set; } // DocumentId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int ExternalId { get; set; } // ExternalId
+
+        // Reverse navigation
+        public virtual ICollection<Clippings> Clippings { get; set; } // Clippings.FK_Clippings_Documents;
+
+        public Documents()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Clippings = new List<Clippings>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
 	public partial class RegisterEventsMetadataType
     {
 		/* 
@@ -585,6 +722,49 @@ namespace DataEF.DataAccess
             Property(x => x.LockoutEnabled).HasColumnName("LockoutEnabled").IsRequired();
             Property(x => x.AccessFailedCount).HasColumnName("AccessFailedCount").IsRequired();
             Property(x => x.UserName).HasColumnName("UserName").IsRequired().HasMaxLength(256);
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Clippings
+    internal partial class ClippingsConfiguration : EntityTypeConfiguration<Clippings>
+    {
+        public ClippingsConfiguration()
+        {
+            ToTable("dbo.Clippings");
+            HasKey(x => x.ClippingId);
+
+            Property(x => x.ClippingId).HasColumnName("ClippingId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
+            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
+            Property(x => x.Pages).HasColumnName("Pages").IsRequired().HasMaxLength(255);
+
+            // Foreign keys
+            HasRequired(a => a.Documents).WithMany(b => b.Clippings).HasForeignKey(c => c.DocumentId); // FK_Clippings_Documents
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Documents
+    internal partial class DocumentsConfiguration : EntityTypeConfiguration<Documents>
+    {
+        public DocumentsConfiguration()
+        {
+            ToTable("dbo.Documents");
+            HasKey(x => x.DocumentId);
+
+            Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             InitializePartial();
         }
         partial void InitializePartial();

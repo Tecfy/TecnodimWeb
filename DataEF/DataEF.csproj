@@ -181,6 +181,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Model\DocumentsMetadataType.cs" />
+    <Compile Include="DataAccess\Model\ClippingsMetadataType.cs" />
     <Compile Include="DataAccess\Model\RegisterEventsMetadataType.cs" />
     <Compile Include="DataAccess\Model\ApiUsersMetadataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
