@@ -1,86 +1,77 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Model.In;
+using Model.Out;
+using Repository.RegisterEvent;
+using System;
 using System.Linq;
 using System.Web.Http;
-using Tecnodim.Models.In;
-using Tecnodim.Models.Out;
-using Tecnodim.Models.VM;
-using WebSupergoo.ABCpdf11;
+using System.Web.Http.ModelBinding;
 
 namespace Tecnodim.Controllers
 {
     [RoutePrefix("api/PDFs")]
     public class PDFsController : ApiController
     {
-        [Authorize]
-        [HttpGet]
-        [Route("")]
+        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        PDFRepository pdfRepository = new PDFRepository();
+
+        [Authorize, HttpGet, Route("")]
         public PDFsOut Get(int documentId)
         {
             PDFsOut pdfOut = new PDFsOut();
+            Guid Key = Guid.NewGuid();
 
             try
             {
-                byte[] arquivo = System.IO.File.ReadAllBytes(@"D:\\Rudolf\\Tecfy\\Tecnodim\\VICTOR - CONTRATOS.pdf");
-
-                Doc theDoc = new Doc();
-                theDoc.Read(arquivo);
-
-                for (int i = 1; i <= theDoc.PageCount; i++)
+                if (ModelState.IsValid)
                 {
-                    pdfOut.Result.Add(new PDFsVM() { PageId = i, Image = "/Images?documentId=" + documentId + "&pageId=" + i, Thumb = "/Images?documentId=" + documentId + "&pageId=" + i + "&thumb=true" });
+                    DocumentIn documentIn = new DocumentIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    pdfOut = pdfRepository.GetPDFs(documentIn);
                 }
-
-                theDoc.Clear();
-
-                return pdfOut;
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                pdfOut.Result = null;
-                pdfOut.SuccessMessage = null;
-                pdfOut.Messages.Add(i18n.Resource.UnknownError);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
 
-                return pdfOut;
+                pdfOut.result = null;
+                pdfOut.successMessage = null;
+                pdfOut.messages.Add(i18n.Resource.UnknownError);
             }
+
+            return pdfOut;
         }
 
-        [Authorize]
-        [HttpPost]
-        [Route("")]
-        public PDFOut Post(PDFIn pdf)
+        [Authorize, HttpPost, Route("")]
+        public PDFOut Post(PDFIn pdfIn)
         {
             PDFOut pdfOut = new PDFOut();
+            Guid Key = Guid.NewGuid();
 
             try
             {
-                byte[] arquivo = System.IO.File.ReadAllBytes(@"D:\\Rudolf\\Tecfy\\Tecnodim\\VICTOR - CONTRATOS.pdf");
-
-                Doc theDoc = new Doc();
-                theDoc.Read(arquivo);
-
-                int theCount = theDoc.PageCount;
-                string thePages = String.Join(",", pdf.Pages.Select(x => x.PageId).ToList());
-                theDoc.RemapPages(thePages);
-
-                for (int p = 1; p <= theDoc.PageCount; p++)
-                {
-                    theDoc.PageNumber = p;
-
-                    if (pdf.Pages.Any(x => x.PageId == p && x.Rotation != null && x.Rotation > 0))
-                        if (pdf.Pages.Where(x => x.PageId == p).FirstOrDefault().Rotation % 90 == 0)
-                            theDoc.SetInfo(theDoc.Page, "/Rotate", pdf.Pages.Where(x => x.PageId == p).FirstOrDefault().Rotation.ToString());
-                }
-
-                theDoc.Save(@"C:\\Temp\\Tecnodim\\RemapPages.pdf");
-
-                theDoc.Clear();
-
                 return pdfOut;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                pdfOut.SuccessMessage = null;
-                pdfOut.Messages.Add(i18n.Resource.UnknownError);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Post", ex.Message);
+
+                pdfOut.successMessage = null;
+                pdfOut.messages.Add(i18n.Resource.UnknownError);
 
                 return pdfOut;
             }

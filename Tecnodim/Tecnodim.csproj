@@ -15,7 +15,7 @@
     <RootNamespace>Tecnodim</RootNamespace>
     <AssemblyName>Tecnodim</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -44,10 +44,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ABCpdf, Version=11.2.0.1, Culture=neutral, PublicKeyToken=a7a0b3f5184f2169, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\ABCpdf.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -92,6 +88,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -127,26 +124,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\IActionResult.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\PDFsController.cs" />
-    <Compile Include="Models\Common\ResultServiceVM.cs" />
-    <Compile Include="Models\Page\In\PageIn.cs" />
-    <Compile Include="Models\PDF\In\PDFIn.cs" />
-    <Compile Include="Models\PDF\Out\PDFOut.cs" />
-    <Compile Include="Models\PDF\Out\PDFsOut.cs" />
-    <Compile Include="Models\PDF\VM\PDFsVM.cs" />
-    <Compile Include="Models\User\UserModel.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountBindingModels.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Return.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AuthContext.cs" />
-    <Compile Include="Security\AuthRepository.cs" />
-    <Compile Include="Security\Providers\SimpleAuthorizationServerProvider.cs" />
-    <Compile Include="Security\Startup.cs" />
+    <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -159,17 +157,27 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Page\Out\" />
-    <Folder Include="Models\Page\VM\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataEF\DataEF.csproj">
       <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
       <Name>DataEF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\i18n\i18n.csproj">
       <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
       <Name>i18n</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{3d00df5f-2824-42e0-acc1-20461615e42c}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{8298928e-b85a-4af6-8ca9-812c714d8dd3}</Project>
+      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -187,7 +195,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50859</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50859/</IISUrl>
+          <IISUrl>http://localhost:9098</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

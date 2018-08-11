@@ -36,6 +36,7 @@ namespace DataEF.DataAccess
         IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
 
         int SaveChanges();
     }
@@ -50,6 +51,7 @@ namespace DataEF.DataAccess
         public IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         public IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         public IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
 
         static DBContext()
         {
@@ -77,6 +79,7 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new AspNetUserLoginsConfiguration());
             modelBuilder.Configurations.Add(new AspNetUserRolesConfiguration());
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration());
+            modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
 
@@ -386,6 +389,84 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class RegisterEventsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int RegisterEventId { get; set; } // RegisterEventId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "UserId", ResourceType = typeof(i18n.Resource))]
+		public Guid UserId { get; set; } // UserId
+
+		[Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
+		public Guid Identifier { get; set; } // Identifier
+
+		[StringLength(100, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Type", ResourceType = typeof(i18n.Resource))]
+		public string Type { get; set; } // Type
+
+		[Display(Name = "Source", ResourceType = typeof(i18n.Resource))]
+		public string Source { get; set; } // Source
+
+		[Display(Name = "Text", ResourceType = typeof(i18n.Resource))]
+		public string Text { get; set; } // Text
+
+		*/
+	}
+
+    // RegisterEvents
+	[MetadataType(typeof(RegisterEventsMetadataType))]
+    public partial class RegisterEvents
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int RegisterEventId { get; set; } // RegisterEventId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public Guid UserId { get; set; } // UserId
+
+        public Guid Identifier { get; set; } // Identifier
+
+        public string Type { get; set; } // Type
+
+        public string Source { get; set; } // Source
+
+        public string Text { get; set; } // Text
+
+        public RegisterEvents()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Identifier = Guid.NewGuid();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
 
     // ************************************************************************
     // POCO Configuration
@@ -504,6 +585,29 @@ namespace DataEF.DataAccess
             Property(x => x.LockoutEnabled).HasColumnName("LockoutEnabled").IsRequired();
             Property(x => x.AccessFailedCount).HasColumnName("AccessFailedCount").IsRequired();
             Property(x => x.UserName).HasColumnName("UserName").IsRequired().HasMaxLength(256);
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // RegisterEvents
+    internal partial class RegisterEventsConfiguration : EntityTypeConfiguration<RegisterEvents>
+    {
+        public RegisterEventsConfiguration()
+        {
+            ToTable("dbo.RegisterEvents");
+            HasKey(x => x.RegisterEventId);
+
+            Property(x => x.RegisterEventId).HasColumnName("RegisterEventId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
+            Property(x => x.Identifier).HasColumnName("Identifier").IsRequired();
+            Property(x => x.Type).HasColumnName("Type").IsRequired().HasMaxLength(100);
+            Property(x => x.Source).HasColumnName("Source").IsRequired();
+            Property(x => x.Text).HasColumnName("Text").IsRequired();
             InitializePartial();
         }
         partial void InitializePartial();

@@ -1,0 +1,63 @@
+﻿using ApiTecnodim;
+using DataEF.DataAccess;
+using Model.In;
+using Model.Out;
+using Model.VM;
+using System;
+using System.Linq;
+using WebSupergoo.ABCpdf11;
+using WebSupergoo.ABCpdf11.Objects;
+
+namespace Repository.RegisterEvent
+{
+    public class ImageRepository
+    {
+        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        DocumentApi documentApi = new DocumentApi();
+
+        #region .: Methods :.
+
+        public ImageOut GetImage(ImageIn imageIn)
+        {
+            ImageOut imageOut = new ImageOut();
+
+            DocumentOut documentOut = documentApi.Get(new DocumentIn() { documentId = imageIn.documentId, userId = imageIn.userId, key = imageIn.key });
+
+            Doc theDoc = new Doc();
+            theDoc.Read(Convert.FromBase64String(documentOut.result.archive));
+
+            if (theDoc.PageCount < imageIn.pageId || imageIn.pageId <= 0)
+            {
+                throw new Exception(i18n.Resource.PageNotExist);
+            }
+
+            Doc singlePagePdf = new Doc();
+            singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = theDoc.MediaBox.String;
+            singlePagePdf.AddPage();
+            singlePagePdf.AddImageDoc(theDoc, imageIn.pageId, null);
+            singlePagePdf.FrameRect();
+
+            if (imageIn.thumb)
+            {
+                singlePagePdf.Rendering.DotsPerInch = 20;
+                Page[] pages = singlePagePdf.ObjectSoup.Catalog.Pages.GetPageArrayAll();
+                foreach (Page page in pages)
+                {
+                    singlePagePdf.Page = page.ID;
+                    using (XImage xi = XImage.FromData(singlePagePdf.Rendering.GetData(".jpg"), null))
+                        page.Thumbnail = PixMap.FromXImage(singlePagePdf.ObjectSoup, xi);
+                }
+
+                imageOut.result.image = singlePagePdf.Rendering.GetData(".jpg");
+            }
+            else
+            {
+                imageOut.result.image = singlePagePdf.Rendering.GetData(".jpg");
+            }
+
+            return imageOut;
+        }
+
+        #endregion
+    }
+}
