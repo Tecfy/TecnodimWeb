@@ -2,11 +2,14 @@
 
 namespace Model.In
 {
-    public class PageIn
+    public class PageRatingIn
     {
         [Required]
         [Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
         public int pageId { get; set; }
+
+        [Display(Name = "Rotate", ResourceType = typeof(i18n.Resource))]
+        public int? rotate { get; set; }
     }
 }

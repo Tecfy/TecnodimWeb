@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class ClippingIn : BaseIn
+    public class RatingIn : BaseIn
     {
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
@@ -15,6 +15,6 @@ namespace Model.In
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string name { get; set; }
 
-        public List<PageClippingIn> pages { get; set; }
+        public List<PageRatingIn> pages { get; set; }
     }
 }

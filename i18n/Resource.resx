@@ -171,6 +171,9 @@
   <data name="RequiredFieldInt" xml:space="preserve">
     <value>O valor para {0} deve estar entre {1} e {2}.</value>
   </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Girar</value>
+  </data>
   <data name="Rotation" xml:space="preserve">
     <value>Rotação</value>
   </data>

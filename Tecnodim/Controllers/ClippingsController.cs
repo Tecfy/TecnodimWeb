@@ -68,7 +68,7 @@ namespace Tecnodim.Controllers
                     clippingIn.userId = new Guid(User.Identity.GetUserId());
                     clippingIn.key = Key;
 
-                    clippingOut = clippingRepository.SaveClippings(clippingIn);
+                    clippingOut = clippingRepository.SaveClipping(clippingIn);
                 }
                 else
                 {

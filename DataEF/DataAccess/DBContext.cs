@@ -36,6 +36,8 @@ namespace DataEF.DataAccess
         IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        IDbSet<ClippingCategories> ClippingCategories { get; set; } // ClippingCategories
+        IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
         IDbSet<Clippings> Clippings { get; set; } // Clippings
         IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -53,6 +55,8 @@ namespace DataEF.DataAccess
         public IDbSet<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins
         public IDbSet<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles
         public IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
+        public IDbSet<ClippingCategories> ClippingCategories { get; set; } // ClippingCategories
+        public IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
         public IDbSet<Clippings> Clippings { get; set; } // Clippings
         public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -83,6 +87,8 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new AspNetUserLoginsConfiguration());
             modelBuilder.Configurations.Add(new AspNetUserRolesConfiguration());
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration());
+            modelBuilder.Configurations.Add(new ClippingCategoriesConfiguration());
+            modelBuilder.Configurations.Add(new ClippingPagesConfiguration());
             modelBuilder.Configurations.Add(new ClippingsConfiguration());
             modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
@@ -395,6 +401,105 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class ClippingCategoriesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int ClippingCategoryId { get; set; } // ClippingCategoryId (Primary key)
+
+		[Display(Name = "Clipping", ResourceType = typeof(i18n.Resource))]
+		public int ClippingId { get; set; } // ClippingId
+
+		[Display(Name = "CategoryId", ResourceType = typeof(i18n.Resource))]
+		public int CategoryId { get; set; } // CategoryId
+
+		*/
+	}
+
+    // ClippingCategories
+	[MetadataType(typeof(ClippingCategoriesMetadataType))]
+    public partial class ClippingCategories
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int ClippingCategoryId { get; set; } // ClippingCategoryId (Primary key)
+
+        public int ClippingId { get; set; } // ClippingId
+
+        public int CategoryId { get; set; } // CategoryId
+
+        // Foreign keys
+        public virtual Clippings Clippings { get; set; } //  ClippingId - FK_ClippingCategories_Clippings
+    }
+
+	public partial class ClippingPagesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int ClippingPageId { get; set; } // ClippingPageId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "ClippingId", ResourceType = typeof(i18n.Resource))]
+		public int ClippingId { get; set; } // ClippingId
+
+		[Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
+		public int Page { get; set; } // Page
+
+		[Display(Name = "Rotate", ResourceType = typeof(i18n.Resource))]
+		public int? Rotate { get; set; } // Rotate
+
+		*/
+	}
+
+    // ClippingPages
+	[MetadataType(typeof(ClippingPagesMetadataType))]
+    public partial class ClippingPages
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int ClippingPageId { get; set; } // ClippingPageId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int ClippingId { get; set; } // ClippingId
+
+        public int Page { get; set; } // Page
+
+        public int? Rotate { get; set; } // Rotate
+
+        public ClippingPages()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
 	public partial class ClippingsMetadataType
     {
 		/* 
@@ -426,6 +531,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "Pages", ResourceType = typeof(i18n.Resource))]
 		public string Pages { get; set; } // Pages
 
+		[Display(Name = "Rating", ResourceType = typeof(i18n.Resource))]
+		public bool Rating { get; set; } // Rating
+
 		*/
 	}
 
@@ -454,6 +562,11 @@ namespace DataEF.DataAccess
 
         public string Pages { get; set; } // Pages
 
+        public bool Rating { get; set; } // Rating
+
+        // Reverse navigation
+        public virtual ICollection<ClippingCategories> ClippingCategories { get; set; } // ClippingCategories.FK_ClippingCategories_Clippings;
+
         // Foreign keys
         public virtual Documents Documents { get; set; } //  DocumentId - FK_Clippings_Documents
 
@@ -461,6 +574,8 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Rating = false;
+            ClippingCategories = new List<ClippingCategories>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -727,6 +842,46 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+    // ClippingCategories
+    internal partial class ClippingCategoriesConfiguration : EntityTypeConfiguration<ClippingCategories>
+    {
+        public ClippingCategoriesConfiguration()
+        {
+            ToTable("dbo.ClippingCategories");
+            HasKey(x => x.ClippingCategoryId);
+
+            Property(x => x.ClippingCategoryId).HasColumnName("ClippingCategoryId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.ClippingId).HasColumnName("ClippingId").IsRequired();
+            Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Clippings).WithMany(b => b.ClippingCategories).HasForeignKey(c => c.ClippingId); // FK_ClippingCategories_Clippings
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // ClippingPages
+    internal partial class ClippingPagesConfiguration : EntityTypeConfiguration<ClippingPages>
+    {
+        public ClippingPagesConfiguration()
+        {
+            ToTable("dbo.ClippingPages");
+            HasKey(x => x.ClippingPageId);
+
+            Property(x => x.ClippingPageId).HasColumnName("ClippingPageId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.ClippingId).HasColumnName("ClippingId").IsRequired();
+            Property(x => x.Page).HasColumnName("Page").IsRequired();
+            Property(x => x.Rotate).HasColumnName("Rotate").IsOptional();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
     // Clippings
     internal partial class ClippingsConfiguration : EntityTypeConfiguration<Clippings>
     {
@@ -743,6 +898,7 @@ namespace DataEF.DataAccess
             Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             Property(x => x.Pages).HasColumnName("Pages").IsRequired().HasMaxLength(255);
+            Property(x => x.Rating).HasColumnName("Rating").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Clippings).HasForeignKey(c => c.DocumentId); // FK_Clippings_Documents

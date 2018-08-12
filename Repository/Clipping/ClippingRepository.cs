@@ -25,7 +25,7 @@ namespace Repository
                                         {
                                             clippingId = x.ClippingId,
                                             name = x.Name,
-                                            pages = x.Pages
+                                            pages = null
                                         })
                                         .OrderBy(x => x.clippingId)
                                         .ToList();
@@ -35,7 +35,7 @@ namespace Repository
             return clippingsOut;
         }
 
-        public ClippingOut SaveClippings(ClippingIn clippingIn)
+        public ClippingOut SaveClipping(ClippingIn clippingIn)
         {
             ClippingOut clippingOut = new ClippingOut();
 

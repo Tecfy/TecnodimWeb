@@ -60,6 +60,7 @@
     <Compile Include="PDF\PDFRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Category\CategoryRepository.cs" />
+    <Compile Include="Rating\RatingRepository.cs" />
     <Compile Include="RegisterEvent\RegisterEventRepository.cs" />
   </ItemGroup>
   <ItemGroup>

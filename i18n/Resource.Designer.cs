@@ -223,6 +223,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Girar.
+        /// </summary>
+        public static string Rotate {
+            get {
+                return ResourceManager.GetString("Rotate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rotação.
         /// </summary>
         public static string Rotation {

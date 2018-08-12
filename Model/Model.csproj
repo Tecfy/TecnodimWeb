@@ -58,7 +58,9 @@
     <Compile Include="Image\In\ImageIn.cs" />
     <Compile Include="Image\Out\ImageOut.cs" />
     <Compile Include="Image\VM\ImageVM.cs" />
-    <Compile Include="Page\In\PageIn.cs" />
+    <Compile Include="Page\In\PageRatingIn.cs" />
+    <Compile Include="Page\In\PageClippingIn.cs" />
+    <Compile Include="Page\VM\PageVM.cs" />
     <Compile Include="PDF\In\PDFIn.cs" />
     <Compile Include="PDF\Out\PDFOut.cs" />
     <Compile Include="PDF\Out\PDFsOut.cs" />
@@ -67,12 +69,14 @@
     <Compile Include="Category\In\CategoriesIn.cs" />
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
+    <Compile Include="Rating\In\RatingIn.cs" />
     <Compile Include="User\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\Out\" />
     <Folder Include="Page\Out\" />
-    <Folder Include="Page\VM\" />
+    <Folder Include="Rating\Out\" />
+    <Folder Include="Rating\VM\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\i18n\i18n.csproj">
