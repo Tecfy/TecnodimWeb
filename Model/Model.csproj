@@ -64,6 +64,9 @@
     <Compile Include="PDF\Out\PDFsOut.cs" />
     <Compile Include="PDF\VM\PDFsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Category\In\CategoriesIn.cs" />
+    <Compile Include="Category\Out\CategoriesOut.cs" />
+    <Compile Include="Category\VM\CategoriesVM.cs" />
     <Compile Include="User\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>

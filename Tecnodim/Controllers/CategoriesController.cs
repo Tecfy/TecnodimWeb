@@ -3,34 +3,31 @@ using Model.In;
 using Model.Out;
 using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
 namespace Tecnodim.Controllers
 {
-    [RoutePrefix("api/documents")]
-    public class DocumentsController : ApiController
+    [RoutePrefix("api/categories")]
+    public class CategoriesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentRepository documentRepository = new DocumentRepository();
+        CategoryRepository ratingRepository = new CategoryRepository();
 
         [Authorize, HttpGet, Route("")]
-        public DocumentsOut Get(int documentId)
+        public CategoriesOut Get()
         {
-            DocumentsOut documentsOut = new DocumentsOut();
+            CategoriesOut categoriesOut = new CategoriesOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentsIn documentsIn = new DocumentsIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    CategoriesIn categoriesIn = new CategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
 
-                    documentsOut = documentRepository.GetDocuments(documentsIn);
+                    categoriesOut = ratingRepository.GetCategories(categoriesIn);
                 }
                 else
                 {
@@ -49,13 +46,13 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.Get", ex.Message);
 
-                documentsOut.successMessage = null;
-                documentsOut.messages.Add(ex.Message);
+                categoriesOut.successMessage = null;
+                categoriesOut.messages.Add(ex.Message);
             }
 
-            return documentsOut;
+            return categoriesOut;
         }
     }
 }

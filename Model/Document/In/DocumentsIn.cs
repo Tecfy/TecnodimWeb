@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class DocumentsIn : baseIn
+    public class DocumentsIn : BaseIn
     {
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]

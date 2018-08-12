@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class ClippingsIn : baseIn
+    public class ClippingsIn : BaseIn
     {
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]

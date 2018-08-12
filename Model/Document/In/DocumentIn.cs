@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class DocumentIn : baseIn
+    public class DocumentIn : BaseIn
     {
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]

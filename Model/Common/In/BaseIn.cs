@@ -2,9 +2,9 @@
 
 namespace Model
 {
-    public class baseIn
+    public class BaseIn
     {
-        public baseIn()
+        public BaseIn()
         {
             this.userId = null;
             this.key = null;
