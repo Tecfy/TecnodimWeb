@@ -2,7 +2,7 @@
 
 namespace Model.Out
 {
-    public class DocumentOut : resultServiceVM
+    public class DocumentOut : ResultServiceVM
     {
         public DocumentOut()
         {

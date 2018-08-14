@@ -2,7 +2,7 @@
 
 namespace Model.Out
 {
-    public class ClippingOut : resultServiceVM
+    public class ClippingOut : ResultServiceVM
     {
         public ClippingOut()
         {

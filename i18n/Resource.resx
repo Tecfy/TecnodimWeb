@@ -120,8 +120,17 @@
   <data name="Active" xml:space="preserve">
     <value>Ativo</value>
   </data>
+  <data name="AdditionalField" xml:space="preserve">
+    <value>Campo Adicional</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Categoria</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Código</value>
+  </data>
+  <data name="Confidential" xml:space="preserve">
+    <value>Confidencial</value>
   </data>
   <data name="CreatedDate" xml:space="preserve">
     <value>Data de Criação</value>
@@ -165,6 +174,12 @@
   <data name="Pages" xml:space="preserve">
     <value>Páginas</value>
   </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Parente</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Obrigatório</value>
+  </data>
   <data name="RequiredField" xml:space="preserve">
     <value>O campo {0} é obrigatório!</value>
   </data>
@@ -176,6 +191,9 @@
   </data>
   <data name="Rotation" xml:space="preserve">
     <value>Rotação</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>Único</value>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>

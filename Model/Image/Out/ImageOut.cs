@@ -2,7 +2,7 @@
 
 namespace Model.Out
 {
-    public class ImageOut : resultServiceVM
+    public class ImageOut : ResultServiceVM
     {
         public ImageOut()
         {

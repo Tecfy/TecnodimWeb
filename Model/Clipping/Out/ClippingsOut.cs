@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.Out
 {
-    public class ClippingsOut : resultServiceVM
+    public class ClippingsOut : ResultServiceVM
     {
         public ClippingsOut()
         {

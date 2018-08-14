@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="Document\DocumentApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Category\CategoryApi.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

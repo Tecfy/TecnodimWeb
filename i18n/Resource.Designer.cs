@@ -70,11 +70,38 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Campo Adicional.
+        /// </summary>
+        public static string AdditionalField {
+            get {
+                return ResourceManager.GetString("AdditionalField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Código.
         /// </summary>
         public static string Code {
             get {
                 return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confidencial.
+        /// </summary>
+        public static string Confidential {
+            get {
+                return ResourceManager.GetString("Confidential", resourceCulture);
             }
         }
         
@@ -205,6 +232,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parente.
+        /// </summary>
+        public static string Parent {
+            get {
+                return ResourceManager.GetString("Parent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obrigatório.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O campo {0} é obrigatório!.
         /// </summary>
         public static string RequiredField {
@@ -237,6 +282,15 @@ namespace i18n {
         public static string Rotation {
             get {
                 return ResourceManager.GetString("Rotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Único.
+        /// </summary>
+        public static string Single {
+            get {
+                return ResourceManager.GetString("Single", resourceCulture);
             }
         }
         

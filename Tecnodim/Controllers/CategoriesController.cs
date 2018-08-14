@@ -13,10 +13,50 @@ namespace Tecnodim.Controllers
     public class CategoriesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        CategoryRepository ratingRepository = new CategoryRepository();
+        CategoryRepository categoryRepository = new CategoryRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public CategoriesOut Get()
+        [Authorize, HttpGet]
+        public CategoryOut GetCategory(int categoryId)
+        {
+            CategoryOut categoryOut = new CategoryOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CategoryIn categoryIn = new CategoryIn() { categoryId = categoryId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    categoryOut = categoryRepository.GetCategory(categoryIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategory", ex.Message);
+
+                categoryOut.successMessage = null;
+                categoryOut.messages.Add(i18n.Resource.UnknownError);
+            }
+
+            return categoryOut;
+        }
+
+        [Authorize, HttpGet]
+        public CategoriesOut GetCategories()
         {
             CategoriesOut categoriesOut = new CategoriesOut();
             Guid Key = Guid.NewGuid();
@@ -27,7 +67,7 @@ namespace Tecnodim.Controllers
                 {
                     CategoriesIn categoriesIn = new CategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
 
-                    categoriesOut = ratingRepository.GetCategories(categoriesIn);
+                    categoriesOut = categoryRepository.GetCategories(categoriesIn);
                 }
                 else
                 {

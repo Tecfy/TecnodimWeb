@@ -3,7 +3,7 @@ using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
-using System.Linq;
+using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
 namespace Repository
@@ -27,7 +27,12 @@ namespace Repository
 
             for (int i = 1; i <= theDoc.PageCount; i++)
             {
-                pdfOut.result.Add(new PDFsVM() { pageId = i, image = "/Images?documentId=" + documentIn.documentId + "&pageId=" + i, thumb = "/Images?documentId=" + documentIn.documentId + "&pageId=" + i + "&thumb=true" });
+                pdfOut.result.Add(new PDFsVM()
+                {
+                    pageId = i,
+                    image = string.Format("/Images?documentId={0}&pageId={1}", documentIn.documentId, i),
+                    thumb = string.Format("/Images?documentId={0}&pageId={1}&thumb=true", documentIn.documentId, i)
+                });
             }
 
             theDoc.Clear();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.Out
 {
-    public class CategoriesOut : resultServiceVM
+    public class CategoriesOut : ResultServiceVM
     {
         public CategoriesOut()
         {

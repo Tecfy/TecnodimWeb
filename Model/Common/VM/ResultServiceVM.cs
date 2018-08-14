@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Model
 {
-    public class resultServiceVM
+    public class ResultServiceVM
     {
         /// <summary>
         /// Constructor
         /// </summary>
-        public resultServiceVM()
+        public ResultServiceVM()
         {
             this.messages = new List<string>();
             this.successMessage = null;

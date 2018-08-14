@@ -1,6 +1,7 @@
 ﻿using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
+using Model.VM;
 using System;
 using System.Linq;
 
@@ -9,6 +10,7 @@ namespace Repository
     public partial class ClippingRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        ClippingPageRepository clippingPageRepository = new ClippingPageRepository();
 
         #region .: Methods :.
 
@@ -21,11 +23,18 @@ namespace Repository
             {
                 clippingsOut.result = db.Clippings
                                         .Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == clippingsIn.documentId)
-                                        .Select(x => new Model.VM.ClippingsVM()
+                                        .Select(x => new ClippingsVM()
                                         {
                                             clippingId = x.ClippingId,
                                             name = x.Name,
-                                            pages = null
+                                            clippingPages = x.ClippingPages.Select(y => new ClippingPageVM()
+                                            {
+                                                clippingPageId = y.ClippingPageId,
+                                                page = y.Page,
+                                                Rotate = y.Rotate,
+                                                image = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&pageId=" + y.Page,
+                                                thumb = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&pageId=" + y.Page + "&thumb=true",
+                                            }).ToList()
                                         })
                                         .OrderBy(x => x.clippingId)
                                         .ToList();
@@ -40,8 +49,6 @@ namespace Repository
             ClippingOut clippingOut = new ClippingOut();
 
             registerEventRepository.SaveRegisterEvent(clippingIn.userId.Value, clippingIn.key.Value, "Log - Start", "Repository.ClippingRepository.SaveClippings", "");
-
-            string thePages = String.Join(",", clippingIn.pages.Select(x => x.pageId).ToList());
 
             using (var db = new DBContext())
             {
@@ -59,10 +66,15 @@ namespace Repository
                 Clippings clipping = new Clippings();
                 clipping.DocumentId = document.DocumentId;
                 clipping.Name = clippingIn.name;
-                clipping.Pages = thePages;
 
                 db.Clippings.Add(clipping);
                 db.SaveChanges();
+
+                foreach (var item in clippingIn.pages)
+                {
+                    ClippingPageIn clippingPageIn = new ClippingPageIn() { key = clippingIn.userId, userId = clippingIn.key, clippingId = clipping.ClippingId, page = item.pageId };
+                    clippingPageRepository.SaveClippingPage(clippingPageIn);
+                }
 
                 clippingOut.result.clippingId = clipping.ClippingId;
             }

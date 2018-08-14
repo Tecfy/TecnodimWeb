@@ -1,6 +1,6 @@
 ﻿namespace Model.Out
 {
-    public class PDFOut : resultServiceVM
+    public class PDFOut : ResultServiceVM
     {
         public PDFOut()
         {

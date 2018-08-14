@@ -9,6 +9,6 @@ namespace Model.VM
 
         public string name { get; set; }
 
-        public List<PageVM> pages { get; set; }
+        public List<ClippingPageVM> clippingPages { get; set; }
     }
 }

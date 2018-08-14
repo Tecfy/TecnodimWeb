@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.Out
 {
-    public class PDFsOut : resultServiceVM
+    public class PDFsOut : ResultServiceVM
     {
         public PDFsOut()
         {
