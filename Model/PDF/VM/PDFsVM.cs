@@ -2,7 +2,7 @@
 {
     public class PDFsVM
     {
-        public int pageId { get; set; }
+        public int page { get; set; }
 
         public string thumb { get; set; }
 

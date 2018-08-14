@@ -32,8 +32,8 @@ namespace Repository
                                                 clippingPageId = y.ClippingPageId,
                                                 page = y.Page,
                                                 Rotate = y.Rotate,
-                                                image = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&pageId=" + y.Page,
-                                                thumb = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&pageId=" + y.Page + "&thumb=true",
+                                                image = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page,
+                                                thumb = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page + "&thumb=true",
                                             }).ToList()
                                         })
                                         .OrderBy(x => x.clippingId)
@@ -72,7 +72,7 @@ namespace Repository
 
                 foreach (var item in clippingIn.pages)
                 {
-                    ClippingPageIn clippingPageIn = new ClippingPageIn() { key = clippingIn.userId, userId = clippingIn.key, clippingId = clipping.ClippingId, page = item.pageId };
+                    ClippingPageIn clippingPageIn = new ClippingPageIn() { key = clippingIn.userId, userId = clippingIn.key, clippingId = clipping.ClippingId, page = item.page };
                     clippingPageRepository.SaveClippingPage(clippingPageIn);
                 }
 
@@ -80,6 +80,33 @@ namespace Repository
             }
 
             registerEventRepository.SaveRegisterEvent(clippingIn.userId.Value, clippingIn.key.Value, "Log - End", "Repository.ClippingRepository.SaveClippings", "");
+            return clippingOut;
+        }
+
+        public ClippingOut UpdateClipping(ClippingUpdateIn clippingUpdateIn)
+        {
+            ClippingOut clippingOut = new ClippingOut();
+
+            registerEventRepository.SaveRegisterEvent(clippingUpdateIn.userId.Value, clippingUpdateIn.key.Value, "Log - Start", "Repository.ClippingRepository.UpdateClipping", "");
+
+            using (var db = new DBContext())
+            {
+                Clippings clipping = db.Clippings.Find(clippingUpdateIn.clippingId);
+
+                if (clipping == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                clipping.CategoryId = clippingUpdateIn.categoryId;
+                clipping.Name = clippingUpdateIn.name;
+                clipping.Classification = clippingUpdateIn.classification;
+
+                db.Entry(clipping).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(clippingUpdateIn.userId.Value, clippingUpdateIn.key.Value, "Log - End", "Repository.ClippingRepository.UpdateClipping", "");
             return clippingOut;
         }
 

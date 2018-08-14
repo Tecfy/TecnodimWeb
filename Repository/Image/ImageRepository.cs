@@ -23,7 +23,7 @@ namespace Repository
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));
 
-            if (theDoc.PageCount < imageIn.pageId || imageIn.pageId <= 0)
+            if (theDoc.PageCount < imageIn.page || imageIn.page <= 0)
             {
                 throw new Exception(i18n.Resource.PageNotExist);
             }
@@ -31,7 +31,7 @@ namespace Repository
             Doc singlePagePdf = new Doc();
             singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = theDoc.MediaBox.String;
             singlePagePdf.AddPage();
-            singlePagePdf.AddImageDoc(theDoc, imageIn.pageId, null);
+            singlePagePdf.AddImageDoc(theDoc, imageIn.page, null);
             singlePagePdf.FrameRect();
 
             if (imageIn.thumb)

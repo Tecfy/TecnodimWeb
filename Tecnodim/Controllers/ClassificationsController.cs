@@ -9,26 +9,26 @@ using System.Web.Http.ModelBinding;
 
 namespace Tecnodim.Controllers
 {
-    [RoutePrefix("api/ratings")]
-    public class RatingsController : ApiController
+    [RoutePrefix("api/classifications")]
+    public class ClassificationsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        RatingRepository ratingRepository = new RatingRepository();
+        ClassificationRepository classificationRepository = new ClassificationRepository();
 
         [Authorize, HttpPost, Route("")]
-        public ClippingOut Post(RatingIn ratingIn)
+        public ClassificationOut Post(ClassificationIn classificationIn)
         {
-            ClippingOut clippingOut = new ClippingOut();
+            ClassificationOut clippingOut = new ClassificationOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    ratingIn.userId = new Guid(User.Identity.GetUserId());
-                    ratingIn.key = Key;
+                    classificationIn.userId = new Guid(User.Identity.GetUserId());
+                    classificationIn.key = Key;
 
-                    clippingOut = ratingRepository.SaveRating(ratingIn);
+                    clippingOut = classificationRepository.SaveClassification(classificationIn);
                 }
                 else
                 {
@@ -47,7 +47,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.RatingsController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
 
                 clippingOut.successMessage = null;
                 clippingOut.messages.Add(ex.Message);

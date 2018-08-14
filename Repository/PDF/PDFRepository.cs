@@ -29,9 +29,9 @@ namespace Repository
             {
                 pdfOut.result.Add(new PDFsVM()
                 {
-                    pageId = i,
-                    image = string.Format("/Images?documentId={0}&pageId={1}", documentIn.documentId, i),
-                    thumb = string.Format("/Images?documentId={0}&pageId={1}&thumb=true", documentIn.documentId, i)
+                    page = i,
+                    image = string.Format("/Images?documentId={0}&page={1}", documentIn.documentId, i),
+                    thumb = string.Format("/Images?documentId={0}&page={1}&thumb=true", documentIn.documentId, i)
                 });
             }
 
@@ -49,7 +49,7 @@ namespace Repository
             //theDoc.Read(documentOut.result.archive);
 
             int theCount = theDoc.PageCount;
-            string thePages = String.Join(",", pdfIn.pages.Select(x => x.pageId).ToList());
+            string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
             theDoc.RemapPages(thePages);
 
             for (int p = 1; p <= theDoc.PageCount; p++)

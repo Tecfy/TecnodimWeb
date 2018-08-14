@@ -30,7 +30,7 @@ namespace DataEF.DataAccess.Model
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string Name { get; set; } // Name
 
-        [Display(Name = "Rating", ResourceType = typeof(i18n.Resource))]
-        public bool Rating { get; set; } // Rating
+        [Display(Name = "Classification", ResourceType = typeof(i18n.Resource))]
+        public bool Classification { get; set; } // Classification
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DataEF.DataAccess;
 using System;
+using System.Web.Configuration;
 
 namespace Repository
 {
@@ -9,11 +10,14 @@ namespace Repository
 
         public void SaveRegisterEvent(Guid userId, Guid identifier, string type, string source, string text)
         {
-            using (var context = new DBContext())
+            if (WebConfigurationManager.AppSettings["Repository.SaveRegisterEvent"].ToString() == "true")
             {
-                RegisterEvents registerEvent = new RegisterEvents() { UserId = userId, Identifier = identifier, Type = type, Source = source, Text = text };
-                context.RegisterEvents.Add(registerEvent);
-                context.SaveChanges();
+                using (var context = new DBContext())
+                {
+                    RegisterEvents registerEvent = new RegisterEvents() { UserId = userId, Identifier = identifier, Type = type, Source = source, Text = text };
+                    context.RegisterEvents.Add(registerEvent);
+                    context.SaveChanges();
+                }
             }
         }
 

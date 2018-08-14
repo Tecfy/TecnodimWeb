@@ -126,6 +126,15 @@
   <data name="Category" xml:space="preserve">
     <value>Categoria</value>
   </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Classificação</value>
+  </data>
+  <data name="Clipping" xml:space="preserve">
+    <value>Recorte</value>
+  </data>
+  <data name="ClippingPage" xml:space="preserve">
+    <value>Página de recorte</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Código</value>
   </data>
@@ -176,6 +185,9 @@
   </data>
   <data name="Parent" xml:space="preserve">
     <value>Parente</value>
+  </data>
+  <data name="RegisterNotFound" xml:space="preserve">
+    <value>Registro não encontrado.</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Obrigatório</value>

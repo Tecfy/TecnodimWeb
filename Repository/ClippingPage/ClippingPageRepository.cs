@@ -35,6 +35,26 @@ namespace Repository
             return clippingPageOut;
         }
 
+        public void UpdateClippingPage(ClippingPageUpdateIn clippingPageUpdateIn)
+        {
+            registerEventRepository.SaveRegisterEvent(clippingPageUpdateIn.userId.Value, clippingPageUpdateIn.key.Value, "Log - Start", "Repository.ClippingPageRepository.UpdateClippingPage", "");
+
+            using (var db = new DBContext())
+            {
+                ClippingPages clippingPages = db.ClippingPages.Find(clippingPageUpdateIn.clippingPageId);
+
+                if (clippingPages != null)
+                {
+                    clippingPages.Rotate = clippingPageUpdateIn.rotate;
+
+                    db.Entry(clippingPages).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(clippingPageUpdateIn.userId.Value, clippingPageUpdateIn.key.Value, "Log - End", "Repository.ClippingPageRepository.UpdateClippingPage", "");
+        }
+
         #endregion
     }
 }

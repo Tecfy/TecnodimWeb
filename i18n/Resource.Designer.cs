@@ -88,6 +88,33 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Classificação.
+        /// </summary>
+        public static string Classification {
+            get {
+                return ResourceManager.GetString("Classification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recorte.
+        /// </summary>
+        public static string Clipping {
+            get {
+                return ResourceManager.GetString("Clipping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Página de recorte.
+        /// </summary>
+        public static string ClippingPage {
+            get {
+                return ResourceManager.GetString("ClippingPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Código.
         /// </summary>
         public static string Code {
@@ -237,6 +264,15 @@ namespace i18n {
         public static string Parent {
             get {
                 return ResourceManager.GetString("Parent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registro não encontrado..
+        /// </summary>
+        public static string RegisterNotFound {
+            get {
+                return ResourceManager.GetString("RegisterNotFound", resourceCulture);
             }
         }
         

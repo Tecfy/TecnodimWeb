@@ -17,14 +17,14 @@ namespace Tecnodim.Controllers
         ImageRepository imageRepository = new ImageRepository();
 
         [Authorize, HttpGet, Route("")]
-        public HttpResponseMessage Get(int documentId, int pageId, bool thumb = false)
+        public HttpResponseMessage Get(int documentId, int page, bool thumb = false)
         {
             ImageOut imageOut = new ImageOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                imageOut = imageRepository.GetImage(new ImageIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, pageId = pageId, thumb = thumb });
+                imageOut = imageRepository.GetImage(new ImageIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, page = page, thumb = thumb });
 
                 MemoryStream ms = new MemoryStream(imageOut.result.image);
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);

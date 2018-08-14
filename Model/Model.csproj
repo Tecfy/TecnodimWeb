@@ -47,12 +47,16 @@
     <Compile Include="Category\In\CategoryIn.cs" />
     <Compile Include="Category\Out\CategoryOut.cs" />
     <Compile Include="Category\VM\CategoryVM.cs" />
+    <Compile Include="Classification\Out\ClassificationOut.cs" />
+    <Compile Include="Classification\VM\ClassificationVM.cs" />
     <Compile Include="ClippingPage\In\ClippingPageIn.cs" />
+    <Compile Include="ClippingPage\In\ClippingPageUpdateIn.cs" />
     <Compile Include="ClippingPage\In\ClippingPagesIn.cs" />
     <Compile Include="ClippingPage\Out\ClippingPageOut.cs" />
     <Compile Include="ClippingPage\Out\ClippingPagesOut.cs" />
     <Compile Include="ClippingPage\VM\ClippingPagesVM.cs" />
     <Compile Include="ClippingPage\VM\ClippingPageVM.cs" />
+    <Compile Include="Clipping\In\ClippingUpdateIn.cs" />
     <Compile Include="Clipping\In\ClippingsIn.cs" />
     <Compile Include="Clipping\In\ClippingIn.cs" />
     <Compile Include="Clipping\Out\ClippingsOut.cs" />
@@ -82,7 +86,7 @@
     <Compile Include="Category\In\CategoriesIn.cs" />
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
-    <Compile Include="Rating\In\RatingIn.cs" />
+    <Compile Include="Classification\In\ClassificationIn.cs" />
     <Compile Include="User\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,8 +94,6 @@
     <Folder Include="AdditionalField\Out\" />
     <Folder Include="Common\Out\" />
     <Folder Include="Page\Out\" />
-    <Folder Include="Rating\Out\" />
-    <Folder Include="Rating\VM\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\i18n\i18n.csproj">

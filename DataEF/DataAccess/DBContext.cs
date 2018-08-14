@@ -713,8 +713,8 @@ namespace DataEF.DataAccess
 		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
 		public string Name { get; set; } // Name
 
-		[Display(Name = "Rating", ResourceType = typeof(i18n.Resource))]
-		public bool Rating { get; set; } // Rating
+		[Display(Name = "Classification", ResourceType = typeof(i18n.Resource))]
+		public bool Classification { get; set; } // Classification
 
 		*/
 	}
@@ -744,7 +744,7 @@ namespace DataEF.DataAccess
 
         public string Name { get; set; } // Name
 
-        public bool Rating { get; set; } // Rating
+        public bool Classification { get; set; } // Classification
 
         // Reverse navigation
         public virtual ICollection<ClippingPages> ClippingPages { get; set; } // ClippingPages.FK_ClippingPages_Clippings;
@@ -757,7 +757,7 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
-            Rating = false;
+            Classification = false;
             ClippingPages = new List<ClippingPages>();
             InitializePartial();
         }
@@ -1201,7 +1201,7 @@ namespace DataEF.DataAccess
             Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
             Property(x => x.CategoryId).HasColumnName("CategoryId").IsOptional();
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
-            Property(x => x.Rating).HasColumnName("Rating").IsRequired();
+            Property(x => x.Classification).HasColumnName("Classification").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Clippings).HasForeignKey(c => c.DocumentId); // FK_Clippings_Documents
