@@ -41,6 +41,7 @@ namespace DataEF.DataAccess
         IDbSet<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields
         IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
         IDbSet<Clippings> Clippings { get; set; } // Clippings
+        IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -63,6 +64,7 @@ namespace DataEF.DataAccess
         public IDbSet<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields
         public IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
         public IDbSet<Clippings> Clippings { get; set; } // Clippings
+        public IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -98,6 +100,7 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new CategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new ClippingPagesConfiguration());
             modelBuilder.Configurations.Add(new ClippingsConfiguration());
+            modelBuilder.Configurations.Add(new DeletedPagesConfiguration());
             modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new DocumentStatusConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
@@ -764,6 +767,70 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class DeletedPagesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int DeletedPageId { get; set; } // DeletedPageId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
+		public int DocumentId { get; set; } // DocumentId
+
+		[Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
+		public int Page { get; set; } // Page
+
+		*/
+	}
+
+    // DeletedPages
+	[MetadataType(typeof(DeletedPagesMetadataType))]
+    public partial class DeletedPages
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int DeletedPageId { get; set; } // DeletedPageId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int DocumentId { get; set; } // DocumentId
+
+        public int Page { get; set; } // Page
+
+        // Foreign keys
+        public virtual Documents Documents { get; set; } //  DocumentId - FK_DeletedPages_Documents
+
+        public DeletedPages()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
 	public partial class DocumentsMetadataType
     {
 		/* 
@@ -818,6 +885,7 @@ namespace DataEF.DataAccess
 
         // Reverse navigation
         public virtual ICollection<Clippings> Clippings { get; set; } // Clippings.FK_Clippings_Documents;
+        public virtual ICollection<DeletedPages> DeletedPages { get; set; } // DeletedPages.FK_DeletedPages_Documents;
 
         // Foreign keys
         public virtual DocumentStatus DocumentStatus { get; set; } //  DocumentStatusId - FK_Documents_DocumentStatus
@@ -827,6 +895,7 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             Clippings = new List<Clippings>();
+            DeletedPages = new List<DeletedPages>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1206,6 +1275,29 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Clippings).HasForeignKey(c => c.DocumentId); // FK_Clippings_Documents
             HasOptional(a => a.Categories).WithMany(b => b.Clippings).HasForeignKey(c => c.CategoryId); // FK_Clippings_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // DeletedPages
+    internal partial class DeletedPagesConfiguration : EntityTypeConfiguration<DeletedPages>
+    {
+        public DeletedPagesConfiguration()
+        {
+            ToTable("dbo.DeletedPages");
+            HasKey(x => x.DeletedPageId);
+
+            Property(x => x.DeletedPageId).HasColumnName("DeletedPageId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
+            Property(x => x.Page).HasColumnName("Page").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Documents).WithMany(b => b.DeletedPages).HasForeignKey(c => c.DocumentId); // FK_DeletedPages_Documents
             InitializePartial();
         }
         partial void InitializePartial();

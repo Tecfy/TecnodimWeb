@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeletedPage\In\DeletedPageIn.cs" />
+    <Compile Include="DeletedPage\Out\DeletedPageOut.cs" />
     <Compile Include="Category\In\CategoryIn.cs" />
     <Compile Include="Category\Out\CategoryOut.cs" />
     <Compile Include="Category\VM\CategoryVM.cs" />
@@ -56,15 +58,17 @@
     <Compile Include="ClippingPage\Out\ClippingPagesOut.cs" />
     <Compile Include="ClippingPage\VM\ClippingPagesVM.cs" />
     <Compile Include="ClippingPage\VM\ClippingPageVM.cs" />
+    <Compile Include="Clipping\In\ClippingIn.cs" />
     <Compile Include="Clipping\In\ClippingUpdateIn.cs" />
     <Compile Include="Clipping\In\ClippingsIn.cs" />
-    <Compile Include="Clipping\In\ClippingIn.cs" />
+    <Compile Include="Clipping\In\ClippingSaveIn.cs" />
     <Compile Include="Clipping\Out\ClippingsOut.cs" />
     <Compile Include="Clipping\Out\ClippingOut.cs" />
     <Compile Include="Clipping\VM\ClippingsVM.cs" />
     <Compile Include="Clipping\VM\ClippingVM.cs" />
     <Compile Include="Common\In\BaseIn.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Document\In\RemainingDocumenPagestIn.cs" />
     <Compile Include="Document\In\DocumentsIn.cs" />
     <Compile Include="Document\In\DocumentIn.cs" />
     <Compile Include="Document\Out\DocumentsOut.cs" />
@@ -75,6 +79,7 @@
     <Compile Include="Image\Out\ImageOut.cs" />
     <Compile Include="Image\VM\ImageVM.cs" />
     <Compile Include="AdditionalField\VM\AdditionalFieldVM.cs" />
+    <Compile Include="Page\In\PageDeletedPageIn.cs" />
     <Compile Include="Page\In\PageRatingIn.cs" />
     <Compile Include="Page\In\PageClippingIn.cs" />
     <Compile Include="Page\VM\PageVM.cs" />
@@ -93,6 +98,7 @@
     <Folder Include="AdditionalField\In\" />
     <Folder Include="AdditionalField\Out\" />
     <Folder Include="Common\Out\" />
+    <Folder Include="DeletedPage\VM\" />
     <Folder Include="Page\Out\" />
   </ItemGroup>
   <ItemGroup>

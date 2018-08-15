@@ -6,7 +6,7 @@
 
         public int page { get; set; }
 
-        public int? Rotate { get; set; }
+        public int? rotate { get; set; }
 
         public string thumb { get; set; }
 

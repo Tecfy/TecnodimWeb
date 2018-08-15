@@ -2,6 +2,7 @@
 using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Repository
@@ -10,8 +11,6 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
-
-        #region .: Methods :.
 
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)
         {
@@ -24,6 +23,19 @@ namespace Repository
             return documentsOut;
         }
 
-        #endregion
+        public List<int> GetRemainingDocumentPages(RemainingDocumenPagestIn remainingDocumenPagestIn)
+        {
+            List<int> pages = new List<int>();
+            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
+
+            using (var db = new DBContext())
+            {
+                pages.AddRange(db.ClippingPages.Where(x => x.Active == true && x.DeletedDate == null && x.Clippings.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
+                pages.AddRange(db.DeletedPages.Where(x => x.Active == true && x.DeletedDate == null && x.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
+            }
+
+            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - End", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
+            return pages;
+        }
     }
 }

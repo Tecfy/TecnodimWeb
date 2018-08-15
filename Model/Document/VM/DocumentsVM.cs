@@ -2,7 +2,7 @@
 {
     public class DocumentsVM
     {
-        public int documentId { get; set; }
+        public int externalId { get; set; }
 
         public string name { get; set; }
 

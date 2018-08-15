@@ -8,7 +8,5 @@ namespace Model.VM
         public int clippingId { get; set; }
 
         public string name { get; set; }
-
-        public List<ClippingPageVM> clippingPages { get; set; }
     }
 }

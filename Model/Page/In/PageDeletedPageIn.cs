@@ -2,11 +2,11 @@
 
 namespace Model.In
 {
-    public class ClippingsIn : BaseIn
+    public class PageDeletedPageIn
     {
         [Required]
-        [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
+        [Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
-        public int externalId { get; set; }
+        public int page { get; set; }
     }
 }

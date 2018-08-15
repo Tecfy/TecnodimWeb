@@ -18,8 +18,8 @@ namespace Tecnodim.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentRepository documentRepository = new DocumentRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public DocumentsOut Get(int documentId)
+        [Authorize, HttpGet]
+        public DocumentsOut GetDocuments()
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -28,7 +28,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentsIn documentsIn = new DocumentsIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    DocumentsIn documentsIn = new DocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }

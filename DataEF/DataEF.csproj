@@ -181,6 +181,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\Model\DeletedPagesMetadataType.cs" />
     <Compile Include="DataAccess\Model\CategoryAdditionalFieldsMetadataType.cs" />
     <Compile Include="DataAccess\Model\CategoriesMetadataType.cs" />
     <Compile Include="DataAccess\Model\AdditionalFieldsMetadataType.cs" />

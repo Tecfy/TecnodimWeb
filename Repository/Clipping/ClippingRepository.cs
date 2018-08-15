@@ -12,7 +12,36 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         ClippingPageRepository clippingPageRepository = new ClippingPageRepository();
 
-        #region .: Methods :.
+        public ClippingOut GetClipping(ClippingIn clippingIn)
+        {
+            ClippingOut clippingOut = new ClippingOut();
+            registerEventRepository.SaveRegisterEvent(clippingIn.userId.Value, clippingIn.key.Value, "Log - Start", "Repository.ClippingRepository.GetClipping", "");
+
+            using (var db = new DBContext())
+            {
+                clippingOut.result = db.Clippings
+                                        .Where(x => x.Active == true && x.DeletedDate == null && x.ClippingId == clippingIn.clippingId)
+                                        .Select(x => new ClippingVM()
+                                        {
+                                            clippingId = x.ClippingId,
+                                            categoryId = x.CategoryId,
+                                            name = x.Name,
+                                            classification = x.Classification,
+                                            clippingPages = x.ClippingPages.Select(y => new ClippingPageVM()
+                                            {
+                                                clippingPageId = y.ClippingPageId,
+                                                page = y.Page,
+                                                rotate = y.Rotate,
+                                                image = "/Images?externalId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page,
+                                                thumb = "/Images?externalId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page + "&thumb=true",
+                                            }).ToList()
+                                        })
+                                        .FirstOrDefault();
+            }
+
+            registerEventRepository.SaveRegisterEvent(clippingIn.userId.Value, clippingIn.key.Value, "Log - End", "Repository.ClippingRepository.GetClipping", "");
+            return clippingOut;
+        }
 
         public ClippingsOut GetClippings(ClippingsIn clippingsIn)
         {
@@ -22,19 +51,11 @@ namespace Repository
             using (var db = new DBContext())
             {
                 clippingsOut.result = db.Clippings
-                                        .Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == clippingsIn.documentId)
+                                        .Where(x => x.Active == true && x.DeletedDate == null && x.Documents.ExternalId == clippingsIn.externalId)
                                         .Select(x => new ClippingsVM()
                                         {
                                             clippingId = x.ClippingId,
                                             name = x.Name,
-                                            clippingPages = x.ClippingPages.Select(y => new ClippingPageVM()
-                                            {
-                                                clippingPageId = y.ClippingPageId,
-                                                page = y.Page,
-                                                Rotate = y.Rotate,
-                                                image = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page,
-                                                thumb = "/Images?documentId=" + y.Clippings.Documents.ExternalId + "&page=" + y.Page + "&thumb=true",
-                                            }).ToList()
                                         })
                                         .OrderBy(x => x.clippingId)
                                         .ToList();
@@ -44,7 +65,7 @@ namespace Repository
             return clippingsOut;
         }
 
-        public ClippingOut SaveClipping(ClippingIn clippingIn)
+        public ClippingOut SaveClipping(ClippingSaveIn clippingIn)
         {
             ClippingOut clippingOut = new ClippingOut();
 
@@ -52,12 +73,12 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                Documents document = db.Documents.Where(x => x.ExternalId == clippingIn.documentId).FirstOrDefault();
+                Documents document = db.Documents.Where(x => x.ExternalId == clippingIn.externalId).FirstOrDefault();
 
                 if (document == null)
                 {
                     document = new Documents();
-                    document.ExternalId = clippingIn.documentId;
+                    document.ExternalId = clippingIn.externalId;
 
                     db.Documents.Add(document);
                     db.SaveChanges();
@@ -109,7 +130,5 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(clippingUpdateIn.userId.Value, clippingUpdateIn.key.Value, "Log - End", "Repository.ClippingRepository.UpdateClipping", "");
             return clippingOut;
         }
-
-        #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace ApiTecnodim
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocument"].ToString(), documentIn.documentId.ToString()));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocument"].ToString(), documentIn.externalId.ToString()));
 
                 var request = RestRequestHelper.Get(Method.GET);
 
@@ -41,7 +41,7 @@ namespace ApiTecnodim
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocuments"].ToString(), documentsIn.documentId.ToString()));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocuments"].ToString());
 
                 var request = RestRequestHelper.Get(Method.GET);
 

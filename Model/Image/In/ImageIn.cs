@@ -5,7 +5,7 @@ namespace Model.In
 {
     public class ImageIn : BaseIn
     {
-        public int documentId { get; set; }
+        public int externalId { get; set; }
 
         public int page { get; set; }
 

@@ -15,8 +15,48 @@ namespace Tecnodim.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         ClippingRepository clippingRepository = new ClippingRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public ClippingsOut Get(int documentId)
+        [Authorize, HttpGet]
+        public ClippingOut GetClipping(int clippingId)
+        {
+            ClippingOut clippingOut = new ClippingOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ClippingIn clippingIn = new ClippingIn() { clippingId = clippingId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    clippingOut = clippingRepository.GetClipping(clippingIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClippingsController.GetClipping", ex.Message);
+
+                clippingOut.successMessage = null;
+                clippingOut.messages.Add(ex.Message);
+            }
+
+            return clippingOut;
+        }
+
+        [Authorize, HttpGet]
+        public ClippingsOut GetClippings(int externalId)
         {
             ClippingsOut clippingsOut = new ClippingsOut();
             Guid Key = Guid.NewGuid();
@@ -25,7 +65,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ClippingsIn clippingsIn = new ClippingsIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ClippingsIn clippingsIn = new ClippingsIn() { externalId = externalId, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     clippingsOut = clippingRepository.GetClippings(clippingsIn);
                 }
@@ -46,7 +86,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClippingsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClippingsController.GetClippings", ex.Message);
 
                 clippingsOut.successMessage = null;
                 clippingsOut.messages.Add(ex.Message);
@@ -56,7 +96,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpPost, Route("")]
-        public ClippingOut Post(ClippingIn clippingIn)
+        public ClippingOut Post(ClippingSaveIn clippingIn)
         {
             ClippingOut clippingOut = new ClippingOut();
             Guid Key = Guid.NewGuid();

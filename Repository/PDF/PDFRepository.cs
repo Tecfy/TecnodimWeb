@@ -3,6 +3,7 @@ using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
+using System.Collections.Generic;
 using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
@@ -11,6 +12,7 @@ namespace Repository
     public partial class PDFRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        DocumentRepository documentRepository = new DocumentRepository();
         DocumentApi documentApi = new DocumentApi();
 
         #region .: Methods :.
@@ -22,17 +24,25 @@ namespace Repository
 
             DocumentOut documentOut = documentApi.GetDocument(documentIn);
 
+            RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { externalId = documentIn.externalId, userId = documentIn.userId, key = documentIn.key };
+
+            List<int> pages = new List<int>();
+            pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
+
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));
 
             for (int i = 1; i <= theDoc.PageCount; i++)
             {
-                pdfOut.result.Add(new PDFsVM()
+                if (!pages.Contains(i))
                 {
-                    page = i,
-                    image = string.Format("/Images?documentId={0}&page={1}", documentIn.documentId, i),
-                    thumb = string.Format("/Images?documentId={0}&page={1}&thumb=true", documentIn.documentId, i)
-                });
+                    pdfOut.result.Add(new PDFsVM()
+                    {
+                        page = i,
+                        image = string.Format("/Images?externalId={0}&page={1}", documentIn.externalId, i),
+                        thumb = string.Format("/Images?externalId={0}&page={1}&thumb=true", documentIn.externalId, i)
+                    });
+                }
             }
 
             theDoc.Clear();

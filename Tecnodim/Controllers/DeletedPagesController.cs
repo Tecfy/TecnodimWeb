@@ -9,26 +9,26 @@ using System.Web.Http.ModelBinding;
 
 namespace Tecnodim.Controllers
 {
-    [RoutePrefix("api/PDFs")]
-    public class PDFsController : ApiController
+    [RoutePrefix("api/deletedPages")]
+    public class DeletedPagesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        PDFRepository pdfRepository = new PDFRepository();
         DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public PDFsOut Get(int externalId)
+        [Authorize, HttpPost, Route("")]
+        public DeletedPageOut Post(DeletedPageIn deletedPageIn)
         {
-            PDFsOut pdfOut = new PDFsOut();
+            DeletedPageOut deletedPageOut = new DeletedPageOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentIn documentIn = new DocumentIn() { externalId = externalId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    deletedPageIn.userId = new Guid(User.Identity.GetUserId());
+                    deletedPageIn.key = Key;
 
-                    pdfOut = pdfRepository.GetPDFs(documentIn);
+                    deletedPageOut = deletedPageRepository.SaveDeletedPage(deletedPageIn);
                 }
                 else
                 {
@@ -47,14 +47,13 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DeletedPagesController.Post", ex.Message);
 
-                pdfOut.result = null;
-                pdfOut.successMessage = null;
-                pdfOut.messages.Add(ex.Message);
+                deletedPageOut.successMessage = null;
+                deletedPageOut.messages.Add(ex.Message);
             }
 
-            return pdfOut;
+            return deletedPageOut;
         }
     }
 }
