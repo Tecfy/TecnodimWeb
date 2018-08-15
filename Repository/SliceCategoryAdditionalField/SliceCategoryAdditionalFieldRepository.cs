@@ -35,6 +35,7 @@ namespace Repository
                 }
                 else
                 {
+                    sliceCategoryAdditionalField.EditedDate = DateTime.Now;
                     sliceCategoryAdditionalField.SliceId = sliceCategoryAdditionalFieldIn.sliceId;
                     sliceCategoryAdditionalField.CategoryAdditionalFieldId = sliceCategoryAdditionalFieldIn.categoryAdditionalFieldId;
                     sliceCategoryAdditionalField.Value = sliceCategoryAdditionalFieldIn.value;

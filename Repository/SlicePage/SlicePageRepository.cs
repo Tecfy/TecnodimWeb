@@ -43,6 +43,7 @@ namespace Repository
 
                 if (slicePages != null)
                 {
+                    slicePages.EditedDate = DateTime.Now;
                     slicePages.Rotate = slicePageUpdateIn.rotate;
 
                     db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;

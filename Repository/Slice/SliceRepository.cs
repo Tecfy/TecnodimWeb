@@ -124,6 +124,7 @@ namespace Repository
                     throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
+                slice.EditedDate = DateTime.Now;
                 slice.CategoryId = sliceUpdateIn.categoryId;
                 slice.Name = sliceUpdateIn.name;
 
