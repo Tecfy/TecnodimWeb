@@ -39,12 +39,13 @@ namespace DataEF.DataAccess
         IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
         IDbSet<Categories> Categories { get; set; } // Categories
         IDbSet<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields
-        IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
-        IDbSet<Clippings> Clippings { get; set; } // Clippings
         IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
+        IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
+        IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
+        IDbSet<Slices> Slices { get; set; } // Slices
 
         int SaveChanges();
     }
@@ -62,12 +63,13 @@ namespace DataEF.DataAccess
         public IDbSet<AspNetUsers> AspNetUsers { get; set; } // AspNetUsers
         public IDbSet<Categories> Categories { get; set; } // Categories
         public IDbSet<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields
-        public IDbSet<ClippingPages> ClippingPages { get; set; } // ClippingPages
-        public IDbSet<Clippings> Clippings { get; set; } // Clippings
         public IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
+        public IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
+        public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
+        public IDbSet<Slices> Slices { get; set; } // Slices
 
         static DBContext()
         {
@@ -98,12 +100,13 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new AspNetUsersConfiguration());
             modelBuilder.Configurations.Add(new CategoriesConfiguration());
             modelBuilder.Configurations.Add(new CategoryAdditionalFieldsConfiguration());
-            modelBuilder.Configurations.Add(new ClippingPagesConfiguration());
-            modelBuilder.Configurations.Add(new ClippingsConfiguration());
             modelBuilder.Configurations.Add(new DeletedPagesConfiguration());
             modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new DocumentStatusConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
+            modelBuilder.Configurations.Add(new SliceCategoryAdditionalFieldsConfiguration());
+            modelBuilder.Configurations.Add(new SlicePagesConfiguration());
+            modelBuilder.Configurations.Add(new SlicesConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
 
@@ -542,7 +545,7 @@ namespace DataEF.DataAccess
         // Reverse navigation
         public virtual ICollection<Categories> Categories2 { get; set; } // Categories.FK_Categories_Parent;
         public virtual ICollection<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields.FK_CategoryAdditionalFields_Categories;
-        public virtual ICollection<Clippings> Clippings { get; set; } // Clippings.FK_Clippings_Categories;
+        public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Categories;
 
         // Foreign keys
         public virtual Categories Categories1 { get; set; } //  ParentId - FK_Categories_Parent
@@ -553,7 +556,7 @@ namespace DataEF.DataAccess
             CreatedDate = DateTime.Now;
             Categories2 = new List<Categories>();
             CategoryAdditionalFields = new List<CategoryAdditionalFields>();
-            Clippings = new List<Clippings>();
+            Slices = new List<Slices>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -603,6 +606,9 @@ namespace DataEF.DataAccess
 
         public bool Confidential { get; set; } // Confidential
 
+        // Reverse navigation
+        public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_CategoryAdditionalFields;
+
         // Foreign keys
         public virtual Categories Categories { get; set; } //  CategoryId - FK_CategoryAdditionalFields_Categories
         public virtual AdditionalFields AdditionalFields { get; set; } //  AdditionalFieldId - FK_CategoryAdditionalFields_AdditionalFields
@@ -612,156 +618,7 @@ namespace DataEF.DataAccess
             Single = false;
             Required = false;
             Confidential = false;
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-	public partial class ClippingPagesMetadataType
-    {
-		/* 
-		///Copy this class to an external file
-
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public int ClippingPageId { get; set; } // ClippingPageId (Primary key)
-
-		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
-		public bool Active { get; set; } // Active
-
-		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime CreatedDate { get; set; } // CreatedDate
-
-		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? EditedDate { get; set; } // EditedDate
-
-		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? DeletedDate { get; set; } // DeletedDate
-
-		[Display(Name = "Clipping", ResourceType = typeof(i18n.Resource))]
-		public int ClippingId { get; set; } // ClippingId
-
-		[Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
-		public int Page { get; set; } // Page
-
-		[Display(Name = "Rotate", ResourceType = typeof(i18n.Resource))]
-		public int? Rotate { get; set; } // Rotate
-
-		*/
-	}
-
-    // ClippingPages
-	[MetadataType(typeof(ClippingPagesMetadataType))]
-    public partial class ClippingPages
-    {
-
-        [DataEF.Attributes.Template.IdentityField()]
-        public int ClippingPageId { get; set; } // ClippingPageId (Primary key)
-
-        public bool Active { get; set; } // Active
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime CreatedDate { get; set; } // CreatedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? EditedDate { get; set; } // EditedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? DeletedDate { get; set; } // DeletedDate
-
-        public int ClippingId { get; set; } // ClippingId
-
-        public int Page { get; set; } // Page
-
-        public int? Rotate { get; set; } // Rotate
-
-        // Foreign keys
-        public virtual Clippings Clippings { get; set; } //  ClippingId - FK_ClippingPages_Clippings
-
-        public ClippingPages()
-        {
-            Active = true;
-            CreatedDate = DateTime.Now;
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-	public partial class ClippingsMetadataType
-    {
-		/* 
-		///Copy this class to an external file
-
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public int ClippingId { get; set; } // ClippingId (Primary key)
-
-		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
-		public bool Active { get; set; } // Active
-
-		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime CreatedDate { get; set; } // CreatedDate
-
-		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? EditedDate { get; set; } // EditedDate
-
-		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? DeletedDate { get; set; } // DeletedDate
-
-		[Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
-		public int DocumentId { get; set; } // DocumentId
-
-		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
-		public int? CategoryId { get; set; } // CategoryId
-
-		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
-		public string Name { get; set; } // Name
-
-		[Display(Name = "Classification", ResourceType = typeof(i18n.Resource))]
-		public bool Classification { get; set; } // Classification
-
-		*/
-	}
-
-    // Clippings
-	[MetadataType(typeof(ClippingsMetadataType))]
-    public partial class Clippings
-    {
-
-        [DataEF.Attributes.Template.IdentityField()]
-        public int ClippingId { get; set; } // ClippingId (Primary key)
-
-        public bool Active { get; set; } // Active
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime CreatedDate { get; set; } // CreatedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? EditedDate { get; set; } // EditedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? DeletedDate { get; set; } // DeletedDate
-
-        public int DocumentId { get; set; } // DocumentId
-
-        public int? CategoryId { get; set; } // CategoryId
-
-        public string Name { get; set; } // Name
-
-        public bool Classification { get; set; } // Classification
-
-        // Reverse navigation
-        public virtual ICollection<ClippingPages> ClippingPages { get; set; } // ClippingPages.FK_ClippingPages_Clippings;
-
-        // Foreign keys
-        public virtual Documents Documents { get; set; } //  DocumentId - FK_Clippings_Documents
-        public virtual Categories Categories { get; set; } //  CategoryId - FK_Clippings_Categories
-
-        public Clippings()
-        {
-            Active = true;
-            CreatedDate = DateTime.Now;
-            Classification = false;
-            ClippingPages = new List<ClippingPages>();
+            SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -884,8 +741,8 @@ namespace DataEF.DataAccess
         public int DocumentStatusId { get; set; } // DocumentStatusId
 
         // Reverse navigation
-        public virtual ICollection<Clippings> Clippings { get; set; } // Clippings.FK_Clippings_Documents;
         public virtual ICollection<DeletedPages> DeletedPages { get; set; } // DeletedPages.FK_DeletedPages_Documents;
+        public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Documents;
 
         // Foreign keys
         public virtual DocumentStatus DocumentStatus { get; set; } //  DocumentStatusId - FK_Documents_DocumentStatus
@@ -894,8 +751,8 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
-            Clippings = new List<Clippings>();
             DeletedPages = new List<DeletedPages>();
+            Slices = new List<Slices>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1035,6 +892,229 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             Identifier = Guid.NewGuid();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class SliceCategoryAdditionalFieldsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int SliceCategoryAdditionalFieldId { get; set; } // SliceCategoryAdditionalFieldId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]
+		public int SliceId { get; set; } // SliceId
+
+		[Display(Name = "CategoryAdditionalField", ResourceType = typeof(i18n.Resource))]
+		public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Value", ResourceType = typeof(i18n.Resource))]
+		public string Value { get; set; } // Value
+
+		*/
+	}
+
+    // SliceCategoryAdditionalFields
+	[MetadataType(typeof(SliceCategoryAdditionalFieldsMetadataType))]
+    public partial class SliceCategoryAdditionalFields
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int SliceCategoryAdditionalFieldId { get; set; } // SliceCategoryAdditionalFieldId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int SliceId { get; set; } // SliceId
+
+        public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId
+
+        public string Value { get; set; } // Value
+
+        // Foreign keys
+        public virtual Slices Slices { get; set; } //  SliceId - FK_SliceCategoryAdditionalFields_Slices
+        public virtual CategoryAdditionalFields CategoryAdditionalFields { get; set; } //  CategoryAdditionalFieldId - FK_SliceCategoryAdditionalFields_CategoryAdditionalFields
+
+        public SliceCategoryAdditionalFields()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class SlicePagesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int SlicePageId { get; set; } // SlicePageId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]
+		public int SliceId { get; set; } // SliceId
+
+		[Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
+		public int Page { get; set; } // Page
+
+		[Display(Name = "Rotate", ResourceType = typeof(i18n.Resource))]
+		public int? Rotate { get; set; } // Rotate
+
+		*/
+	}
+
+    // SlicePages
+	[MetadataType(typeof(SlicePagesMetadataType))]
+    public partial class SlicePages
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int SlicePageId { get; set; } // SlicePageId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int SliceId { get; set; } // SliceId
+
+        public int Page { get; set; } // Page
+
+        public int? Rotate { get; set; } // Rotate
+
+        // Foreign keys
+        public virtual Slices Slices { get; set; } //  SliceId - FK_SlicePages_Slices
+
+        public SlicePages()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class SlicesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int SliceId { get; set; } // SliceId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
+		public int DocumentId { get; set; } // DocumentId
+
+		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
+		public int? CategoryId { get; set; } // CategoryId
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
+
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
+		*/
+	}
+
+    // Slices
+	[MetadataType(typeof(SlicesMetadataType))]
+    public partial class Slices
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int SliceId { get; set; } // SliceId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int DocumentId { get; set; } // DocumentId
+
+        public int? CategoryId { get; set; } // CategoryId
+
+        public string Name { get; set; } // Name
+
+        public bool Sent { get; set; } // Sent
+
+        // Reverse navigation
+        public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_Slices;
+        public virtual ICollection<SlicePages> SlicePages { get; set; } // SlicePages.FK_SlicePages_Slices;
+
+        // Foreign keys
+        public virtual Documents Documents { get; set; } //  DocumentId - FK_Slices_Documents
+        public virtual Categories Categories { get; set; } //  CategoryId - FK_Slices_Categories
+
+        public Slices()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Sent = false;
+            SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
+            SlicePages = new List<SlicePages>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1230,56 +1310,6 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
-    // ClippingPages
-    internal partial class ClippingPagesConfiguration : EntityTypeConfiguration<ClippingPages>
-    {
-        public ClippingPagesConfiguration()
-        {
-            ToTable("dbo.ClippingPages");
-            HasKey(x => x.ClippingPageId);
-
-            Property(x => x.ClippingPageId).HasColumnName("ClippingPageId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(x => x.Active).HasColumnName("Active").IsRequired();
-            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
-            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.ClippingId).HasColumnName("ClippingId").IsRequired();
-            Property(x => x.Page).HasColumnName("Page").IsRequired();
-            Property(x => x.Rotate).HasColumnName("Rotate").IsOptional();
-
-            // Foreign keys
-            HasRequired(a => a.Clippings).WithMany(b => b.ClippingPages).HasForeignKey(c => c.ClippingId); // FK_ClippingPages_Clippings
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-    // Clippings
-    internal partial class ClippingsConfiguration : EntityTypeConfiguration<Clippings>
-    {
-        public ClippingsConfiguration()
-        {
-            ToTable("dbo.Clippings");
-            HasKey(x => x.ClippingId);
-
-            Property(x => x.ClippingId).HasColumnName("ClippingId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(x => x.Active).HasColumnName("Active").IsRequired();
-            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
-            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
-            Property(x => x.CategoryId).HasColumnName("CategoryId").IsOptional();
-            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
-            Property(x => x.Classification).HasColumnName("Classification").IsRequired();
-
-            // Foreign keys
-            HasRequired(a => a.Documents).WithMany(b => b.Clippings).HasForeignKey(c => c.DocumentId); // FK_Clippings_Documents
-            HasOptional(a => a.Categories).WithMany(b => b.Clippings).HasForeignKey(c => c.CategoryId); // FK_Clippings_Categories
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
     // DeletedPages
     internal partial class DeletedPagesConfiguration : EntityTypeConfiguration<DeletedPages>
     {
@@ -1363,6 +1393,81 @@ namespace DataEF.DataAccess
             Property(x => x.Type).HasColumnName("Type").IsRequired().HasMaxLength(100);
             Property(x => x.Source).HasColumnName("Source").IsRequired();
             Property(x => x.Text).HasColumnName("Text").IsRequired();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // SliceCategoryAdditionalFields
+    internal partial class SliceCategoryAdditionalFieldsConfiguration : EntityTypeConfiguration<SliceCategoryAdditionalFields>
+    {
+        public SliceCategoryAdditionalFieldsConfiguration()
+        {
+            ToTable("dbo.SliceCategoryAdditionalFields");
+            HasKey(x => x.SliceCategoryAdditionalFieldId);
+
+            Property(x => x.SliceCategoryAdditionalFieldId).HasColumnName("SliceCategoryAdditionalFieldId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.SliceId).HasColumnName("SliceId").IsRequired();
+            Property(x => x.CategoryAdditionalFieldId).HasColumnName("CategoryAdditionalFieldId").IsRequired();
+            Property(x => x.Value).HasColumnName("Value").IsRequired().HasMaxLength(255);
+
+            // Foreign keys
+            HasRequired(a => a.Slices).WithMany(b => b.SliceCategoryAdditionalFields).HasForeignKey(c => c.SliceId); // FK_SliceCategoryAdditionalFields_Slices
+            HasRequired(a => a.CategoryAdditionalFields).WithMany(b => b.SliceCategoryAdditionalFields).HasForeignKey(c => c.CategoryAdditionalFieldId); // FK_SliceCategoryAdditionalFields_CategoryAdditionalFields
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // SlicePages
+    internal partial class SlicePagesConfiguration : EntityTypeConfiguration<SlicePages>
+    {
+        public SlicePagesConfiguration()
+        {
+            ToTable("dbo.SlicePages");
+            HasKey(x => x.SlicePageId);
+
+            Property(x => x.SlicePageId).HasColumnName("SlicePageId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.SliceId).HasColumnName("SliceId").IsRequired();
+            Property(x => x.Page).HasColumnName("Page").IsRequired();
+            Property(x => x.Rotate).HasColumnName("Rotate").IsOptional();
+
+            // Foreign keys
+            HasRequired(a => a.Slices).WithMany(b => b.SlicePages).HasForeignKey(c => c.SliceId); // FK_SlicePages_Slices
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Slices
+    internal partial class SlicesConfiguration : EntityTypeConfiguration<Slices>
+    {
+        public SlicesConfiguration()
+        {
+            ToTable("dbo.Slices");
+            HasKey(x => x.SliceId);
+
+            Property(x => x.SliceId).HasColumnName("SliceId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.DocumentId).HasColumnName("DocumentId").IsRequired();
+            Property(x => x.CategoryId).HasColumnName("CategoryId").IsOptional();
+            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
+            HasOptional(a => a.Categories).WithMany(b => b.Slices).HasForeignKey(c => c.CategoryId); // FK_Slices_Categories
             InitializePartial();
         }
         partial void InitializePartial();

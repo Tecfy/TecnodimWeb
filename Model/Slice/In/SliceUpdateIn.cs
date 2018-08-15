@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class ClassificationIn : BaseIn
+    public class SliceUpdateIn : BaseIn
     {
         [Required]
         [Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]
@@ -20,12 +20,6 @@ namespace Model.In
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string name { get; set; }
 
-        [Display(Name = "Pages", ResourceType = typeof(i18n.Resource))]
-        public List<SlicePagesIn> pages { get; set; }
-
-        [Display(Name = "AdditionalFields", ResourceType = typeof(i18n.Resource))]
-        public List<AdditionalFieldIn> additionalFields { get; set; }
-
-        
+        public List<PageSliceIn> pages { get; set; }
     }
 }

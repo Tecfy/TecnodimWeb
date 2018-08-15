@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Hom|AnyCPU'">
+    <OutputPath>bin\Hom\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\Prod\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -44,9 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Student\In\StudentIn.cs" />
-    <Compile Include="Student\Out\StudentOut.cs" />
-    <Compile Include="Student\VM\StudentVM.cs" />
+    <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailVM.cs" />
     <Compile Include="DeletedPage\In\DeletedPageIn.cs" />
     <Compile Include="DeletedPage\Out\DeletedPageOut.cs" />
     <Compile Include="Category\In\CategoryIn.cs" />
@@ -54,21 +61,21 @@
     <Compile Include="Category\VM\CategoryVM.cs" />
     <Compile Include="Classification\Out\ClassificationOut.cs" />
     <Compile Include="Classification\VM\ClassificationVM.cs" />
-    <Compile Include="ClippingPage\In\ClippingPageIn.cs" />
-    <Compile Include="ClippingPage\In\ClippingPageUpdateIn.cs" />
-    <Compile Include="ClippingPage\In\ClippingPagesIn.cs" />
-    <Compile Include="ClippingPage\Out\ClippingPageOut.cs" />
-    <Compile Include="ClippingPage\Out\ClippingPagesOut.cs" />
-    <Compile Include="ClippingPage\VM\ClippingPagesVM.cs" />
-    <Compile Include="ClippingPage\VM\ClippingPageVM.cs" />
-    <Compile Include="Clipping\In\ClippingIn.cs" />
-    <Compile Include="Clipping\In\ClippingUpdateIn.cs" />
-    <Compile Include="Clipping\In\ClippingsIn.cs" />
-    <Compile Include="Clipping\In\ClippingSaveIn.cs" />
-    <Compile Include="Clipping\Out\ClippingsOut.cs" />
-    <Compile Include="Clipping\Out\ClippingOut.cs" />
-    <Compile Include="Clipping\VM\ClippingsVM.cs" />
-    <Compile Include="Clipping\VM\ClippingVM.cs" />
+    <Compile Include="SlicePage\In\SlicePageIn.cs" />
+    <Compile Include="SlicePage\In\SlicePageUpdateIn.cs" />
+    <Compile Include="SlicePage\In\SlicePagesIn.cs" />
+    <Compile Include="SlicePage\Out\SlicePageOut.cs" />
+    <Compile Include="SlicePage\Out\SlicePagesOut.cs" />
+    <Compile Include="SlicePage\VM\SlicePagesVM.cs" />
+    <Compile Include="SlicePage\VM\SlicePageVM.cs" />
+    <Compile Include="Slice\In\SliceIn.cs" />
+    <Compile Include="Slice\In\SliceUpdateIn.cs" />
+    <Compile Include="Slice\In\SlicesIn.cs" />
+    <Compile Include="Slice\In\SliceSaveIn.cs" />
+    <Compile Include="Slice\Out\SlicesOut.cs" />
+    <Compile Include="Slice\Out\SliceOut.cs" />
+    <Compile Include="Slice\VM\SlicesVM.cs" />
+    <Compile Include="Slice\VM\SliceVM.cs" />
     <Compile Include="Common\In\BaseIn.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
     <Compile Include="Document\In\RemainingDocumenPagestIn.cs" />
@@ -98,7 +105,6 @@
     <Compile Include="User\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AdditionalField\In\" />
     <Folder Include="AdditionalField\Out\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />

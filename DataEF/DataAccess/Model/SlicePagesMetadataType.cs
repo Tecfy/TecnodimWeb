@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataEF.DataAccess.Model
 {
-    public partial class AdditionalFieldsMetadataType
+    public partial class SlicePagesMetadataType
     {
         [Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-        public int AdditionalFieldId { get; set; } // AdditionalFieldId (Primary key)
+        public int SlicePageId { get; set; } // SlicePageId (Primary key)
 
         [Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
         public bool Active { get; set; } // Active
@@ -20,12 +20,13 @@ namespace DataEF.DataAccess.Model
         [Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-        [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
-        public string Name { get; set; } // Name
+        [Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]
+        public int SliceId { get; set; } // SliceId
 
-        [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-        [Display(Name = "Type", ResourceType = typeof(i18n.Resource))]
-        public string Type { get; set; } // Type
+        [Display(Name = "Page", ResourceType = typeof(i18n.Resource))]
+        public int Page { get; set; } // Page
+
+        [Display(Name = "Rotate", ResourceType = typeof(i18n.Resource))]
+        public int? Rotate { get; set; } // Rotate
     }
 }

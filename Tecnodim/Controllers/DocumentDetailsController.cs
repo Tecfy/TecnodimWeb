@@ -9,26 +9,25 @@ using System.Web.Http.ModelBinding;
 
 namespace Tecnodim.Controllers
 {
-    [RoutePrefix("api/classifications")]
-    public class ClassificationsController : ApiController
+    [RoutePrefix("api/documentDetails")]
+    public class DocumentDetailsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        ClassificationRepository classificationRepository = new ClassificationRepository();
+        DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
-        [Authorize, HttpPost, Route("")]
-        public ClassificationOut Post(ClassificationIn classificationIn)
+        [Authorize, HttpGet]
+        public DocumentDetailOut GetDocumentDetail(int externalId)
         {
-            ClassificationOut sliceOut = new ClassificationOut();
+            DocumentDetailOut documentDetailOut = new DocumentDetailOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    classificationIn.userId = new Guid(User.Identity.GetUserId());
-                    classificationIn.key = Key;
+                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { externalId = externalId, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
-                    sliceOut = classificationRepository.SaveClassification(classificationIn);
+                    documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
                 }
                 else
                 {
@@ -47,13 +46,14 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
 
-                sliceOut.successMessage = null;
-                sliceOut.messages.Add(ex.Message);
+                documentDetailOut.result = null;
+                documentDetailOut.successMessage = null;
+                documentDetailOut.messages.Add(ex.Message);
             }
 
-            return sliceOut;
+            return documentDetailOut;
         }
     }
 }

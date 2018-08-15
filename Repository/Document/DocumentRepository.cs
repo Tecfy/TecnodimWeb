@@ -30,7 +30,7 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                pages.AddRange(db.ClippingPages.Where(x => x.Active == true && x.DeletedDate == null && x.Clippings.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
+                pages.AddRange(db.SlicePages.Where(x => x.Active == true && x.DeletedDate == null && x.Slices.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
                 pages.AddRange(db.DeletedPages.Where(x => x.Active == true && x.DeletedDate == null && x.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
             }
 

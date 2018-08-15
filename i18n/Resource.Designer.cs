@@ -79,6 +79,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Campos Adicionais.
+        /// </summary>
+        public static string AdditionalFields {
+            get {
+                return ResourceManager.GetString("AdditionalFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Categoria.
         /// </summary>
         public static string Category {
@@ -93,24 +102,6 @@ namespace i18n {
         public static string Classification {
             get {
                 return ResourceManager.GetString("Classification", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Recorte.
-        /// </summary>
-        public static string Clipping {
-            get {
-                return ResourceManager.GetString("Clipping", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Página de recorte.
-        /// </summary>
-        public static string ClippingPage {
-            get {
-                return ResourceManager.GetString("ClippingPage", resourceCulture);
             }
         }
         
@@ -331,6 +322,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recorte.
+        /// </summary>
+        public static string Slice {
+            get {
+                return ResourceManager.GetString("Slice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Página de recorte.
+        /// </summary>
+        public static string SlicePage {
+            get {
+                return ResourceManager.GetString("SlicePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fonte.
         /// </summary>
         public static string Source {
@@ -372,6 +381,15 @@ namespace i18n {
         public static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }
