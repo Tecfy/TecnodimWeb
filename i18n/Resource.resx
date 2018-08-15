@@ -129,6 +129,9 @@
   <data name="Category" xml:space="preserve">
     <value>Categoria</value>
   </data>
+  <data name="CategoryAdditionalField" xml:space="preserve">
+    <value>Campo Adicional</value>
+  </data>
   <data name="Classification" xml:space="preserve">
     <value>Classificação</value>
   </data>

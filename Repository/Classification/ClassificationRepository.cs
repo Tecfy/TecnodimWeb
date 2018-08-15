@@ -9,6 +9,7 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         SliceRepository SliceRepository = new SliceRepository();
         SlicePageRepository slicePageRepository = new SlicePageRepository();
+        SliceCategoryAdditionalFieldRepository sliceCategoryAdditionalFieldRepository = new SliceCategoryAdditionalFieldRepository();
 
         #region .: Methods :.
 
@@ -23,7 +24,7 @@ namespace Repository
                 userId = classificationIn.userId,
                 key = classificationIn.key,
                 sliceId = classificationIn.sliceId,
-                categoryId = classificationIn.sliceId,
+                categoryId = classificationIn.categoryId,
                 name = classificationIn.name,
             };
 
@@ -41,6 +42,23 @@ namespace Repository
                 };
 
                 slicePageRepository.UpdateSlicePage(slicePageUpdateIn);
+            }
+
+            foreach (var item in classificationIn.additionalFields)
+            {
+                SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new SliceCategoryAdditionalFieldIn()
+                {
+                    key = classificationIn.userId,
+                    userId = classificationIn.key,
+                    sliceId = classificationIn.sliceId,
+                    categoryAdditionalFieldId = item.categoryAdditionalFieldId,
+                    categoryId = classificationIn.categoryId,
+                    value = item.value
+                };
+
+                sliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField(sliceCategoryAdditionalFieldIn);
+
+                sliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField(sliceCategoryAdditionalFieldIn);
             }
 
             registerEventRepository.SaveRegisterEvent(classificationIn.userId.Value, classificationIn.key.Value, "Log - End", "Repository.ClassificationRepository.SaveClassifications", "");

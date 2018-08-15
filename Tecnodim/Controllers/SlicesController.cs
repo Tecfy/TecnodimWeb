@@ -56,7 +56,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public SlicesOut GetSlices(int externalId)
+        public SlicesOut GetSlices(int documentId)
         {
             SlicesOut slicesOut = new SlicesOut();
             Guid Key = Guid.NewGuid();
@@ -65,7 +65,87 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { externalId = externalId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = null };
+
+                    slicesOut = sliceRepository.GetSlices(slicesIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
+
+                slicesOut.successMessage = null;
+                slicesOut.messages.Add(ex.Message);
+            }
+
+            return slicesOut;
+        }
+
+        [Authorize, HttpGet]
+        public SlicesOut GetSlicesNotClassificated(int documentId)
+        {
+            SlicesOut slicesOut = new SlicesOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = false };
+
+                    slicesOut = sliceRepository.GetSlices(slicesIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
+
+                slicesOut.successMessage = null;
+                slicesOut.messages.Add(ex.Message);
+            }
+
+            return slicesOut;
+        }
+
+        [Authorize, HttpGet]
+        public SlicesOut GetSlicesClassificated(int documentId)
+        {
+            SlicesOut slicesOut = new SlicesOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = true };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }

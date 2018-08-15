@@ -97,6 +97,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Campo Adicional.
+        /// </summary>
+        public static string CategoryAdditionalField {
+            get {
+                return ResourceManager.GetString("CategoryAdditionalField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Classificação.
         /// </summary>
         public static string Classification {

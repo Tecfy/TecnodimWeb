@@ -2,6 +2,7 @@
 using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
+using Model.VM;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,18 @@ namespace Repository
             DocumentsOut documentsOut = new DocumentsOut();
             registerEventRepository.SaveRegisterEvent(documentsIn.userId.Value, documentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocuments", "");
 
-            documentsOut = documentApi.GetDocuments(documentsIn);
+            using (var db = new DBContext())
+            {
+                documentsOut.result = db.Documents
+                                        .Where(x => x.Active == true && x.DeletedDate == null && documentsIn.documentStatusIds.Contains(x.DocumentStatusId))
+                                        .Select(x => new DocumentsVM()
+                                        {
+                                            documentId = x.DocumentId,
+                                            name = null,
+                                            registration = null,
+                                            status = x.DocumentStatus.Name,
+                                        }).ToList();
+            }
 
             registerEventRepository.SaveRegisterEvent(documentsIn.userId.Value, documentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocuments", "");
             return documentsOut;
@@ -30,8 +42,8 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                pages.AddRange(db.SlicePages.Where(x => x.Active == true && x.DeletedDate == null && x.Slices.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
-                pages.AddRange(db.DeletedPages.Where(x => x.Active == true && x.DeletedDate == null && x.Documents.ExternalId == remainingDocumenPagestIn.externalId).Select(x => x.Page).ToList());
+                pages.AddRange(db.SlicePages.Where(x => x.Active == true && x.DeletedDate == null && x.Slices.DocumentId == remainingDocumenPagestIn.documentId).Select(x => x.Page).ToList());
+                pages.AddRange(db.DeletedPages.Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == remainingDocumenPagestIn.documentId).Select(x => x.Page).ToList());
             }
 
             registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - End", "Repository.DocumentRepository.GetRemainingDocumentPages", "");

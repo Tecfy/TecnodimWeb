@@ -11,5 +11,7 @@ namespace Model.VM
         public string name { get; set; }
         
         public List<SlicePageVM> slicePages { get; set; }
+        
+        public List<AdditionalFieldVM> additionalFields { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace Model.In
         [Required]
         [Display(Name = "Document", ResourceType = typeof(i18n.Resource))]
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
-        public int externalId { get; set; }
+        public int documentId { get; set; }
     }
 }

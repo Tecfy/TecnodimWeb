@@ -20,22 +20,32 @@ namespace Repository
             using (var db = new DBContext())
             {
                 sliceOut.result = db.Slices
-                                        .Where(x => x.Active == true && x.DeletedDate == null && x.SliceId == sliceIn.sliceId)
-                                        .Select(x => new SliceVM()
+                                    .Where(x => x.Active == true && x.DeletedDate == null && x.SliceId == sliceIn.sliceId)
+                                    .Select(x => new SliceVM()
+                                    {
+                                        sliceId = x.SliceId,
+                                        categoryId = x.CategoryId,
+                                        name = x.Name,
+                                        slicePages = x.SlicePages.Select(y => new SlicePageVM()
                                         {
-                                            sliceId = x.SliceId,
-                                            categoryId = x.CategoryId,
-                                            name = x.Name,
-                                            slicePages = x.SlicePages.Select(y => new SlicePageVM()
-                                            {
-                                                slicePageId = y.SlicePageId,
-                                                page = y.Page,
-                                                rotate = y.Rotate,
-                                                image = "/Images?externalId=" + y.Slices.Documents.ExternalId + "&page=" + y.Page,
-                                                thumb = "/Images?externalId=" + y.Slices.Documents.ExternalId + "&page=" + y.Page + "&thumb=true",
-                                            }).ToList()
-                                        })
-                                        .FirstOrDefault();
+                                            slicePageId = y.SlicePageId,
+                                            page = y.Page,
+                                            rotate = y.Rotate,
+                                            image = "/Images?documentId=" + y.Slices.DocumentId + "&page=" + y.Page,
+                                            thumb = "/Images?documentId=" + y.Slices.DocumentId + "&page=" + y.Page + "&thumb=true",
+                                        }).ToList(),
+                                        additionalFields = x.SliceCategoryAdditionalFields.Select(y => new AdditionalFieldVM()
+                                        {
+                                            categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                            name = y.CategoryAdditionalFields.AdditionalFields.Name,
+                                            type = y.CategoryAdditionalFields.AdditionalFields.Type,
+                                            value = y.Value,
+                                            single = y.CategoryAdditionalFields.Single,
+                                            required = y.CategoryAdditionalFields.Required,
+                                            confidential = y.CategoryAdditionalFields.Confidential,
+                                        }).ToList()
+                                    })
+                                    .FirstOrDefault();
             }
 
             registerEventRepository.SaveRegisterEvent(sliceIn.userId.Value, sliceIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlice", "");
@@ -50,14 +60,14 @@ namespace Repository
             using (var db = new DBContext())
             {
                 slicesOut.result = db.Slices
-                                        .Where(x => x.Active == true && x.DeletedDate == null && x.Documents.ExternalId == slicesIn.externalId)
-                                        .Select(x => new SlicesVM()
-                                        {
-                                            sliceId = x.SliceId,
-                                            name = x.Name,
-                                        })
-                                        .OrderBy(x => x.sliceId)
-                                        .ToList();
+                                     .Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == slicesIn.documentId && (slicesIn.classificated == null || x.CategoryId.HasValue == slicesIn.classificated))
+                                     .Select(x => new SlicesVM()
+                                     {
+                                         sliceId = x.SliceId,
+                                         name = x.Name,
+                                     })
+                                     .OrderBy(x => x.sliceId)
+                                     .ToList();
             }
 
             registerEventRepository.SaveRegisterEvent(slicesIn.userId.Value, slicesIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlices", "");
@@ -72,15 +82,11 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                Documents document = db.Documents.Where(x => x.ExternalId == sliceIn.externalId).FirstOrDefault();
+                Documents document = db.Documents.Where(x => x.DocumentId == sliceIn.documentId).FirstOrDefault();
 
                 if (document == null)
                 {
-                    document = new Documents();
-                    document.ExternalId = sliceIn.externalId;
-
-                    db.Documents.Add(document);
-                    db.SaveChanges();
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 Slices slice = new Slices();

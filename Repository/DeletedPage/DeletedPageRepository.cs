@@ -1,6 +1,7 @@
 ﻿using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
+using System;
 using System.Linq;
 
 namespace Repository
@@ -17,15 +18,11 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                Documents document = db.Documents.Where(x => x.ExternalId == deletedPageIn.externalId).FirstOrDefault();
+                Documents document = db.Documents.Where(x => x.DocumentId == deletedPageIn.documentId).FirstOrDefault();
 
                 if (document == null)
                 {
-                    document = new Documents();
-                    document.ExternalId = deletedPageIn.externalId;
-
-                    db.Documents.Add(document);
-                    db.SaveChanges();
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 DeletedPages deletedPage = new DeletedPages();

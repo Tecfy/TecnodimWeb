@@ -24,7 +24,7 @@ namespace Repository
 
             DocumentOut documentOut = documentApi.GetDocument(documentIn);
 
-            RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { externalId = documentIn.externalId, userId = documentIn.userId, key = documentIn.key };
+            RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, userId = documentIn.userId, key = documentIn.key };
 
             List<int> pages = new List<int>();
             pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
@@ -39,8 +39,8 @@ namespace Repository
                     pdfOut.result.Add(new PDFsVM()
                     {
                         page = i,
-                        image = string.Format("/Images?externalId={0}&page={1}", documentIn.externalId, i),
-                        thumb = string.Format("/Images?externalId={0}&page={1}&thumb=true", documentIn.externalId, i)
+                        image = string.Format("/Images?documentId={0}&page={1}", documentIn.documentId, i),
+                        thumb = string.Format("/Images?documentId={0}&page={1}&thumb=true", documentIn.documentId, i)
                     });
                 }
             }

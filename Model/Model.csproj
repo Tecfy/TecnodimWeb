@@ -39,17 +39,36 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
@@ -61,6 +80,7 @@
     <Compile Include="Category\VM\CategoryVM.cs" />
     <Compile Include="Classification\Out\ClassificationOut.cs" />
     <Compile Include="Classification\VM\ClassificationVM.cs" />
+    <Compile Include="SliceCategoryAdditionalField\Out\SliceCategoryAdditionalFieldOut.cs" />
     <Compile Include="SlicePage\In\SlicePageIn.cs" />
     <Compile Include="SlicePage\In\SlicePageUpdateIn.cs" />
     <Compile Include="SlicePage\In\SlicePagesIn.cs" />
@@ -109,6 +129,7 @@
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
     <Folder Include="Page\Out\" />
+    <Folder Include="SliceCategoryAdditionalField\VM\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\i18n\i18n.csproj">
