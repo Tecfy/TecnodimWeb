@@ -178,6 +178,7 @@
     <Compile Include="Controllers\DeletedPagesController.cs" />
     <Compile Include="Controllers\PDFsController.cs" />
     <Compile Include="Controllers\ClassificationsController.cs" />
+    <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

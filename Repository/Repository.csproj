@@ -65,6 +65,7 @@
     <Compile Include="Category\CategoryRepository.cs" />
     <Compile Include="Classification\ClassificationRepository.cs" />
     <Compile Include="RegisterEvent\RegisterEventRepository.cs" />
+    <Compile Include="Student\StudentRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApiTecnodim\ApiTecnodim.csproj">

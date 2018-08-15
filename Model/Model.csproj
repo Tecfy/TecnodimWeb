@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Student\In\StudentIn.cs" />
+    <Compile Include="Student\Out\StudentOut.cs" />
+    <Compile Include="Student\VM\StudentVM.cs" />
     <Compile Include="DeletedPage\In\DeletedPageIn.cs" />
     <Compile Include="DeletedPage\Out\DeletedPageOut.cs" />
     <Compile Include="Category\In\CategoryIn.cs" />

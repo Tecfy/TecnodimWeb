@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Student\StudentApi.cs" />
     <Compile Include="Document\DocumentApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
