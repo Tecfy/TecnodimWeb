@@ -68,6 +68,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category\In\CategorySearchIn.cs" />
+    <Compile Include="Category\Out\CategorySearchOut.cs" />
+    <Compile Include="Category\VM\CategorySearchVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />

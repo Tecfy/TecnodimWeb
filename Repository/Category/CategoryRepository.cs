@@ -23,8 +23,7 @@ namespace Repository
                                     .Select(x => new CategoryVM()
                                     {
                                         categoryId = x.CategoryId,
-                                        code = x.Code,
-                                        name = x.Name,
+                                        name = x.Code + " - " + x.Name,
                                         parentId = x.ParentId,
                                         additionalFields = x.CategoryAdditionalFields
                                                             .Select(y => new AdditionalFieldVM()
@@ -49,6 +48,43 @@ namespace Repository
             return categoryOut;
         }
 
+        public CategorySearchOut GetCategorySearch(CategorySearchIn categorySearchIn)
+        {
+            CategorySearchOut categorySearchOut = new CategorySearchOut();
+            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId.Value, categorySearchIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategorySearch", "");
+
+            using (var db = new DBContext())
+            {
+                categorySearchOut.result = db.Categories
+                                    .Where(x => x.DeletedDate == null && x.Active == true && x.Code == categorySearchIn.code)
+                                    .Select(x => new CategorySearchVM()
+                                    {
+                                        categoryId = x.CategoryId,
+                                        name = x.Code + " - " + x.Name,
+                                        parentId = x.ParentId,
+                                        additionalFields = x.CategoryAdditionalFields
+                                                            .Select(y => new AdditionalFieldVM()
+                                                            {
+                                                                categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                                name = y.AdditionalFields.Name,
+                                                                type = y.AdditionalFields.Type,
+                                                                single = y.Single,
+                                                                required = y.Required,
+                                                                confidential = y.Confidential,
+                                                            }).ToList()
+                                    }).FirstOrDefault();
+            }
+
+            if (categorySearchOut.result.parentId != null)
+            {
+                categorySearchOut.result.parents = GetParents(categorySearchOut.result.parentId.Value, new List<string>());
+                categorySearchOut.result.parents = categorySearchOut.result.parents.OrderBy(x => x).ToList();
+            }
+
+            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId.Value, categorySearchIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategorySearch", "");
+            return categorySearchOut;
+        }
+
         public CategoriesOut GetCategories(CategoriesIn categoriesIn)
         {
             CategoriesOut categoriesOut = new CategoriesOut();
@@ -61,9 +97,9 @@ namespace Repository
                                          .Select(x => new CategoriesVM()
                                          {
                                              categoryId = x.CategoryId,
-                                             code = x.Code,
-                                             name = x.Name
-                                         }).OrderBy(x => x.code)
+                                             name = x.Code + " - " + x.Name
+                                         })
+                                         .OrderBy(x => x.name)
                                          .ToList();
             }
 

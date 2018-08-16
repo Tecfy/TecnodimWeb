@@ -56,6 +56,46 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
+        public CategorySearchOut GetCategorySearch(string code)
+        {
+            CategorySearchOut categorySearchOut = new CategorySearchOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CategorySearchIn categorySearchIn = new CategorySearchIn() { code = code, userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategorySearch", ex.Message);
+
+                categorySearchOut.successMessage = null;
+                categorySearchOut.messages.Add(i18n.Resource.UnknownError);
+            }
+
+            return categorySearchOut;
+        }
+
+        [Authorize, HttpGet]
         public CategoriesOut GetCategories()
         {
             CategoriesOut categoriesOut = new CategoriesOut();
