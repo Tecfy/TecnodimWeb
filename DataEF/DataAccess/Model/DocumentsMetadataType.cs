@@ -25,5 +25,8 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
         public int DocumentStatusId { get; set; } // DocumentStatusId
+
+        [Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
+        public Guid Hash { get; set; } // Hash
     }
 }

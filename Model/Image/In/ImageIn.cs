@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Model.In
+﻿namespace Model.In
 {
-    public class ImageIn : BaseIn
+    public class ImageIn
     {
-        public int documentId { get; set; }
+        public string hash { get; set; }
 
         public int page { get; set; }
 

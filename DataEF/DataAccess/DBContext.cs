@@ -714,6 +714,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
 		public int DocumentStatusId { get; set; } // DocumentStatusId
 
+		[Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
+		public Guid Hash { get; set; } // Hash
+
 		*/
 	}
 
@@ -740,6 +743,8 @@ namespace DataEF.DataAccess
 
         public int DocumentStatusId { get; set; } // DocumentStatusId
 
+        public Guid Hash { get; set; } // Hash
+
         // Reverse navigation
         public virtual ICollection<DeletedPages> DeletedPages { get; set; } // DeletedPages.FK_DeletedPages_Documents;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Documents;
@@ -751,6 +756,7 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Hash = Guid.NewGuid();
             DeletedPages = new List<DeletedPages>();
             Slices = new List<Slices>();
             InitializePartial();
@@ -1348,6 +1354,7 @@ namespace DataEF.DataAccess
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             Property(x => x.DocumentStatusId).HasColumnName("DocumentStatusId").IsRequired();
+            Property(x => x.Hash).HasColumnName("Hash").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.DocumentStatus).WithMany(b => b.Documents).HasForeignKey(c => c.DocumentStatusId); // FK_Documents_DocumentStatus

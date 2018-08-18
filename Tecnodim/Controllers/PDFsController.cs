@@ -16,8 +16,8 @@ namespace Tecnodim.Controllers
         PDFRepository pdfRepository = new PDFRepository();
         DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public PDFsOut Get(int documentId)
+        [Authorize, HttpGet]
+        public PDFsOut GetPDFs(int id)
         {
             PDFsOut pdfOut = new PDFsOut();
             Guid Key = Guid.NewGuid();
@@ -26,7 +26,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentIn documentIn = new DocumentIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    DocumentIn documentIn = new DocumentIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     pdfOut = pdfRepository.GetPDFs(documentIn);
                 }

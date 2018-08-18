@@ -16,7 +16,7 @@ namespace Tecnodim.Controllers
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public DocumentDetailOut GetDocumentDetail(int documentId)
+        public DocumentDetailOut GetDocumentDetailByDocumentId(int id)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();
             Guid Key = Guid.NewGuid();
@@ -25,7 +25,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
                 }

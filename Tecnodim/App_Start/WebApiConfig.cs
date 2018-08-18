@@ -22,6 +22,12 @@ namespace Tecnodim
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "GetImage",
+                routeTemplate: "api/{controller}/{action}/{hash}/{page}/{thumb}",
+                defaults: new { thumb = RouteParameter.Optional }
+            );
+
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }

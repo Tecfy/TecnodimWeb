@@ -10,7 +10,7 @@ namespace Repository
     public partial class ImageRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentApi documentApi = new DocumentApi();
+        DocumentRepository documentRepository = new DocumentRepository();
 
         #region .: Methods :.
 
@@ -18,7 +18,7 @@ namespace Repository
         {
             ImageOut imageOut = new ImageOut();
 
-            DocumentOut documentOut = documentApi.GetDocument(new DocumentIn() { documentId = imageIn.documentId, userId = imageIn.userId, key = imageIn.key });
+            DocumentOut documentOut = documentRepository.GetDocumentByHash(imageIn.hash);
 
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));

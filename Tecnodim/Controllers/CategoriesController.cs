@@ -16,7 +16,7 @@ namespace Tecnodim.Controllers
         CategoryRepository categoryRepository = new CategoryRepository();
 
         [Authorize, HttpGet]
-        public CategoryOut GetCategory(int categoryId)
+        public CategoryOut GetCategoryById(int id)
         {
             CategoryOut categoryOut = new CategoryOut();
             Guid Key = Guid.NewGuid();
@@ -25,7 +25,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    CategoryIn categoryIn = new CategoryIn() { categoryId = categoryId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    CategoryIn categoryIn = new CategoryIn() { categoryId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     categoryOut = categoryRepository.GetCategory(categoryIn);
                 }
@@ -56,7 +56,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public CategorySearchOut GetCategorySearch(string code)
+        public CategorySearchOut GetCategoryBySearch(string code)
         {
             CategorySearchOut categorySearchOut = new CategorySearchOut();
             Guid Key = Guid.NewGuid();

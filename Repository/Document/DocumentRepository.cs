@@ -3,6 +3,7 @@ using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
 using Model.VM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,33 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
+
+        public DocumentOut GetDocumentById(DocumentIn documentIn)
+        {
+            DocumentOut documentOut = new DocumentOut();
+            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
+
+            documentOut = documentApi.GetDocumentById(documentIn.documentId);
+
+            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
+            return documentOut;
+        }
+
+        public DocumentOut GetDocumentByHash(string hash)
+        {
+            DocumentOut documentOut = new DocumentOut();
+            Guid guid = Guid.Parse(hash);
+            int documentId = 0;
+
+            using (var db = new DBContext())
+            {
+                documentId = db.Documents.Where(x => x.Hash == guid).FirstOrDefault().DocumentId;
+            }
+
+            documentOut = documentApi.GetDocumentById(documentId);
+
+            return documentOut;
+        }
 
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)
         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using Model.In;
+﻿using Model.In;
 using Model.Out;
 using Repository;
 using System;
@@ -16,27 +15,24 @@ namespace Tecnodim.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         ImageRepository imageRepository = new ImageRepository();
 
-        [Authorize, HttpGet, Route("")]
-        public HttpResponseMessage Get(int documentId, int page, bool thumb = false)
+        [HttpGet]
+        public HttpResponseMessage GetImage(string hash, int page, bool thumb = false)
         {
             ImageOut imageOut = new ImageOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                imageOut = imageRepository.GetImage(new ImageIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, page = page, thumb = thumb });
+                imageOut = imageRepository.GetImage(new ImageIn() { hash = hash, page = page, thumb = thumb });
 
                 MemoryStream ms = new MemoryStream(imageOut.result.image);
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StreamContent(ms);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };
                 response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpg");
 
                 return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ImagesController.Get", ex.Message);
-
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
                 return response;
             }

@@ -1,5 +1,4 @@
 ﻿using Helper.RestRequestHelper;
-using Model.In;
 using Model.Out;
 using RestSharp;
 using System;
@@ -10,16 +9,16 @@ namespace ApiTecnodim
 {
     public partial class DocumentApi
     {
-        public DocumentOut GetDocument(DocumentIn documentIn)
+        public DocumentOut GetDocumentById(int documentId)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocument"].ToString(), documentIn.documentId.ToString()));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocumentById"].ToString(), documentId));
 
                 var request = RestRequestHelper.Get(Method.GET);
 
                 IRestResponse response = client.Execute(request);
-                
+
                 DocumentOut documentOut = SimpleJson.SimpleJson.DeserializeObject<DocumentOut>(response.Content);
 
                 if (!documentOut.success)

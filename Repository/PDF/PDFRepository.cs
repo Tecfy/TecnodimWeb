@@ -1,10 +1,8 @@
-﻿using ApiTecnodim;
-using Model.In;
+﻿using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
-using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
 namespace Repository
@@ -13,7 +11,6 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentRepository documentRepository = new DocumentRepository();
-        DocumentApi documentApi = new DocumentApi();
 
         #region .: Methods :.
 
@@ -22,7 +19,7 @@ namespace Repository
             PDFsOut pdfOut = new PDFsOut();
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
 
-            DocumentOut documentOut = documentApi.GetDocument(documentIn);
+            DocumentOut documentOut = documentRepository.GetDocumentById(documentIn);
 
             RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, userId = documentIn.userId, key = documentIn.key };
 
@@ -39,8 +36,8 @@ namespace Repository
                     pdfOut.result.Add(new PDFsVM()
                     {
                         page = i,
-                        image = string.Format("/Images?documentId={0}&page={1}", documentIn.documentId, i),
-                        thumb = string.Format("/Images?documentId={0}&page={1}&thumb=true", documentIn.documentId, i)
+                        image = string.Format("/Images/GetImage/{0}/{1}", documentOut.result.hash, i),
+                        thumb = string.Format("/Images/GetImage/{0}/{1}/true", documentOut.result.hash, i)
                     });
                 }
             }

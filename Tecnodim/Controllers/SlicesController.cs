@@ -16,7 +16,7 @@ namespace Tecnodim.Controllers
         SliceRepository sliceRepository = new SliceRepository();
 
         [Authorize, HttpGet]
-        public SliceOut GetSlice(int sliceId)
+        public SliceOut GetSliceById(int id)
         {
             SliceOut sliceOut = new SliceOut();
             Guid Key = Guid.NewGuid();
@@ -25,7 +25,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SliceIn sliceIn = new SliceIn() { sliceId = sliceId, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    SliceIn sliceIn = new SliceIn() { sliceId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     sliceOut = sliceRepository.GetSlice(sliceIn);
                 }
@@ -56,7 +56,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public SlicesOut GetSlices(int documentId)
+        public SlicesOut GetSlicesByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
             Guid Key = Guid.NewGuid();
@@ -65,7 +65,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = null };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = null };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -96,7 +96,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public SlicesOut GetSlicesNotClassificated(int documentId)
+        public SlicesOut GetSlicesNotClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
             Guid Key = Guid.NewGuid();
@@ -105,7 +105,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = false };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = false };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -136,7 +136,7 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public SlicesOut GetSlicesClassificated(int documentId)
+        public SlicesOut GetSlicesClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
             Guid Key = Guid.NewGuid();
@@ -145,7 +145,7 @@ namespace Tecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = documentId, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = true };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = true };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }

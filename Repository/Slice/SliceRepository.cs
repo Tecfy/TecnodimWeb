@@ -31,8 +31,8 @@ namespace Repository
                                             slicePageId = y.SlicePageId,
                                             page = y.Page,
                                             rotate = y.Rotate,
-                                            image = "/Images?documentId=" + y.Slices.DocumentId + "&page=" + y.Page,
-                                            thumb = "/Images?documentId=" + y.Slices.DocumentId + "&page=" + y.Page + "&thumb=true",
+                                            image = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page,
+                                            thumb = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page + "/true",
                                         }).ToList(),
                                         additionalFields = x.SliceCategoryAdditionalFields.Select(y => new AdditionalFieldVM()
                                         {
