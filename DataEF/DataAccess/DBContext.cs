@@ -714,6 +714,14 @@ namespace DataEF.DataAccess
 		[Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
 		public int DocumentStatusId { get; set; } // DocumentStatusId
 
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
+		public string Registration { get; set; } // Registration
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
+
 		[Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
 		public Guid Hash { get; set; } // Hash
 
@@ -742,6 +750,10 @@ namespace DataEF.DataAccess
         public int ExternalId { get; set; } // ExternalId
 
         public int DocumentStatusId { get; set; } // DocumentStatusId
+
+        public string Registration { get; set; } // Registration
+
+        public string Name { get; set; } // Name
 
         public Guid Hash { get; set; } // Hash
 
@@ -1354,6 +1366,8 @@ namespace DataEF.DataAccess
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             Property(x => x.DocumentStatusId).HasColumnName("DocumentStatusId").IsRequired();
+            Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
+            Property(x => x.Name).HasColumnName("Name").IsOptional().HasMaxLength(255);
             Property(x => x.Hash).HasColumnName("Hash").IsRequired();
 
             // Foreign keys

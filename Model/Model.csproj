@@ -91,6 +91,7 @@
     <Compile Include="SlicePage\Out\SlicePagesOut.cs" />
     <Compile Include="SlicePage\VM\SlicePagesVM.cs" />
     <Compile Include="SlicePage\VM\SlicePageVM.cs" />
+    <Compile Include="Slice\In\SlicePendingIn.cs" />
     <Compile Include="Slice\In\SliceIn.cs" />
     <Compile Include="Slice\In\SliceUpdateIn.cs" />
     <Compile Include="Slice\In\SlicesIn.cs" />

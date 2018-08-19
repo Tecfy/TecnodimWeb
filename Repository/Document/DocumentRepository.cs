@@ -53,8 +53,8 @@ namespace Repository
                                         .Select(x => new DocumentsVM()
                                         {
                                             documentId = x.DocumentId,
-                                            name = null,
-                                            registration = null,
+                                            name = x.Name,
+                                            registration = x.Registration,
                                             status = x.DocumentStatus.Name,
                                         }).ToList();
             }

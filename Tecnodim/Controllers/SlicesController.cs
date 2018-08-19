@@ -56,6 +56,46 @@ namespace Tecnodim.Controllers
         }
 
         [Authorize, HttpGet]
+        public SliceOut GetSlicePending(int id)
+        {
+            SliceOut sliceOut = new SliceOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    sliceOut = sliceRepository.GetSlicePending(slicePendingIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlicePending", ex.Message);
+
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
+            }
+
+            return sliceOut;
+        }
+
+        [Authorize, HttpGet]
         public SlicesOut GetSlicesByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();

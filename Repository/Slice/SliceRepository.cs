@@ -52,6 +52,47 @@ namespace Repository
             return sliceOut;
         }
 
+        public SliceOut GetSlicePending(SlicePendingIn slicePendingIn)
+        {
+            SliceOut sliceOut = new SliceOut();
+            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId.Value, slicePendingIn.key.Value, "Log - Start", "Repository.SliceRepository.GetSlicePending", "");
+
+            using (var db = new DBContext())
+            {
+                sliceOut.result = db.Slices
+                                    .Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == null && x.DocumentId == slicePendingIn.documentId)
+                                    .Select(x => new SliceVM()
+                                    {
+                                        sliceId = x.SliceId,
+                                        categoryId = x.CategoryId,
+                                        name = x.Name,
+                                        slicePages = x.SlicePages.Select(y => new SlicePageVM()
+                                        {
+                                            slicePageId = y.SlicePageId,
+                                            page = y.Page,
+                                            rotate = y.Rotate,
+                                            image = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page,
+                                            thumb = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page + "/true",
+                                        }).ToList(),
+                                        additionalFields = x.SliceCategoryAdditionalFields.Select(y => new AdditionalFieldVM()
+                                        {
+                                            categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                            name = y.CategoryAdditionalFields.AdditionalFields.Name,
+                                            type = y.CategoryAdditionalFields.AdditionalFields.Type,
+                                            value = y.Value,
+                                            single = y.CategoryAdditionalFields.Single,
+                                            required = y.CategoryAdditionalFields.Required,
+                                            confidential = y.CategoryAdditionalFields.Confidential,
+                                        }).ToList()
+                                    })
+                                    .OrderBy(x => x.sliceId)
+                                    .FirstOrDefault();
+            }
+
+            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId.Value, slicePendingIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlicePending", "");
+            return sliceOut;
+        }
+
         public SlicesOut GetSlices(SlicesIn slicesIn)
         {
             SlicesOut slicesOut = new SlicesOut();
