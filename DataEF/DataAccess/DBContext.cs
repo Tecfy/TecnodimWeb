@@ -708,11 +708,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? DeletedDate { get; set; } // DeletedDate
 
-		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
-		public int ExternalId { get; set; } // ExternalId
-
 		[Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
 		public int DocumentStatusId { get; set; } // DocumentStatusId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
+		public string ExternalId { get; set; } // ExternalId
 
 		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
@@ -747,9 +748,9 @@ namespace DataEF.DataAccess
         [DataEF.Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
-        public int ExternalId { get; set; } // ExternalId
-
         public int DocumentStatusId { get; set; } // DocumentStatusId
+
+        public string ExternalId { get; set; } // ExternalId
 
         public string Registration { get; set; } // Registration
 
@@ -1364,8 +1365,8 @@ namespace DataEF.DataAccess
             Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
             Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             Property(x => x.DocumentStatusId).HasColumnName("DocumentStatusId").IsRequired();
+            Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired().HasMaxLength(50);
             Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
             Property(x => x.Name).HasColumnName("Name").IsOptional().HasMaxLength(255);
             Property(x => x.Hash).HasColumnName("Hash").IsRequired();

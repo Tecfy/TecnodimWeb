@@ -13,7 +13,7 @@ namespace ApiTecnodim
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetDocumentById"].ToString(), documentId));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetSEDocument"].ToString(), documentId));
 
                 var request = RestRequestHelper.Get(Method.GET);
 

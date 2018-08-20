@@ -17,11 +17,6 @@ namespace Repository
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();
             registerEventRepository.SaveRegisterEvent(documentDetailIn.userId.Value, documentDetailIn.key.Value, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
 
-            using (var db = new DBContext())
-            {
-                documentDetailIn.registration = db.Documents.Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == documentDetailIn.documentId).FirstOrDefault().Registration;
-            }
-
             documentDetailOut = documentDetailApi.GetDocumentDetail(documentDetailIn);
 
             registerEventRepository.SaveRegisterEvent(documentDetailIn.userId.Value, documentDetailIn.key.Value, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
