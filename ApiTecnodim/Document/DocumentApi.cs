@@ -9,11 +9,11 @@ namespace ApiTecnodim
 {
     public partial class DocumentApi
     {
-        public DocumentOut GetDocumentById(int documentId)
+        public DocumentOut GetDocument(string externalId)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetSEDocument"].ToString(), documentId));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.Document.GetECMDocument"].ToString(), externalId));
 
                 var request = RestRequestHelper.Get(Method.GET);
 

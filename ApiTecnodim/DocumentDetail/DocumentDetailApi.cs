@@ -10,11 +10,11 @@ namespace ApiTecnodim
 {
     public partial class DocumentDetailApi
     {
-        public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
+        public DocumentDetailOut GetDocumentDetail(string registration)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetail.GetSEDocumentDetail"].ToString(), documentDetailIn.documentId.ToString()));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetail.GetECMDocumentDetail"].ToString(), registration));
 
                 var request = RestRequestHelper.Get(Method.GET);
 

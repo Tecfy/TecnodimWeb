@@ -19,7 +19,14 @@ namespace Repository
             DocumentOut documentOut = new DocumentOut();
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
 
-            documentOut = documentApi.GetDocumentById(documentIn.documentId);
+            string externalId = string.Empty;
+
+            using (var db = new DBContext())
+            {
+                externalId = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault().ExternalId;
+            }
+
+            documentOut = documentApi.GetDocument(externalId);
 
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
             return documentOut;
@@ -29,14 +36,14 @@ namespace Repository
         {
             DocumentOut documentOut = new DocumentOut();
             Guid guid = Guid.Parse(hash);
-            int documentId = 0;
+            string externalId = string.Empty;
 
             using (var db = new DBContext())
             {
-                documentId = db.Documents.Where(x => x.Hash == guid).FirstOrDefault().DocumentId;
+                externalId = db.Documents.Where(x => x.Hash == guid).FirstOrDefault().ExternalId;
             }
 
-            documentOut = documentApi.GetDocumentById(documentId);
+            documentOut = documentApi.GetDocument(externalId);
 
             return documentOut;
         }
