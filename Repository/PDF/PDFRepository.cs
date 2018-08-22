@@ -1,8 +1,11 @@
-﻿using Model.In;
+﻿using DataEF.DataAccess;
+using Helper.Enum;
+using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WebSupergoo.ABCpdf11;
 
 namespace Repository
@@ -43,6 +46,19 @@ namespace Repository
             }
 
             theDoc.Clear();
+
+            using (var db = new DBContext())
+            {
+                if (pdfOut.result == null || pdfOut.result.Count <= 0)
+                {
+                    Documents document = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
+
+                    if (document.DocumentStatusId == (int)EDocumentStatus.PartiallySlice)
+                    {
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = documentIn.userId.Value, key = documentIn.key.Value, documentId = documentIn.documentId, documentStatusIn = (int)EDocumentStatus.Slice });
+                    }
+                }
+            }
 
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.PDFRepository.GetPDFs", "");
             return pdfOut;

@@ -1,4 +1,5 @@
 ﻿using DataEF.DataAccess;
+using Helper.Enum;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -11,6 +12,7 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         SlicePageRepository slicePageRepository = new SlicePageRepository();
+        DocumentRepository documentRepository = new DocumentRepository();
 
         public SliceOut GetSlice(SliceIn sliceIn)
         {
@@ -109,6 +111,16 @@ namespace Repository
                                      })
                                      .OrderBy(x => x.sliceId)
                                      .ToList();
+
+                if (slicesIn.classificated == false && (slicesOut.result == null || slicesOut.result.Count <= 0))
+                {
+                    Documents document = db.Documents.Where(x => x.DocumentId == slicesIn.documentId).FirstOrDefault();
+
+                    if (document.DocumentStatusId == (int)EDocumentStatus.PartiallyClassificated)
+                    {
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicesIn.userId.Value, key = slicesIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.Classificated });
+                    }
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(slicesIn.userId.Value, slicesIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlices", "");
@@ -128,6 +140,11 @@ namespace Repository
                 if (document == null)
                 {
                     throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                if (document.DocumentStatusId == (int)EDocumentStatus.New)
+                {
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceIn.userId.Value, key = sliceIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.PartiallySlice });
                 }
 
                 Slices slice = new Slices();
@@ -171,6 +188,13 @@ namespace Repository
 
                 db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                Documents document = db.Documents.Where(x => x.DocumentId == slice.DocumentId).FirstOrDefault();
+
+                if (document.DocumentStatusId == (int)EDocumentStatus.Slice)
+                {
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceUpdateIn.userId.Value, key = sliceUpdateIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.PartiallyClassificated });
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(sliceUpdateIn.userId.Value, sliceUpdateIn.key.Value, "Log - End", "Repository.SliceRepository.UpdateSlice", "");
