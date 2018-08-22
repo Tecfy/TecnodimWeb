@@ -1,4 +1,5 @@
-﻿using DataEF.DataAccess;
+﻿using ApiTecnodim;
+using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -11,6 +12,7 @@ namespace Repository
     public class CategoryRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        CategoryApi categoryApi = new CategoryApi();
 
         public CategoryOut GetCategory(CategoryIn categoryIn)
         {
@@ -108,6 +110,50 @@ namespace Repository
             return categoriesOut;
         }
 
+        public ECMCategoriesOut GetECMCategories(ECMCategoriesIn ecmCategoriesIn)
+        {
+            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
+
+            ecmCategoriesOut = categoryApi.GetECMCategories();
+
+            using (var db = new DBContext())
+            {
+                Categories category = new Categories();
+
+                foreach (var item in ecmCategoriesOut.result)
+                {
+                    category = new Categories();
+                    category = db.Categories.Where(x => x.ExternalId == item.categoryId).FirstOrDefault();
+
+                    if (category == null)
+                    {
+                        category = new Categories
+                        {
+                            ExternalId = item.categoryId,
+                            Code = item.code,
+                            Name = item.name,
+                            ParentId = CategorySave(ecmCategoriesOut.result, item.parentId)
+                        };
+
+                        db.Categories.Add(category);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        category.Code = item.code;
+                        category.Name = item.name;
+
+                        db.Entry(category).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
+            return ecmCategoriesOut;
+        }
+
         private List<string> GetParents(int parentId, List<string> vs)
         {
             var category = (dynamic)null;
@@ -125,6 +171,47 @@ namespace Repository
             }
 
             return vs;
+        }
+
+        private int? CategorySave(List<ECMCategoriesVM> ecmCategoriesVMs, int parentId)
+        {
+            int? categoryId = null;
+
+            using (var db = new DBContext())
+            {
+                Categories category = db.Categories.Where(x => x.ExternalId == parentId).FirstOrDefault();
+
+                if (category == null)
+                {
+                    ECMCategoriesVM ecmCategoriesVM = ecmCategoriesVMs.Where(x => x.categoryId == parentId).FirstOrDefault();
+
+                    if (ecmCategoriesVM != null)
+                    {
+                        category = new Categories
+                        {
+                            ExternalId = ecmCategoriesVM.categoryId,
+                            Code = ecmCategoriesVM.code,
+                            Name = ecmCategoriesVM.name
+                        };
+
+                        if (ecmCategoriesVM.parentId > 0)
+                        {
+                            category.ParentId = CategorySave(ecmCategoriesVMs, ecmCategoriesVM.parentId);
+                        }
+
+                        db.Categories.Add(category);
+                        db.SaveChanges();
+
+                        categoryId = category.CategoryId;
+                    }
+                }
+                else
+                {
+                    categoryId = category.CategoryId;
+                }
+            }
+
+            return categoryId;
         }
     }
 }

@@ -134,5 +134,45 @@ namespace Tecnodim.Controllers
 
             return categoriesOut;
         }
+
+        [Authorize, HttpGet]
+        public ECMCategoriesOut GetECMCategories()
+        {
+            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ECMCategoriesIn ecmCategoriesIn = new ECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
+
+                ecmCategoriesOut.successMessage = null;
+                ecmCategoriesOut.messages.Add(ex.Message);
+            }
+
+            return ecmCategoriesOut;
+        }
     }
 }

@@ -23,6 +23,9 @@ namespace DataEF.DataAccess.Model
         [Display(Name = "Parent", ResourceType = typeof(i18n.Resource))]
         public int? ParentId { get; set; } // ParentId
 
+        [Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
+        public int ExternalId { get; set; } // ExternalId
+
         [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
         public string Code { get; set; } // Code

@@ -68,9 +68,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category\In\ECMCategoriesIn.cs" />
     <Compile Include="Category\In\CategorySearchIn.cs" />
+    <Compile Include="Category\Out\ECMCategoriesOut.cs" />
     <Compile Include="Category\Out\CategorySearchOut.cs" />
+    <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Category\VM\CategorySearchVM.cs" />
+    <Compile Include="Document\In\ECMDocumentsIn.cs" />
+    <Compile Include="Document\Out\ECMDocumentsOut.cs" />
+    <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />

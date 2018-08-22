@@ -18,6 +18,46 @@ namespace Tecnodim.Controllers
         DocumentRepository documentRepository = new DocumentRepository();
 
         [Authorize, HttpGet]
+        public ECMDocumentsOut GetECMDocuments()
+        {
+            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.Get", ex.Message);
+
+                ecmDocumentsOut.successMessage = null;
+                ecmDocumentsOut.messages.Add(ex.Message);
+            }
+
+            return ecmDocumentsOut;
+        }
+
+        [Authorize, HttpGet]
         public DocumentsOut GetDocumentSlices()
         {
             DocumentsOut documentsOut = new DocumentsOut();

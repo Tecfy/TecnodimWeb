@@ -14,27 +14,32 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
 
-        public DocumentOut GetDocumentById(DocumentIn documentIn)
+        public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
-            DocumentOut documentOut = new DocumentOut();
+            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
 
             string externalId = string.Empty;
+            Guid hash = new Guid();
 
             using (var db = new DBContext())
             {
-                externalId = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault().ExternalId;
+                Documents document = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
+
+                externalId = document.ExternalId;
+                hash = document.Hash;
             }
 
-            documentOut = documentApi.GetDocument(externalId);
+            ecmDocumentOut = documentApi.GetECMDocument(externalId);
+            ecmDocumentOut.result.hash = hash.ToString();
 
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
-            return documentOut;
+            return ecmDocumentOut;
         }
 
-        public DocumentOut GetDocumentByHash(string hash)
+        public ECMDocumentOut GetECMDocumentByHash(string hash)
         {
-            DocumentOut documentOut = new DocumentOut();
+            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
             Guid guid = Guid.Parse(hash);
             string externalId = string.Empty;
 
@@ -43,9 +48,46 @@ namespace Repository
                 externalId = db.Documents.Where(x => x.Hash == guid).FirstOrDefault().ExternalId;
             }
 
-            documentOut = documentApi.GetDocument(externalId);
+            ecmDocumentOut = documentApi.GetECMDocument(externalId);
+            ecmDocumentOut.result.hash = hash;
 
-            return documentOut;
+            return ecmDocumentOut;
+        }
+
+        public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
+        {
+            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
+
+            ecmDocumentsOut = documentApi.GetECMDocuments();
+
+            using (var db = new DBContext())
+            {
+                Documents document = new Documents();
+
+                foreach (var item in ecmDocumentsOut.result)
+                {
+                    document = new Documents();
+                    document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
+
+                    if (document != null)
+                    {
+                        document = new Documents
+                        {
+                            ExternalId = item.externalId,
+                            DocumentStatusId = item.documentStatusId,
+                            Registration = item.registration,
+                            Name = item.name
+                        };
+
+                        db.Documents.Add(document);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
+            return ecmDocumentsOut;
         }
 
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)

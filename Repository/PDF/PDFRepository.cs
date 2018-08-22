@@ -19,7 +19,7 @@ namespace Repository
             PDFsOut pdfOut = new PDFsOut();
             registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
 
-            DocumentOut documentOut = documentRepository.GetDocumentById(documentIn);
+            ECMDocumentOut documentOut = documentRepository.GetECMDocumentById(documentIn);
 
             RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, userId = documentIn.userId, key = documentIn.key };
 

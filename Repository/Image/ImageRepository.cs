@@ -18,7 +18,7 @@ namespace Repository
         {
             ImageOut imageOut = new ImageOut();
 
-            DocumentOut documentOut = documentRepository.GetDocumentByHash(imageIn.hash);
+            ECMDocumentOut documentOut = documentRepository.GetECMDocumentByHash(imageIn.hash);
 
             Doc theDoc = new Doc();
             theDoc.Read(Convert.FromBase64String(documentOut.result.archive));

@@ -506,6 +506,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "Parent", ResourceType = typeof(i18n.Resource))]
 		public int? ParentId { get; set; } // ParentId
 
+		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
+		public int ExternalId { get; set; } // ExternalId
+
 		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
 		public string Code { get; set; } // Code
@@ -538,6 +541,8 @@ namespace DataEF.DataAccess
 
         public int? ParentId { get; set; } // ParentId
 
+        public int ExternalId { get; set; } // ExternalId
+
         public string Code { get; set; } // Code
 
         public string Name { get; set; } // Name
@@ -554,6 +559,7 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            ExternalId = 0;
             Categories2 = new List<Categories>();
             CategoryAdditionalFields = new List<CategoryAdditionalFields>();
             Slices = new List<Slices>();
@@ -1296,6 +1302,7 @@ namespace DataEF.DataAccess
             Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.ParentId).HasColumnName("ParentId").IsOptional();
+            Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
 

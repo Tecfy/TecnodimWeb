@@ -2,9 +2,9 @@
 
 namespace Model.Out
 {
-    public class DocumentOut : ResultServiceVM
+    public class ECMDocumentOut : ResultServiceVM
     {
-        public DocumentOut()
+        public ECMDocumentOut()
         {
             this.result = new DocumentVM();
         }
