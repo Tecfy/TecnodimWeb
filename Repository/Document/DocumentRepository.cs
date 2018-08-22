@@ -123,6 +123,31 @@ namespace Repository
             return documentsOut;
         }
 
+        public DocumentUpdateOut PostDocumentUpdateSatus(DocumentUpdateIn documentUpdateIn)
+        {
+            DocumentUpdateOut documentUpdateOut = new DocumentUpdateOut();
+            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId.Value, documentUpdateIn.key.Value, "Log - Start", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
+
+            using (var db = new DBContext())
+            {
+                Documents document = db.Documents.Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == documentUpdateIn.documentId).FirstOrDefault();
+
+                if (document == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                document.DocumentStatusId = documentUpdateIn.documentStatusIn;
+                document.EditedDate = DateTime.Now;
+
+                db.Entry(document).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId.Value, documentUpdateIn.key.Value, "Log - End", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
+            return documentUpdateOut;
+        }
+
         public List<int> GetRemainingDocumentPages(RemainingDocumenPagestIn remainingDocumenPagestIn)
         {
             List<int> pages = new List<int>();

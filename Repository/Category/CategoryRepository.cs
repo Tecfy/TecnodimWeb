@@ -3,6 +3,7 @@ using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
 using Model.VM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -143,6 +144,7 @@ namespace Repository
                     {
                         category.Code = item.code;
                         category.Name = item.name;
+                        category.EditedDate = DateTime.Now;
 
                         db.Entry(category).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();

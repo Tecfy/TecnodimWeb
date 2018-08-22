@@ -48,7 +48,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
 
                 ecmDocumentsOut.successMessage = null;
                 ecmDocumentsOut.messages.Add(ex.Message);
@@ -92,7 +92,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentSlices", ex.Message);
 
                 documentsOut.successMessage = null;
                 documentsOut.messages.Add(ex.Message);
@@ -136,7 +136,7 @@ namespace Tecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentClassificateds", ex.Message);
 
                 documentsOut.successMessage = null;
                 documentsOut.messages.Add(ex.Message);
@@ -145,5 +145,45 @@ namespace Tecnodim.Controllers
             return documentsOut;
         }
 
+        [Authorize, HttpPost]
+        public DocumentUpdateOut PostDocumentUpdateSatus(DocumentUpdateIn documentUpdateIn)
+        {
+            DocumentUpdateOut documentUpdateOut = new DocumentUpdateOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    documentUpdateIn.userId = new Guid(User.Identity.GetUserId());
+                    documentUpdateIn.key = Key;
+
+                    documentUpdateOut = documentRepository.PostDocumentUpdateSatus(documentUpdateIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.PostDocumentUpdateSatus", ex.Message);
+
+                documentUpdateOut.successMessage = null;
+                documentUpdateOut.messages.Add(ex.Message);
+            }
+
+            return documentUpdateOut;
+        }
     }
 }

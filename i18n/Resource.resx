@@ -216,6 +216,9 @@
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Texto</value>
   </data>

@@ -76,7 +76,9 @@
     <Compile Include="Category\Out\CategorySearchOut.cs" />
     <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Category\VM\CategorySearchVM.cs" />
+    <Compile Include="Document\In\DocumentUpdateIn.cs" />
     <Compile Include="Document\In\ECMDocumentsIn.cs" />
+    <Compile Include="Document\Out\DocumentUpdateOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsOut.cs" />
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
