@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category\CategoryApi.cs" />
+    <Compile Include="Attribute\AttributeApi.cs" />
     <Compile Include="DocumentDetail\DocumentDetailApi.cs" />
     <Compile Include="Document\DocumentApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

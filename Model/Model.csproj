@@ -68,6 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\In\ECMAttributeIn.cs" />
+    <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
     <Compile Include="Category\In\ECMCategoriesIn.cs" />
     <Compile Include="Category\In\CategorySearchIn.cs" />
     <Compile Include="Category\Out\ECMCategoriesOut.cs" />
@@ -136,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
+    <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
     <Folder Include="Page\Out\" />

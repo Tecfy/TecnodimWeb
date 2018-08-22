@@ -6,6 +6,7 @@ using Model.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 
 namespace Repository
 {
@@ -13,6 +14,7 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentApi documentApi = new DocumentApi();
+        AttributeApi attributeApi = new AttributeApi();
 
         public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
@@ -61,27 +63,36 @@ namespace Repository
 
             ecmDocumentsOut = documentApi.GetECMDocuments();
 
-            using (var db = new DBContext())
+            if (ecmDocumentsOut.result != null && ecmDocumentsOut.result.Count > 0)
             {
-                Documents document = new Documents();
-
-                foreach (var item in ecmDocumentsOut.result)
+                using (var db = new DBContext())
                 {
-                    document = new Documents();
-                    document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
+                    Documents document = new Documents();
 
-                    if (document != null)
+                    foreach (var item in ecmDocumentsOut.result)
                     {
-                        document = new Documents
-                        {
-                            ExternalId = item.externalId,
-                            DocumentStatusId = item.documentStatusId,
-                            Registration = item.registration,
-                            Name = item.name
-                        };
+                        document = new Documents();
+                        document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
 
-                        db.Documents.Add(document);
-                        db.SaveChanges();
+                        if (document == null)
+                        {
+                            document = new Documents
+                            {
+                                ExternalId = item.externalId,
+                                DocumentStatusId = item.documentStatusId,
+                                Registration = item.registration,
+                                Name = item.name
+                            };
+
+                            db.Documents.Add(document);
+                            db.SaveChanges();
+
+                            attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = item.externalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                        }
+                        else
+                        {
+                            attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                        }
                     }
                 }
             }
