@@ -153,6 +153,12 @@
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="EnterYourLogin" xml:space="preserve">
+    <value>Digite seu login</value>
+  </data>
   <data name="External" xml:space="preserve">
     <value>Externo</value>
   </data>
@@ -167,6 +173,12 @@
   </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Sair</value>
   </data>
   <data name="MaxLengthMessage" xml:space="preserve">
     <value>O campo {0} tem um limite de {1} carecteres.</value>
@@ -185,6 +197,9 @@
   </data>
   <data name="Parent" xml:space="preserve">
     <value>Parente</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Senha</value>
   </data>
   <data name="RegisterNotFound" xml:space="preserve">
     <value>Registro não encontrado.</value>

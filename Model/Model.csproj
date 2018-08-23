@@ -68,6 +68,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\In\AccessIn.cs" />
+    <Compile Include="Account\Out\AccessResultOut.cs" />
+    <Compile Include="Account\VM\AccessResultVM.cs" />
     <Compile Include="Attribute\In\ECMAttributeIn.cs" />
     <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
     <Compile Include="Category\In\ECMCategoriesIn.cs" />
