@@ -139,7 +139,7 @@
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
     <Compile Include="Classification\In\ClassificationIn.cs" />
-    <Compile Include="User\UserVM.cs" />
+    <Compile Include="User\LoginVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
@@ -154,9 +154,6 @@
       <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
       <Name>i18n</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

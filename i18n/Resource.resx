@@ -171,6 +171,9 @@
   <data name="Index" xml:space="preserve">
     <value>Index</value>
   </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+    <value>Tentativa de login inválida</value>
+  </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
   </data>
@@ -204,6 +207,9 @@
   <data name="RegisterNotFound" xml:space="preserve">
     <value>Registro não encontrado.</value>
   </data>
+  <data name="Remember" xml:space="preserve">
+    <value>Lembra-me?</value>
+  </data>
   <data name="Required" xml:space="preserve">
     <value>Obrigatório</value>
   </data>
@@ -233,6 +239,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
+  </data>
+  <data name="Tecnodim" xml:space="preserve">
+    <value>Tecnodim</value>
   </data>
   <data name="Text" xml:space="preserve">
     <value>Texto</value>

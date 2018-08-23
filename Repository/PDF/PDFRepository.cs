@@ -55,7 +55,7 @@ namespace Repository
 
                     if (document.DocumentStatusId == (int)EDocumentStatus.PartiallySlice)
                     {
-                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = documentIn.userId.Value, key = documentIn.key.Value, documentId = documentIn.documentId, documentStatusIn = (int)EDocumentStatus.Slice });
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = documentIn.userId.Value, key = documentIn.key.Value, documentId = documentIn.documentId, documentStatusId = (int)EDocumentStatus.Slice });
                     }
                 }
             }

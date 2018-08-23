@@ -223,6 +223,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tentativa de login inválida.
+        /// </summary>
+        public static string InvalidLoginAttempt {
+            get {
+                return ResourceManager.GetString("InvalidLoginAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Último Login.
         /// </summary>
         public static string LastLogin {
@@ -322,6 +331,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lembra-me?.
+        /// </summary>
+        public static string Remember {
+            get {
+                return ResourceManager.GetString("Remember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Obrigatório.
         /// </summary>
         public static string Required {
@@ -408,6 +426,15 @@ namespace i18n {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tecnodim.
+        /// </summary>
+        public static string Tecnodim {
+            get {
+                return ResourceManager.GetString("Tecnodim", resourceCulture);
             }
         }
         

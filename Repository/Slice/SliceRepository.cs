@@ -118,7 +118,7 @@ namespace Repository
 
                     if (document.DocumentStatusId == (int)EDocumentStatus.PartiallyClassificated)
                     {
-                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicesIn.userId.Value, key = slicesIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.Classificated });
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicesIn.userId.Value, key = slicesIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
                     }
                 }
             }
@@ -144,7 +144,7 @@ namespace Repository
 
                 if (document.DocumentStatusId == (int)EDocumentStatus.New)
                 {
-                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceIn.userId.Value, key = sliceIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.PartiallySlice });
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceIn.userId.Value, key = sliceIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallySlice });
                 }
 
                 Slices slice = new Slices();
@@ -193,7 +193,7 @@ namespace Repository
 
                 if (document.DocumentStatusId == (int)EDocumentStatus.Slice)
                 {
-                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceUpdateIn.userId.Value, key = sliceUpdateIn.key.Value, documentId = document.DocumentId, documentStatusIn = (int)EDocumentStatus.PartiallyClassificated });
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceUpdateIn.userId.Value, key = sliceUpdateIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallyClassificated });
                 }
             }
 

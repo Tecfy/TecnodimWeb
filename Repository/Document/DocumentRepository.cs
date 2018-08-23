@@ -137,7 +137,7 @@ namespace Repository
                     throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
-                document.DocumentStatusId = documentUpdateIn.documentStatusIn;
+                document.DocumentStatusId = documentUpdateIn.documentStatusId;
                 document.EditedDate = DateTime.Now;
 
                 db.Entry(document).State = System.Data.Entity.EntityState.Modified;

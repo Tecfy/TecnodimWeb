@@ -114,6 +114,7 @@ namespace Site.Controllers
                     List<int> documentStatusIds = new List<int>();
                     documentStatusIds.Add((int)EDocumentStatus.Slice);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
+                    documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
                     DocumentsIn documentsIn = new DocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
 

@@ -13,6 +13,6 @@ namespace Model.In
         [Required]
         [Display(Name = "Status", ResourceType = typeof(i18n.Resource))]
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
-        public int documentStatusIn { get; set; }
+        public int documentStatusId { get; set; }
     }
 }
