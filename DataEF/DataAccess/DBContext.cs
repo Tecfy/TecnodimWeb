@@ -46,6 +46,9 @@ namespace DataEF.DataAccess
         IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         IDbSet<Slices> Slices { get; set; } // Slices
+        IDbSet<Units> Units { get; set; } // Units
+        IDbSet<Users> Users { get; set; } // Users
+        IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
 
         int SaveChanges();
     }
@@ -70,6 +73,9 @@ namespace DataEF.DataAccess
         public IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         public IDbSet<Slices> Slices { get; set; } // Slices
+        public IDbSet<Units> Units { get; set; } // Units
+        public IDbSet<Users> Users { get; set; } // Users
+        public IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
 
         static DBContext()
         {
@@ -107,6 +113,9 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new SliceCategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new SlicePagesConfiguration());
             modelBuilder.Configurations.Add(new SlicesConfiguration());
+            modelBuilder.Configurations.Add(new UnitsConfiguration());
+            modelBuilder.Configurations.Add(new UsersConfiguration());
+            modelBuilder.Configurations.Add(new UserUnitsConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
 
@@ -472,12 +481,14 @@ namespace DataEF.DataAccess
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; } // AspNetUserClaims.FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId;
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; } // AspNetUserLogins.FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId;
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; } // AspNetUserRoles.FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId;
+        public virtual ICollection<Users> Users { get; set; } // Users.FK_Users_AspNetUsers;
 
         public AspNetUsers()
         {
             AspNetUserClaims = new List<AspNetUserClaims>();
             AspNetUserLogins = new List<AspNetUserLogins>();
             AspNetUserRoles = new List<AspNetUserRoles>();
+            Users = new List<Users>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -717,6 +728,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
 		public int DocumentStatusId { get; set; } // DocumentStatusId
 
+		[Display(Name = "UnityId", ResourceType = typeof(i18n.Resource))]
+		public int UnityId { get; set; } // UnityId
+
 		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
 		public string ExternalId { get; set; } // ExternalId
@@ -755,6 +769,8 @@ namespace DataEF.DataAccess
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int DocumentStatusId { get; set; } // DocumentStatusId
+
+        public int UnityId { get; set; } // UnityId
 
         public string ExternalId { get; set; } // ExternalId
 
@@ -1145,6 +1161,183 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class UnitsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int UnityId { get; set; } // UnityId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
+		public string ExternalId { get; set; } // ExternalId
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
+
+		*/
+	}
+
+    // Units
+	[MetadataType(typeof(UnitsMetadataType))]
+    public partial class Units
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int UnityId { get; set; } // UnityId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public string ExternalId { get; set; } // ExternalId
+
+        public string Name { get; set; } // Name
+
+        // Reverse navigation
+        public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Units;
+
+        public Units()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            UserUnits = new List<UserUnits>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class UsersMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int UserId { get; set; } // UserId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "AspNetUser", ResourceType = typeof(i18n.Resource))]
+		public string AspNetUserId { get; set; } // AspNetUserId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "FirstName", ResourceType = typeof(i18n.Resource))]
+		public string FirstName { get; set; } // FirstName
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "LastName", ResourceType = typeof(i18n.Resource))]
+		public string LastName { get; set; } // LastName
+
+		*/
+	}
+
+    // Users
+	[MetadataType(typeof(UsersMetadataType))]
+    public partial class Users
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int UserId { get; set; } // UserId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public string AspNetUserId { get; set; } // AspNetUserId
+
+        public string FirstName { get; set; } // FirstName
+
+        public string LastName { get; set; } // LastName
+
+        // Reverse navigation
+        public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Users;
+
+        // Foreign keys
+        public virtual AspNetUsers AspNetUsers { get; set; } //  AspNetUserId - FK_Users_AspNetUsers
+
+        public Users()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            UserUnits = new List<UserUnits>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class UserUnitsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int UserUnityId { get; set; } // UserUnityId (Primary key)
+
+		[Display(Name = "User", ResourceType = typeof(i18n.Resource))]
+		public int UserId { get; set; } // UserId
+
+		[Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
+		public int UnityId { get; set; } // UnityId
+
+		*/
+	}
+
+    // UserUnits
+	[MetadataType(typeof(UserUnitsMetadataType))]
+    public partial class UserUnits
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int UserUnityId { get; set; } // UserUnityId (Primary key)
+
+        public int UserId { get; set; } // UserId
+
+        public int UnityId { get; set; } // UnityId
+
+        // Foreign keys
+        public virtual Users Users { get; set; } //  UserId - FK_UserUnits_Users
+        public virtual Units Units { get; set; } //  UnityId - FK_UserUnits_Units
+    }
+
 
     // ************************************************************************
     // POCO Configuration
@@ -1373,6 +1566,7 @@ namespace DataEF.DataAccess
             Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.DocumentStatusId).HasColumnName("DocumentStatusId").IsRequired();
+            Property(x => x.UnityId).HasColumnName("UnityId").IsRequired();
             Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired().HasMaxLength(50);
             Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
             Property(x => x.Name).HasColumnName("Name").IsOptional().HasMaxLength(255);
@@ -1497,6 +1691,70 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
             HasOptional(a => a.Categories).WithMany(b => b.Slices).HasForeignKey(c => c.CategoryId); // FK_Slices_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Units
+    internal partial class UnitsConfiguration : EntityTypeConfiguration<Units>
+    {
+        public UnitsConfiguration()
+        {
+            ToTable("dbo.Units");
+            HasKey(x => x.UnityId);
+
+            Property(x => x.UnityId).HasColumnName("UnityId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired().HasMaxLength(50);
+            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Users
+    internal partial class UsersConfiguration : EntityTypeConfiguration<Users>
+    {
+        public UsersConfiguration()
+        {
+            ToTable("dbo.Users");
+            HasKey(x => x.UserId);
+
+            Property(x => x.UserId).HasColumnName("UserId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.AspNetUserId).HasColumnName("AspNetUserId").IsRequired().HasMaxLength(128);
+            Property(x => x.FirstName).HasColumnName("FirstName").IsOptional().HasMaxLength(50);
+            Property(x => x.LastName).HasColumnName("LastName").IsOptional().HasMaxLength(255);
+
+            // Foreign keys
+            HasRequired(a => a.AspNetUsers).WithMany(b => b.Users).HasForeignKey(c => c.AspNetUserId); // FK_Users_AspNetUsers
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // UserUnits
+    internal partial class UserUnitsConfiguration : EntityTypeConfiguration<UserUnits>
+    {
+        public UserUnitsConfiguration()
+        {
+            ToTable("dbo.UserUnits");
+            HasKey(x => x.UserUnityId);
+
+            Property(x => x.UserUnityId).HasColumnName("UserUnityId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
+            Property(x => x.UnityId).HasColumnName("UnityId").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Users).WithMany(b => b.UserUnits).HasForeignKey(c => c.UserId); // FK_UserUnits_Users
+            HasRequired(a => a.Units).WithMany(b => b.UserUnits).HasForeignKey(c => c.UnityId); // FK_UserUnits_Units
             InitializePartial();
         }
         partial void InitializePartial();

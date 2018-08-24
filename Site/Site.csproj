@@ -226,6 +226,7 @@
     <Compile Include="Areas\Adm\AdmAreaRegistration.cs" />
     <Compile Include="Areas\Adm\Controllers\AccountController.cs" />
     <Compile Include="Areas\Adm\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Adm\Controllers\UserController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\ClassificationsController.cs" />
@@ -271,6 +272,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\custom\jquery-pagination.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -292,6 +294,8 @@
     <Content Include="Areas\Adm\Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_Menu.cshtml" />
+    <Content Include="Areas\Adm\Views\User\Index.cshtml" />
+    <Content Include="Areas\Adm\Views\User\_PartialList.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -334,6 +338,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\_PaginationPartial.cshtml" />
     <None Include="Web.Hom.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -351,6 +356,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataEF\DataEF.csproj">
+      <Project>{008B818A-ADE8-4772-81A9-C327F49E1CAD}</Project>
+      <Name>DataEF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
       <Name>Helper</Name>

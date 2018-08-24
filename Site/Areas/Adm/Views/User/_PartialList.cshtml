@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DataEF.DataAccess.Users>
+@if (Model.Count() <= 0)
+{
+    <tr class="empty">
+        <td colspan="10">@i18n.Resource.NoDataFound</td>
+    </tr>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <tr class="odd">
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td class="action col-md-2">
+                <div class="hidden-phone action-buttons center">
+                    <a class="blue" href="@Url.Action("Details", new { id = item.UserId })" title="@i18n.Resource.View" data-toggle="modal" data-target="#detailsModal">
+                        <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                    </a>
+
+                    <a class="green" href="@Url.Action("Edit", new { id = item.UserId  })" title="@i18n.Resource.Edit">
+                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
+
+                    <a href="javascript:void(0);" id="id-btn-dialog2" class="red btnDelete" data-id="@(item.UserId)" data-name="@(item.UserId)" data-msg="@(string.Format(@i18n.Resource.ItemWillBeDeleted, item.FirstName+' '+item.LastName))" title="@i18n.Resource.Delete">
+                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                    </a>
+
+                </div>
+            </td>
+
+        </tr>
+    }
+}

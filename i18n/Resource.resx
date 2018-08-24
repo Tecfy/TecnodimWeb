@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Ações</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>Ativo</value>
   </data>
@@ -125,6 +128,12 @@
   </data>
   <data name="AdditionalFields" xml:space="preserve">
     <value>Campos Adicionais</value>
+  </data>
+  <data name="AspNetUser" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
   <data name="Category" xml:space="preserve">
     <value>Categoria</value>
@@ -135,6 +144,9 @@
   <data name="Classification" xml:space="preserve">
     <value>Classificação</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Código</value>
   </data>
@@ -144,11 +156,20 @@
   <data name="CreatedDate" xml:space="preserve">
     <value>Data de Criação</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Deletar</value>
+  </data>
   <data name="DeletedDate" xml:space="preserve">
     <value>Data de Exclusão</value>
   </data>
+  <data name="Display" xml:space="preserve">
+    <value>Exibir</value>
+  </data>
   <data name="Document" xml:space="preserve">
     <value>Documento</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
   </data>
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
@@ -162,6 +183,9 @@
   <data name="External" xml:space="preserve">
     <value>Externo</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
@@ -174,8 +198,17 @@
   <data name="InvalidLoginAttempt" xml:space="preserve">
     <value>Tentativa de login inválida</value>
   </data>
+  <data name="ItemWillBeDeleted" xml:space="preserve">
+    <value>O item "{0}" será removido</value>
+  </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Sobrenome</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
   </data>
   <data name="LogIn" xml:space="preserve">
     <value>Entrar</value>
@@ -189,6 +222,12 @@
   <data name="Name" xml:space="preserve">
     <value>Nome</value>
   </data>
+  <data name="New" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="NoDataFound" xml:space="preserve">
+    <value>Nenhum registo encontrado</value>
+  </data>
   <data name="Page" xml:space="preserve">
     <value>Página</value>
   </data>
@@ -198,11 +237,20 @@
   <data name="Pages" xml:space="preserve">
     <value>Páginas</value>
   </data>
+  <data name="PaginationInfo" xml:space="preserve">
+    <value>Exibindo {0} a {1} de {2} registros</value>
+  </data>
   <data name="Parent" xml:space="preserve">
     <value>Parente</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Senha</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissões</value>
+  </data>
+  <data name="Records" xml:space="preserve">
+    <value>Registros</value>
   </data>
   <data name="RegisterNotFound" xml:space="preserve">
     <value>Registro não encontrado.</value>
@@ -224,6 +272,9 @@
   </data>
   <data name="Rotation" xml:space="preserve">
     <value>Rotação</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
   </data>
   <data name="Single" xml:space="preserve">
     <value>Único</value>
@@ -249,13 +300,22 @@
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
   </data>
+  <data name="Unity" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
   <data name="UnknownError" xml:space="preserve">
     <value>Erro desconhecido!</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>Usuário</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Usuários</value>
+  </data>
   <data name="Value" xml:space="preserve">
     <value>Valor</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Visualizar</value>
   </data>
 </root>

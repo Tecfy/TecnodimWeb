@@ -23,6 +23,9 @@ namespace DataEF.DataAccess.Model
         [Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
         public int DocumentStatusId { get; set; } // DocumentStatusId
 
+        [Display(Name = "UnityId", ResourceType = typeof(i18n.Resource))]
+        public int UnityId { get; set; } // UnityId
+
         [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "ExternalId", ResourceType = typeof(i18n.Resource))]
         public string ExternalId { get; set; } // ExternalId

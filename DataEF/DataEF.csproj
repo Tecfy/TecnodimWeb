@@ -212,6 +212,9 @@
     <Compile Include="DataAccess\Model\SlicePagesMetadataType.cs" />
     <Compile Include="DataAccess\Model\DocumentStatusMetadataType.cs" />
     <Compile Include="DataAccess\Model\DocumentsMetadataType.cs" />
+    <Compile Include="DataAccess\Model\UserUnitsMetadataType.cs" />
+    <Compile Include="DataAccess\Model\UsersMetadataType.cs" />
+    <Compile Include="DataAccess\Model\UnitsMetadataType.cs" />
     <Compile Include="DataAccess\Model\SlicesMetadataType.cs" />
     <Compile Include="DataAccess\Model\RegisterEventsMetadataType.cs" />
     <Compile Include="DataAccess\Model\ApiUsersMetadataType.cs" />

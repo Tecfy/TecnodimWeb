@@ -1,0 +1,30 @@
+﻿@model string
+@{
+    string name = (string.IsNullOrWhiteSpace(Model) ? Guid.NewGuid().ToString() : Model);
+
+    var preview = (ViewBag.currentPage - 1 < 0 ? 0 : ViewBag.currentPage - 1);
+    var next = (ViewBag.currentPage + 1 > ViewBag.qtdPage ? 0 : ViewBag.currentPage + 1);
+
+    var startActionNumber = (ViewBag.currentPage - (int)(ViewBag.qtdActionNumber / 2) <= 0 ? 1 : ViewBag.currentPage - (int)(ViewBag.qtdActionNumber / 2));
+    var endActionNumber = (startActionNumber + ViewBag.qtdActionNumber > ViewBag.qtdPage ? ViewBag.qtdPage : startActionNumber + ViewBag.qtdActionNumber);
+}
+
+<div class="row containerPagination">
+    <div class="col-xs-6">
+        <div class="dataTables_info infoPagination" id="sample-table-2_info">@string.Format(i18n.Resource.PaginationInfo, (ViewBag.qtdEntries * (ViewBag.currentPage - 1)) + 1, ((ViewBag.currentPage * ViewBag.qtdEntries) > ViewBag.amount ? ViewBag.amount : ViewBag.currentPage * ViewBag.qtdEntries), ViewBag.amount)</div>
+    </div>
+    <div class="col-xs-6">
+        <div class="dataTables_paginate paging_simple_numbers">
+            <ul id="@(name)" class="pagination">
+                <li class="prev"><a href="javascript:void(0);" data-page="@preview" style="cursor: pointer;"><i class="ace-icon fa fa-angle-double-left"></i></a></li>
+                @for (int i = startActionNumber; i <= endActionNumber; i++)
+                {
+                    <li><a href="javascript:void(0);" style="cursor: pointer;" data-page="@i">@i</a></li>
+                }
+                <li class="next"><a href="javascript:void(0);" data-page="@next" style="cursor: pointer;"><i class="ace-icon fa fa-angle-double-right"></i></a></li>
+                <li class="pagnationFunction" style="display:none"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
