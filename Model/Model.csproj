@@ -139,7 +139,8 @@
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
     <Compile Include="Classification\In\ClassificationIn.cs" />
-    <Compile Include="User\LoginVM.cs" />
+    <Compile Include="User\In\UserIn.cs" />
+    <Compile Include="User\VM\LoginVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
@@ -148,6 +149,7 @@
     <Folder Include="DeletedPage\VM\" />
     <Folder Include="Page\Out\" />
     <Folder Include="SliceCategoryAdditionalField\VM\" />
+    <Folder Include="User\Out\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\i18n\i18n.csproj">

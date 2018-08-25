@@ -1,0 +1,40 @@
+﻿@model Model.In.UserIn
+
+@{
+    ViewBag.Title = i18n.Resource.DetailsUser;
+    ViewBag.Head = i18n.Resource.DetailsUser;
+}
+
+@section headerScript{
+    <script type="text/javascript">
+        $(function () {
+            $("html").on("click", ".btnCancel", function (e) {
+                window.location = "@(Url.Action("Index", "User"))";
+            });
+        });
+    </script>
+}
+
+<form>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.FirstName):
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.LastName):
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Email):
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+</form>
+
+<div class="text-right">
+    <a href="@Url.Action("Edit", "User", new { id = Model.UserId })" class="btn btn-outline-primary">@i18n.Resource.Edit</a>
+    <button type="button" class="btn btn-outline-dark btnCancel">@i18n.Resource.Cancel</button>
+</div>

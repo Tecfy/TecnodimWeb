@@ -156,6 +156,9 @@
   <data name="CreatedDate" xml:space="preserve">
     <value>Data de Criação</value>
   </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Cadastrar Usuário</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Deletar</value>
   </data>
@@ -189,6 +192,9 @@
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="Identifier" xml:space="preserve">
     <value>Identificador</value>
   </data>
@@ -199,7 +205,7 @@
     <value>Tentativa de login inválida</value>
   </data>
   <data name="ItemWillBeDeleted" xml:space="preserve">
-    <value>O item "{0}" será removido</value>
+    <value>Deseja remover o item "{0}"?</value>
   </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
@@ -273,6 +279,9 @@
   <data name="Rotation" xml:space="preserve">
     <value>Rotação</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
   <data name="Search" xml:space="preserve">
     <value>Buscar</value>
   </data>
@@ -317,5 +326,38 @@
   </data>
   <data name="View" xml:space="preserve">
     <value>Visualizar</value>
+  </data>
+  <data name="MessageLengthBetween" xml:space="preserve">
+    <value>O {0} deve ter pelo menos {2} caracteres.</value>
+  </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>A senha e a senha de confirmação não correspondem.</value>
+  </data>
+  <data name="RequiredMessage" xml:space="preserve">
+    <value>O campo {0} é obrigatório</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Função</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Selecione</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirmar Senha</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Edição de Usuário</value>
+  </data>
+  <data name="DetailsUser" xml:space="preserve">
+    <value>Detalhes do Usuário</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Nova Senha</value>
+  </data>
+  <data name="HaveDependentsRegisters" xml:space="preserve">
+    <value>Um erro ocorreu. O registro que você tentou remover possui dependências com outros registro e não pode ser removido. Caso queira realmente remove-lo, por favor, remova primeiro suas dependências.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Tem certeza?</value>
   </data>
 </root>

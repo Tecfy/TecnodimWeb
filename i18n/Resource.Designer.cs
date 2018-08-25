@@ -97,6 +97,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tem certeza?.
+        /// </summary>
+        public static string AreYouSure {
+            get {
+                return ResourceManager.GetString("AreYouSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Usuário.
         /// </summary>
         public static string AspNetUser {
@@ -169,11 +178,29 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirmar Senha.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data de Criação.
         /// </summary>
         public static string CreatedDate {
             get {
                 return ResourceManager.GetString("CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cadastrar Usuário.
+        /// </summary>
+        public static string CreateUser {
+            get {
+                return ResourceManager.GetString("CreateUser", resourceCulture);
             }
         }
         
@@ -192,6 +219,15 @@ namespace i18n {
         public static string DeletedDate {
             get {
                 return ResourceManager.GetString("DeletedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detalhes do Usuário.
+        /// </summary>
+        public static string DetailsUser {
+            get {
+                return ResourceManager.GetString("DetailsUser", resourceCulture);
             }
         }
         
@@ -228,6 +264,15 @@ namespace i18n {
         public static string EditedDate {
             get {
                 return ResourceManager.GetString("EditedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edição de Usuário.
+        /// </summary>
+        public static string EditUser {
+            get {
+                return ResourceManager.GetString("EditUser", resourceCulture);
             }
         }
         
@@ -277,6 +322,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Um erro ocorreu. O registro que você tentou remover possui dependências com outros registro e não pode ser removido. Caso queira realmente remove-lo, por favor, remova primeiro suas dependências..
+        /// </summary>
+        public static string HaveDependentsRegisters {
+            get {
+                return ResourceManager.GetString("HaveDependentsRegisters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identificador.
         /// </summary>
         public static string Identifier {
@@ -304,7 +367,7 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O item &quot;{0}&quot; será removido.
+        ///   Looks up a localized string similar to Deseja remover o item &quot;{0}&quot;?.
         /// </summary>
         public static string ItemWillBeDeleted {
             get {
@@ -367,6 +430,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O {0} deve ter pelo menos {2} caracteres..
+        /// </summary>
+        public static string MessageLengthBetween {
+            get {
+                return ResourceManager.GetString("MessageLengthBetween", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nome.
         /// </summary>
         public static string Name {
@@ -381,6 +453,15 @@ namespace i18n {
         public static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nova Senha.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
             }
         }
         
@@ -448,6 +529,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A senha e a senha de confirmação não correspondem..
+        /// </summary>
+        public static string PasswordNotMatch {
+            get {
+                return ResourceManager.GetString("PasswordNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permissões.
         /// </summary>
         public static string Permissions {
@@ -511,6 +601,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O campo {0} é obrigatório.
+        /// </summary>
+        public static string RequiredMessage {
+            get {
+                return ResourceManager.GetString("RequiredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Função.
+        /// </summary>
+        public static string Role {
+            get {
+                return ResourceManager.GetString("Role", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Girar.
         /// </summary>
         public static string Rotate {
@@ -529,11 +637,29 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Salvar.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Buscar.
         /// </summary>
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selecione.
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
             }
         }
         

@@ -41,7 +41,7 @@ namespace Site
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Adm/Account/Login"),
                 LogoutPath = new PathString("/Adm/Account/LogOff"),
-                ExpireTimeSpan = TimeSpan.FromMinutes(5.0),
+                ExpireTimeSpan = TimeSpan.FromHours(12),
             });
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);

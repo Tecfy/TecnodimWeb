@@ -2,11 +2,7 @@
 
 @{
     ViewBag.Title = i18n.Resource.Users;
-    ViewBag.head = i18n.Resource.Users;
-
-    ViewBag.breadcrumb = i18n.Resource.Users;
-    ViewBag.breadcrumbList = new List<string>() { i18n.Resource.List };
-
+    ViewBag.Head = i18n.Resource.Users;
 }
 
 @section headerScript{
@@ -17,233 +13,100 @@
         $(function () {
             $("#objPaginationUsers").pagination({
                 tableTaget: "#tblUsers",
-                selectQtdEntries: ".dbQtdEntriesUsers",
-                search: ".txtGridSearchUsers",
+                selectQtdEntries: "#dbQtdEntriesUsers",
+                search: "#txtGridSearchUsers",
                 url: "@(Url.Action("PartialList"))"
             });
         });
-
-        function showUrlInDialog(url, options) {
-            options = options || {};
-            var tag = $("<div></div>"); //This tag will the hold the dialog content.
-            $.ajax({
-                url: url,
-                type: (options.type || 'GET'),
-                beforeSend: options.beforeSend,
-                error: options.error,
-                complete: options.complete,
-                success: function (data, textStatus, jqXHR) {
-                    if (typeof data == "object" && data.html) { //response is assumed to be JSON
-                        tag.html(data.html).dialog({ modal: options.modal, title: data.title }).dialog('open');
-                    } else { //response is assumed to be HTML
-                        tag.html(data).dialog({ modal: options.modal, title: options.title }).dialog('open');
-                    }
-                    $.isFunction(options.success) && (options.success)(data, textStatus, jqXHR);
-                }
-            });
-        }
 
        $("html").on("click", ".btnDelete", function (e) {
             e.preventDefault();
             var that = $(this);
             var objData = $(that).data();
 
-            //O conteúdo da div é modificado quando ocorre um erro na exclusão, portanto é preciso resetar o conteudo.
-            $(".dialog-msg", "#dialog-confirm").html(objData.msg);
-            $(".dialog-text-confirm", "#dialog-confirm").show();
+           $(".modal-body p").html(objData.msg);
+           $("#modal-delete").modal("show");
 
-            $("#dialog-confirm").dialog({
-                resizable: false,
-                modal: true,
-                closeOnEscape: false,
-                //Escondendo o TITLE BAR
-                open: function (event, ui) {
-                    $("#dialog-confirm").parent().find('.ui-dialog-titlebar').hide();
-                    $("#dialog-confirm").removeClass("hide");
-                },
-                buttons: [
-                    //Botão Excluir
-                    {
-                        html: "<i class='icon-trash bigger-110'></i>&nbsp; @(i18n.Resource.Delete)",
-                        "class": "btn btn-danger btn-mini",
-                        click: function () {
-                            ExecuteAssyncDelete("@(Url.Action("Delete"))", objData.id);
-
-                        }
-                    }
-                      ,
-                      //Botão cancelar
-                      {
-                          html: "<i class='icon-remove bigger-110'></i>&nbsp; @(i18n.Resource.Close)",
-                          "class": "btn btn-mini",
-                          click: function () {
-                              $(this).dialog("close");
-                          }
-                      }
-                ]
-            });
+           $(".btnDeleteModal").attr("data-id", objData.id);
+           $(".btnDeleteModal").attr("data-model", "user");
+           $(".btnDeleteModal").show();
         });
-        function ExecuteAssyncDelete(url, _id) {
+
+        $("html").on("click", ".btnDeleteModal", function (e) {
+            e.preventDefault();
+            var that = $(this);
+            var objData = $(that).data();
+
             var param = {
-                id: _id
+                id: objData.id
             };
 
             $.ajaxJson({
-                url: url,
+                url: "@(Url.Action("Delete"))",
                 data: JSON.stringify(param),
                 success: function (data) {
-                    if (data.status == "OK") {
-                        //Esconde a linha e a remove depois
-                        $("#dialog-confirm").dialog("close");
-                        $("a[data-id=" + data.id + "]", "tr").closest("tr").hide('slow').end().closest("tr").remove();
-
+                    if (data.status === "OK") {
+                        $("#modal-delete").modal("hide");
+                        $(".btnDeleteModal").removeAttr("data-id");
+                        $(".btnDeleteModal").removeAttr("data-model");
                         $("#objPaginationUsers").trigger("refresh");
-
-                    } else if (data.status = "ERROR") {
-                        ///Caso retorne erro, esconde os botões delete e cancelar e exibe o botão OK e a mensagem de erro
-                        $("#dialog-confirm").dialog("close");
-                        $("#dialog-confirm").dialog({
-                            resizable: false,
-                            modal: true,
-                            closeOnEscape: false,
-                            open: function (event, ui) { $("#dialog-confirm").parent().find('.ui-dialog-titlebar').hide(); },
-                            buttons: [
-                                 {
-                                     text: "OK",
-                                     "class": "btn btn-primary btn-mini",
-                                     click: function () {
-                                         $(this).dialog("close");
-                                     }
-                                 }
-                            ]
-                        });
-
-                        //Exibindo a mensagem de erro
-                        $(".dialog-msg", "#dialog-confirm").html(data.msg);
-                        $(".dialog-text-confirm", "#dialog-confirm").hide();
+                    } else if (data.status === "ERROR") {
+                        $(".modal-body p").html(data.msg);
+                        $(".btnDeleteModal").removeAttr("data-id");
+                        $(".btnDeleteModal").removeAttr("data-model");
+                        $(".btnDeleteModal").hide();
                     }
-
-                    //Esonde a modal de detalhes
-                    if ($("#detailsModal").attr("aria-hidden") == "false") {
-                        $('.btnCancel').click();
-                    }
-                }
-
-            });
-        }
-
-        $("html").on("change", ".chkUsers", function (e) {
-            var param = {
-                templateid: $(this).val(),
-                userid: $("#UsersIDAux").val()
-            }
-
-            if ($(this).prop('checked')) {
-                $.ajaxPartialViewWithoutLoad({
-                    url: "@Url.Action("AddUserTemplatePermissions")",
-                    data: JSON.stringify(param),
-                    success: function (jsonResult) {
-                        if (jsonResult != "ok")
-                            alert("Error");
-                    }
-                });
-            }
-            else {
-                $.ajaxPartialViewWithoutLoad({
-                    url: "@Url.Action("RemoveUserTemplatePermissions")",
-                    data: JSON.stringify(param),
-                    success: function (jsonResult) {
-                        if (jsonResult != "ok")
-                            alert("Error");
-                    }
-                });
-            }
-        });
-
-        $("html").on("click", ".btnPermissions", function (e) {
-            var param = {
-                id: $(this).data().profileid
-            }
-
-            $("#UsersIDAux").val($(this).data().profileid)
-
-            $.ajaxPartialView({
-                url: "@Url.Action("IndexUserTemplatePermissions")",
-                data: JSON.stringify(param),
-                success: function (htmlResult) {
-
-                    $(".smaller").html("<i class='icon-warning-sign red'></i>" + "@i18n.Resource.Permissions");
-                    $(".dialog-msg", "#dialog-alert").html(htmlResult);
-
-                    $("#dialog-alert").removeClass('hide').dialog({
-                        resizable: false,
-                        modal: true,
-                        closeOnEscape: false,
-                        width: 500,
-                        maxHeight: 750,
-                        buttons: [
-                          {
-
-                              html: " <i class='ace-icon fa fa-chevron-left bigger-110'></i>&nbsp; @(i18n.Resource.Cancel)",
-                              "class": "btn btn-mini",
-                              click: function () {
-                                  $(this).dialog("close");
-                              }
-                          }
-                        ]
-                    });
                 }
             });
         });
 
     </script>
-
 }
+
 @section TopButton{
     <div class="pull-right">
-        <a class="btn btn-large btn-block btn-primary" href="@Url.Action("Create", "Users")"><i class="fa fa-white fa-asterisk"></i>&nbsp;@i18n.Resource.New</a>
+        <a class="btn btn-large btn-block btn-primary" href="@Url.Action("Create", "User")"><i class="fa fa-white fa-asterisk"></i>&nbsp;@i18n.Resource.New</a>
     </div>
 }
 
-<br style="clear: both">
-<div id="sample-table-2_wrapper" class="dataTables_wrapper form-inline no-footer" role="grid">
+<div class="table">
     <div class="row">
-        <div class="col-xs-6">
-            <div id="sample-table-2_length" class="dataTables_length">
+        <div class="col-6">
+            <div>
                 <label>
                     @i18n.Resource.Display
-                <select class="dbQtdEntriesUsers" size="1" name="sample-table-2_length" aria-controls="sample-table-2">
-                    <option value="10" selected="selected">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                @i18n.Resource.Records
-            </label>
+                    <select id="dbQtdEntriesUsers" size="1">
+                        <option value="10" selected="selected">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    @i18n.Resource.Records
+                </label>
+            </div>
+        </div>
+        <div class="col-6 text-right">
+            <div>
+                <label>
+                    @i18n.Resource.Search:
+                    <input id="txtGridSearchUsers" type="text">
+                </label>
+            </div>
         </div>
     </div>
-    <div class="col-xs-6">
-        <div class="dataTables_filter" id="sample-table-2_filter">
-            <label>
-                @i18n.Resource.Search:
-            <input type="text" class="txtGridSearchUsers" aria-controls="sample-table-2">
-        </label>
-    </div>
-</div>
-</div>
-<table id="tblUsers" class="table table-striped table-bordered table-hover dataTable" aria-describedby="sample-table-2_info" data-qtdentries="@(ViewBag.qtdEntries)" data-amount="@(ViewBag.amount)" data-currentpage="@(ViewBag.currentPage)" data-qtdactionnumber="@(ViewBag.qtdActionNumber)" data-search="" data-sort="" data-sortdirection="asc">
-    <thead>
-        <tr role="row">
-            <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" aria-label="@Html.DisplayNameFor(model => model.UserId)" style="width: 168px;" data-sort="UserId">@Html.DisplayNameFor(model => model.UserId)</th>
-            <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" aria-label="@Html.DisplayNameFor(model => model.FirstName)" style="width: 168px;" data-sort="FirstName">@Html.DisplayNameFor(model => model.FirstName)</th>
-            <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" aria-label="@Html.DisplayNameFor(model => model.LastName)" style="width: 168px;" data-sort="LastName">@Html.DisplayNameFor(model => model.LastName)</th>
-            <th>@i18n.Resource.Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @Html.Partial("_PartialList", Model)
-    </tbody>
-</table>
-<input type="hidden" id="UsersIDAux" name="UsersIDAux" />
-@Html.Partial("~/Views/Shared/_PaginationPartial.cshtml", "objPaginationUsers")
+    <table id="tblUsers" class="table table-striped table-sm" data-qtdentries="@(ViewBag.qtdEntries)" data-amount="@(ViewBag.amount)" data-currentpage="@(ViewBag.currentPage)" data-qtdactionnumber="@(ViewBag.qtdActionNumber)" data-search="" data-sort="" data-sortdirection="asc">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.UserId)</th>
+                <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                <th>@i18n.Resource.Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.Partial("_PartialList", Model)
+        </tbody>
+    </table>
+    <input type="hidden" id="UsersIDAux" name="UsersIDAux" />
+    @Html.Partial("~/Views/Shared/_PaginationPartial.cshtml", "objPaginationUsers")
 </div>

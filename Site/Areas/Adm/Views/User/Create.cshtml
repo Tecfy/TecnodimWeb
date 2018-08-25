@@ -1,0 +1,67 @@
+﻿@model Model.In.UserIn
+
+@{
+    ViewBag.Title = i18n.Resource.CreateUser;
+    ViewBag.Head = i18n.Resource.CreateUser;
+}
+
+@section headerScript{
+    <script type="text/javascript">
+        $(function () {
+            $("html").on("click", ".btnCancel", function (e) {
+                window.location = "@(Url.Action("Index", "User"))";
+            });
+        });
+    </script>
+}
+
+@using (Html.BeginForm("Create", "User", FormMethod.Post, new { id = "frmSave" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RoleId, new { @for = "RoleId" })
+        @Html.DropDownListFor(mo => mo.RoleId, (SelectList)ViewBag.RoleId, "--" + @i18n.Resource.Select + "--", new { @class = "custom-select d-block w-100", data_val_required = string.Format(i18n.Resource.RequiredMessage, Html.DisplayNameFor(mo => mo.RoleId)), data_val = "true" })
+        @Html.ValidationMessageFor(model => model.RoleId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FirstName, new { @for = "FirstName" })
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = i18n.Resource.FirstName })
+        @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName, new { @for = "LastName" })
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = i18n.Resource.LastName })
+        @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @for = "Email" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = i18n.Resource.Email })
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @for = "Password" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = i18n.Resource.Password })
+        @Html.ValidationMessageFor(m => m.Password)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @for = "ConfirmPassword" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = i18n.Resource.Password })
+        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+    </div>
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-outline-success btnSave">@i18n.Resource.Save</button>
+        <button type="button" class="btn btn-outline-dark btnCancel">@i18n.Resource.Cancel</button>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

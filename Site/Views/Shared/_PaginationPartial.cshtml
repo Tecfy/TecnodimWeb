@@ -9,22 +9,29 @@
     var endActionNumber = (startActionNumber + ViewBag.qtdActionNumber > ViewBag.qtdPage ? ViewBag.qtdPage : startActionNumber + ViewBag.qtdActionNumber);
 }
 
-<div class="row containerPagination">
-    <div class="col-xs-6">
-        <div class="dataTables_info infoPagination" id="sample-table-2_info">@string.Format(i18n.Resource.PaginationInfo, (ViewBag.qtdEntries * (ViewBag.currentPage - 1)) + 1, ((ViewBag.currentPage * ViewBag.qtdEntries) > ViewBag.amount ? ViewBag.amount : ViewBag.currentPage * ViewBag.qtdEntries), ViewBag.amount)</div>
+<div class="row">
+    <div class="col-6">
+        <div>@string.Format(i18n.Resource.PaginationInfo, (ViewBag.qtdEntries * (ViewBag.currentPage - 1)) + 1, ((ViewBag.currentPage * ViewBag.qtdEntries) > ViewBag.amount ? ViewBag.amount : ViewBag.currentPage * ViewBag.qtdEntries), ViewBag.amount)</div>
     </div>
-    <div class="col-xs-6">
-        <div class="dataTables_paginate paging_simple_numbers">
-            <ul id="@(name)" class="pagination">
-                <li class="prev"><a href="javascript:void(0);" data-page="@preview" style="cursor: pointer;"><i class="ace-icon fa fa-angle-double-left"></i></a></li>
-                @for (int i = startActionNumber; i <= endActionNumber; i++)
-                {
-                    <li><a href="javascript:void(0);" style="cursor: pointer;" data-page="@i">@i</a></li>
-                }
-                <li class="next"><a href="javascript:void(0);" data-page="@next" style="cursor: pointer;"><i class="ace-icon fa fa-angle-double-right"></i></a></li>
-                <li class="pagnationFunction" style="display:none"></li>
-            </ul>
-        </div>
+    <div class="col-6">
+        <ul id="@(name)" class="pagination float-right">
+            <li class="prev page-item">
+                <a class="page-link" href="javascript:void(0);" aria-label="Previous" data-page="@preview">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            @for (int i = startActionNumber; i <= endActionNumber; i++)
+            {
+                <li class="page-item"><a href="javascript:void(0);" class="page-link" data-page="@i">@i</a></li>
+            }
+            <li class="next page-item">
+                <a class="page-link" href="javascript:void(0);" aria-label="Next" data-page="@next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li class="pagnationFunction" style="display:none"></li>
+        </ul>
     </div>
 </div>
-

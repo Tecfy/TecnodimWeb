@@ -11,12 +11,11 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 
 <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        @Html.ActionLink(i18n.Resource.Tecnodim, "Index", "Home", new { area = "adm" }, new { @class = "navbar-brand col-sm-3 col-md-2 mr-0" })
+        @Html.ActionLink(i18n.Resource.Tecnodim, "Index", "Home", new { area = "Adm" }, new { @class = "navbar-brand col-sm-3 col-md-2 mr-0" })
         <ul class="navbar-nav px-3">
             @Html.Partial("_LoginPartial")
         </ul>
@@ -26,21 +25,46 @@
         <div class="row">
             @Html.Partial("_Menu")
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                @RenderSection("TopButton", required: false)
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">@ViewBag.Head</h1>
+                    @RenderSection("TopButton", required: false)
+                </div>
                 @RenderBody()
             </main>
         </div>
     </div>
 
+    <!-- /.modal -->
+    <div id="modal-delete" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@i18n.Resource.Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger btnDeleteModal">@i18n.Resource.Delete</button>
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">@i18n.Resource.Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/ajax")
     @RenderSection("scripts", required: false)
     @RenderSection("headerScript", required: false)
 
     <!-- Icons -->
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     <script>
-        feather.replace()
+        feather.replace();
     </script>
 
 </body>
