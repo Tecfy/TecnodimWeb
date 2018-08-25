@@ -16,7 +16,7 @@ namespace Site.Controllers
         PDFRepository pdfRepository = new PDFRepository();
         DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public PDFsOut GetPDFs(int id)
         {
             PDFsOut pdfOut = new PDFsOut();

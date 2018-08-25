@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
@@ -33,8 +34,7 @@ namespace Model.In
 
         [Display(Name = "NewPassword", ResourceType = typeof(i18n.Resource))]
         public bool NewPassword { get; set; }
-
-        [Required]
+       
         [StringLength(100, ErrorMessageResourceName = "MessageLengthBetween", ErrorMessageResourceType = typeof(i18n.Resource), MinimumLength = 6)]
         [Display(Name = "Password", ResourceType = typeof(i18n.Resource))]
         [DataType(DataType.Password)]
@@ -44,5 +44,8 @@ namespace Model.In
         [Display(Name = "ConfirmPassword", ResourceType = typeof(i18n.Resource))]
         [Compare("Password", ErrorMessageResourceName = "PasswordNotMatch", ErrorMessageResourceType = typeof(i18n.Resource))]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Claims", ResourceType = typeof(i18n.Resource))]
+        public List<string> Claims { get; set; }
     }
 }

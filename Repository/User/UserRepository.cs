@@ -89,23 +89,44 @@ namespace Repository
                                        FirstName = x.FirstName,
                                        LastName = x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Claims = x.AspNetUsers.AspNetUserClaims.Select(y => new AspNetUserClaimVM()
+                                       {
+                                           Id = y.Id,
+                                           UserId = y.UserId,
+                                           ClaimType = y.ClaimType,
+                                           ClaimValue = y.ClaimValue,
+                                       }).ToList()
                                    }).FirstOrDefault();
             }
 
             return userOut;
         }
 
-        public UserOut Insert(UserCreateIn userCreateVM)
+        public UserOut Insert(UserCreateIn userCreateIn)
         {
             UserOut userOut = new UserOut();
 
             using (var db = new DBContext())
             {
-                using (var scope = new System.Transactions.TransactionScope())
+                Users user = new Users
                 {
+                    AspNetUserId = userCreateIn.AspNetUserId,
+                    FirstName = userCreateIn.FirstName,
+                    LastName = userCreateIn.LastName
+                };
 
+                db.Users.Add(user);
+                db.SaveChanges();
 
-                }
+                userOut.result = db.Users
+                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UserId == user.UserId)
+                                   .Select(x => new UserVM()
+                                   {
+                                       UserId = x.UserId,
+                                       Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
+                                       Name = x.FirstName + " " + x.LastName,
+                                       Email = x.AspNetUsers.Email,
+                                   }).FirstOrDefault();
             }
 
             return userOut;
@@ -113,7 +134,31 @@ namespace Repository
 
         public UserOut Update(UserEditIn userEditVM)
         {
-            throw new NotImplementedException();
+            UserOut userOut = new UserOut();
+
+            using (var db = new DBContext())
+            {
+                Users user = db.Users.Find(userEditVM.UserId);
+
+                user.EditedDate = DateTime.Now;
+                user.FirstName = userEditVM.FirstName;
+                user.LastName = userEditVM.LastName;
+
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                userOut.result = db.Users
+                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UserId == user.UserId)
+                                   .Select(x => new UserVM()
+                                   {
+                                       UserId = x.UserId,
+                                       Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
+                                       Name = x.FirstName + " " + x.LastName,
+                                       Email = x.AspNetUsers.Email,
+                                   }).FirstOrDefault();
+            }
+
+            return userOut;
         }
     }
 }

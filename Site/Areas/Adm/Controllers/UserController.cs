@@ -1,22 +1,47 @@
-﻿using DataEF.DataAccess;
-using Helper.Enum;
+﻿using Helper.Enum;
 using Helper.Utility;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Model;
 using Model.In;
 using Model.Out;
-using Model.VM;
 using Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
-
 namespace Site.Areas.Adm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     [RoutePrefix("Adm/User")]
     public class UserController : Controller
     {
         private readonly UserRepository userRepository = new UserRepository();
         private readonly AspNetRoleRepository aspNetRoleRepository = new AspNetRoleRepository();
+        private ApplicationUserManager _userManager;
+
+        public UserController()
+        {
+        }
+
+        public UserController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         public ActionResult Index()
         {
@@ -87,7 +112,9 @@ namespace Site.Areas.Adm.Controllers
 
             AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
 
-            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+            ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+
+            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -102,11 +129,43 @@ namespace Site.Areas.Adm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserCreateIn user)
+        public async Task<ActionResult> Create(UserCreateIn userCreateIn, string[] claims)
         {
             if (ModelState.IsValid)
             {
-                userRepository.Insert(user);
+                var user = new ApplicationUser { UserName = userCreateIn.Email, Email = userCreateIn.Email };
+
+                user.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole()
+                {
+                    RoleId = userCreateIn.RoleId,
+                    UserId = user.Id
+                });
+
+                if (claims.Count() > 0)
+                {
+                    foreach (var item in claims)
+                    {
+                        await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim(item, item));
+                    }
+                }
+
+                var result = await UserManager.CreateAsync(user, userCreateIn.Password);
+                if (result.Succeeded)
+                {
+                    userCreateIn.AspNetUserId = user.Id;
+
+                    UserOut userOut = new UserOut();
+                    userOut = userRepository.Insert(userCreateIn);
+
+                    if (!userOut.success)
+                    {
+                        AddErrors(userOut.messages);
+                    }
+                }
+                else
+                {
+                    AddErrors(result);
+                }
 
                 if (ModelState.IsValid)
                 {
@@ -118,7 +177,9 @@ namespace Site.Areas.Adm.Controllers
 
             AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
 
-            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+            ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+
+            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -128,7 +189,7 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
-            return View(user);
+            return View(userCreateIn);
         }
 
         public ActionResult Edit(int id = 0)
@@ -147,14 +208,17 @@ namespace Site.Areas.Adm.Controllers
                 RoleId = userEditOut.result.RoleId,
                 FirstName = userEditOut.result.FirstName,
                 LastName = userEditOut.result.LastName,
-                Email = userEditOut.result.Email
+                Email = userEditOut.result.Email,
+                Claims = userEditOut.result.Claims.Select(x => x.ClaimType).ToList()
             };
 
             #region Roles
 
             AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
 
-            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+            ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+
+            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -169,15 +233,83 @@ namespace Site.Areas.Adm.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserEditIn user)
+        public async Task<ActionResult> Edit(UserEditIn userEditIn, string[] claims)
         {
             if (ModelState.IsValid)
             {
-                userRepository.Update(user);
+                if (userEditIn.NewPassword)
+                {
+                    var validate = await UserManager.PasswordValidator.ValidateAsync(userEditIn.Password);
+
+                    if (validate.Succeeded)
+                    {
+                        await UserManager.RemovePasswordAsync(userEditIn.AspNetUserId);
+
+                        await UserManager.AddPasswordAsync(userEditIn.AspNetUserId, userEditIn.Password);
+                    }
+                    else
+                    {
+                        AddErrors(validate);
+                    }
+                }
+
+                if (claims.Count() > 0)
+                {
+                    var claimsOld = await UserManager.GetClaimsAsync(userEditIn.AspNetUserId);
+
+                    foreach (var item in claimsOld)
+                    {
+                        if (!claims.Contains(item.ValueType))
+                        {
+                            await UserManager.RemoveClaimAsync(userEditIn.AspNetUserId, item);
+                        }
+                    }    
+
+                    foreach (var item in claims)
+                    {
+                        if (!claimsOld.Any(x => x.ValueType == item))
+                        {
+                            await UserManager.AddClaimAsync(userEditIn.AspNetUserId, new System.Security.Claims.Claim(item, item));
+                        }
+                    }
+                }
 
                 if (ModelState.IsValid)
                 {
-                    return RedirectToAction("Index");
+                    var user = UserManager.FindById(userEditIn.AspNetUserId);
+
+                    if (!user.Roles.Any(x => x.RoleId == userEditIn.RoleId))
+                    {
+                        var roles = await UserManager.GetRolesAsync(userEditIn.AspNetUserId);
+                        await UserManager.RemoveFromRolesAsync(userEditIn.AspNetUserId, roles.ToArray());
+
+                        user.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole()
+                        {
+                            RoleId = userEditIn.RoleId,
+                            UserId = user.Id
+                        });
+                    }
+
+                    var result = await UserManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        UserOut userOut = new UserOut();
+                        userOut = userRepository.Update(userEditIn);
+
+                        if (!userOut.success)
+                        {
+                            AddErrors(userOut.messages);
+                        }
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
             }
 
@@ -185,7 +317,9 @@ namespace Site.Areas.Adm.Controllers
 
             AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
 
-            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+            ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
+
+            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -195,7 +329,7 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
-            return View(user);
+            return View(userEditIn);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -226,5 +360,39 @@ namespace Site.Areas.Adm.Controllers
 
             return RedirectToAction("Index");
         }
+
+        #region .: Helper :.
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        private void AddErrors(List<string> messages)
+        {
+            foreach (var error in messages)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
+        #endregion
     }
 }

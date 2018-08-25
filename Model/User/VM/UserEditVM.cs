@@ -1,4 +1,6 @@
-﻿namespace Model.VM
+﻿using System.Collections.Generic;
+
+namespace Model.VM
 {
     public class UserEditVM
     {
@@ -13,5 +15,7 @@
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public List<AspNetUserClaimVM> Claims { get; set; }
     }
 }

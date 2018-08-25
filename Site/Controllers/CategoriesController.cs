@@ -15,7 +15,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         CategoryRepository categoryRepository = new CategoryRepository();
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public CategoryOut GetCategoryById(int id)
         {
             CategoryOut categoryOut = new CategoryOut();
@@ -55,7 +55,7 @@ namespace Site.Controllers
             return categoryOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public CategorySearchOut GetCategoryBySearch(string code)
         {
             CategorySearchOut categorySearchOut = new CategorySearchOut();
@@ -95,7 +95,7 @@ namespace Site.Controllers
             return categorySearchOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public CategoriesOut GetCategories()
         {
             CategoriesOut categoriesOut = new CategoriesOut();
@@ -135,7 +135,7 @@ namespace Site.Controllers
             return categoriesOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public ECMCategoriesOut GetECMCategories()
         {
             ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();

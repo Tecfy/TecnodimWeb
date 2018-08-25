@@ -142,6 +142,42 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regra de Acesso.
+        /// </summary>
+        public static string Claim {
+            get {
+                return ResourceManager.GetString("Claim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regras de Acesso.
+        /// </summary>
+        public static string Claims {
+            get {
+                return ResourceManager.GetString("Claims", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo de Reivindicação.
+        /// </summary>
+        public static string ClaimType {
+            get {
+                return ResourceManager.GetString("ClaimType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor da Reivindicação.
+        /// </summary>
+        public static string ClaimValue {
+            get {
+                return ResourceManager.GetString("ClaimValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Classificação.
         /// </summary>
         public static string Classification {

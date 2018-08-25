@@ -7,8 +7,6 @@ namespace Repository
 {
     public class AspNetRoleRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-
         public AspNetRolesOut GetRoles()
         {
             AspNetRolesOut aspNetRolesOut = new AspNetRolesOut();

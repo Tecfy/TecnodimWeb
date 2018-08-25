@@ -15,7 +15,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         ClassificationRepository classificationRepository = new ClassificationRepository();
 
-        [Authorize, HttpPost, Route("")]
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public ClassificationOut Post(ClassificationIn classificationIn)
         {
             ClassificationOut sliceOut = new ClassificationOut();

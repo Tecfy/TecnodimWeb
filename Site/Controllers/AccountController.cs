@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace Site.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Usuário")]
     [RoutePrefix("Api/Account")]
     public class AccountController : ApiController
     {

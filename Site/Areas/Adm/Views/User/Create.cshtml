@@ -1,16 +1,34 @@
 ﻿@model Model.In.UserCreateIn
 
 @{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+    var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
+    var roleId = ViewBag.RoleId;
+
     ViewBag.Title = i18n.Resource.CreateUser;
     ViewBag.Head = i18n.Resource.CreateUser;
 }
 
 @section headerScript{
     <script type="text/javascript">
-        $(function () {
-            $("html").on("click", ".btnCancel", function (e) {
-                window.location = "@(Url.Action("Index", "User"))";
-            });
+        var roleId = @(Html.Raw(jss.Serialize(roleId)));
+
+        function DisplayClaims(role) {
+            if (role == roleId) {
+                $('#divClaims').show();
+            }
+            else {
+                $('#divClaims').hide();
+            }
+        }
+
+        $("html").on("click", ".btnCancel", function (e) {
+            window.location = "@(Url.Action("Index", "User"))";
+        });
+
+        $("html").on("change", '#RoleId', function () {
+            DisplayClaims(this.value);
         });
     </script>
 }
@@ -22,8 +40,21 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.RoleId, new { @for = "RoleId" })
-        @Html.DropDownListFor(mo => mo.RoleId, (SelectList)ViewBag.RoleId, "--" + @i18n.Resource.Select + "--", new { @class = "custom-select d-block w-100", data_val_required = string.Format(i18n.Resource.RequiredMessage, Html.DisplayNameFor(mo => mo.RoleId)), data_val = "true" })
+        @Html.DropDownListFor(mo => mo.RoleId, (SelectList)ViewBag.RolesId, "--" + @i18n.Resource.Select + "--", new { @class = "custom-select d-block w-100", data_val_required = string.Format(i18n.Resource.RequiredMessage, Html.DisplayNameFor(mo => mo.RoleId)), data_val = "true" })
         @Html.ValidationMessageFor(model => model.RoleId)
+    </div>
+
+    <div class="form-group" id="divClaims" style="display: none;">
+        <label>@i18n.Resource.Claims</label>
+        @foreach (var claim in claims)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims">
+                <label class="form-check-label" for="claims">
+                    @claim
+                </label>
+            </div>
+        }
     </div>
 
     <div class="form-group">

@@ -15,7 +15,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentDetailOut GetDocumentDetailByDocumentId(int id)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();

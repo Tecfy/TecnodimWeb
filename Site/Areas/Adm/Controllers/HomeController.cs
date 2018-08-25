@@ -2,7 +2,7 @@
 
 namespace Site.Areas.Adm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     [RoutePrefix("Adm/Home")]
     public class HomeController : Controller
     {

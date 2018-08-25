@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Site.Areas.Adm.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

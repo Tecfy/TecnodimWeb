@@ -15,7 +15,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
-        [Authorize, HttpPost, Route("")]
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public DeletedPageOut Post(DeletedPageIn deletedPageIn)
         {
             DeletedPageOut deletedPageOut = new DeletedPageOut();

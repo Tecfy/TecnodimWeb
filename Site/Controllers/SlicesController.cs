@@ -15,7 +15,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         SliceRepository sliceRepository = new SliceRepository();
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public SliceOut GetSliceById(int id)
         {
             SliceOut sliceOut = new SliceOut();
@@ -55,7 +55,7 @@ namespace Site.Controllers
             return sliceOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public SliceOut GetSlicePending(int id)
         {
             SliceOut sliceOut = new SliceOut();
@@ -95,7 +95,7 @@ namespace Site.Controllers
             return sliceOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public SlicesOut GetSlicesByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
@@ -135,7 +135,7 @@ namespace Site.Controllers
             return slicesOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public SlicesOut GetSlicesNotClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
@@ -175,7 +175,7 @@ namespace Site.Controllers
             return slicesOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public SlicesOut GetSlicesClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
@@ -215,7 +215,7 @@ namespace Site.Controllers
             return slicesOut;
         }
 
-        [Authorize, HttpPost, Route("")]
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public SliceOut Post(SliceSaveIn sliceIn)
         {
             SliceOut sliceOut = new SliceOut();

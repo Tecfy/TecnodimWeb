@@ -360,4 +360,16 @@
   <data name="AreYouSure" xml:space="preserve">
     <value>Tem certeza?</value>
   </data>
+  <data name="ClaimType" xml:space="preserve">
+    <value>Tipo de Reivindicação</value>
+  </data>
+  <data name="ClaimValue" xml:space="preserve">
+    <value>Valor da Reivindicação</value>
+  </data>
+  <data name="Claim" xml:space="preserve">
+    <value>Regra de Acesso</value>
+  </data>
+  <data name="Claims" xml:space="preserve">
+    <value>Regras de Acesso</value>
+  </data>
 </root>

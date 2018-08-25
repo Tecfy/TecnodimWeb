@@ -1,6 +1,11 @@
 ﻿@model Model.In.UserEditIn
 
 @{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+    var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
+    var roleUser = ViewBag.RoleId;
+
     ViewBag.Title = @i18n.Resource.EditUser;
     ViewBag.head = @i18n.Resource.EditUser;
 }
@@ -8,10 +13,13 @@
 @section headerScript{
     <script type="text/javascript">
         var newPassword = @(Model.NewPassword ? 1 : 0);
+        var roleUser = @(Html.Raw(jss.Serialize(roleUser)));
+        var roleId = "@(Model.RoleId)";
 
         $(function () {
             $("#RoleId").val("@(Model.RoleId)");
-             DisplayPassword(newPassword);
+            DisplayPassword(newPassword);
+            DisplayClaims(roleId);
         });
 
         function DisplayPassword(value) {
@@ -25,14 +33,25 @@
             }
         }
 
-        $(function () {
-             $("html").on("click", ".btnCancel", function (e) {
-                 window.location = "@(Url.Action("Index", "User"))";
-             });
+        function DisplayClaims(role) {
+            if (role == roleId) {
+                $('#divClaims').show();
+            }
+            else {
+                $('#divClaims').hide();
+            }
+        }
+
+        $("html").on("click", ".btnCancel", function (e) {
+            window.location = "@(Url.Action("Index", "User"))";
         });
 
         $("html").on("click", '#NewPassword', function () {
             DisplayPassword($("#NewPassword").prop("checked"));
+        });
+
+        $("html").on("change", '#RoleId', function () {
+            DisplayClaims(this.value);
         });
     </script>
 }
@@ -46,8 +65,21 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.RoleId, new { @for = "RoleId" })
-        @Html.DropDownListFor(mo => mo.RoleId, (SelectList)ViewBag.RoleId, "--" + @i18n.Resource.Select + "--", new { @class = "custom-select d-block w-100", data_val_required = string.Format(i18n.Resource.RequiredMessage, Html.DisplayNameFor(mo => mo.RoleId)), data_val = "true" })
+        @Html.DropDownListFor(mo => mo.RoleId, (SelectList)ViewBag.RolesId, "--" + @i18n.Resource.Select + "--", new { @class = "custom-select d-block w-100", data_val_required = string.Format(i18n.Resource.RequiredMessage, Html.DisplayNameFor(mo => mo.RoleId)), data_val = "true" })
         @Html.ValidationMessageFor(model => model.RoleId)
+    </div>
+
+    <div class="form-group" id="divClaims">
+        <label>@i18n.Resource.Claims</label>
+        @foreach (var claim in claims)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims" @(Model.Claims.Contains(claim.ToString()) ? "checked=\"checked\"" : "")>
+                <label class="form-check-label" for="claims">
+                    @claim
+                </label>
+            </div>
+        }
     </div>
 
     <div class="form-group">

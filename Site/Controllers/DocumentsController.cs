@@ -17,7 +17,7 @@ namespace Site.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentRepository documentRepository = new DocumentRepository();
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public ECMDocumentsOut GetECMDocuments()
         {
             ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
@@ -57,7 +57,7 @@ namespace Site.Controllers
             return ecmDocumentsOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentsOut GetDocumentSlices()
         {
             DocumentsOut documentsOut = new DocumentsOut();
@@ -101,7 +101,7 @@ namespace Site.Controllers
             return documentsOut;
         }
 
-        [Authorize, HttpGet]
+        [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentsOut GetDocumentClassificateds()
         {
             DocumentsOut documentsOut = new DocumentsOut();
@@ -146,7 +146,7 @@ namespace Site.Controllers
             return documentsOut;
         }
 
-        [Authorize, HttpPost]
+        [Authorize(Roles = "Usuário"), HttpPost]
         public DocumentUpdateOut PostDocumentUpdateSatus(DocumentUpdateIn documentUpdateIn)
         {
             DocumentUpdateOut documentUpdateOut = new DocumentUpdateOut();
