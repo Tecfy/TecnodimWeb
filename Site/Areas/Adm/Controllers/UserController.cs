@@ -2,6 +2,9 @@
 using Helper.Enum;
 using Helper.Utility;
 using Model.In;
+using Model.Out;
+using Model.VM;
+using Repository;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -12,91 +15,60 @@ namespace Site.Areas.Adm.Controllers
     [RoutePrefix("Adm/User")]
     public class UserController : Controller
     {
-        private int qtdEntries = Ready.AppSettings["Pagination.qtdEntries"].ToInt();
-        private int qtdActionNumber = Ready.AppSettings["Pagination.qtdActionNumber"].ToInt();
-
-        private DBContext db = new DBContext();
+        private readonly UserRepository userRepository = new UserRepository();
+        private readonly AspNetRoleRepository aspNetRoleRepository = new AspNetRoleRepository();
 
         public ActionResult Index()
         {
-            var query = db.Users.Where(e => e.Active == true && e.DeletedDate == null);
+            UsersIn usersIn = new UsersIn();
 
-            var count = query.Count();
+            UsersOut usersOut = userRepository.GetAll(usersIn);
 
-            if (Session["qtdEntries"] != null)
-            {
-                qtdEntries = Session["qtdEntries"].ToString().ToInt();
-            }
+            var qtdPage = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(usersOut.totalCount) / Convert.ToDecimal(usersIn.qtdEntries)));
 
-            query = query.OrderBy(e => e.CreatedDate)
-                         .Skip((1 - 1) * qtdEntries)
-                         .Take(qtdEntries);
-
-            var qtdPage = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(count) / Convert.ToDecimal(qtdEntries)));
-
-            ViewBag.qtdEntries = qtdEntries;
-            ViewBag.amount = count;
+            ViewBag.qtdEntries = usersIn.qtdEntries;
+            ViewBag.amount = usersOut.totalCount;
             ViewBag.qtdPage = qtdPage;
             ViewBag.currentPage = 1;
-            ViewBag.qtdActionNumber = qtdActionNumber;
+            ViewBag.qtdActionNumber = usersIn.qtdActionNumber;
 
-            return View(query.ToList());
+            return View(usersOut.result);
         }
 
-        public ActionResult PartialList(int page, int qtdEntries, string filter = "", string sort = "", string sortdirection = "asc")
+        public ActionResult PartialList(int page, int qtdEntries, string filter = "", string sort = "CreatedDate", string sortdirection = "asc")
         {
-            var query = db.Users.Where(e => e.Active == true && e.DeletedDate == null);
+            UsersIn usersIn = new UsersIn() { currentPage = page, qtdEntries = qtdEntries, filter = filter, sort = sort, sortdirection = sortdirection };
 
-            var count = query.Count();
+            UsersOut usersOut = userRepository.GetAll(usersIn);
 
-            Session["qtdEntries"] = qtdEntries;
+            var qtdPage = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(usersOut.totalCount) / Convert.ToDecimal(usersIn.qtdEntries)));
 
-            if (string.IsNullOrEmpty(sort))
-            {
-                sort = "CreatedDate";
-            }
-
-            query = query.OrderBy(sort, !sortdirection.Equals("asc"))
-                         .Skip((page - 1) * qtdEntries)
-                         .Take(qtdEntries);
-
-            var qtdPage = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(count) / Convert.ToDecimal(qtdEntries)));
-
-            ViewBag.qtdEntries = qtdEntries;
-            ViewBag.amount = count;
+            ViewBag.qtdEntries = usersIn.qtdEntries;
+            ViewBag.amount = usersOut.totalCount;
             ViewBag.qtdPage = qtdPage;
-            ViewBag.currentPage = page;
-            ViewBag.qtdActionNumber = qtdActionNumber;
+            ViewBag.currentPage = usersIn.currentPage;
+            ViewBag.qtdActionNumber = usersIn.qtdActionNumber;
 
             var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
             Response.AddHeader("ViewBagHeader", jss.Serialize(new
             {
-                qtdEntries,
-                amount = count,
+                usersIn.qtdEntries,
+                amount = usersOut.totalCount,
                 qtdPage,
-                currentPage = page,
-                qtdActionNumber,
+                usersIn.currentPage,
+                usersIn.qtdActionNumber,
                 search = filter,
                 info = string.Format(i18n.Resource.PaginationInfo, (ViewBag.qtdEntries * (ViewBag.currentPage - 1)) + 1, ((ViewBag.currentPage * ViewBag.qtdEntries) > ViewBag.amount ? ViewBag.amount : ViewBag.currentPage * ViewBag.qtdEntries), ViewBag.amount)
             }));
 
-            return PartialView("_PartialList", query.ToList());
+            return PartialView("_PartialList", usersOut.result);
         }
 
         public ActionResult Details(int id = 0)
         {
-            UserIn user = db.Users
-                            .Where(x => x.Active == true && x.DeletedDate == null && x.UserId == id).Select(x => new UserIn()
-                            {
-                                UserId = x.UserId,
-                                AspNetUserId = x.AspNetUserId,
-                                RoleId = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().RoleId,
-                                FirstName = x.FirstName,
-                                LastName = x.LastName,
-                                Email = x.AspNetUsers.Email,
-                            }).FirstOrDefault();
+            UserOut userOut = userRepository.GetById(new UserIn { UserId = id });
 
-            if (user == null)
+            if (userOut.result == null)
             {
                 return HttpNotFound();
             }
@@ -106,14 +78,16 @@ namespace Site.Areas.Adm.Controllers
                 ViewBag.HideLayout = true;
             }
 
-            return View(user);
+            return View(userOut.result);
         }
 
         public ActionResult Create()
         {
             #region Roles
 
-            ViewBag.RoleId = new SelectList(db.AspNetRoles.OrderBy(x => x.Name).ToList(), "Id", "Name");
+            AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
+
+            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
             #endregion
 
@@ -123,78 +97,16 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
-            return View(new UserIn());
+            return View(new UserCreateIn());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UserIn user)
+        public ActionResult Create(UserCreateIn user)
         {
             if (ModelState.IsValid)
             {
-                /*
-                using (var scope = new System.Transactions.TransactionScope())
-                {
-                    users.CompanyId = user.CustomerId;
-                    if (!string.IsNullOrEmpty(users.Password))
-                    {
-                        users.Password = DataEF.Security.Generator.Password(users.Password);
-                    }
-                    db.Users.Add(users);
-
-                    if (ProfileEdit == users.ProfileId || ProfileGestor == users.ProfileId)
-                    {
-                        #region .: Inclusão de Players :.
-
-                        if (playersIds != null && playersIds.Count() > 0)
-                        {
-                            foreach (var item in playersIds)
-                            {
-                                UserPlayers userPlayers = new UserPlayers();
-                                userPlayers.UserId = users.UserId;
-                                userPlayers.PlayerId = item;
-                                db.UserPlayers.Add(userPlayers);
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("playersIds", string.Format(i18n.Resource.RequiredMessage, i18n.Resource.Players));
-                        }
-
-                        #endregion
-
-                        #region .: Inclusão de Templates :.
-
-                        if (templatesIds != null && templatesIds.Count() > 0)
-                        {
-                            foreach (var item in templatesIds)
-                            {
-                                UserTemplates userTemplates = new UserTemplates();
-                                userTemplates.UserId = users.UserId;
-                                userTemplates.TemplateId = item;
-                                db.UserTemplates.Add(userTemplates);
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("templatesIds", string.Format(i18n.Resource.RequiredMessage, i18n.Resource.Templates));
-                        }
-
-                        #endregion
-
-                        if (ModelState.IsValid)
-                        {
-                            db.SaveChanges();
-                            scope.Complete();
-                        }
-                    }
-                    else
-                    {
-                        db.SaveChanges();
-                        scope.Complete();
-                    }
-                }
-                */
+                userRepository.Insert(user);
 
                 if (ModelState.IsValid)
                 {
@@ -204,7 +116,9 @@ namespace Site.Areas.Adm.Controllers
 
             #region Roles
 
-            ViewBag.RoleId = new SelectList(db.AspNetRoles.OrderBy(x => x.Name).ToList(), "Id", "Name");
+            AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
+
+            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
             #endregion
 
@@ -219,25 +133,28 @@ namespace Site.Areas.Adm.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            UserIn user = db.Users
-                            .Where(x => x.Active == true && x.DeletedDate == null && x.UserId == id).Select(x => new UserIn()
-                            {
-                                UserId = x.UserId,
-                                AspNetUserId = x.AspNetUserId,
-                                RoleId = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().RoleId,
-                                FirstName = x.FirstName,
-                                LastName = x.LastName,
-                                Email = x.AspNetUsers.Email,
-                            }).FirstOrDefault();
+            UserEditOut userEditOut = userRepository.GetEditById(new UserIn { UserId = id });
 
-            if (user == null)
+            if (userEditOut.result == null)
             {
                 return HttpNotFound();
             }
 
+            UserEditIn userEditIn = new UserEditIn
+            {
+                UserId = userEditOut.result.UserId,
+                AspNetUserId = userEditOut.result.AspNetUserId,
+                RoleId = userEditOut.result.RoleId,
+                FirstName = userEditOut.result.FirstName,
+                LastName = userEditOut.result.LastName,
+                Email = userEditOut.result.Email
+            };
+
             #region Roles
 
-            ViewBag.RoleId = new SelectList(db.AspNetRoles.OrderBy(x => x.Name).ToList(), "Id", "Name");
+            AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
+
+            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
             #endregion
 
@@ -247,140 +164,28 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
-            return View(user);
+            return View(userEditIn);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserIn user)
+        public ActionResult Edit(UserEditIn user)
         {
             if (ModelState.IsValid)
             {
-                /*
-                try
+                userRepository.Update(user);
+
+                if (ModelState.IsValid)
                 {
-                    using (var scope = new System.Transactions.TransactionScope())
-                    {
-                        if (NewPassword != "")
-                        {
-                            users.Password = DataEF.Security.Generator.Password(NewPassword);
-                        }
-
-                        users.EditedDate = DateTime.Now;
-                        db.Entry(users).State = EntityState.Modified;
-
-                        if (ProfileEdit == users.ProfileId || ProfileGestor == users.ProfileId)
-                        {
-                            #region .: Inclusão de Players :.
-
-                            if (playersIds != null && playersIds.Count() > 0)
-                            {
-                                var oldPlayers = db.UserPlayers.Where(x => x.UserId == users.UserId).ToList();
-
-                                var removePlayers = oldPlayers.Where(e => playersIds.Contains(e.PlayerId) == false).ToList();
-
-                                foreach (var item in removePlayers)
-                                {
-                                    db.Entry(item).State = EntityState.Deleted;
-                                }
-
-                                var addPlayers = playersIds.Where(e => oldPlayers.Count(ee => ee.PlayerId == e) <= 0).Distinct().ToList();
-
-                                foreach (var item in addPlayers)
-                                {
-                                    UserPlayers userPlayers = new UserPlayers();
-                                    userPlayers.UserId = users.UserId;
-                                    userPlayers.PlayerId = item;
-                                    db.UserPlayers.Add(userPlayers);
-                                }
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("playersIds", string.Format(i18n.Resource.RequiredMessage, i18n.Resource.Players));
-                            }
-
-                            #endregion
-
-                            #region .: Inclusão de Templates :.
-
-                            if (templatesIds != null && templatesIds.Count() > 0)
-                            {
-                                var oldTemplates = db.UserTemplates.Where(x => x.UserId == users.UserId).ToList();
-
-                                var removeTemplates = oldTemplates.Where(e => templatesIds.Contains(e.TemplateId) == false).ToList();
-
-                                foreach (var item in removeTemplates)
-                                {
-                                    db.Entry(item).State = EntityState.Deleted;
-                                }
-
-                                var addTemplates = templatesIds.Where(e => oldTemplates.Count(ee => ee.TemplateId == e) <= 0).Distinct().ToList();
-
-                                foreach (var item in addTemplates)
-                                {
-                                    UserTemplates userTemplates = new UserTemplates();
-                                    userTemplates.UserId = users.UserId;
-                                    userTemplates.TemplateId = item;
-                                    db.UserTemplates.Add(userTemplates);
-                                }
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("templatesIds", string.Format(i18n.Resource.RequiredMessage, i18n.Resource.Templates));
-                            }
-
-                            #endregion
-
-                            if (ModelState.IsValid)
-                            {
-                                db.SaveChanges();
-                                scope.Complete();
-                            }
-                        }
-                        else
-                        {
-                            #region .: UserPlayers :.
-
-                            var oldPlayers = db.UserPlayers.Where(x => x.UserId == users.UserId).ToList();
-
-                            foreach (var item in oldPlayers)
-                            {
-                                db.Entry(item).State = EntityState.Deleted;
-                            }
-
-                            #endregion
-
-                            #region .: UserTemplates :.
-
-                            var oldTemplates = db.UserTemplates.Where(x => x.UserId == users.UserId).ToList();
-
-                            foreach (var item in oldTemplates)
-                            {
-                                db.Entry(item).State = EntityState.Deleted;
-                            }
-
-                            #endregion
-
-                            db.SaveChanges();
-                            scope.Complete();
-                        }
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        return RedirectToAction("Index");
-                    }
+                    return RedirectToAction("Index");
                 }
-                catch (Exception ex)
-                {
-
-                }
-                */
             }
 
             #region Roles
 
-            ViewBag.RoleId = new SelectList(db.AspNetRoles.OrderBy(x => x.Name).ToList(), "Id", "Name");
+            AspNetRolesOut aspNetRolesOut = aspNetRoleRepository.GetRoles();
+
+            ViewBag.RoleId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
             #endregion
 
@@ -398,11 +203,7 @@ namespace Site.Areas.Adm.Controllers
         {
             try
             {
-                Users users = db.Users.Find(id);
-                users.Active = false;
-                users.DeletedDate = DateTime.Now;
-
-                db.SaveChanges();
+                userRepository.Delete(id);
 
                 if (Request.IsAjaxRequest())
                 {
@@ -424,12 +225,6 @@ namespace Site.Areas.Adm.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

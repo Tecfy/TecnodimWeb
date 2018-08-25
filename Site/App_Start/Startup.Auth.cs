@@ -2,8 +2,9 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Model;
 using Owin;
-using Site.Models;
+using Repository;
 using Site.Providers;
 using System;
 

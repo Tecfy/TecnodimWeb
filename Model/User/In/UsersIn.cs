@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class UserIn : PaginateIn
+    public class UsersIn : PaginateIn
     {
         public int UserId { get; set; }
     }

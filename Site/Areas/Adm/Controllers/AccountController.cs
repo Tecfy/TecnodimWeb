@@ -2,8 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Model.VM;
-using Site.Models;
-using System.Linq;
+using Repository;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;

@@ -1,4 +1,4 @@
-﻿@model Model.In.UserIn
+﻿@model Model.In.UserEditIn
 
 @{
     ViewBag.Title = @i18n.Resource.EditUser;
@@ -7,10 +7,32 @@
 
 @section headerScript{
     <script type="text/javascript">
+        var newPassword = @(Model.NewPassword ? 1 : 0);
+
         $(function () {
-            $("html").on("click", ".btnCancel", function (e) {
-                window.location = "@(Url.Action("Index", "User"))";
-            });
+            $("#RoleId").val("@(Model.RoleId)");
+             DisplayPassword(newPassword);
+        });
+
+        function DisplayPassword(value) {
+            if (value) {
+                $('#divPassword').show();
+                $('#divConfirmPassword').show();
+            }
+            else {
+                $('#divPassword').hide();
+                $('#divConfirmPassword').hide();
+            }
+        }
+
+        $(function () {
+             $("html").on("click", ".btnCancel", function (e) {
+                 window.location = "@(Url.Action("Index", "User"))";
+             });
+        });
+
+        $("html").on("click", '#NewPassword', function () {
+            DisplayPassword($("#NewPassword").prop("checked"));
         });
     </script>
 }
@@ -47,12 +69,18 @@
     </div>
 
     <div class="form-group">
+        @Html.EditorFor(model => model.NewPassword, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.NewPassword, new { @class = "form-check-label", @for = "NewPassword" })
+        @Html.ValidationMessageFor(model => model.NewPassword)
+    </div>
+
+    <div class="form-group" id="divPassword">
         @Html.LabelFor(m => m.Password, new { @for = "Password" })
         @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = i18n.Resource.Password })
         @Html.ValidationMessageFor(m => m.Password)
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="divConfirmPassword">
         @Html.LabelFor(m => m.ConfirmPassword, new { @for = "ConfirmPassword" })
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = i18n.Resource.Password })
         @Html.ValidationMessageFor(m => m.ConfirmPassword)

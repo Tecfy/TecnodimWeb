@@ -2,7 +2,8 @@
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Site.Models;
+using Model;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -50,7 +51,7 @@ namespace Site.Providers
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
 
             // Verification.
-            if (user == null)
+            if (user == null && user.LockoutEnabled == false)
             {
                 // Settings.
                 context.SetError("invalid_grant", "The user name or password is incorrect.");

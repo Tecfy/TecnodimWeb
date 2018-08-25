@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataEF.DataAccess.Users>
+﻿@model IEnumerable<Model.VM.UsersVM>
 
 @{
     ViewBag.Title = i18n.Resource.Users;
@@ -65,7 +65,7 @@
 
 @section TopButton{
     <div class="pull-right">
-        <a class="btn btn-large btn-block btn-primary" href="@Url.Action("Create", "User")"><i class="fa fa-white fa-asterisk"></i>&nbsp;@i18n.Resource.New</a>
+        <a class="btn btn-outline-primary" href="@Url.Action("Create", "User")">@i18n.Resource.New</a>
     </div>
 }
 
@@ -94,12 +94,13 @@
             </div>
         </div>
     </div>
-    <table id="tblUsers" class="table table-striped table-sm" data-qtdentries="@(ViewBag.qtdEntries)" data-amount="@(ViewBag.amount)" data-currentpage="@(ViewBag.currentPage)" data-qtdactionnumber="@(ViewBag.qtdActionNumber)" data-search="" data-sort="" data-sortdirection="asc">
+    <table id="tblUsers" class="table table-striped table-sm" data-qtdentries="@(ViewBag.qtdEntries)" data-amount="@(ViewBag.amount)" data-currentpage="@(ViewBag.currentPage)" data-qtdactionnumber="@(ViewBag.qtdActionNumber)" data-search="" data-sort="CreatedDate" data-sortdirection="asc">
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.UserId)</th>
-                <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-                <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                <th>@Html.DisplayNameFor(model => model.Role)</th>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
                 <th>@i18n.Resource.Actions</th>
             </tr>
         </thead>

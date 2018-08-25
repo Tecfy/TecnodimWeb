@@ -1,4 +1,4 @@
-﻿@model Model.In.UserIn
+﻿@model Model.VM.UserVM
 
 @{
     ViewBag.Title = i18n.Resource.DetailsUser;
@@ -18,13 +18,13 @@
 <form>
 
     <div class="form-group">
-        @Html.DisplayNameFor(model => model.FirstName):
-        @Html.DisplayFor(model => model.FirstName)
+        @Html.DisplayNameFor(model => model.Name):
+        @Html.DisplayFor(model => model.Name)
     </div>
 
     <div class="form-group">
-        @Html.DisplayNameFor(model => model.LastName):
-        @Html.DisplayFor(model => model.LastName)
+        @Html.DisplayNameFor(model => model.Role):
+        @Html.DisplayFor(model => model.Role)
     </div>
 
     <div class="form-group">

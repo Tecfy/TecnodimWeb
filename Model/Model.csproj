@@ -36,6 +36,18 @@
     <OutputPath>bin\Prod\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -71,6 +83,9 @@
     <Compile Include="Account\In\AccessIn.cs" />
     <Compile Include="Account\Out\AccessResultOut.cs" />
     <Compile Include="Account\VM\AccessResultVM.cs" />
+    <Compile Include="AspNetRole\In\AspNetRolesIn.cs" />
+    <Compile Include="AspNetRole\Out\AspNetRolesOut.cs" />
+    <Compile Include="AspNetRole\VM\AspNetRolesVM.cs" />
     <Compile Include="Attribute\In\ECMAttributeIn.cs" />
     <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
     <Compile Include="Category\In\ECMCategoriesIn.cs" />
@@ -79,6 +94,8 @@
     <Compile Include="Category\Out\CategorySearchOut.cs" />
     <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Category\VM\CategorySearchVM.cs" />
+    <Compile Include="Common\In\PaginateIn.cs" />
+    <Compile Include="Common\VM\IdentityModels.cs" />
     <Compile Include="Document\In\DocumentUpdateIn.cs" />
     <Compile Include="Document\In\ECMDocumentsIn.cs" />
     <Compile Include="Document\Out\DocumentUpdateOut.cs" />
@@ -140,7 +157,16 @@
     <Compile Include="Category\VM\CategoriesVM.cs" />
     <Compile Include="Classification\In\ClassificationIn.cs" />
     <Compile Include="User\In\UserIn.cs" />
+    <Compile Include="User\In\UsersIn.cs" />
+    <Compile Include="User\In\UserEditIn.cs" />
+    <Compile Include="User\In\UserCreateIn.cs" />
+    <Compile Include="User\Out\UserEditOut.cs" />
+    <Compile Include="User\Out\UsersOut.cs" />
+    <Compile Include="User\Out\UserOut.cs" />
     <Compile Include="User\VM\LoginVM.cs" />
+    <Compile Include="User\VM\UserEditVM.cs" />
+    <Compile Include="User\VM\UserVM.cs" />
+    <Compile Include="User\VM\UsersVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
@@ -149,13 +175,20 @@
     <Folder Include="DeletedPage\VM\" />
     <Folder Include="Page\Out\" />
     <Folder Include="SliceCategoryAdditionalField\VM\" />
-    <Folder Include="User\Out\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\i18n\i18n.csproj">
       <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
       <Name>i18n</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
