@@ -6,7 +6,6 @@ using Model.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Repository
 {
@@ -15,16 +14,155 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         CategoryApi categoryApi = new CategoryApi();
 
-        public CategoryOut GetCategory(CategoryIn categoryIn)
+        #region .: Adm :.
+
+        public bool Delete(int categoryId)
+        {
+            using (var db = new DBContext())
+            {
+                Categories category = db.Categories.Find(categoryId);
+                category.Active = false;
+                category.DeletedDate = DateTime.Now;
+
+                db.Entry(category).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public CategoriesOut GetAll(CategoriesIn categoriesIn)
+        {
+            CategoriesOut categoriesOut = new CategoriesOut();
+
+            using (var db = new DBContext())
+            {
+                categoriesOut.totalCount = db.Categories.Count(x => x.Active == true && x.DeletedDate == null);
+
+                categoriesOut.result = db.Categories
+                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Select(x => new CategoriesVM()
+                                   {
+                                       CategoryId = x.CategoryId,
+                                       Parent = x.Categories1.Name,
+                                       Code = x.Code,
+                                       Name = x.Name,
+                                       CreatedDate = x.CreatedDate
+                                   })
+                                   .OrderBy(categoriesIn.sort, !categoriesIn.sortdirection.Equals("asc"))
+                                   .Skip((categoriesIn.currentPage.Value - 1) * categoriesIn.qtdEntries.Value)
+                                   .Take(categoriesIn.qtdEntries.Value)
+                                   .ToList();
+            }
+
+            return categoriesOut;
+        }
+
+        public CategoriesDDLOut GetDDLAll()
+        {
+            CategoriesDDLOut categoriesDDLOut = new CategoriesDDLOut();
+
+            using (var db = new DBContext())
+            {
+                categoriesDDLOut.result = db.Categories
+                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Select(x => new CategoriesDDLVM()
+                                   {
+                                       CategoryId = x.CategoryId,
+                                       Name = x.Code + " - " + x.Name,
+                                   })
+                                   .ToList();
+            }
+
+            return categoriesDDLOut;
+        }
+
+        public CategoryOut GetById(CategoryIn categoryIn)
         {
             CategoryOut categoryOut = new CategoryOut();
+
+            using (var db = new DBContext())
+            {
+                categoryOut.result = db.Categories
+                                   .Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == categoryIn.CategoryId)
+                                   .Select(x => new CategoryVM()
+                                   {
+                                       CategoryId = x.CategoryId,
+                                       Parent = x.Categories1.Name,
+                                       Code = x.Code,
+                                       Name = x.Name,
+                                   }).FirstOrDefault();
+            }
+
+            return categoryOut;
+        }
+
+        public CategoryEditOut GetEditById(CategoryIn categoryIn)
+        {
+            CategoryEditOut categoryEditOut = new CategoryEditOut();
+
+            using (var db = new DBContext())
+            {
+                categoryEditOut.result = db.Categories
+                                   .Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == categoryIn.CategoryId)
+                                   .Select(x => new CategoryEditVM()
+                                   {
+                                       CategoryId = x.CategoryId,
+                                       ParentId = x.ParentId,
+                                       ExternalId = x.ExternalId,
+                                       Code = x.Code,
+                                       Name = x.Name,
+                                   }).FirstOrDefault();
+            }
+
+            return categoryEditOut;
+        }
+
+        public CategoryOut Update(CategoryEditIn categoryEditIn)
+        {
+            CategoryOut categoryOut = new CategoryOut();
+
+            using (var db = new DBContext())
+            {
+                Categories category = db.Categories.Find(categoryEditIn.CategoryId);
+
+                category.EditedDate = DateTime.Now;
+                category.ParentId = categoryEditIn.ParentId;
+                category.ExternalId = categoryEditIn.ExternalId;
+                category.Code = categoryEditIn.Code;
+                category.Name = categoryEditIn.Name;
+
+                db.Entry(category).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                categoryOut.result = db.Categories
+                                       .Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == category.CategoryId)
+                                       .Select(x => new CategoryVM()
+                                       {
+                                           CategoryId = x.CategoryId,
+                                           Parent = x.Categories1.Name,
+                                           Code = x.Code,
+                                           Name = x.Name,
+                                       }).FirstOrDefault();
+            }
+
+            return categoryOut;
+        }
+
+        #endregion
+
+        #region .: Api :.
+
+        public ApiCategoryOut GetCategory(ApiCategoryIn categoryIn)
+        {
+            ApiCategoryOut categoryOut = new ApiCategoryOut();
             registerEventRepository.SaveRegisterEvent(categoryIn.userId.Value, categoryIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategory", "");
 
             using (var db = new DBContext())
             {
                 categoryOut.result = db.Categories
                                     .Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == categoryIn.categoryId)
-                                    .Select(x => new CategoryVM()
+                                    .Select(x => new ApiCategoryVM()
                                     {
                                         categoryId = x.CategoryId,
                                         name = x.Code + " - " + x.Name,
@@ -52,16 +190,16 @@ namespace Repository
             return categoryOut;
         }
 
-        public CategorySearchOut GetCategorySearch(CategorySearchIn categorySearchIn)
+        public ApiCategorySearchOut GetCategorySearch(ApiCategorySearchIn categorySearchIn)
         {
-            CategorySearchOut categorySearchOut = new CategorySearchOut();
+            ApiCategorySearchOut categorySearchOut = new ApiCategorySearchOut();
             registerEventRepository.SaveRegisterEvent(categorySearchIn.userId.Value, categorySearchIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategorySearch", "");
 
             using (var db = new DBContext())
             {
                 categorySearchOut.result = db.Categories
                                     .Where(x => x.DeletedDate == null && x.Active == true && x.Code == categorySearchIn.code)
-                                    .Select(x => new CategorySearchVM()
+                                    .Select(x => new ApiCategorySearchVM()
                                     {
                                         categoryId = x.CategoryId,
                                         name = x.Code + " - " + x.Name,
@@ -89,16 +227,16 @@ namespace Repository
             return categorySearchOut;
         }
 
-        public CategoriesOut GetCategories(CategoriesIn categoriesIn)
+        public ApiCategoriesOut GetCategories(ApiCategoriesIn categoriesIn)
         {
-            CategoriesOut categoriesOut = new CategoriesOut();
+            ApiCategoriesOut categoriesOut = new ApiCategoriesOut();
             registerEventRepository.SaveRegisterEvent(categoriesIn.userId.Value, categoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategories", "");
 
             using (var db = new DBContext())
             {
                 categoriesOut.result = db.Categories
                                          .Where(x => x.DeletedDate == null && x.Active == true)
-                                         .Select(x => new CategoriesVM()
+                                         .Select(x => new ApiCategoriesVM()
                                          {
                                              categoryId = x.CategoryId,
                                              name = x.Code + " - " + x.Name
@@ -111,9 +249,9 @@ namespace Repository
             return categoriesOut;
         }
 
-        public ECMCategoriesOut GetECMCategories(ECMCategoriesIn ecmCategoriesIn)
+        public ApiECMCategoriesOut GetECMCategories(ApiECMCategoriesIn ecmCategoriesIn)
         {
-            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
+            ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
             registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
 
             ecmCategoriesOut = categoryApi.GetECMCategories();
@@ -175,7 +313,7 @@ namespace Repository
             return vs;
         }
 
-        private int? CategorySave(List<ECMCategoriesVM> ecmCategoriesVMs, int parentId)
+        private int? CategorySave(List<ApiECMCategoriesVM> ecmCategoriesVMs, int parentId)
         {
             int? categoryId = null;
 
@@ -185,7 +323,7 @@ namespace Repository
 
                 if (category == null)
                 {
-                    ECMCategoriesVM ecmCategoriesVM = ecmCategoriesVMs.Where(x => x.categoryId == parentId).FirstOrDefault();
+                    ApiECMCategoriesVM ecmCategoriesVM = ecmCategoriesVMs.Where(x => x.categoryId == parentId).FirstOrDefault();
 
                     if (ecmCategoriesVM != null)
                     {
@@ -215,5 +353,7 @@ namespace Repository
 
             return categoryId;
         }
+
+        #endregion 
     }
 }

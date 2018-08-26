@@ -226,6 +226,7 @@
     <Compile Include="Areas\Adm\AdmAreaRegistration.cs" />
     <Compile Include="Areas\Adm\Controllers\AccountController.cs" />
     <Compile Include="Areas\Adm\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Adm\Controllers\CategoriesController.cs" />
     <Compile Include="Areas\Adm\Controllers\UnitsController.cs" />
     <Compile Include="Areas\Adm\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -300,6 +301,10 @@
     <Content Include="Areas\Adm\Views\Units\Details.cshtml" />
     <Content Include="Areas\Adm\Views\Units\Edit.cshtml" />
     <Content Include="Areas\Adm\Views\Units\Index.cshtml" />
+    <Content Include="Areas\Adm\Views\Categories\_PartialList.cshtml" />
+    <Content Include="Areas\Adm\Views\Categories\Details.cshtml" />
+    <Content Include="Areas\Adm\Views\Categories\Edit.cshtml" />
+    <Content Include="Areas\Adm\Views\Categories\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />

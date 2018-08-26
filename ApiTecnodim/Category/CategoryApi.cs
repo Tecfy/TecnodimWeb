@@ -9,7 +9,7 @@ namespace ApiTecnodim
 {
     public partial class CategoryApi
     {
-        public ECMCategoriesOut GetECMCategories()
+        public ApiECMCategoriesOut GetECMCategories()
         {
             try
             {
@@ -19,7 +19,7 @@ namespace ApiTecnodim
 
                 IRestResponse response = client.Execute(request);
 
-                ECMCategoriesOut ecmCategoriesOut = SimpleJson.SimpleJson.DeserializeObject<ECMCategoriesOut>(response.Content);
+                ApiECMCategoriesOut ecmCategoriesOut = SimpleJson.SimpleJson.DeserializeObject<ApiECMCategoriesOut>(response.Content);
 
                 if (!ecmCategoriesOut.success)
                 {

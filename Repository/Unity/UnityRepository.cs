@@ -13,11 +13,11 @@ namespace Repository
         {
             using (var db = new DBContext())
             {
-                Units user = db.Units.Find(unitId);
-                user.Active = false;
-                user.DeletedDate = DateTime.Now;
+                Units unit = db.Units.Find(unitId);
+                unit.Active = false;
+                unit.DeletedDate = DateTime.Now;
 
-                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(unit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
             }
 

@@ -124,6 +124,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Categorias.
+        /// </summary>
+        public static string Categories {
+            get {
+                return ResourceManager.GetString("Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Categoria.
         /// </summary>
         public static string Category {
@@ -223,6 +232,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cadastrar Categoria.
+        /// </summary>
+        public static string CreateCategory {
+            get {
+                return ResourceManager.GetString("CreateCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data de Criação.
         /// </summary>
         public static string CreatedDate {
@@ -268,6 +286,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detalhes da Categoria.
+        /// </summary>
+        public static string DetailsCategory {
+            get {
+                return ResourceManager.GetString("DetailsCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Detalhes da Unidade.
         /// </summary>
         public static string DetailsUnity {
@@ -309,6 +336,15 @@ namespace i18n {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edição de Categoria.
+        /// </summary>
+        public static string EditCategory {
+            get {
+                return ResourceManager.GetString("EditCategory", resourceCulture);
             }
         }
         

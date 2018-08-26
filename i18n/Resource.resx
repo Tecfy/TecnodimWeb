@@ -387,4 +387,16 @@
   <data name="Units" xml:space="preserve">
     <value>Unidades</value>
   </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categorias</value>
+  </data>
+  <data name="CreateCategory" xml:space="preserve">
+    <value>Cadastrar Categoria</value>
+  </data>
+  <data name="DetailsCategory" xml:space="preserve">
+    <value>Detalhes da Categoria</value>
+  </data>
+  <data name="EditCategory" xml:space="preserve">
+    <value>Edição de Categoria</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class CategorySearchIn : BaseIn
+    public class ApiCategorySearchIn : BaseIn
     {
         public string code { get; set; }
     }

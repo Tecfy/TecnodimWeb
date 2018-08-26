@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.VM
 {
-    public class CategorySearchVM
+    public class ApiCategorySearchVM
     {
         public int categoryId { get; set; }
 

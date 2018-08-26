@@ -16,16 +16,16 @@ namespace Site.Controllers
         CategoryRepository categoryRepository = new CategoryRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public CategoryOut GetCategoryById(int id)
+        public ApiCategoryOut GetCategoryById(int id)
         {
-            CategoryOut categoryOut = new CategoryOut();
+            ApiCategoryOut categoryOut = new ApiCategoryOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    CategoryIn categoryIn = new CategoryIn() { categoryId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     categoryOut = categoryRepository.GetCategory(categoryIn);
                 }
@@ -56,16 +56,16 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public CategorySearchOut GetCategoryBySearch(string code)
+        public ApiCategorySearchOut GetCategoryBySearch(string code)
         {
-            CategorySearchOut categorySearchOut = new CategorySearchOut();
+            ApiCategorySearchOut categorySearchOut = new ApiCategorySearchOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    CategorySearchIn categorySearchIn = new CategorySearchIn() { code = code, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
                 }
@@ -96,16 +96,16 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public CategoriesOut GetCategories()
+        public ApiCategoriesOut GetCategories()
         {
-            CategoriesOut categoriesOut = new CategoriesOut();
+            ApiCategoriesOut categoriesOut = new ApiCategoriesOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    CategoriesIn categoriesIn = new CategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategoriesIn categoriesIn = new ApiCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     categoriesOut = categoryRepository.GetCategories(categoriesIn);
                 }
@@ -136,16 +136,16 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public ECMCategoriesOut GetECMCategories()
+        public ApiECMCategoriesOut GetECMCategories()
         {
-            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
+            ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    ECMCategoriesIn ecmCategoriesIn = new ECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
 
                     ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
                 }

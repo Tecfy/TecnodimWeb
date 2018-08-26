@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class CategoryIn : BaseIn
+    public class ApiCategoryIn : BaseIn
     {
         public int categoryId { get; set; }
     }
