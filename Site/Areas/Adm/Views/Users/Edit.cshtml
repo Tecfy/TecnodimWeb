@@ -1,18 +1,37 @@
-﻿@model Model.In.UserCreateIn
+﻿@model Model.In.UserEditIn
 
 @{
     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
 
     var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
-    var roleId = ViewBag.RoleId;
+    var roleUser = ViewBag.RoleId;
 
-    ViewBag.Title = i18n.Resource.CreateUser;
-    ViewBag.Head = i18n.Resource.CreateUser;
+    ViewBag.Title = @i18n.Resource.EditUser;
+    ViewBag.head = @i18n.Resource.EditUser;
 }
 
 @section headerScript{
     <script type="text/javascript">
-        var roleId = @(Html.Raw(jss.Serialize(roleId)));
+        var newPassword = @(Model.NewPassword ? 1 : 0);
+        var roleUser = @(Html.Raw(jss.Serialize(roleUser)));
+        var roleId = "@(Model.RoleId)";
+
+        $(function () {
+            $("#RoleId").val("@(Model.RoleId)");
+            DisplayPassword(newPassword);
+            DisplayClaims(roleId);
+        });
+
+        function DisplayPassword(value) {
+            if (value) {
+                $('#divPassword').show();
+                $('#divConfirmPassword').show();
+            }
+            else {
+                $('#divPassword').hide();
+                $('#divConfirmPassword').hide();
+            }
+        }
 
         function DisplayClaims(role) {
             if (role == roleId) {
@@ -24,7 +43,11 @@
         }
 
         $("html").on("click", ".btnCancel", function (e) {
-            window.location = "@(Url.Action("Index", "User"))";
+            window.location = "@(Url.Action("Index", "Users"))";
+        });
+
+        $("html").on("click", '#NewPassword', function () {
+            DisplayPassword($("#NewPassword").prop("checked"));
         });
 
         $("html").on("change", '#RoleId', function () {
@@ -33,10 +56,12 @@
     </script>
 }
 
-@using (Html.BeginForm("Create", "User", FormMethod.Post, new { id = "frmSave" }))
+@using (Html.BeginForm("Edit", "Users", FormMethod.Post, new { id = "frmSave" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.AspNetUserId)
 
     <div class="form-group">
         @Html.LabelFor(model => model.RoleId, new { @for = "RoleId" })
@@ -44,12 +69,12 @@
         @Html.ValidationMessageFor(model => model.RoleId)
     </div>
 
-    <div class="form-group" id="divClaims" style="display: none;">
+    <div class="form-group" id="divClaims">
         <label>@i18n.Resource.Claims</label>
         @foreach (var claim in claims)
         {
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims">
+                <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims" @(Model.Claims.Contains(claim.ToString()) ? "checked=\"checked\"" : "")>
                 <label class="form-check-label" for="claims">
                     @claim
                 </label>
@@ -76,12 +101,18 @@
     </div>
 
     <div class="form-group">
+        @Html.EditorFor(model => model.NewPassword, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.NewPassword, new { @class = "form-check-label", @for = "NewPassword" })
+        @Html.ValidationMessageFor(model => model.NewPassword)
+    </div>
+
+    <div class="form-group" id="divPassword">
         @Html.LabelFor(m => m.Password, new { @for = "Password" })
         @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = i18n.Resource.Password })
         @Html.ValidationMessageFor(m => m.Password)
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="divConfirmPassword">
         @Html.LabelFor(m => m.ConfirmPassword, new { @for = "ConfirmPassword" })
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = i18n.Resource.Password })
         @Html.ValidationMessageFor(m => m.ConfirmPassword)

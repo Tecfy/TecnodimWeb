@@ -160,6 +160,7 @@
     <Compile Include="Classification\ClassificationRepository.cs" />
     <Compile Include="RegisterEvent\RegisterEventRepository.cs" />
     <Compile Include="DocumentDetail\DocumentDetailRepository.cs" />
+    <Compile Include="Unity\UnityRepository.cs" />
     <Compile Include="User\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

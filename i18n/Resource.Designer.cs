@@ -232,6 +232,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cadastrar Unidade.
+        /// </summary>
+        public static string CreateUnity {
+            get {
+                return ResourceManager.GetString("CreateUnity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cadastrar Usuário.
         /// </summary>
         public static string CreateUser {
@@ -255,6 +264,15 @@ namespace i18n {
         public static string DeletedDate {
             get {
                 return ResourceManager.GetString("DeletedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detalhes da Unidade.
+        /// </summary>
+        public static string DetailsUnity {
+            get {
+                return ResourceManager.GetString("DetailsUnity", resourceCulture);
             }
         }
         
@@ -300,6 +318,15 @@ namespace i18n {
         public static string EditedDate {
             get {
                 return ResourceManager.GetString("EditedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edição de Unidade.
+        /// </summary>
+        public static string EditUnity {
+            get {
+                return ResourceManager.GetString("EditUnity", resourceCulture);
             }
         }
         
@@ -768,6 +795,24 @@ namespace i18n {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unidade.
+        /// </summary>
+        public static string Unit {
+            get {
+                return ResourceManager.GetString("Unit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unidades.
+        /// </summary>
+        public static string Units {
+            get {
+                return ResourceManager.GetString("Units", resourceCulture);
             }
         }
         

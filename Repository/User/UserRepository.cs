@@ -9,8 +9,6 @@ namespace Repository
 {
     public partial class UserRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-
         public bool Delete(int userId)
         {
             using (var db = new DBContext())

@@ -9,7 +9,7 @@
     <script type="text/javascript">
         $(function () {
             $("html").on("click", ".btnCancel", function (e) {
-                window.location = "@(Url.Action("Index", "User"))";
+                window.location = "@(Url.Action("Index", "Users"))";
             });
         });
     </script>
@@ -35,6 +35,6 @@
 </form>
 
 <div class="text-right">
-    <a href="@Url.Action("Edit", "User", new { id = Model.UserId })" class="btn btn-outline-primary">@i18n.Resource.Edit</a>
+    <a href="@Url.Action("Edit", "Users", new { id = Model.UserId })" class="btn btn-outline-primary">@i18n.Resource.Edit</a>
     <button type="button" class="btn btn-outline-dark btnCancel">@i18n.Resource.Cancel</button>
 </div>

@@ -15,18 +15,18 @@ using System.Web.Mvc;
 namespace Site.Areas.Adm.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    [RoutePrefix("Adm/User")]
-    public class UserController : Controller
+    [RoutePrefix("Adm/Users")]
+    public class UsersController : Controller
     {
         private readonly UserRepository userRepository = new UserRepository();
         private readonly AspNetRoleRepository aspNetRoleRepository = new AspNetRoleRepository();
         private ApplicationUserManager _userManager;
 
-        public UserController()
+        public UsersController()
         {
         }
 
-        public UserController(ApplicationUserManager userManager)
+        public UsersController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }

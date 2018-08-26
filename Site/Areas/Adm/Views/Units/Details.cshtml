@@ -1,0 +1,35 @@
+﻿@model Model.VM.UnityVM
+
+@{
+    ViewBag.Title = i18n.Resource.DetailsUnity;
+    ViewBag.Head = i18n.Resource.DetailsUnity;
+}
+
+@section headerScript{
+    <script type="text/javascript">
+        $(function () {
+            $("html").on("click", ".btnCancel", function (e) {
+                window.location = "@(Url.Action("Index", "Units"))";
+            });
+        });
+    </script>
+}
+
+<form>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.Name):
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.DisplayNameFor(model => model.ExternalId):
+        @Html.DisplayFor(model => model.ExternalId)
+    </div>
+
+</form>
+
+<div class="text-right">
+    <a href="@Url.Action("Edit", "Units", new { id = Model.UnityId })" class="btn btn-outline-primary">@i18n.Resource.Edit</a>
+    <button type="button" class="btn btn-outline-dark btnCancel">@i18n.Resource.Cancel</button>
+</div>

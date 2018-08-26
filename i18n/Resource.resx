@@ -372,4 +372,19 @@
   <data name="Claims" xml:space="preserve">
     <value>Regras de Acesso</value>
   </data>
+  <data name="CreateUnity" xml:space="preserve">
+    <value>Cadastrar Unidade</value>
+  </data>
+  <data name="DetailsUnity" xml:space="preserve">
+    <value>Detalhes da Unidade</value>
+  </data>
+  <data name="EditUnity" xml:space="preserve">
+    <value>Edição de Unidade</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Unidades</value>
+  </data>
 </root>
