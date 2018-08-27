@@ -399,4 +399,7 @@
   <data name="EditCategory" xml:space="preserve">
     <value>Edição de Categoria</value>
   </data>
+  <data name="UnityNotFound" xml:space="preserve">
+    <value>Não existe esse código de unidade {0}.</value>
+  </data>
 </root>

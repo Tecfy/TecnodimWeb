@@ -47,5 +47,8 @@ namespace Model.In
 
         [Display(Name = "Claims", ResourceType = typeof(i18n.Resource))]
         public List<string> Claims { get; set; }
+
+        [Display(Name = "Units", ResourceType = typeof(i18n.Resource))]
+        public List<string> Units { get; set; }
     }
 }

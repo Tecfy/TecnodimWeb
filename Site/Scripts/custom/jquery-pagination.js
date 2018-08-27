@@ -239,9 +239,9 @@
             //}
 
             for (var i = startActionNumber; i <= endActionNumber; i++) {
-                var li = $("<li>");
-                var a = $("<a>");
-                $(li).append($(a).attr({ href: "javascript:void(0)", style: "cursor: pointer", "data-page": i }).html(i)).appendTo($(this));
+                var li = $("<li class=\"page-item\">");
+                var a = $("<a class=\"page-link\">");
+                $(li).append($(a).attr({ href: "javascript:void(0)", "data-page": i }).html(i)).appendTo($(this));
             }
 
 
@@ -283,6 +283,8 @@
             if (refresh) {
                 $(this).trigger("refresh");
             }
+
+            feather.replace();
         });
 
 

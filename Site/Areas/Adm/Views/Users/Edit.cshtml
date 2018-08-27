@@ -4,6 +4,7 @@
     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
 
     var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
+    var units = (System.Web.Mvc.SelectList)ViewBag.Units;
     var roleUser = ViewBag.RoleId;
 
     ViewBag.Title = @i18n.Resource.EditUser;
@@ -36,9 +37,11 @@
         function DisplayClaims(role) {
             if (role == roleId) {
                 $('#divClaims').show();
+                $('#divUnits').show();
             }
             else {
                 $('#divClaims').hide();
+                $('#divUnits').hide();
             }
         }
 
@@ -69,7 +72,7 @@
         @Html.ValidationMessageFor(model => model.RoleId)
     </div>
 
-    <div class="form-group" id="divClaims">
+    <div class="form-group" id="divUnits">
         <label>@i18n.Resource.Claims</label>
         @foreach (var claim in claims)
         {
@@ -77,6 +80,19 @@
                 <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims" @(Model.Claims.Contains(claim.ToString()) ? "checked=\"checked\"" : "")>
                 <label class="form-check-label" for="claims">
                     @claim
+                </label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group" id="divClaims">
+        <label>@i18n.Resource.Units</label>
+        @foreach (var unity in units)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@(unity.Value)" id="units" name="units" @(Model.Units.Contains(unity.Text) ? "checked=\"checked\"" : "")>
+                <label class="form-check-label" for="units">
+                    @(unity.Text)
                 </label>
             </div>
         }

@@ -87,13 +87,8 @@ namespace Repository
                                        FirstName = x.FirstName,
                                        LastName = x.LastName,
                                        Email = x.AspNetUsers.Email,
-                                       Claims = x.AspNetUsers.AspNetUserClaims.Select(y => new AspNetUserClaimVM()
-                                       {
-                                           Id = y.Id,
-                                           UserId = y.UserId,
-                                           ClaimType = y.ClaimType,
-                                           ClaimValue = y.ClaimValue,
-                                       }).ToList()
+                                       Claims = x.AspNetUsers.AspNetUserClaims.Select(y => y.ClaimType).ToList(),
+                                       Units = x.UserUnits.Select(y => y.Units.Name).ToList(),
                                    }).FirstOrDefault();
             }
 

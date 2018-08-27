@@ -13,8 +13,9 @@ namespace Repository
     public partial class DocumentRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentApi documentApi = new DocumentApi();
+        UnityRepository unityRepository = new UnityRepository();
         AttributeApi attributeApi = new AttributeApi();
+        DocumentApi documentApi = new DocumentApi();
 
         public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
@@ -74,24 +75,33 @@ namespace Repository
                         document = new Documents();
                         document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
 
-                        if (document == null)
+                        int? unityId = unityRepository.GetByCode(item.unity);
+                        if (unityId != null && unityId > 0)
                         {
-                            document = new Documents
+                            if (document == null)
                             {
-                                ExternalId = item.externalId,
-                                DocumentStatusId = item.documentStatusId,
-                                Registration = item.registration,
-                                Name = item.name
-                            };
+                                document = new Documents
+                                {
+                                    ExternalId = item.externalId,
+                                    DocumentStatusId = item.documentStatusId,
+                                    UnityId = unityId.Value,
+                                    Registration = item.registration,
+                                    Name = item.name
+                                };
 
-                            db.Documents.Add(document);
-                            db.SaveChanges();
+                                db.Documents.Add(document);
+                                db.SaveChanges();
 
-                            attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = item.externalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = item.externalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                            }
+                            else
+                            {
+                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                            }
                         }
                         else
                         {
-                            attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
                         }
                     }
                 }

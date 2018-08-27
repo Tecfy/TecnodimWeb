@@ -862,6 +862,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Não existe esse código de unidade {0}..
+        /// </summary>
+        public static string UnityNotFound {
+            get {
+                return ResourceManager.GetString("UnityNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erro desconhecido!.
         /// </summary>
         public static string UnknownError {

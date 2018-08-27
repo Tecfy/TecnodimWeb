@@ -16,6 +16,8 @@ namespace Model.VM
 
         public string Email { get; set; }
 
-        public List<AspNetUserClaimVM> Claims { get; set; }
+        public List<string> Claims { get; set; }
+
+        public List<string> Units { get; set; }
     }
 }

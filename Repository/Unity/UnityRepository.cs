@@ -50,6 +50,25 @@ namespace Repository
             return unitsOut;
         }
 
+        public UnitsDDLOut GetDDLAll()
+        {
+            UnitsDDLOut unitsDDLOut = new UnitsDDLOut();
+
+            using (var db = new DBContext())
+            {
+                unitsDDLOut.result = db.Units
+                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Select(x => new UnitsDDLVM()
+                                   {
+                                       UnityId = x.UnityId,
+                                       Name = x.Name,
+                                   })
+                                   .ToList();
+            }
+
+            return unitsDDLOut;
+        }
+
         public UnityOut GetById(UnityIn unityIn)
         {
             UnityOut unityOut = new UnityOut();
@@ -86,6 +105,20 @@ namespace Repository
             }
 
             return unityEditOut;
+        }
+
+        public int? GetByCode(string code)
+        {
+            int? unityId = null;
+
+            using (var db = new DBContext())
+            {
+                unityId = db.Units
+                            .Where(x => x.Active == true && x.DeletedDate == null && x.ExternalId == code)
+                            .Select(x => x.UnityId).FirstOrDefault();
+            }
+
+            return unityId;
         }
 
         public UnityOut Insert(UnityCreateIn unityCreateIn)

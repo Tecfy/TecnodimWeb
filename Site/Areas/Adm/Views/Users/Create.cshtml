@@ -4,6 +4,7 @@
     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
 
     var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
+    var units = (System.Web.Mvc.SelectList)ViewBag.Units;
     var roleId = ViewBag.RoleId;
 
     ViewBag.Title = i18n.Resource.CreateUser;
@@ -17,9 +18,11 @@
         function DisplayClaims(role) {
             if (role == roleId) {
                 $('#divClaims').show();
+                $('#divUnits').show();
             }
             else {
                 $('#divClaims').hide();
+                $('#divUnits').hide();
             }
         }
 
@@ -52,6 +55,19 @@
                 <input class="form-check-input" type="checkbox" value="@claim" id="claims" name="claims">
                 <label class="form-check-label" for="claims">
                     @claim
+                </label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group" id="divUnits" style="display: none;">
+        <label>@i18n.Resource.Units</label>
+        @foreach (var unity in units)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@(unity.Value)" id="units" name="units">
+                <label class="form-check-label" for="units">
+                    @(unity.Text)
                 </label>
             </div>
         }

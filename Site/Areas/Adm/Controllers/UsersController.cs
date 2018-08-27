@@ -19,6 +19,8 @@ namespace Site.Areas.Adm.Controllers
     public class UsersController : Controller
     {
         private readonly UserRepository userRepository = new UserRepository();
+        private readonly UnityRepository unityRepository = new UnityRepository();
+        private readonly UserUnityRepository userUnityRepository = new UserUnityRepository();
         private readonly AspNetRoleRepository aspNetRoleRepository = new AspNetRoleRepository();
         private ApplicationUserManager _userManager;
 
@@ -124,12 +126,20 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
+            #region Units
+
+            UnitsDDLOut unitsDDLOut = unityRepository.GetDDLAll();
+
+            ViewBag.Units = new SelectList(unitsDDLOut.result, "UnityId", "Name");
+
+            #endregion
+
             return View(new UserCreateIn());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(UserCreateIn userCreateIn, string[] claims)
+        public async Task<ActionResult> Create(UserCreateIn userCreateIn, string[] claims, int[] units)
         {
             if (ModelState.IsValid)
             {
@@ -163,6 +173,13 @@ namespace Site.Areas.Adm.Controllers
                     {
                         AddErrors(userOut.messages);
                     }
+                    else
+                    {
+                        foreach (var item in units)
+                        {
+                            userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userOut.result.UserId });
+                        }
+                    }
                 }
                 else
                 {
@@ -191,6 +208,14 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
+            #region Units
+
+            UnitsDDLOut unitsDDLOut = unityRepository.GetDDLAll();
+
+            ViewBag.Units = new SelectList(unitsDDLOut.result, "UnityId", "Name");
+
+            #endregion
+
             return View(userCreateIn);
         }
 
@@ -211,7 +236,8 @@ namespace Site.Areas.Adm.Controllers
                 FirstName = userEditOut.result.FirstName,
                 LastName = userEditOut.result.LastName,
                 Email = userEditOut.result.Email,
-                Claims = userEditOut.result.Claims.Select(x => x.ClaimType).ToList()
+                Claims = userEditOut.result.Claims,
+                Units = userEditOut.result.Units,
             };
 
             #region Roles
@@ -230,12 +256,20 @@ namespace Site.Areas.Adm.Controllers
 
             #endregion
 
+            #region Units
+
+            UnitsDDLOut unitsDDLOut = unityRepository.GetDDLAll();
+
+            ViewBag.Units = new SelectList(unitsDDLOut.result, "UnityId", "Name");
+
+            #endregion
+
             return View(userEditIn);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(UserEditIn userEditIn, string[] claims)
+        public async Task<ActionResult> Edit(UserEditIn userEditIn, string[] claims, int[] units)
         {
             if (ModelState.IsValid)
             {
@@ -304,6 +338,13 @@ namespace Site.Areas.Adm.Controllers
                     var result = await UserManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
+                        userUnityRepository.DeleteUnits(userEditIn.UserId);
+
+                        foreach (var item in units)
+                        {
+                            userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userEditIn.UserId });
+                        }
+
                         UserOut userOut = new UserOut();
                         userOut = userRepository.Update(userEditIn);
 
@@ -337,6 +378,14 @@ namespace Site.Areas.Adm.Controllers
             #region Claims
 
             ViewBag.Claims = Enum.GetValues(typeof(EClaims)).Cast<EClaims>().ToList();
+
+            #endregion
+
+            #region Units
+
+            UnitsDDLOut unitsDDLOut = unityRepository.GetDDLAll();
+
+            ViewBag.Units = new SelectList(unitsDDLOut.result, "UnityId", "Name");
 
             #endregion
 
