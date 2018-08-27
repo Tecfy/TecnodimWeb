@@ -135,23 +135,25 @@ namespace Site.Areas.Adm.Controllers
             {
                 var user = new ApplicationUser { UserName = userCreateIn.Email, Email = userCreateIn.Email };
 
-                user.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole()
-                {
-                    RoleId = userCreateIn.RoleId,
-                    UserId = user.Id
-                });
-
-                if (claims.Count() > 0)
-                {
-                    foreach (var item in claims)
-                    {
-                        await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim(item, item));
-                    }
-                }
-
                 var result = await UserManager.CreateAsync(user, userCreateIn.Password);
                 if (result.Succeeded)
                 {
+                    user.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole()
+                    {
+                        RoleId = userCreateIn.RoleId,
+                        UserId = user.Id
+                    });
+
+                    if (claims != null && claims.Count() > 0)
+                    {
+                        foreach (var item in claims)
+                        {
+                            await UserManager.AddClaimAsync(user.Id, new System.Security.Claims.Claim(item, item));
+                        }
+                    }
+
+                    await UserManager.UpdateAsync(user);
+
                     userCreateIn.AspNetUserId = user.Id;
 
                     UserOut userOut = new UserOut();
@@ -253,7 +255,7 @@ namespace Site.Areas.Adm.Controllers
                     }
                 }
 
-                if (claims.Count() > 0)
+                if (claims != null && claims.Count() > 0)
                 {
                     var claimsOld = await UserManager.GetClaimsAsync(userEditIn.AspNetUserId);
 
@@ -263,7 +265,7 @@ namespace Site.Areas.Adm.Controllers
                         {
                             await UserManager.RemoveClaimAsync(userEditIn.AspNetUserId, item);
                         }
-                    }    
+                    }
 
                     foreach (var item in claims)
                     {
@@ -271,6 +273,15 @@ namespace Site.Areas.Adm.Controllers
                         {
                             await UserManager.AddClaimAsync(userEditIn.AspNetUserId, new System.Security.Claims.Claim(item, item));
                         }
+                    }
+                }
+                else
+                {
+                    var claimsOld = await UserManager.GetClaimsAsync(userEditIn.AspNetUserId);
+
+                    foreach (var item in claimsOld)
+                    {
+                        await UserManager.RemoveClaimAsync(userEditIn.AspNetUserId, item);
                     }
                 }
 

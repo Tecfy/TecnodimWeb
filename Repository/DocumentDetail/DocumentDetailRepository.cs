@@ -9,7 +9,7 @@ namespace Repository
     public partial class DocumentDetailRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentRepository documentRepository = new DocumentRepository();
+        SliceRepository sliceRepository = new SliceRepository();
         DocumentDetailApi documentDetailApi = new DocumentDetailApi();
 
         public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
@@ -25,6 +25,16 @@ namespace Repository
             }
 
             documentDetailOut = documentDetailApi.GetDocumentDetail(registration);
+
+            SlicesOut slicesOut = new SlicesOut();
+
+            slicesOut = sliceRepository.GetSlices(new SlicesIn {documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = true });
+
+            documentDetailOut.result.Classificated = slicesOut.result.Count;
+
+            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = false });
+
+            documentDetailOut.result.NotClassificated = slicesOut.result.Count;
 
             registerEventRepository.SaveRegisterEvent(documentDetailIn.userId.Value, documentDetailIn.key.Value, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
             return documentDetailOut;

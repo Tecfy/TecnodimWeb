@@ -11,5 +11,9 @@
         public string cpf { get; set; }
 
         public string name { get; set; }
+
+        public int? Classificated { get; set; }
+
+        public int? NotClassificated { get; set; }
     }
 }
