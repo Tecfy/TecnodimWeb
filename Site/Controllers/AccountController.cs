@@ -16,6 +16,8 @@ namespace Site.Controllers
     public class AccountController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        UnityRepository unityRepository = new UnityRepository();
+        UserRepository userRepository = new UserRepository();
 
         [HttpPost, Route("Login"), AllowAnonymous]
         public AccessResultOut Login(AccessIn accessIn)
@@ -35,6 +37,13 @@ namespace Site.Controllers
                 string ret = response.Content.ReadAsStringAsync().Result;
 
                 accessResultOut.result = JsonConvert.DeserializeObject<AccessResultVM>(ret.Replace(".issued", "issued").Replace(".expires", "expires"));
+
+                if (accessResultOut.result != null)
+                {
+                    accessResultOut.result.Units = unityRepository.GetDDLAllByAspNetUserId(accessResultOut.result.aspNetUserId).result;
+                    accessResultOut.result.name = userRepository.GetNameByAspNetUserId(accessResultOut.result.aspNetUserId);
+                }
+
             }
             catch (Exception ex)
             {

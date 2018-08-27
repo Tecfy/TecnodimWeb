@@ -51,6 +51,20 @@ namespace Repository
             return usersOut;
         }
 
+        public string GetNameByAspNetUserId(string aspNetUserId)
+        {
+            string name = "";
+
+            using (var db = new DBContext())
+            {
+                name = db.Users
+                         .Where(x => x.Active == true && x.DeletedDate == null && x.AspNetUserId == aspNetUserId)
+                         .Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
+            }
+
+            return name;
+        }
+
         public UserOut GetById(UserIn userIn)
         {
             UserOut userOut = new UserOut();

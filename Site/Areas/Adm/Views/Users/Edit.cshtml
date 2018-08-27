@@ -5,7 +5,7 @@
 
     var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
     var units = (System.Web.Mvc.SelectList)ViewBag.Units;
-    var roleUser = ViewBag.RoleId;
+    var roleUser = ViewBag.RoleUser;
 
     ViewBag.Title = @i18n.Resource.EditUser;
     ViewBag.head = @i18n.Resource.EditUser;
@@ -20,7 +20,7 @@
         $(function () {
             $("#RoleId").val("@(Model.RoleId)");
             DisplayPassword(newPassword);
-            DisplayClaims(roleUser);
+            DisplayClaims(roleId);
         });
 
         function DisplayPassword(value) {
@@ -35,7 +35,7 @@
         }
 
         function DisplayClaims(role) {
-            if (role == roleId) {
+            if (role == roleUser) {
                 $('#divClaims').show();
                 $('#divUnits').show();
             }
@@ -45,16 +45,18 @@
             }
         }
 
-        $("html").on("click", ".btnCancel", function (e) {
-            window.location = "@(Url.Action("Index", "Users"))";
-        });
+        $(function () {
+            $("html").on("click", ".btnCancel", function (e) {
+                window.location = "@(Url.Action("Index", "Users"))";
+            });
 
-        $("html").on("click", '#NewPassword', function () {
-            DisplayPassword($("#NewPassword").prop("checked"));
-        });
+            $("html").on("click", '#NewPassword', function () {
+                DisplayPassword($("#NewPassword").prop("checked"));
+            });
 
-        $("html").on("change", '#RoleId', function () {
-            DisplayClaims(this.value);
+            $("html").on("change", '#RoleId', function () {
+                DisplayClaims(this.value);
+            });
         });
     </script>
 }

@@ -116,7 +116,7 @@ namespace Site.Areas.Adm.Controllers
 
             ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
-            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
+            ViewBag.RoleUser = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -175,9 +175,12 @@ namespace Site.Areas.Adm.Controllers
                     }
                     else
                     {
-                        foreach (var item in units)
+                        if (units != null && units.Count() > 0)
                         {
-                            userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userOut.result.UserId });
+                            foreach (var item in units)
+                            {
+                                userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userOut.result.UserId });
+                            }
                         }
                     }
                 }
@@ -198,7 +201,7 @@ namespace Site.Areas.Adm.Controllers
 
             ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
-            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
+            ViewBag.RoleUser = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -246,7 +249,7 @@ namespace Site.Areas.Adm.Controllers
 
             ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
-            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
+            ViewBag.RoleUser = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 
@@ -340,9 +343,12 @@ namespace Site.Areas.Adm.Controllers
                     {
                         userUnityRepository.DeleteUnits(userEditIn.UserId);
 
-                        foreach (var item in units)
+                        if (units != null && units.Count() > 0)
                         {
-                            userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userEditIn.UserId });
+                            foreach (var item in units)
+                            {
+                                userUnityRepository.Insert(new UserUnityCreateIn { UnityId = item, UserId = userEditIn.UserId });
+                            }
                         }
 
                         UserOut userOut = new UserOut();
@@ -371,7 +377,7 @@ namespace Site.Areas.Adm.Controllers
 
             ViewBag.RolesId = new SelectList(aspNetRolesOut.result, "RoleId", "Name");
 
-            ViewBag.RoleId = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
+            ViewBag.RoleUser = Ready.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"];
 
             #endregion
 

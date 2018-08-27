@@ -3,9 +3,11 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Model;
+using Newtonsoft.Json;
 using Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -65,7 +67,12 @@ namespace Site.Providers
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager, CookieAuthenticationDefaults.AuthenticationType);
 
             // Setting user authentication.
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            AuthenticationProperties properties = CreateProperties(
+                user.UserName,
+                user.Id,
+                JsonConvert.SerializeObject(user.Claims.Select(x => new { x.ClaimType }).ToList())
+                );
+
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
 
             // Grant access to authorize user.
@@ -154,12 +161,14 @@ namespace Site.Providers
         /// </summary>
         /// <param name="userName">User name parameter</param>
         /// <returns>Returns authenticated properties.</returns>
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userName, string aspNetUserId, string claims)
         {
             // Settings.
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userName", userName },
+                { "aspNetUserId", aspNetUserId },
+                { "claims", claims}
             };
 
             // Return info.

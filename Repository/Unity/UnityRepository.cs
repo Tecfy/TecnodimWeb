@@ -69,6 +69,25 @@ namespace Repository
             return unitsDDLOut;
         }
 
+        public UnitsDDLOut GetDDLAllByAspNetUserId(string aspNetUserId)
+        {
+            UnitsDDLOut unitsDDLOut = new UnitsDDLOut();
+
+            using (var db = new DBContext())
+            {
+                unitsDDLOut.result = db.UserUnits
+                                   .Where(x => x.Units.Active == true && x.Units.DeletedDate == null && x.Users.AspNetUserId == aspNetUserId)
+                                   .Select(x => new UnitsDDLVM()
+                                   {
+                                       UnityId = x.UnityId,
+                                       Name = x.Units.Name,
+                                   })
+                                   .ToList();
+            }
+
+            return unitsDDLOut;
+        }
+
         public UnityOut GetById(UnityIn unityIn)
         {
             UnityOut unityOut = new UnityOut();

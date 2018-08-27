@@ -5,7 +5,7 @@
 
     var claims = (List<Helper.Enum.EClaims>)ViewBag.Claims;
     var units = (System.Web.Mvc.SelectList)ViewBag.Units;
-    var roleId = ViewBag.RoleId;
+    var roleUser = ViewBag.RoleUser;
 
     ViewBag.Title = i18n.Resource.CreateUser;
     ViewBag.Head = i18n.Resource.CreateUser;
@@ -13,10 +13,10 @@
 
 @section headerScript{
     <script type="text/javascript">
-        var roleId = @(Html.Raw(jss.Serialize(roleId)));
+        var roleUser = @(Html.Raw(jss.Serialize(roleUser)));
 
         function DisplayClaims(role) {
-            if (role == roleId) {
+            if (role == roleUser) {
                 $('#divClaims').show();
                 $('#divUnits').show();
             }
@@ -26,12 +26,14 @@
             }
         }
 
-        $("html").on("click", ".btnCancel", function (e) {
-            window.location = "@(Url.Action("Index", "Users"))";
-        });
+        $(function () {
+            $("html").on("click", ".btnCancel", function (e) {
+                window.location = "@(Url.Action("Index", "Users"))";
+            });
 
-        $("html").on("change", '#RoleId', function () {
-            DisplayClaims(this.value);
+            $("html").on("change", '#RoleId', function () {
+                DisplayClaims(this.value);
+            });
         });
     </script>
 }
