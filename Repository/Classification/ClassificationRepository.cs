@@ -46,7 +46,7 @@ namespace Repository
 
             foreach (var item in classificationIn.additionalFields)
             {
-                SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new SliceCategoryAdditionalFieldIn()
+                ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new ApiSliceCategoryAdditionalFieldIn()
                 {
                     key = classificationIn.userId,
                     userId = classificationIn.key,

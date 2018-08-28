@@ -587,6 +587,18 @@ namespace DataEF.DataAccess
 		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
 		public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId (Primary key)
 
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
 		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
 		public int CategoryId { get; set; } // CategoryId
 
@@ -599,9 +611,6 @@ namespace DataEF.DataAccess
 		[Display(Name = "Required", ResourceType = typeof(i18n.Resource))]
 		public bool Required { get; set; } // Required
 
-		[Display(Name = "Confidential", ResourceType = typeof(i18n.Resource))]
-		public bool Confidential { get; set; } // Confidential
-
 		*/
 	}
 
@@ -613,6 +622,17 @@ namespace DataEF.DataAccess
         [DataEF.Attributes.Template.IdentityField()]
         public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId (Primary key)
 
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
         public int CategoryId { get; set; } // CategoryId
 
         public int AdditionalFieldId { get; set; } // AdditionalFieldId
@@ -620,8 +640,6 @@ namespace DataEF.DataAccess
         public bool Single { get; set; } // Single
 
         public bool Required { get; set; } // Required
-
-        public bool Confidential { get; set; } // Confidential
 
         // Reverse navigation
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_CategoryAdditionalFields;
@@ -632,9 +650,10 @@ namespace DataEF.DataAccess
 
         public CategoryAdditionalFields()
         {
+            Active = true;
+            CreatedDate = DateTime.Now;
             Single = false;
             Required = false;
-            Confidential = false;
             SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
             InitializePartial();
         }
@@ -728,7 +747,7 @@ namespace DataEF.DataAccess
 		[Display(Name = "DocumentStatus", ResourceType = typeof(i18n.Resource))]
 		public int DocumentStatusId { get; set; } // DocumentStatusId
 
-		[Display(Name = "UnityId", ResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
 		public int UnityId { get; set; } // UnityId
 
 		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
@@ -786,6 +805,7 @@ namespace DataEF.DataAccess
 
         // Foreign keys
         public virtual DocumentStatus DocumentStatus { get; set; } //  DocumentStatusId - FK_Documents_DocumentStatus
+        public virtual Units Units { get; set; } //  UnityId - FK_Documents_Units
 
         public Documents()
         {
@@ -1216,12 +1236,14 @@ namespace DataEF.DataAccess
         public string Name { get; set; } // Name
 
         // Reverse navigation
+        public virtual ICollection<Documents> Documents { get; set; } // Documents.FK_Documents_Units;
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Units;
 
         public Units()
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Documents = new List<Documents>();
             UserUnits = new List<UserUnits>();
             InitializePartial();
         }
@@ -1515,11 +1537,14 @@ namespace DataEF.DataAccess
             HasKey(x => x.CategoryAdditionalFieldId);
 
             Property(x => x.CategoryAdditionalFieldId).HasColumnName("CategoryAdditionalFieldId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
             Property(x => x.AdditionalFieldId).HasColumnName("AdditionalFieldId").IsRequired();
             Property(x => x.Single).HasColumnName("Single").IsRequired();
             Property(x => x.Required).HasColumnName("Required").IsRequired();
-            Property(x => x.Confidential).HasColumnName("Confidential").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.Categories).WithMany(b => b.CategoryAdditionalFields).HasForeignKey(c => c.CategoryId); // FK_CategoryAdditionalFields_Categories
@@ -1574,6 +1599,7 @@ namespace DataEF.DataAccess
 
             // Foreign keys
             HasRequired(a => a.DocumentStatus).WithMany(b => b.Documents).HasForeignKey(c => c.DocumentStatusId); // FK_Documents_DocumentStatus
+            HasRequired(a => a.Units).WithMany(b => b.Documents).HasForeignKey(c => c.UnityId); // FK_Documents_Units
             InitializePartial();
         }
         partial void InitializePartial();

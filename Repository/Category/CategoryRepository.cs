@@ -1,5 +1,6 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper.Enum;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -12,6 +13,7 @@ namespace Repository
     public class CategoryRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
         CategoryApi categoryApi = new CategoryApi();
 
         #region .: Adm :.
@@ -88,7 +90,7 @@ namespace Repository
                                    .Select(x => new CategoryVM()
                                    {
                                        CategoryId = x.CategoryId,
-                                       Parent = x.Categories1.Name,
+                                       Parent = x.Categories1.Code + " - " + x.Categories1.Name,
                                        Code = x.Code,
                                        Name = x.Name,
                                    }).FirstOrDefault();
@@ -108,11 +110,67 @@ namespace Repository
                                    .Select(x => new CategoryEditVM()
                                    {
                                        CategoryId = x.CategoryId,
-                                       ParentId = x.ParentId,
-                                       ExternalId = x.ExternalId,
+                                       Parent = x.Categories1.Code + " - " + x.Categories1.Name,
                                        Code = x.Code,
                                        Name = x.Name,
+
+                                       ShowIdentifier = x.CategoryAdditionalFields
+                                                         .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Identifier),
+
+                                       Identifier = x.CategoryAdditionalFields
+                                                     .Where(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Identifier)
+                                                     .Select(y => new CategoryAdditionalFieldVM()
+                                                     {
+                                                         CategoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                         AdditionalFieldId = y.AdditionalFieldId,
+                                                         CategoryId = y.CategoryId,
+                                                         Required = y.Required,
+                                                         Single = y.Single
+                                                     }).FirstOrDefault(),
+
+                                       ShowCompetence = x.CategoryAdditionalFields
+                                                         .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Competence),
+
+                                       Competence = x.CategoryAdditionalFields
+                                                     .Where(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Competence)
+                                                     .Select(y => new CategoryAdditionalFieldVM()
+                                                     {
+                                                         CategoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                         AdditionalFieldId = y.AdditionalFieldId,
+                                                         CategoryId = y.CategoryId,
+                                                         Required = y.Required,
+                                                         Single = y.Single
+                                                     }).FirstOrDefault(),
+
+                                       ShowValidity = x.CategoryAdditionalFields
+                                                         .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Validity),
+
+                                       Validity = x.CategoryAdditionalFields
+                                                    .Where(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Validity)
+                                                    .Select(y => new CategoryAdditionalFieldVM()
+                                                    {
+                                                        CategoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                        AdditionalFieldId = y.AdditionalFieldId,
+                                                        CategoryId = y.CategoryId,
+                                                        Required = y.Required,
+                                                        Single = y.Single
+                                                    }).FirstOrDefault(),
+
+                                       ShowDocumentView = x.CategoryAdditionalFields
+                                                           .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.DocumentView),
+
+                                       DocumentView = x.CategoryAdditionalFields
+                                                       .Where(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.DocumentView)
+                                                       .Select(y => new CategoryAdditionalFieldVM()
+                                                       {
+                                                           CategoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                           AdditionalFieldId = y.AdditionalFieldId,
+                                                           CategoryId = y.CategoryId,
+                                                           Required = y.Required,
+                                                           Single = y.Single
+                                                       }).FirstOrDefault(),
                                    }).FirstOrDefault();
+
             }
 
             return categoryEditOut;
@@ -127,20 +185,100 @@ namespace Repository
                 Categories category = db.Categories.Find(categoryEditIn.CategoryId);
 
                 category.EditedDate = DateTime.Now;
-                category.ParentId = categoryEditIn.ParentId;
-                category.ExternalId = categoryEditIn.ExternalId;
-                category.Code = categoryEditIn.Code;
-                category.Name = categoryEditIn.Name;
 
                 db.Entry(category).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                #region Identifier
+                if (categoryEditIn.ShowIdentifier)
+                {
+                    if (categoryEditIn.Identifier.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Identifier.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Identifier.AdditionalFieldId, CategoryId = categoryEditIn.Identifier.CategoryId, Required = categoryEditIn.Identifier.Required, Single = categoryEditIn.Identifier.Single });
+                    }
+                    else
+                    {
+                        categoryAdditionalFieldRepository.Insert(new CategoryAdditionalFieldCreateIn { AdditionalFieldId = categoryEditIn.Identifier.AdditionalFieldId, CategoryId = categoryEditIn.Identifier.CategoryId, Required = categoryEditIn.Identifier.Required, Single = categoryEditIn.Identifier.Single });
+                    }
+                }
+                else
+                {
+                    if (categoryEditIn.Identifier.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Identifier.CategoryAdditionalFieldId);
+                    }
+                }
+                #endregion
+
+                #region Competence
+                if (categoryEditIn.ShowCompetence)
+                {
+                    if (categoryEditIn.Competence.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Competence.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Competence.AdditionalFieldId, CategoryId = categoryEditIn.Competence.CategoryId, Required = categoryEditIn.Competence.Required, Single = categoryEditIn.Competence.Single });
+                    }
+                    else
+                    {
+                        categoryAdditionalFieldRepository.Insert(new CategoryAdditionalFieldCreateIn { AdditionalFieldId = categoryEditIn.Competence.AdditionalFieldId, CategoryId = categoryEditIn.Competence.CategoryId, Required = categoryEditIn.Competence.Required, Single = categoryEditIn.Competence.Single });
+                    }
+                }
+                else
+                {
+                    if (categoryEditIn.Competence.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Competence.CategoryAdditionalFieldId);
+                    }
+                }
+                #endregion
+
+                #region Validity
+                if (categoryEditIn.ShowValidity)
+                {
+                    if (categoryEditIn.Validity.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Validity.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Validity.AdditionalFieldId, CategoryId = categoryEditIn.Validity.CategoryId, Required = categoryEditIn.Validity.Required, Single = categoryEditIn.Validity.Single });
+                    }
+                    else
+                    {
+                        categoryAdditionalFieldRepository.Insert(new CategoryAdditionalFieldCreateIn { AdditionalFieldId = categoryEditIn.Validity.AdditionalFieldId, CategoryId = categoryEditIn.Validity.CategoryId, Required = categoryEditIn.Validity.Required, Single = categoryEditIn.Validity.Single });
+                    }
+                }
+                else
+                {
+                    if (categoryEditIn.Validity.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Validity.CategoryAdditionalFieldId);
+                    }
+                }
+                #endregion
+
+                #region DocumentView
+                if (categoryEditIn.ShowDocumentView)
+                {
+                    if (categoryEditIn.DocumentView.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.DocumentView.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.DocumentView.AdditionalFieldId, CategoryId = categoryEditIn.DocumentView.CategoryId, Required = categoryEditIn.DocumentView.Required, Single = categoryEditIn.DocumentView.Single });
+                    }
+                    else
+                    {
+                        categoryAdditionalFieldRepository.Insert(new CategoryAdditionalFieldCreateIn { AdditionalFieldId = categoryEditIn.DocumentView.AdditionalFieldId, CategoryId = categoryEditIn.DocumentView.CategoryId, Required = categoryEditIn.DocumentView.Required, Single = categoryEditIn.DocumentView.Single });
+                    }
+                }
+                else
+                {
+                    if (categoryEditIn.DocumentView.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.DocumentView.CategoryAdditionalFieldId);
+                    }
+                }
+                #endregion
 
                 categoryOut.result = db.Categories
                                        .Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == category.CategoryId)
                                        .Select(x => new CategoryVM()
                                        {
                                            CategoryId = x.CategoryId,
-                                           Parent = x.Categories1.Name,
+                                           Parent = x.Categories1.Code + " - " + x.Categories1.Name,
                                            Code = x.Code,
                                            Name = x.Name,
                                        }).FirstOrDefault();
@@ -175,7 +313,6 @@ namespace Repository
                                                                 type = y.AdditionalFields.Type,
                                                                 single = y.Single,
                                                                 required = y.Required,
-                                                                confidential = y.Confidential,
                                                             }).ToList()
                                     }).FirstOrDefault();
             }
@@ -212,7 +349,6 @@ namespace Repository
                                                                 type = y.AdditionalFields.Type,
                                                                 single = y.Single,
                                                                 required = y.Required,
-                                                                confidential = y.Confidential,
                                                             }).ToList()
                                     }).FirstOrDefault();
             }

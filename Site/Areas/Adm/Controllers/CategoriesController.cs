@@ -1,4 +1,5 @@
-﻿using Model.In;
+﻿using Helper.Enum;
+using Model.In;
 using Model.Out;
 using Repository;
 using System;
@@ -87,19 +88,18 @@ namespace Site.Areas.Adm.Controllers
             CategoryEditIn categoryEditIn = new CategoryEditIn
             {
                 CategoryId = categoryEditOut.result.CategoryId,
-                ParentId = categoryEditOut.result.ParentId,
-                ExternalId = categoryEditOut.result.ExternalId,
+                Parent = categoryEditOut.result.Parent,
                 Code = categoryEditOut.result.Code,
                 Name = categoryEditOut.result.Name,
+                ShowIdentifier = categoryEditOut.result.ShowIdentifier,
+                ShowCompetence = categoryEditOut.result.ShowCompetence,
+                ShowValidity = categoryEditOut.result.ShowValidity,
+                ShowDocumentView = categoryEditOut.result.ShowDocumentView,
+                Identifier = categoryEditOut.result.Identifier != null ? categoryEditOut.result.Identifier : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Identifier),
+                Competence = categoryEditOut.result.Competence != null ? categoryEditOut.result.Competence : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Competence),
+                Validity = categoryEditOut.result.Validity != null ? categoryEditOut.result.Validity : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Validity),
+                DocumentView = categoryEditOut.result.DocumentView != null ? categoryEditOut.result.Validity : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.DocumentView),
             };
-
-            #region Parent
-
-            CategoriesDDLOut categoriesDDLOut = categoryRepository.GetDDLAll();
-
-            ViewBag.ParentsId = new SelectList(categoriesDDLOut.result, "CategoryId", "Name");
-
-            #endregion
 
             return View(categoryEditIn);
         }
@@ -123,14 +123,6 @@ namespace Site.Areas.Adm.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-            #region Parent
-
-            CategoriesDDLOut categoriesDDLOut = categoryRepository.GetDDLAll();
-
-            ViewBag.ParentsId = new SelectList(categoriesDDLOut.result, "CategoryId", "Name");
-
-            #endregion
 
             return View(categoryEditIn);
         }

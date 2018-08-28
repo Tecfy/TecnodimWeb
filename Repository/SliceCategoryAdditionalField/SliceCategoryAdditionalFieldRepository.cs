@@ -11,9 +11,9 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
-        public SliceCategoryAdditionalFieldOut SaveSliceCategoryAdditionalField(SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
+        public ApiSliceCategoryAdditionalFieldOut SaveSliceCategoryAdditionalField(ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
         {
-            SliceCategoryAdditionalFieldOut sliceCategoryAdditionalFieldOut = new SliceCategoryAdditionalFieldOut();
+            ApiSliceCategoryAdditionalFieldOut sliceCategoryAdditionalFieldOut = new ApiSliceCategoryAdditionalFieldOut();
 
             registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId.Value, sliceCategoryAdditionalFieldIn.key.Value, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField", "");
 
@@ -49,7 +49,7 @@ namespace Repository
             return sliceCategoryAdditionalFieldOut;
         }
 
-        public void DeleteSliceCategoryAdditionalField(SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
+        public void DeleteSliceCategoryAdditionalField(ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
         {
             registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId.Value, sliceCategoryAdditionalFieldIn.key.Value, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
 

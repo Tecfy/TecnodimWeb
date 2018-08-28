@@ -1,15 +1,31 @@
-﻿namespace Model.VM
+﻿using Model.Out;
+
+namespace Model.VM
 {
     public class CategoryEditVM
     {
         public int CategoryId { get; set; }
 
-        public int? ParentId { get; set; }
-
-        public int ExternalId { get; set; }
+        public string Parent { get; set; }
 
         public string Code { get; set; }
 
         public string Name { get; set; }
+
+        public bool ShowIdentifier { get; set; }
+
+        public bool ShowCompetence { get; set; }
+
+        public bool ShowValidity { get; set; }
+
+        public bool ShowDocumentView { get; set; }
+
+        public CategoryAdditionalFieldVM Identifier { get; set; }
+
+        public CategoryAdditionalFieldVM Competence { get; set; }
+
+        public CategoryAdditionalFieldVM Validity { get; set; }
+
+        public CategoryAdditionalFieldVM DocumentView { get; set; }
     }
 }

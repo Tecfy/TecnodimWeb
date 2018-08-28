@@ -148,6 +148,7 @@
     <Compile Include="Account\IdentityConfig.cs" />
     <Compile Include="AspNetUserClaim\AspNetUserClaimRepository.cs" />
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
+    <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
     <Compile Include="SliceCategoryAdditionalField\SliceCategoryAdditionalFieldRepository.cs" />
     <Compile Include="SlicePage\SlicePageRepository.cs" />

@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\EAdditionalField.cs" />
     <Compile Include="Enum\EClaims.cs" />
     <Compile Include="Enum\EDocumentStatus.cs" />
     <Compile Include="Extensions\Extensions.cs" />

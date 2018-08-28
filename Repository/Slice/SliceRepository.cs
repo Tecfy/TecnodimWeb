@@ -44,7 +44,6 @@ namespace Repository
                                             value = y.Value,
                                             single = y.CategoryAdditionalFields.Single,
                                             required = y.CategoryAdditionalFields.Required,
-                                            confidential = y.CategoryAdditionalFields.Confidential,
                                         }).ToList()
                                     })
                                     .FirstOrDefault();
@@ -84,7 +83,6 @@ namespace Repository
                                             value = y.Value,
                                             single = y.CategoryAdditionalFields.Single,
                                             required = y.CategoryAdditionalFields.Required,
-                                            confidential = y.CategoryAdditionalFields.Confidential,
                                         }).ToList()
                                     })
                                     .OrderBy(x => x.sliceId)

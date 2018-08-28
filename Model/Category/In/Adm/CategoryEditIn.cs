@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Model.VM;
+using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
@@ -6,23 +7,40 @@ namespace Model.In
     {
         [Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
         public int CategoryId { get; set; }
-
-        [Required]
+        
         [Display(Name = "Parent", ResourceType = typeof(i18n.Resource))]
-        public int? ParentId { get; set; }
+        public string Parent { get; set; }        
 
-        [Required]
-        [Display(Name = "External", ResourceType = typeof(i18n.Resource))]
-        public int ExternalId { get; set; }
-
-        [Required]
-        [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
         public string Code { get; set; }
 
-        [Required]
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string Name { get; set; }
+
+
+        [Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
+        public bool ShowIdentifier { get; set; }
+
+        [Display(Name = "Competence", ResourceType = typeof(i18n.Resource))]
+        public bool ShowCompetence { get; set; }
+
+        [Display(Name = "Validity", ResourceType = typeof(i18n.Resource))]
+        public bool ShowValidity { get; set; }
+
+        [Display(Name = "DocumentView", ResourceType = typeof(i18n.Resource))]
+        public bool ShowDocumentView { get; set; }
+
+
+        [Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
+        public CategoryAdditionalFieldVM Identifier { get; set; }
+
+        [Display(Name = "Competence", ResourceType = typeof(i18n.Resource))]
+        public CategoryAdditionalFieldVM Competence { get; set; }
+
+        [Display(Name = "Validity", ResourceType = typeof(i18n.Resource))]
+        public CategoryAdditionalFieldVM Validity { get; set; }
+
+        [Display(Name = "DocumentView", ResourceType = typeof(i18n.Resource))]
+        public CategoryAdditionalFieldVM DocumentView { get; set; }
     }
 }

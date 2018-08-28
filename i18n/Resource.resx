@@ -402,4 +402,13 @@
   <data name="UnityNotFound" xml:space="preserve">
     <value>Não existe esse código de unidade {0}.</value>
   </data>
+  <data name="Competence" xml:space="preserve">
+    <value>Competência</value>
+  </data>
+  <data name="DocumentView" xml:space="preserve">
+    <value>Visualização do documento</value>
+  </data>
+  <data name="Validity" xml:space="preserve">
+    <value>Validade</value>
+  </data>
 </root>

@@ -214,6 +214,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Competência.
+        /// </summary>
+        public static string Competence {
+            get {
+                return ResourceManager.GetString("Competence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confidencial.
         /// </summary>
         public static string Confidential {
@@ -327,6 +336,15 @@ namespace i18n {
         public static string Document {
             get {
                 return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualização do documento.
+        /// </summary>
+        public static string DocumentView {
+            get {
+                return ResourceManager.GetString("DocumentView", resourceCulture);
             }
         }
         
@@ -894,6 +912,15 @@ namespace i18n {
         public static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validade.
+        /// </summary>
+        public static string Validity {
+            get {
+                return ResourceManager.GetString("Validity", resourceCulture);
             }
         }
         
