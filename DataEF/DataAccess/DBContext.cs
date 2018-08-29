@@ -1131,6 +1131,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
 		public bool Sent { get; set; } // Sent
 
+		[Display(Name = "Sending", ResourceType = typeof(i18n.Resource))]
+		public bool Sending { get; set; } // Sending
+
+		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SendingDate { get; set; } // SendingDate
+
 		*/
 	}
 
@@ -1161,6 +1167,10 @@ namespace DataEF.DataAccess
 
         public bool Sent { get; set; } // Sent
 
+        public bool Sending { get; set; } // Sending
+
+        public DateTime? SendingDate { get; set; } // SendingDate
+
         // Reverse navigation
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_Slices;
         public virtual ICollection<SlicePages> SlicePages { get; set; } // SlicePages.FK_SlicePages_Slices;
@@ -1174,6 +1184,7 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             Sent = false;
+            Sending = false;
             SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
             SlicePages = new List<SlicePages>();
             InitializePartial();
@@ -1713,6 +1724,8 @@ namespace DataEF.DataAccess
             Property(x => x.CategoryId).HasColumnName("CategoryId").IsOptional();
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+            Property(x => x.Sending).HasColumnName("Sending").IsRequired();
+            Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents

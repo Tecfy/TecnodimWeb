@@ -8,6 +8,8 @@
 
         public string registration { get; set; }
 
-        public string status { get; set; }
+        public int statusId { get; set; }
+
+        public string status { get; set; }        
     }
 }

@@ -182,7 +182,6 @@ namespace Repository
 
                 slice.EditedDate = DateTime.Now;
                 slice.CategoryId = sliceUpdateIn.categoryId;
-                slice.Name = sliceUpdateIn.name;
 
                 db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

@@ -15,17 +15,10 @@ namespace Model.In
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
         public int? categoryId { get; set; }
 
-        [Required]
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-        [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
-        public string name { get; set; }
-
         [Display(Name = "Pages", ResourceType = typeof(i18n.Resource))]
-        public List<SlicePagesIn> pages { get; set; }
+        public List<SlicePagesIn> slicePages { get; set; }
 
         [Display(Name = "AdditionalFields", ResourceType = typeof(i18n.Resource))]
-        public List<AdditionalFieldIn> additionalFields { get; set; }
-
-        
+        public List<AdditionalFieldIn> additionalFields { get; set; }        
     }
 }

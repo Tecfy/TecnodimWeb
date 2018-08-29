@@ -1,5 +1,6 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper.Enum;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
+using WebSupergoo.ABCpdf11;
 
 namespace Repository
 {
@@ -16,6 +18,10 @@ namespace Repository
         UnityRepository unityRepository = new UnityRepository();
         AttributeApi attributeApi = new AttributeApi();
         DocumentApi documentApi = new DocumentApi();
+
+        #region .: API :.
+
+        #region .: ECM :.
 
         public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
@@ -111,6 +117,84 @@ namespace Repository
             return ecmDocumentsOut;
         }
 
+        public ECMDocumentsSendOut GetECMSendDocuments(ECMDocumentsSendIn ecmDocumentsSendIn)
+        {
+            ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId.Value, ecmDocumentsSendIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMSendDocuments", "");
+
+            #region .: Search Documents Finished :.
+
+            DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
+            documentsFinishedOut = GetDocumentsFinished(new DocumentsFinishedIn() { userId = ecmDocumentsSendIn.userId, key = ecmDocumentsSendIn.key });
+
+            #endregion
+
+            #region .: Process Queue :.
+
+            foreach (var item in documentsFinishedOut.result)
+            {
+                try
+                {
+                    DocumentSliceProcess(item);
+                }
+                catch (Exception ex)
+                {
+                    ecmDocumentsSendOut.messages.Add(ex.Message);
+                }
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId.Value, ecmDocumentsSendIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
+            return ecmDocumentsSendOut;
+        }
+
+        #endregion
+
+        #region .: Local :.
+
+        public DocumentsFinishedOut GetDocumentsFinished(DocumentsFinishedIn documentsFinishedIn)
+        {
+            DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentsFinished", "");
+
+            #region .: Documents Finished :.
+
+            using (var db = new DBContext())
+            {
+                documentsFinishedOut.result = db.Slices
+                                               .Where(x => x.Active == true
+                                                        && x.DeletedDate == null
+                                                        && x.Sent == false
+                                                        && x.Sending == false
+                                                        && x.Documents.Active == true
+                                                        && x.Documents.DeletedDate == null
+                                                        && x.Documents.DocumentStatusId == (int)EDocumentStatus.Finished)
+                                               .Select(x => new DocumentsFinishedVM()
+                                               {
+                                                   documentId = x.DocumentId,
+                                                   sliceId = x.SliceId,
+                                                   externalId = x.Documents.ExternalId,
+                                                   registration = x.Documents.Registration,
+                                                   categoryId = x.Categories.Code,
+                                                   category = x.Categories.Name,
+                                                   title = x.Categories.Name + ".pdf",
+                                                   pages = x.SlicePages.Select(y => new SlicePagesFinishedVM()
+                                                   {
+                                                       slicePageId = y.SlicePageId,
+                                                       page = y.Page,
+                                                       rotate = y.Rotate,
+                                                   }).ToList()
+                                               })
+                                               .ToList();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentsFinished", "");
+            return documentsFinishedOut;
+        }
+
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)
         {
             DocumentsOut documentsOut = new DocumentsOut();
@@ -119,12 +203,16 @@ namespace Repository
             using (var db = new DBContext())
             {
                 documentsOut.result = db.Documents
-                                        .Where(x => x.Active == true && x.DeletedDate == null && documentsIn.documentStatusIds.Contains(x.DocumentStatusId))
+                                        .Where(x => x.Active == true
+                                                    && x.DeletedDate == null
+                                                    && documentsIn.documentStatusIds.Contains(x.DocumentStatusId)
+                                                    && x.UnityId == documentsIn.unityId)
                                         .Select(x => new DocumentsVM()
                                         {
                                             documentId = x.DocumentId,
                                             name = x.Name,
                                             registration = x.Registration,
+                                            statusId = x.DocumentStatusId,
                                             status = x.DocumentStatus.Name,
                                         }).ToList();
             }
@@ -158,6 +246,12 @@ namespace Repository
             return documentUpdateOut;
         }
 
+        #endregion
+
+        #endregion
+
+        #region .: Helper :.
+
         public List<int> GetRemainingDocumentPages(RemainingDocumenPagestIn remainingDocumenPagestIn)
         {
             List<int> pages = new List<int>();
@@ -172,5 +266,133 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - End", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
             return pages;
         }
+
+        private void DocumentSliceProcess(DocumentsFinishedVM documentsFinishedVM)
+        {
+            Slices slice = new Slices();
+
+            try
+            {
+                #region .: Validate Slice :.
+
+                using (var db = new DBContext())
+                {
+                    slice = db.Slices.Where(x => x.Sent == false && x.Sending == false && x.SliceId == documentsFinishedVM.sliceId).FirstOrDefault();
+
+                    if (slice == null)
+                    {
+                        throw new Exception(string.Format(i18n.Resource.SliceNoProcess, documentsFinishedVM.sliceId));
+                    }
+
+                    slice.Sending = true;
+                    slice.SendingDate = DateTime.Now;
+
+                    db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                #endregion
+
+                #region .: Search Document Original :.
+
+                ECMDocumentOut ecmDocumentOut = documentApi.GetECMDocument(documentsFinishedVM.externalId);
+
+                if (!ecmDocumentOut.success)
+                {
+                    throw new Exception(ecmDocumentOut.messages.FirstOrDefault());
+                }
+
+                #endregion
+
+                #region .: Slice Document :.
+
+                PDFIn pdfIn = new PDFIn
+                {
+                    archive = ecmDocumentOut.result.archive,
+                    pages = documentsFinishedVM.pages,
+                };
+
+                string file = Rotate(pdfIn);
+
+                #endregion
+
+                #region .: Sent New Document :.
+
+                ECMDocumentSaveIn ecmDocumentSaveIn = new ECMDocumentSaveIn
+                {
+                    registration = documentsFinishedVM.registration,
+                    categoryId = documentsFinishedVM.categoryId,
+                    category = documentsFinishedVM.category,
+                    archive = file,
+                    title = documentsFinishedVM.title,
+                };
+
+                ECMDocumentSaveOut ecmDocumentSaveOut = documentApi.PostECMDocumentSave(ecmDocumentSaveIn);
+
+                if (!ecmDocumentSaveOut.success)
+                {
+                    throw new Exception(ecmDocumentOut.messages.FirstOrDefault());
+                }
+
+                #endregion
+
+                #region .: Update Slice :.
+
+                using (var db = new DBContext())
+                {
+                    slice.Sent = true;
+                    slice.Sending = false;
+
+                    db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                if (slice != null)
+                {
+                    using (var db = new DBContext())
+                    {
+                        slice.Sending = false;
+
+                        db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string Rotate(PDFIn pdfIn)
+        {
+            string archive = string.Empty;
+
+            Doc theDoc = new Doc();
+            theDoc.Read(Convert.FromBase64String(pdfIn.archive));
+
+            int theCount = theDoc.PageCount;
+            string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
+            theDoc.RemapPages(thePages);
+
+            for (int p = 1; p <= theDoc.PageCount; p++)
+            {
+                theDoc.PageNumber = p;
+
+                if (pdfIn.pages[p - 1].rotate != null && pdfIn.pages[p - 1].rotate > 0)
+                    if (pdfIn.pages[p - 1].rotate % 90 == 0)
+                        theDoc.SetInfo(theDoc.Page, "/Rotate", pdfIn.pages[p - 1].rotate.ToString());
+            }
+
+            archive = System.Convert.ToBase64String(theDoc.GetData());
+
+            theDoc.Clear();
+
+            return archive;
+        }
+
+        #endregion
     }
 }

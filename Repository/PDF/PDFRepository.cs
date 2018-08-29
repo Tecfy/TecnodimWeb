@@ -64,32 +64,6 @@ namespace Repository
             return pdfOut;
         }
 
-        public void Rotate(PDFIn pdfIn)
-        {
-            //TODO Ajustar o Método de Rotação
-            /*
-            Doc theDoc = new Doc();
-            //theDoc.Read(documentOut.result.archive);
-
-            int theCount = theDoc.PageCount;
-            string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
-            theDoc.RemapPages(thePages);
-
-            for (int p = 1; p <= theDoc.PageCount; p++)
-            {
-                theDoc.PageNumber = p;
-
-                if (pdfIn.pages.Any(x => x.index == p && x.rotation != null && x.rotation > 0))
-                    if (pdfIn.pages.Where(x => x.index == p).FirstOrDefault().rotation % 90 == 0)
-                        theDoc.SetInfo(theDoc.Page, "/Rotate", pdfIn.pages.Where(x => x.index == p).FirstOrDefault().rotation.ToString());
-            }
-
-            theDoc.Save(@"C:\\Temp\\Tecnodim\\RemapPages.pdf");
-
-            theDoc.Clear();
-            */
-        }
-
         #endregion
     }
 }

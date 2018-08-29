@@ -58,7 +58,47 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentSlices()
+        public ECMDocumentsSendOut GetECMSendDocuments()
+        {
+            ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                    ecmDocumentsSendOut = documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
+
+                ecmDocumentsSendOut.successMessage = null;
+                ecmDocumentsSendOut.messages.Add(ex.Message);
+            }
+
+            return ecmDocumentsSendOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public DocumentsOut GetDocumentSlices(int id)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -71,7 +111,7 @@ namespace Site.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.New);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -102,7 +142,7 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentClassificateds()
+        public DocumentsOut GetDocumentClassificateds(int id)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -116,7 +156,7 @@ namespace Site.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
                     documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }

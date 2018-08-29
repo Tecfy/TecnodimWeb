@@ -781,6 +781,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enviando.
+        /// </summary>
+        public static string Sending {
+            get {
+                return ResourceManager.GetString("Sending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Único.
         /// </summary>
         public static string Single {
@@ -795,6 +804,15 @@ namespace i18n {
         public static string Slice {
             get {
                 return ResourceManager.GetString("Slice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O recorte {0} já foi processado ou está sendo processado..
+        /// </summary>
+        public static string SliceNoProcess {
+            get {
+                return ResourceManager.GetString("SliceNoProcess", resourceCulture);
             }
         }
         

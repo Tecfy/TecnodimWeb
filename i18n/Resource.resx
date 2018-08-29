@@ -411,4 +411,10 @@
   <data name="Validity" xml:space="preserve">
     <value>Validade</value>
   </data>
+  <data name="Sending" xml:space="preserve">
+    <value>Enviando</value>
+  </data>
+  <data name="SliceNoProcess" xml:space="preserve">
+    <value>O recorte {0} já foi processado ou está sendo processado.</value>
+  </data>
 </root>

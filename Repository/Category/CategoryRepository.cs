@@ -353,7 +353,7 @@ namespace Repository
                                     }).FirstOrDefault();
             }
 
-            if (categorySearchOut.result.parentId != null)
+            if (categorySearchOut.result != null && categorySearchOut.result.parentId != null)
             {
                 categorySearchOut.result.parents = GetParents(categorySearchOut.result.parentId.Value, new List<string>());
                 categorySearchOut.result.parents = categorySearchOut.result.parents.OrderBy(x => x).ToList();

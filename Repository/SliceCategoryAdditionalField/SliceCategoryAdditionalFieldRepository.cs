@@ -19,7 +19,12 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                SliceCategoryAdditionalFields sliceCategoryAdditionalField = db.SliceCategoryAdditionalFields.Where(x => x.Active == true && x.DeletedDate == null && x.SliceId == sliceCategoryAdditionalFieldIn.sliceId && x.CategoryAdditionalFieldId == sliceCategoryAdditionalFieldIn.categoryAdditionalFieldId).FirstOrDefault();
+                SliceCategoryAdditionalFields sliceCategoryAdditionalField = db.SliceCategoryAdditionalFields
+                                                                               .Where(x => x.Active == true 
+                                                                                       && x.DeletedDate == null 
+                                                                                       && x.SliceId == sliceCategoryAdditionalFieldIn.sliceId 
+                                                                                       && x.CategoryAdditionalFieldId == sliceCategoryAdditionalFieldIn.categoryAdditionalFieldId
+                                                                                     ).FirstOrDefault();
 
                 if (sliceCategoryAdditionalField == null)
                 {
@@ -49,17 +54,17 @@ namespace Repository
             return sliceCategoryAdditionalFieldOut;
         }
 
-        public void DeleteSliceCategoryAdditionalField(ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
+        public void DeleteSliceCategoryAdditionalField(ApiSliceCategoryAdditionalFieldDeleteIn apiSliceCategoryAdditionalFieldDeleteIn)
         {
-            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId.Value, sliceCategoryAdditionalFieldIn.key.Value, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.userId.Value, apiSliceCategoryAdditionalFieldDeleteIn.key.Value, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
 
             using (var db = new DBContext())
             {
                 List<SliceCategoryAdditionalFields> sliceCategoryAdditionalFields = db.SliceCategoryAdditionalFields
                                                                                       .Where(x => x.Active == true
                                                                                                && x.DeletedDate == null
-                                                                                               && x.SliceId == sliceCategoryAdditionalFieldIn.sliceId
-                                                                                               && x.CategoryAdditionalFields.CategoryId != sliceCategoryAdditionalFieldIn.categoryId
+                                                                                               && x.SliceId == apiSliceCategoryAdditionalFieldDeleteIn.sliceId
+                                                                                               && x.CategoryAdditionalFields.CategoryId != apiSliceCategoryAdditionalFieldDeleteIn.categoryId
                                                                                             ).ToList();
 
                 foreach (var item in sliceCategoryAdditionalFields)
@@ -72,8 +77,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId.Value, sliceCategoryAdditionalFieldIn.key.Value, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.userId.Value, apiSliceCategoryAdditionalFieldDeleteIn.key.Value, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
         }
-
     }
 }

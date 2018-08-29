@@ -1,6 +1,6 @@
 ﻿namespace Model.VM
 {
-    public class SlicePagesVM
+    public class SlicePagesFinishedVM
     {
         public int slicePageId { get; set; }
 
