@@ -33,6 +33,23 @@ namespace Repository
             return slicePageOut;
         }
 
+        public void DeleteSlicePage(SlicePageDeleteIn slicePageDeleteIn)
+        {
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId.Value, slicePageDeleteIn.key.Value, "Log - Start", "Repository.SlicePageRepository.DeleteSlicePage", "");
+
+            using (var db = new DBContext())
+            {
+                SlicePages slicePages = db.SlicePages.Find(slicePageDeleteIn.slicePageId);
+                slicePages.Active = false;
+                slicePages.DeletedDate = DateTime.Now;
+
+                db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId.Value, slicePageDeleteIn.key.Value, "Log - End", "Repository.SlicePageRepository.DeleteSlicePage", "");
+        }
+
         public void UpdateSlicePage(SlicePageUpdateIn slicePageUpdateIn)
         {
             registerEventRepository.SaveRegisterEvent(slicePageUpdateIn.userId.Value, slicePageUpdateIn.key.Value, "Log - Start", "Repository.SlicePageRepository.UpdateSlicePage", "");

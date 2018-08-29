@@ -124,8 +124,7 @@ namespace Repository
 
             #region .: Search Documents Finished :.
 
-            DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
-            documentsFinishedOut = GetDocumentsFinished(new DocumentsFinishedIn() { userId = ecmDocumentsSendIn.userId, key = ecmDocumentsSendIn.key });
+            DocumentsFinishedOut documentsFinishedOut = GetDocumentsFinished(new DocumentsFinishedIn() { userId = ecmDocumentsSendIn.userId, key = ecmDocumentsSendIn.key });
 
             #endregion
 
@@ -140,6 +139,30 @@ namespace Repository
                 catch (Exception ex)
                 {
                     ecmDocumentsSendOut.messages.Add(ex.Message);
+                }
+            }
+
+            #endregion
+
+            #region .: Search Documents Sent :.
+
+            DocumentsSentOut documentsSentOut = GetDocumentsSent(new DocumentsSentIn() { userId = ecmDocumentsSendIn.userId, key = ecmDocumentsSendIn.key });
+
+            #endregion
+
+            #region .: Update Documents :.
+
+            using (var db = new DBContext())
+            {
+                foreach (var item in documentsSentOut.result)
+                {
+                    Documents document = db.Documents.Find(item.documentId);
+
+                    document.DocumentStatusId = (int)EDocumentStatus.Sent;
+                    document.EditedDate = DateTime.Now;
+
+                    db.Entry(document).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
                 }
             }
 
@@ -179,12 +202,14 @@ namespace Repository
                                                    categoryId = x.Categories.Code,
                                                    category = x.Categories.Name,
                                                    title = x.Categories.Name + ".pdf",
-                                                   pages = x.SlicePages.Select(y => new SlicePagesFinishedVM()
-                                                   {
-                                                       slicePageId = y.SlicePageId,
-                                                       page = y.Page,
-                                                       rotate = y.Rotate,
-                                                   }).ToList()
+                                                   pages = x.SlicePages
+                                                            .Where(y => y.Active == true && y.DeletedDate == null)
+                                                            .Select(y => new SlicePagesFinishedVM()
+                                                            {
+                                                                slicePageId = y.SlicePageId,
+                                                                page = y.Page,
+                                                                rotate = y.Rotate,
+                                                            }).ToList()
                                                })
                                                .ToList();
             }
@@ -193,6 +218,33 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentsFinished", "");
             return documentsFinishedOut;
+        }
+
+        public DocumentsSentOut GetDocumentsSent(DocumentsSentIn documentsFinishedIn)
+        {
+            DocumentsSentOut documentsSentOut = new DocumentsSentOut();
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentsSent", "");
+
+            #region .: Documents Finished :.
+
+            using (var db = new DBContext())
+            {
+                documentsSentOut.result = db.Documents
+                                            .Where(x => x.Active == true
+                                                    && x.DeletedDate == null
+                                                    && x.DocumentStatusId == (int)EDocumentStatus.Finished
+                                                    && (x.Slices.Count(y => y.Active == true && y.DeletedDate == null) == x.Slices.Count(y => y.Active == true && y.DeletedDate == null && y.Sent == true)))
+                                            .Select(x => new DocumentsSentVM()
+                                            {
+                                                documentId = x.DocumentId,
+                                            })
+                                            .ToList();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentsSent", "");
+            return documentsSentOut;
         }
 
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)

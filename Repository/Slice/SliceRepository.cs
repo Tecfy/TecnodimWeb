@@ -28,7 +28,7 @@ namespace Repository
                                         sliceId = x.SliceId,
                                         categoryId = x.CategoryId,
                                         name = x.Name,
-                                        slicePages = x.SlicePages.Select(y => new SlicePageVM()
+                                        slicePages = x.SlicePages.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new SlicePageVM()
                                         {
                                             slicePageId = y.SlicePageId,
                                             page = y.Page,
@@ -36,7 +36,7 @@ namespace Repository
                                             image = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page,
                                             thumb = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page + "/true",
                                         }).ToList(),
-                                        additionalFields = x.SliceCategoryAdditionalFields.Select(y => new AdditionalFieldVM()
+                                        additionalFields = x.SliceCategoryAdditionalFields.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new AdditionalFieldVM()
                                         {
                                             categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
                                             name = y.CategoryAdditionalFields.AdditionalFields.Name,
@@ -67,7 +67,7 @@ namespace Repository
                                         sliceId = x.SliceId,
                                         categoryId = x.CategoryId,
                                         name = x.Name,
-                                        slicePages = x.SlicePages.Select(y => new SlicePageVM()
+                                        slicePages = x.SlicePages.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new SlicePageVM()
                                         {
                                             slicePageId = y.SlicePageId,
                                             page = y.Page,
@@ -75,7 +75,7 @@ namespace Repository
                                             image = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page,
                                             thumb = "/Images/GetImage/" + y.Slices.Documents.Hash + "/" + y.Page + "/true",
                                         }).ToList(),
-                                        additionalFields = x.SliceCategoryAdditionalFields.Select(y => new AdditionalFieldVM()
+                                        additionalFields = x.SliceCategoryAdditionalFields.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new AdditionalFieldVM()
                                         {
                                             categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
                                             name = y.CategoryAdditionalFields.AdditionalFields.Name,

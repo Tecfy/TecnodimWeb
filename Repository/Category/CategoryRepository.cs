@@ -306,6 +306,7 @@ namespace Repository
                                         name = x.Code + " - " + x.Name,
                                         parentId = x.ParentId,
                                         additionalFields = x.CategoryAdditionalFields
+                                                            .Where(y => y.Active == true && y.DeletedDate == null)
                                                             .Select(y => new AdditionalFieldVM()
                                                             {
                                                                 categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
@@ -342,6 +343,7 @@ namespace Repository
                                         name = x.Code + " - " + x.Name,
                                         parentId = x.ParentId,
                                         additionalFields = x.CategoryAdditionalFields
+                                                            .Where(y => y.Active == true && y.DeletedDate == null)
                                                             .Select(y => new AdditionalFieldVM()
                                                             {
                                                                 categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
@@ -436,7 +438,9 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                category = db.Categories.Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == parentId).Select(x => new { x.Code, x.Name, x.ParentId }).FirstOrDefault();
+                category = db.Categories
+                             .Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == parentId)
+                             .Select(x => new { x.Code, x.Name, x.ParentId }).FirstOrDefault();
 
                 vs.Add(category.Code + " - " + category.Name);
             }
