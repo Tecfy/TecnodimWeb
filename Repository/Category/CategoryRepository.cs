@@ -194,7 +194,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Identifier.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Identifier.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Identifier.AdditionalFieldId, CategoryId = categoryEditIn.Identifier.CategoryId, Required = categoryEditIn.Identifier.Required, Single = categoryEditIn.Identifier.Single });
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Identifier.CategoryAdditionalFieldId.Value, AdditionalFieldId = categoryEditIn.Identifier.AdditionalFieldId, CategoryId = categoryEditIn.Identifier.CategoryId, Required = categoryEditIn.Identifier.Required, Single = categoryEditIn.Identifier.Single });
                     }
                     else
                     {
@@ -205,7 +205,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Identifier.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Identifier.CategoryAdditionalFieldId);
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Identifier.CategoryAdditionalFieldId.Value);
                     }
                 }
                 #endregion
@@ -215,7 +215,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Competence.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Competence.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Competence.AdditionalFieldId, CategoryId = categoryEditIn.Competence.CategoryId, Required = categoryEditIn.Competence.Required, Single = categoryEditIn.Competence.Single });
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Competence.CategoryAdditionalFieldId.Value, AdditionalFieldId = categoryEditIn.Competence.AdditionalFieldId, CategoryId = categoryEditIn.Competence.CategoryId, Required = categoryEditIn.Competence.Required, Single = categoryEditIn.Competence.Single });
                     }
                     else
                     {
@@ -226,7 +226,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Competence.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Competence.CategoryAdditionalFieldId);
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Competence.CategoryAdditionalFieldId.Value);
                     }
                 }
                 #endregion
@@ -236,7 +236,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Validity.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Validity.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.Validity.AdditionalFieldId, CategoryId = categoryEditIn.Validity.CategoryId, Required = categoryEditIn.Validity.Required, Single = categoryEditIn.Validity.Single });
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Validity.CategoryAdditionalFieldId.Value, AdditionalFieldId = categoryEditIn.Validity.AdditionalFieldId, CategoryId = categoryEditIn.Validity.CategoryId, Required = categoryEditIn.Validity.Required, Single = categoryEditIn.Validity.Single });
                     }
                     else
                     {
@@ -247,7 +247,7 @@ namespace Repository
                 {
                     if (categoryEditIn.Validity.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Validity.CategoryAdditionalFieldId);
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Validity.CategoryAdditionalFieldId.Value);
                     }
                 }
                 #endregion
@@ -257,7 +257,7 @@ namespace Repository
                 {
                     if (categoryEditIn.DocumentView.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.DocumentView.CategoryAdditionalFieldId, AdditionalFieldId = categoryEditIn.DocumentView.AdditionalFieldId, CategoryId = categoryEditIn.DocumentView.CategoryId, Required = categoryEditIn.DocumentView.Required, Single = categoryEditIn.DocumentView.Single });
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.DocumentView.CategoryAdditionalFieldId.Value, AdditionalFieldId = categoryEditIn.DocumentView.AdditionalFieldId, CategoryId = categoryEditIn.DocumentView.CategoryId, Required = categoryEditIn.DocumentView.Required, Single = categoryEditIn.DocumentView.Single });
                     }
                     else
                     {
@@ -268,7 +268,7 @@ namespace Repository
                 {
                     if (categoryEditIn.DocumentView.CategoryAdditionalFieldId > 0)
                     {
-                        categoryAdditionalFieldRepository.Delete(categoryEditIn.DocumentView.CategoryAdditionalFieldId);
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.DocumentView.CategoryAdditionalFieldId.Value);
                     }
                 }
                 #endregion

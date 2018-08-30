@@ -84,6 +84,9 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.CategoryId)
+    @Html.HiddenFor(model => model.Parent)
+    @Html.HiddenFor(model => model.Name)
+    @Html.HiddenFor(model => model.Code)
 
     <div class="form-group">
         @Html.DisplayNameFor(model => model.Parent):

@@ -10,13 +10,12 @@ namespace Model.VM
 
         public CategoryAdditionalFieldVM(int categoryId, int additionalFieldId)
         {
-            CategoryAdditionalFieldId = 0;
             CategoryId = categoryId;
             AdditionalFieldId = additionalFieldId;
         }
 
         [Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-        public int CategoryAdditionalFieldId { get; set; }
+        public int? CategoryAdditionalFieldId { get; set; }
 
         [Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
         public int CategoryId { get; set; }
