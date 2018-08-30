@@ -98,7 +98,7 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentSlices(int id)
+        public DocumentsOut GetDocumentSlices(int unityId = 0, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -111,7 +111,7 @@ namespace Site.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.New);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -142,7 +142,7 @@ namespace Site.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentClassificateds(int id)
+        public DocumentsOut GetDocumentClassificateds(int unityId = 0, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -156,7 +156,7 @@ namespace Site.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
                     documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
