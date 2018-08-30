@@ -421,6 +421,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arquivo não encontrado!.
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nome.
         /// </summary>
         public static string FirstName {

@@ -19,5 +19,7 @@ namespace Model.VM
         public string title { get; set; }
 
         public List<SlicePagesFinishedVM> pages { get; set; }
+
+        public List<AdditionalFieldSaveVM> additionalFields { get; set; }
     }
 }

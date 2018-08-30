@@ -83,6 +83,8 @@
     <Compile Include="Account\In\AccessIn.cs" />
     <Compile Include="Account\Out\AccessResultOut.cs" />
     <Compile Include="Account\VM\AccessResultVM.cs" />
+    <Compile Include="AdditionalField\In\AdditionalFieldSaveIn.cs" />
+    <Compile Include="AdditionalField\VM\AdditionalFieldSaveVM.cs" />
     <Compile Include="AspNetUserClaim\In\AspNetUserClaimIn.cs" />
     <Compile Include="AspNetUserClaim\Out\AspNetUserClaimOut.cs" />
     <Compile Include="AspNetUserClaim\VM\AspNetUserClaimVM.cs" />

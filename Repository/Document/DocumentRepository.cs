@@ -209,7 +209,14 @@ namespace Repository
                                                                 slicePageId = y.SlicePageId,
                                                                 page = y.Page,
                                                                 rotate = y.Rotate,
-                                                            }).ToList()
+                                                            }).ToList(),
+                                                   additionalFields = x.SliceCategoryAdditionalFields
+                                                                       .Where(y => y.Active == true && y.DeletedDate == null)
+                                                                       .Select(y => new AdditionalFieldSaveVM()
+                                                                       {
+                                                                           additionalFieldId = y.CategoryAdditionalFields.AdditionalFieldId,
+                                                                           value = y.Value,
+                                                                       }).ToList()
                                                })
                                                .ToList();
             }
@@ -366,9 +373,24 @@ namespace Repository
 
                 string file = Rotate(pdfIn);
 
+                if (string.IsNullOrEmpty(file))
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+
                 #endregion
 
                 #region .: Sent New Document :.
+
+                List<AdditionalFieldSaveIn> additionalFieldSaveIns = new List<AdditionalFieldSaveIn>();
+
+                if (documentsFinishedVM.additionalFields != null && documentsFinishedVM.additionalFields.Count() > 0)
+                {
+                    foreach (var item in documentsFinishedVM.additionalFields)
+                    {
+                        additionalFieldSaveIns.Add(new AdditionalFieldSaveIn { additionalFieldId = item.additionalFieldId, value = item.value });
+                    }
+                }
 
                 ECMDocumentSaveIn ecmDocumentSaveIn = new ECMDocumentSaveIn
                 {
@@ -377,6 +399,7 @@ namespace Repository
                     category = documentsFinishedVM.category,
                     archive = file,
                     title = documentsFinishedVM.title,
+                    additionalFields = additionalFieldSaveIns
                 };
 
                 ECMDocumentSaveOut ecmDocumentSaveOut = documentApi.PostECMDocumentSave(ecmDocumentSaveIn);

@@ -417,4 +417,7 @@
   <data name="SliceNoProcess" xml:space="preserve">
     <value>O recorte {0} já foi processado ou está sendo processado.</value>
   </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Arquivo não encontrado!</value>
+  </data>
 </root>
