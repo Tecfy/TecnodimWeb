@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
     [Authorize(Roles = "Usuário")]
     [RoutePrefix("Api/Account")]

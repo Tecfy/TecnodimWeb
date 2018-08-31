@@ -12,6 +12,8 @@ namespace Model.VM
 
         public string Name { get; set; }
 
+        public bool pb { get; set; }
+
         public bool ShowIdentifier { get; set; }
 
         public bool ShowCompetence { get; set; }

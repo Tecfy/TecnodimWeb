@@ -1,11 +1,11 @@
 ﻿using System.Web.Mvc;
 
-namespace Site.Controllers
+namespace Site.Adm.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     [RoutePrefix("Home")]
     public class HomeController : Controller
     {
-        // GET: Home
         public ActionResult Index()
         {
             return View();

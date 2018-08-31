@@ -420,4 +420,7 @@
   <data name="FileNotFound" xml:space="preserve">
     <value>Arquivo não encontrado!</value>
   </data>
+  <data name="PB" xml:space="preserve">
+    <value>PB</value>
+  </data>
 </root>

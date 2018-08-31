@@ -5,10 +5,11 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-namespace Site.Areas.Adm.Controllers
+
+namespace Site.Adm.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    [RoutePrefix("Adm/Categories")]
+    [RoutePrefix("Categories")]
     public class CategoriesController : Controller
     {
         private readonly CategoryRepository categoryRepository = new CategoryRepository();
@@ -91,6 +92,7 @@ namespace Site.Areas.Adm.Controllers
                 Parent = categoryEditOut.result.Parent,
                 Code = categoryEditOut.result.Code,
                 Name = categoryEditOut.result.Name,
+                pb = categoryEditOut.result.pb,
                 ShowIdentifier = categoryEditOut.result.ShowIdentifier,
                 ShowCompetence = categoryEditOut.result.ShowCompetence,
                 ShowValidity = categoryEditOut.result.ShowValidity,

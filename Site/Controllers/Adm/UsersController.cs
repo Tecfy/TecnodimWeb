@@ -12,10 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-namespace Site.Areas.Adm.Controllers
+
+namespace Site.Adm.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    [RoutePrefix("Adm/Users")]
+    [RoutePrefix("Users")]
     public class UsersController : Controller
     {
         private readonly UserRepository userRepository = new UserRepository();

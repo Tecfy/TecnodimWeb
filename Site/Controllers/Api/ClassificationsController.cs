@@ -7,28 +7,28 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/PDFs")]
-    public class PDFsController : ApiController
+    [RoutePrefix("Api/Classifications")]
+    public class ClassificationsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        PDFRepository pdfRepository = new PDFRepository();
-        DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
+        ClassificationRepository classificationRepository = new ClassificationRepository();
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public PDFsOut GetPDFs(int id)
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
+        public ClassificationOut Post(ClassificationIn classificationIn)
         {
-            PDFsOut pdfOut = new PDFsOut();
+            ClassificationOut sliceOut = new ClassificationOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentIn documentIn = new DocumentIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    classificationIn.userId = new Guid(User.Identity.GetUserId());
+                    classificationIn.key = Key;
 
-                    pdfOut = pdfRepository.GetPDFs(documentIn);
+                    sliceOut = classificationRepository.SaveClassification(classificationIn);
                 }
                 else
                 {
@@ -47,14 +47,13 @@ namespace Site.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
 
-                pdfOut.result = null;
-                pdfOut.successMessage = null;
-                pdfOut.messages.Add(ex.Message);
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
             }
 
-            return pdfOut;
+            return sliceOut;
         }
     }
 }

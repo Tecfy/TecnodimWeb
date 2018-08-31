@@ -40,8 +40,8 @@ namespace Site
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Adm/Account/Login"),
-                LogoutPath = new PathString("/Adm/Account/LogOff"),
+                LoginPath = new PathString("/Account/Login"),
+                LogoutPath = new PathString("/Account/LogOff"),
                 ExpireTimeSpan = TimeSpan.FromHours(12),
             });
 

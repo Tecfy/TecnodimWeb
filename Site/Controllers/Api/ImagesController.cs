@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
     [RoutePrefix("Api/Images")]
     public class ImagesController : ApiController

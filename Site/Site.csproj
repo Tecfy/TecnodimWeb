@@ -223,23 +223,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Adm\AdmAreaRegistration.cs" />
-    <Compile Include="Areas\Adm\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Adm\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Adm\Controllers\CategoriesController.cs" />
-    <Compile Include="Areas\Adm\Controllers\UnitsController.cs" />
-    <Compile Include="Areas\Adm\Controllers\UsersController.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CategoriesController.cs" />
-    <Compile Include="Controllers\ClassificationsController.cs" />
-    <Compile Include="Controllers\DeletedPagesController.cs" />
-    <Compile Include="Controllers\DocumentDetailsController.cs" />
-    <Compile Include="Controllers\DocumentsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ImagesController.cs" />
-    <Compile Include="Controllers\PDFsController.cs" />
-    <Compile Include="Controllers\SlicePagesController.cs" />
-    <Compile Include="Controllers\SlicesController.cs" />
+    <Compile Include="Controllers\Adm\AccountController.cs" />
+    <Compile Include="Controllers\Adm\CategoriesController.cs" />
+    <Compile Include="Controllers\Adm\HomeController.cs" />
+    <Compile Include="Controllers\Adm\UnitsController.cs" />
+    <Compile Include="Controllers\Adm\UsersController.cs" />
+    <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\CategoriesController.cs" />
+    <Compile Include="Controllers\Api\ClassificationsController.cs" />
+    <Compile Include="Controllers\Api\DeletedPagesController.cs" />
+    <Compile Include="Controllers\Api\DocumentDetailsController.cs" />
+    <Compile Include="Controllers\Api\DocumentsController.cs" />
+    <Compile Include="Controllers\Api\ImagesController.cs" />
+    <Compile Include="Controllers\Api\PDFsController.cs" />
+    <Compile Include="Controllers\Api\SlicePagesController.cs" />
+    <Compile Include="Controllers\Api\SlicesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -262,13 +260,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\Adm\Views\web.config" />
-    <Content Include="Areas\Adm\Views\Account\Login.cshtml" />
-    <Content Include="Areas\Adm\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Adm\Views\Shared\Error.cshtml" />
-    <Content Include="Areas\Adm\Views\Shared\Lockout.cshtml" />
-    <Content Include="Areas\Adm\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Adm\Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -283,29 +274,12 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <Content Include="Areas\Adm\Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Areas\Adm\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Adm\Views\Shared\_Menu.cshtml" />
-    <Content Include="Areas\Adm\Views\Users\Index.cshtml" />
-    <Content Include="Areas\Adm\Views\Users\_PartialList.cshtml" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="Areas\Adm\Views\Users\Create.cshtml" />
-    <Content Include="Areas\Adm\Views\Users\Details.cshtml" />
-    <Content Include="Areas\Adm\Views\Users\Edit.cshtml" />
-    <Content Include="Areas\Adm\Views\Units\_PartialList.cshtml" />
-    <Content Include="Areas\Adm\Views\Units\Create.cshtml" />
-    <Content Include="Areas\Adm\Views\Units\Details.cshtml" />
-    <Content Include="Areas\Adm\Views\Units\Edit.cshtml" />
-    <Content Include="Areas\Adm\Views\Units\Index.cshtml" />
-    <Content Include="Areas\Adm\Views\Categories\_PartialList.cshtml" />
-    <Content Include="Areas\Adm\Views\Categories\Details.cshtml" />
-    <Content Include="Areas\Adm\Views\Categories\Edit.cshtml" />
-    <Content Include="Areas\Adm\Views\Categories\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
@@ -355,6 +329,24 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\_PaginationPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Categories\_PartialList.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Units\_PartialList.cshtml" />
+    <Content Include="Views\Units\Create.cshtml" />
+    <Content Include="Views\Units\Details.cshtml" />
+    <Content Include="Views\Units\Edit.cshtml" />
+    <Content Include="Views\Units\Index.cshtml" />
+    <Content Include="Views\Users\_PartialList.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
     <None Include="Web.Hom.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -364,7 +356,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Adm\Models\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

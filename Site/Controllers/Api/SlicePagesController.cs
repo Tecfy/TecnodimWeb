@@ -7,28 +7,28 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/Classifications")]
-    public class ClassificationsController : ApiController
+    [RoutePrefix("Api/SlicePages")]
+    public class SlicePagesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        ClassificationRepository classificationRepository = new ClassificationRepository();
+        SlicePageRepository slicePageRepository = new SlicePageRepository();
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
-        public ClassificationOut Post(ClassificationIn classificationIn)
+        public SlicePageDeleteOut Post(SlicePageDeleteIn slicePageDeleteIn)
         {
-            ClassificationOut sliceOut = new ClassificationOut();
+            SlicePageDeleteOut slicePageOut = new SlicePageDeleteOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    classificationIn.userId = new Guid(User.Identity.GetUserId());
-                    classificationIn.key = Key;
+                    slicePageDeleteIn.userId = new Guid(User.Identity.GetUserId());
+                    slicePageDeleteIn.key = Key;
 
-                    sliceOut = classificationRepository.SaveClassification(classificationIn);
+                    slicePageRepository.DeleteSlicePage(slicePageDeleteIn);
                 }
                 else
                 {
@@ -47,13 +47,13 @@ namespace Site.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicePagesController.Post", ex.Message);
 
-                sliceOut.successMessage = null;
-                sliceOut.messages.Add(ex.Message);
+                slicePageOut.successMessage = null;
+                slicePageOut.messages.Add(ex.Message);
             }
 
-            return sliceOut;
+            return slicePageOut;
         }
     }
 }

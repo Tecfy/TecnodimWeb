@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
     [RoutePrefix("Api/DocumentDetails")]
     public class DocumentDetailsController : ApiController

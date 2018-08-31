@@ -528,6 +528,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
 		public string Name { get; set; } // Name
 
+		[Display(Name = "PB", ResourceType = typeof(i18n.Resource))]
+		public bool Pb { get; set; } // PB
+
 		*/
 	}
 
@@ -558,6 +561,8 @@ namespace DataEF.DataAccess
 
         public string Name { get; set; } // Name
 
+        public bool Pb { get; set; } // PB
+
         // Reverse navigation
         public virtual ICollection<Categories> Categories2 { get; set; } // Categories.FK_Categories_Parent;
         public virtual ICollection<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields.FK_CategoryAdditionalFields_Categories;
@@ -571,6 +576,7 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             ExternalId = 0;
+            Pb = false;
             Categories2 = new List<Categories>();
             CategoryAdditionalFields = new List<CategoryAdditionalFields>();
             Slices = new List<Slices>();
@@ -1531,6 +1537,7 @@ namespace DataEF.DataAccess
             Property(x => x.ExternalId).HasColumnName("ExternalId").IsRequired();
             Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
+            Property(x => x.Pb).HasColumnName("PB").IsRequired();
 
             // Foreign keys
             HasOptional(a => a.Categories1).WithMany(b => b.Categories2).HasForeignKey(c => c.ParentId); // FK_Categories_Parent

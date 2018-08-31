@@ -33,5 +33,8 @@ namespace DataEF.DataAccess.Model
         [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string Name { get; set; } // Name
+
+        [Display(Name = "PB", ResourceType = typeof(i18n.Resource))]
+        public bool Pb { get; set; } // PB
     }
 }

@@ -113,6 +113,7 @@ namespace Repository
                                        Parent = x.Categories1.Code + " - " + x.Categories1.Name,
                                        Code = x.Code,
                                        Name = x.Name,
+                                       pb = x.Pb,
 
                                        ShowIdentifier = x.CategoryAdditionalFields
                                                          .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Identifier),
@@ -185,6 +186,7 @@ namespace Repository
                 Categories category = db.Categories.Find(categoryEditIn.CategoryId);
 
                 category.EditedDate = DateTime.Now;
+                category.Pb = categoryEditIn.pb;
 
                 db.Entry(category).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

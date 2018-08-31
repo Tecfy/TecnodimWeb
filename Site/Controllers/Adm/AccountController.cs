@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Site.Areas.Adm.Controllers
+namespace Site.Adm.Controllers
 {
     [Authorize(Roles = "Administrador")]
     public class AccountController : Controller

@@ -1,21 +1,14 @@
-﻿using Helper.Enum;
-using Helper.Utility;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Model;
-using Model.In;
+﻿using Model.In;
 using Model.Out;
 using Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-namespace Site.Areas.Adm.Controllers
+
+namespace Site.Adm.Controllers
 {
     [Authorize(Roles = "Administrador")]
-    [RoutePrefix("Adm/Units")]
+    [RoutePrefix("Units")]
     public class UnitsController : Controller
     {
         private readonly UnityRepository unityRepository = new UnityRepository();

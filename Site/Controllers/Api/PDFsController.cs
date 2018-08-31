@@ -7,28 +7,28 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers
+namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/SlicePages")]
-    public class SlicePagesController : ApiController
+    [RoutePrefix("Api/PDFs")]
+    public class PDFsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SlicePageRepository slicePageRepository = new SlicePageRepository();
+        PDFRepository pdfRepository = new PDFRepository();
+        DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
-        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
-        public SlicePageDeleteOut Post(SlicePageDeleteIn slicePageDeleteIn)
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public PDFsOut GetPDFs(int id)
         {
-            SlicePageDeleteOut slicePageOut = new SlicePageDeleteOut();
+            PDFsOut pdfOut = new PDFsOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    slicePageDeleteIn.userId = new Guid(User.Identity.GetUserId());
-                    slicePageDeleteIn.key = Key;
+                    DocumentIn documentIn = new DocumentIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
 
-                    slicePageRepository.DeleteSlicePage(slicePageDeleteIn);
+                    pdfOut = pdfRepository.GetPDFs(documentIn);
                 }
                 else
                 {
@@ -47,13 +47,14 @@ namespace Site.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicePagesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
 
-                slicePageOut.successMessage = null;
-                slicePageOut.messages.Add(ex.Message);
+                pdfOut.result = null;
+                pdfOut.successMessage = null;
+                pdfOut.messages.Add(ex.Message);
             }
 
-            return slicePageOut;
+            return pdfOut;
         }
     }
 }
