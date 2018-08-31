@@ -201,6 +201,7 @@ namespace Repository
                                                    registration = x.Documents.Registration,
                                                    categoryId = x.Categories.Code,
                                                    category = x.Categories.Name,
+                                                   pb = x.Categories.Pb,
                                                    title = x.Categories.Name + ".pdf",
                                                    pages = x.SlicePages
                                                             .Where(y => y.Active == true && y.DeletedDate == null)
@@ -370,6 +371,7 @@ namespace Repository
                 PDFIn pdfIn = new PDFIn
                 {
                     archive = ecmDocumentOut.result.archive,
+                    pb = documentsFinishedVM.pb,
                     pages = documentsFinishedVM.pages,
                 };
 
@@ -461,6 +463,13 @@ namespace Repository
                 if (pdfIn.pages[p - 1].rotate != null && pdfIn.pages[p - 1].rotate > 0)
                     if (pdfIn.pages[p - 1].rotate % 90 == 0)
                         theDoc.SetInfo(theDoc.Page, "/Rotate", pdfIn.pages[p - 1].rotate.ToString());
+
+
+            }
+
+            if (pdfIn.pb)
+            {
+                theDoc.Rendering.ColorSpace = XRendering.ColorSpaceType.Gray;
             }
 
             archive = System.Convert.ToBase64String(theDoc.GetData());

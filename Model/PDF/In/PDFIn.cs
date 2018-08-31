@@ -7,6 +7,8 @@ namespace Model.In
     {
         public string archive { get; set; }
 
+        public bool pb { get; set; }
+
         public List<SlicePagesFinishedVM> pages { get; set; }
     }
 }
