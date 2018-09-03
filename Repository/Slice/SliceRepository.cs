@@ -87,7 +87,17 @@ namespace Repository
                                     })
                                     .OrderBy(x => x.sliceId)
                                     .FirstOrDefault();
-            }
+
+                if (sliceOut.result == null || sliceOut.result.sliceId <= 0)
+                {
+                    Documents document = db.Documents.Where(x => x.DocumentId == slicePendingIn.documentId).FirstOrDefault();
+
+                    if (document.DocumentStatusId == (int)EDocumentStatus.PartiallyClassificated)
+                    {
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicePendingIn.userId.Value, key = slicePendingIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
+                    }
+                }
+            }            
 
             registerEventRepository.SaveRegisterEvent(slicePendingIn.userId.Value, slicePendingIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlicePending", "");
             return sliceOut;
