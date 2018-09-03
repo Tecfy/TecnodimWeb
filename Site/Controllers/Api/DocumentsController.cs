@@ -98,7 +98,7 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentSlices(int unityId = 0, string registration = null, string name = null)
+        public DocumentsOut GetDocumentSlices(int unityId, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();
@@ -142,7 +142,7 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentClassificateds(int unityId = 0, string registration = null, string name = null)
+        public DocumentsOut GetDocumentClassificateds(int unityId, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             Guid Key = Guid.NewGuid();

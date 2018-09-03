@@ -266,7 +266,7 @@ namespace Repository
                                         .Where(x => x.Active == true
                                                     && x.DeletedDate == null
                                                     && documentsIn.documentStatusIds.Contains(x.DocumentStatusId)
-                                                    && (documentsIn.unityId == 0 || x.UnityId == documentsIn.unityId)
+                                                    && x.UnityId == documentsIn.unityId
                                                     && (documentsIn.registration == null || x.Registration.Contains(documentsIn.registration))
                                                     && (documentsIn.name == null || x.Name.Contains(documentsIn.name)))
                                         .Select(x => new DocumentsVM()
