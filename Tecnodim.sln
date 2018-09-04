@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Site", "Site\Site.csproj", "{B7CAE769-1BF4-4D51-9DCC-DEFD5C863C51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSSync", "WSSync\WSSync.csproj", "{77EF9375-969F-49B8-A9DC-D576E59B2920}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupWSSync", "SetupWSSync\SetupWSSync.vdproj", "{0EAD36BC-F3A9-4517-9884-AFD6A496B8FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,18 @@ Global
 		{B7CAE769-1BF4-4D51-9DCC-DEFD5C863C51}.Prod|Any CPU.Build.0 = Prod|Any CPU
 		{B7CAE769-1BF4-4D51-9DCC-DEFD5C863C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7CAE769-1BF4-4D51-9DCC-DEFD5C863C51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Hom|Any CPU.ActiveCfg = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Hom|Any CPU.Build.0 = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Prod|Any CPU.ActiveCfg = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Prod|Any CPU.Build.0 = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77EF9375-969F-49B8-A9DC-D576E59B2920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EAD36BC-F3A9-4517-9884-AFD6A496B8FF}.Debug|Any CPU.ActiveCfg = Debug
+		{0EAD36BC-F3A9-4517-9884-AFD6A496B8FF}.Hom|Any CPU.ActiveCfg = Release
+		{0EAD36BC-F3A9-4517-9884-AFD6A496B8FF}.Prod|Any CPU.ActiveCfg = Release
+		{0EAD36BC-F3A9-4517-9884-AFD6A496B8FF}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
