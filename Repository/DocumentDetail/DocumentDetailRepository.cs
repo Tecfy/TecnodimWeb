@@ -21,14 +21,21 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                registration = db.Documents.Where(x => x.DocumentId == documentDetailIn.documentId).FirstOrDefault().Registration;
+                Documents document = db.Documents.Where(x => x.DocumentId == documentDetailIn.documentId).FirstOrDefault();
+
+                if (document == null)
+                {
+                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                registration = document.Registration;
             }
 
             documentDetailOut = documentDetailApi.GetDocumentDetail(registration);
 
             SlicesOut slicesOut = new SlicesOut();
 
-            slicesOut = sliceRepository.GetSlices(new SlicesIn {documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = true });
+            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = true });
 
             documentDetailOut.result.Classificated = slicesOut.result.Count;
 

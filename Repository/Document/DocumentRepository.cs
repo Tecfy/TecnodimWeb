@@ -35,6 +35,11 @@ namespace Repository
             {
                 Documents document = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
 
+                if (document == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
                 externalId = document.ExternalId;
                 hash = document.Hash;
             }
