@@ -7,13 +7,13 @@ using System.Web.Configuration;
 
 namespace WSSync
 {
-    public partial class Sync : ServiceBase
+    public partial class WSSync : ServiceBase
     {
         Timer timer = new Timer();
 
         #region [ DI ]
 
-        public Sync()
+        public WSSync()
         {
             InitializeComponent();
         }

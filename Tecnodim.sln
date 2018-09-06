@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSSync", "WSSync\WSSync.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataEF", "DataEF\DataEF.csproj", "{008B818A-ADE8-4772-81A9-C327F49E1CAD}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupWSSync", "SetupWSSync\SetupWSSync.vdproj", "{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AzureDemo|Any CPU = AzureDemo|Any CPU
@@ -227,6 +229,18 @@ Global
 		{008B818A-ADE8-4772-81A9-C327F49E1CAD}.QA|Any CPU.Build.0 = QA|Any CPU
 		{008B818A-ADE8-4772-81A9-C327F49E1CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{008B818A-ADE8-4772-81A9-C327F49E1CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.AzureDemo|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.AzureProd|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.Debug|Any CPU.ActiveCfg = Debug
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.Demo|Any CPU.ActiveCfg = Debug
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.Hom|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.LocalDev|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.LocalHom|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.LocalHomolog|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.LocalQA|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.Prod|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.QA|Any CPU.ActiveCfg = Release
+		{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

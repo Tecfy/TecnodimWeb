@@ -13,7 +13,7 @@ namespace WSSync
 
             ServicesToRun = new ServiceBase[]
             {
-                new Sync()
+                new WSSync()
             };
 
             ServiceBase.Run(ServicesToRun);
