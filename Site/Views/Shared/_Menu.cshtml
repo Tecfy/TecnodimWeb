@@ -1,27 +1,27 @@
-﻿<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+﻿<nav class="col-md-2 d-none d-md-block sidebar">
     <div class="sidebar-sticky">
-        <ul class="nav flex-column">
+        <ul class="nav flex-column mt-5">
             <li class="nav-item">
-                <a class="nav-link" href="@(Url.Action("Index", "Home", new { area = "Adm" }))">
-                    <span data-feather="home"></span>
+                <a class="nav-link text-white h5" href="@(Url.Action("Index", "Home", new { area = "Adm" }))">
+                    <span data-feather="home" class="text-white h4"></span>
                     @i18n.Resource.Home <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@(Url.Action("Index", "Users", new { area = "Adm" }))">
-                    <span data-feather="user"></span>
+                <a class="nav-link text-white h5" href="@(Url.Action("Index", "Users", new { area = "Adm" }))">
+                    <span data-feather="user" class="text-white h4"></span>
                     @i18n.Resource.Users
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@(Url.Action("Index", "Units", new { area = "Adm" }))">
-                    <span data-feather="settings"></span>
+                <a class="nav-link text-white h5" href="@(Url.Action("Index", "Units", new { area = "Adm" }))">
+                    <span data-feather="shield" class="text-white h4"></span>
                     @i18n.Resource.Units
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@(Url.Action("Index", "Categories", new { area = "Adm" }))">
-                    <span data-feather="settings"></span>
+                <a class="nav-link text-white h5" href="@(Url.Action("Index", "Categories", new { area = "Adm" }))">
+                    <span data-feather="folder" class="text-white h4"></span>
                     @i18n.Resource.Categories
                 </a>
             </li>

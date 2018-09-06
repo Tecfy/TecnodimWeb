@@ -14,17 +14,20 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        @Html.ActionLink(i18n.Resource.Tecnodim, "Index", "Home", new { @class = "navbar-brand col-sm-3 col-md-2 mr-0" })
-        <ul class="navbar-nav px-3">
-            @Html.Partial("_LoginPartial")
+    <nav class="navbar navbar-dark fixed-top bg-white flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-center" href="@Url.Action("Index", "Home")">
+            <img src="~/Content/Images/logo.png" height="40"/>
+        </a>
+        <ul class="navbar-nav px-3 col-1">
+            <button type="button" class="btn btn-outline-dark pl-4"><span class="float-left">@Html.Partial("_LoginPartial")</span> <span data-feather="log-out"></span></button>
+            
         </ul>
     </nav>
 
     <div class="container-fluid">
         <div class="row">
             @Html.Partial("_Menu")
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-5">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">@ViewBag.Head</h1>
                     @RenderSection("TopButton", required: false)

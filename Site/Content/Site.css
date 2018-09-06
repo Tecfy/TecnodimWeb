@@ -20,6 +20,7 @@
     z-index: 100; /* Behind the navbar */
     padding: 48px 0 0; /* Height of navbar */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: #37b78c;
 }
 
 .sidebar-sticky {
@@ -52,10 +53,14 @@
         color: #007bff;
     }
 
-        .sidebar .nav-link:hover .feather,
-        .sidebar .nav-link.active .feather {
-            color: inherit;
-        }
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
+}
+
+.sidebar .nav-link .feather {
+    margin-bottom: 0.3rem;
+}
 
 .sidebar-heading {
     font-size: .75rem;
@@ -78,8 +83,8 @@
     padding-top: .75rem;
     padding-bottom: .75rem;
     font-size: 1rem;
-    background-color: rgba(0, 0, 0, .25);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+    background-color: rgba(0, 0, 0, .9);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .9);
 }
 
 .navbar .form-control {
@@ -98,3 +103,45 @@
         border-color: transparent;
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
     }
+
+.btn form .nav-item .nav-link {
+    color: #343a40;
+    padding: 0;
+}
+
+.btn:hover form .nav-item .nav-link {
+    color: #fff;
+}
+
+main table a svg {
+    margin: 0 8px;
+    color: #00b88b;
+}
+
+main table tr td a:first-child svg {
+    margin: 0 8px;
+    color: #00b88b;
+}
+
+main table tr td a:nth-child(2) svg {
+    margin: 0 8px;
+    color: #058464;
+}
+
+main table tr td a:last-child svg {
+    margin: 0 8px;
+    color: #05795c;
+}
+
+.page-item.active .page-link, .btn-primary {
+    background-color: #00b88b;
+    border-color: #03a07a;
+}
+.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #03a07a;
+    border-color: #03a07a;
+}
+
+.btn-primary:focus, .btn-primary.focus, .btn-primary:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 184, 139, 0.5);
+}
