@@ -19,13 +19,13 @@ namespace Site.Api.Controllers
         public ClassificationOut Post(ClassificationIn classificationIn)
         {
             ClassificationOut sliceOut = new ClassificationOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    classificationIn.userId = new Guid(User.Identity.GetUserId());
+                    classificationIn.userId = User.Identity.GetUserId();
                     classificationIn.key = Key;
 
                     sliceOut = classificationRepository.SaveClassification(classificationIn);
@@ -47,7 +47,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.ClassificationsController.Post", ex.Message);
 
                 sliceOut.successMessage = null;
                 sliceOut.messages.Add(ex.Message);

@@ -8,7 +8,7 @@ namespace Repository
     {
         #region .: Methods :.
 
-        public void SaveRegisterEvent(Guid userId, Guid identifier, string type, string source, string text)
+        public void SaveRegisterEvent(string userId, string identifier, string type, string source, string text)
         {
             if (WebConfigurationManager.AppSettings["Repository.SaveRegisterEvent"].ToString() == "true")
             {

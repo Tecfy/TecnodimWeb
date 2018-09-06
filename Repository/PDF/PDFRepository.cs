@@ -20,7 +20,7 @@ namespace Repository
         public PDFsOut GetPDFs(DocumentIn documentIn)
         {
             PDFsOut pdfOut = new PDFsOut();
-            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
 
             ECMDocumentOut documentOut = documentRepository.GetECMDocumentById(documentIn);
 
@@ -55,12 +55,12 @@ namespace Repository
 
                     if (document.DocumentStatusId == (int)EDocumentStatus.PartiallySlice)
                     {
-                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = documentIn.userId.Value, key = documentIn.key.Value, documentId = documentIn.documentId, documentStatusId = (int)EDocumentStatus.Slice });
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = documentIn.userId, key = documentIn.key, documentId = documentIn.documentId, documentStatusId = (int)EDocumentStatus.Slice });
                     }
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.PDFRepository.GetPDFs", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - End", "Repository.PDFRepository.GetPDFs", "");
             return pdfOut;
         }
 

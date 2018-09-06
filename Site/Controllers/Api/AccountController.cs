@@ -23,7 +23,7 @@ namespace Site.Api.Controllers
         public AccessResultOut Login(AccessIn accessIn)
         {
             AccessResultOut accessResultOut = new AccessResultOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
@@ -47,7 +47,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Site.Controllers.AccountController.Login", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Site.Controllers.AccountController.Login", ex.Message);
 
                 accessResultOut.successMessage = null;
                 accessResultOut.messages.Add(ex.Message);

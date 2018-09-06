@@ -14,7 +14,7 @@ namespace Repository
         {
             DeletedPageOut deletedPageOut = new DeletedPageOut();
 
-            registerEventRepository.SaveRegisterEvent(deletedPageIn.userId.Value, deletedPageIn.key.Value, "Log - Start", "Repository.DeletedPageRepository.SaveDeletedPage", "");
+            registerEventRepository.SaveRegisterEvent(deletedPageIn.userId, deletedPageIn.key, "Log - Start", "Repository.DeletedPageRepository.SaveDeletedPage", "");
 
             using (var db = new DBContext())
             {
@@ -38,7 +38,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(deletedPageIn.userId.Value, deletedPageIn.key.Value, "Log - End", "Repository.DeletedPageRepository.SaveDeletedPage", "");
+            registerEventRepository.SaveRegisterEvent(deletedPageIn.userId, deletedPageIn.key, "Log - End", "Repository.DeletedPageRepository.SaveDeletedPage", "");
             return deletedPageOut;
         }
     }

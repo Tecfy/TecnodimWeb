@@ -19,13 +19,13 @@ namespace Site.Api.Controllers
         public DocumentDetailOut GetDocumentDetailByDocumentId(int id)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key };
 
                     documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
                 }
@@ -46,7 +46,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
 
                 documentDetailOut.result = null;
                 documentDetailOut.successMessage = null;

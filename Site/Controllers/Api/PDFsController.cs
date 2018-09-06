@@ -20,13 +20,13 @@ namespace Site.Api.Controllers
         public PDFsOut GetPDFs(int id)
         {
             PDFsOut pdfOut = new PDFsOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentIn documentIn = new DocumentIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    DocumentIn documentIn = new DocumentIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key };
 
                     pdfOut = pdfRepository.GetPDFs(documentIn);
                 }
@@ -47,7 +47,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
 
                 pdfOut.result = null;
                 pdfOut.successMessage = null;

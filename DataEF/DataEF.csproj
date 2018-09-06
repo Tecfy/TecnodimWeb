@@ -147,21 +147,11 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.Linq">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -180,21 +170,11 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\Template\ExcludeField.cs" />
@@ -204,18 +184,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Model\SliceCategoryAdditionalFieldsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\DeletedPagesMetadataType.cs" />
-    <Compile Include="DataAccess\Model\CategoryAdditionalFieldsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\CategoriesMetadataType.cs" />
-    <Compile Include="DataAccess\Model\AdditionalFieldsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\SlicePagesMetadataType.cs" />
-    <Compile Include="DataAccess\Model\DocumentStatusMetadataType.cs" />
-    <Compile Include="DataAccess\Model\DocumentsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\UserUnitsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\UsersMetadataType.cs" />
-    <Compile Include="DataAccess\Model\UnitsMetadataType.cs" />
-    <Compile Include="DataAccess\Model\SlicesMetadataType.cs" />
+    <Compile Include="DataAccess\Model\RegisterEventsMetadataType.cs" />
     <Compile Include="DataAccess\Model\ApiUsersMetadataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Generator.cs" />
@@ -235,15 +204,16 @@
     </None>
     <None Include="DataAccess\EF.Reverse.POCO.Core.ttinclude" />
     <None Include="DataAccess\EF.Reverse.POCO.ttinclude" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\i18n\i18n.csproj">
-      <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
       <Name>i18n</Name>
     </ProjectReference>
   </ItemGroup>

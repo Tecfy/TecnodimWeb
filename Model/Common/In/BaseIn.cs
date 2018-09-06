@@ -10,9 +10,9 @@ namespace Model
             this.key = null;
         }
 
-        public Guid? userId { get; set; }
+        public string userId { get; set; }
 
-        public Guid? key { get; set; }
+        public string key { get; set; }
 
     }
 }

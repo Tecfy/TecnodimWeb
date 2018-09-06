@@ -16,7 +16,7 @@ namespace Repository
         {
             ClassificationOut classificationOut = new ClassificationOut();
 
-            registerEventRepository.SaveRegisterEvent(classificationIn.userId.Value, classificationIn.key.Value, "Log - Start", "Repository.ClassificationRepository.SaveClassifications", "");
+            registerEventRepository.SaveRegisterEvent(classificationIn.userId, classificationIn.key, "Log - Start", "Repository.ClassificationRepository.SaveClassifications", "");
 
             #region .: Slice :.
 
@@ -77,7 +77,7 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(classificationIn.userId.Value, classificationIn.key.Value, "Log - End", "Repository.ClassificationRepository.SaveClassifications", "");
+            registerEventRepository.SaveRegisterEvent(classificationIn.userId, classificationIn.key, "Log - End", "Repository.ClassificationRepository.SaveClassifications", "");
             return classificationOut;
         }
 

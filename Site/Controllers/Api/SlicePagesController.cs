@@ -19,13 +19,13 @@ namespace Site.Api.Controllers
         public SlicePageDeleteOut Post(SlicePageDeleteIn slicePageDeleteIn)
         {
             SlicePageDeleteOut slicePageOut = new SlicePageDeleteOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    slicePageDeleteIn.userId = new Guid(User.Identity.GetUserId());
+                    slicePageDeleteIn.userId = User.Identity.GetUserId();
                     slicePageDeleteIn.key = Key;
 
                     slicePageRepository.DeleteSlicePage(slicePageDeleteIn);
@@ -47,7 +47,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicePagesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicePagesController.Post", ex.Message);
 
                 slicePageOut.successMessage = null;
                 slicePageOut.messages.Add(ex.Message);

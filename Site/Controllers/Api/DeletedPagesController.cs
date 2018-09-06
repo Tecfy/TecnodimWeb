@@ -19,13 +19,13 @@ namespace Site.Api.Controllers
         public DeletedPageOut Post(DeletedPageIn deletedPageIn)
         {
             DeletedPageOut deletedPageOut = new DeletedPageOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    deletedPageIn.userId = new Guid(User.Identity.GetUserId());
+                    deletedPageIn.userId = User.Identity.GetUserId();
                     deletedPageIn.key = Key;
 
                     deletedPageOut = deletedPageRepository.SaveDeletedPage(deletedPageIn);
@@ -47,7 +47,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DeletedPagesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DeletedPagesController.Post", ex.Message);
 
                 deletedPageOut.successMessage = null;
                 deletedPageOut.messages.Add(ex.Message);

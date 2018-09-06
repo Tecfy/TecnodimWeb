@@ -25,13 +25,13 @@ namespace Site.Api.Controllers
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-                Guid Key = Guid.NewGuid();
+                string Key = Guid.NewGuid().ToString();
 
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                        ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = User.Identity.GetUserId(), key = Key };
 
                         ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
                     }
@@ -52,7 +52,7 @@ namespace Site.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
+                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
 
                     ecmDocumentsOut.successMessage = null;
                     ecmDocumentsOut.messages.Add(ex.Message);
@@ -68,13 +68,13 @@ namespace Site.Api.Controllers
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
-                Guid Key = Guid.NewGuid();
+                string Key = Guid.NewGuid().ToString();
 
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                        ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = User.Identity.GetUserId(), key = Key };
 
                         ecmDocumentsSendOut = documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
                     }
@@ -95,7 +95,7 @@ namespace Site.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
+                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
 
                     ecmDocumentsSendOut.successMessage = null;
                     ecmDocumentsSendOut.messages.Add(ex.Message);
@@ -109,7 +109,7 @@ namespace Site.Api.Controllers
         public DocumentsOut GetDocumentSlices(int unityId, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
@@ -119,7 +119,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.New);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -140,7 +140,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentSlices", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentSlices", ex.Message);
 
                 documentsOut.successMessage = null;
                 documentsOut.messages.Add(ex.Message);
@@ -153,7 +153,7 @@ namespace Site.Api.Controllers
         public DocumentsOut GetDocumentClassificateds(int unityId, string registration = null, string name = null)
         {
             DocumentsOut documentsOut = new DocumentsOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
@@ -164,7 +164,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
                     documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = new Guid(User.Identity.GetUserId()), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -185,7 +185,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentClassificateds", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentClassificateds", ex.Message);
 
                 documentsOut.successMessage = null;
                 documentsOut.messages.Add(ex.Message);
@@ -198,13 +198,13 @@ namespace Site.Api.Controllers
         public DocumentUpdateOut PostDocumentUpdateSatus(DocumentUpdateIn documentUpdateIn)
         {
             DocumentUpdateOut documentUpdateOut = new DocumentUpdateOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    documentUpdateIn.userId = new Guid(User.Identity.GetUserId());
+                    documentUpdateIn.userId = User.Identity.GetUserId();
                     documentUpdateIn.key = Key;
 
                     documentUpdateOut = documentRepository.PostDocumentUpdateSatus(documentUpdateIn);
@@ -226,7 +226,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.PostDocumentUpdateSatus", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.PostDocumentUpdateSatus", ex.Message);
 
                 documentUpdateOut.successMessage = null;
                 documentUpdateOut.messages.Add(ex.Message);

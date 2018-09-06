@@ -26,7 +26,7 @@ namespace Repository
         public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
 
             string externalId = string.Empty;
             Guid hash = new Guid();
@@ -47,7 +47,7 @@ namespace Repository
             ecmDocumentOut = documentApi.GetECMDocument(externalId);
             ecmDocumentOut.result.hash = hash.ToString();
 
-            registerEventRepository.SaveRegisterEvent(documentIn.userId.Value, documentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
+            registerEventRepository.SaveRegisterEvent(documentIn.userId, documentIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
             return ecmDocumentOut;
         }
 
@@ -71,7 +71,7 @@ namespace Repository
         public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
         {
             ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
 
             ecmDocumentsOut = documentApi.GetECMDocuments();
 
@@ -112,20 +112,20 @@ namespace Repository
                         }
                         else
                         {
-                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
+                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
                         }
                     }
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
             return ecmDocumentsOut;
         }
 
         public ECMDocumentsSendOut GetECMSendDocuments(ECMDocumentsSendIn ecmDocumentsSendIn)
         {
             ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId.Value, ecmDocumentsSendIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMSendDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId, ecmDocumentsSendIn.key, "Log - Start", "Repository.DocumentRepository.GetECMSendDocuments", "");
 
             #region .: Search Documents Finished :.
 
@@ -173,7 +173,7 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId.Value, ecmDocumentsSendIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.userId, ecmDocumentsSendIn.key, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
             return ecmDocumentsSendOut;
         }
 
@@ -184,7 +184,7 @@ namespace Repository
         public DocumentsFinishedOut GetDocumentsFinished(DocumentsFinishedIn documentsFinishedIn)
         {
             DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
-            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentsFinished", "");
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId, documentsFinishedIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentsFinished", "");
 
             #region .: Documents Finished :.
 
@@ -229,14 +229,14 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentsFinished", "");
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId, documentsFinishedIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentsFinished", "");
             return documentsFinishedOut;
         }
 
         public DocumentsSentOut GetDocumentsSent(DocumentsSentIn documentsFinishedIn)
         {
             DocumentsSentOut documentsSentOut = new DocumentsSentOut();
-            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocumentsSent", "");
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId, documentsFinishedIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentsSent", "");
 
             #region .: Documents Finished :.
 
@@ -256,14 +256,14 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId.Value, documentsFinishedIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocumentsSent", "");
+            registerEventRepository.SaveRegisterEvent(documentsFinishedIn.userId, documentsFinishedIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentsSent", "");
             return documentsSentOut;
         }
 
         public DocumentsOut GetDocuments(DocumentsIn documentsIn)
         {
             DocumentsOut documentsOut = new DocumentsOut();
-            registerEventRepository.SaveRegisterEvent(documentsIn.userId.Value, documentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetDocuments", "");
+            registerEventRepository.SaveRegisterEvent(documentsIn.userId, documentsIn.key, "Log - Start", "Repository.DocumentRepository.GetDocuments", "");
 
             using (var db = new DBContext())
             {
@@ -284,14 +284,14 @@ namespace Repository
                                         }).ToList();
             }
 
-            registerEventRepository.SaveRegisterEvent(documentsIn.userId.Value, documentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetDocuments", "");
+            registerEventRepository.SaveRegisterEvent(documentsIn.userId, documentsIn.key, "Log - End", "Repository.DocumentRepository.GetDocuments", "");
             return documentsOut;
         }
 
         public DocumentUpdateOut PostDocumentUpdateSatus(DocumentUpdateIn documentUpdateIn)
         {
             DocumentUpdateOut documentUpdateOut = new DocumentUpdateOut();
-            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId.Value, documentUpdateIn.key.Value, "Log - Start", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
+            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId, documentUpdateIn.key, "Log - Start", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
 
             using (var db = new DBContext())
             {
@@ -309,7 +309,7 @@ namespace Repository
                 db.SaveChanges();
             }
 
-            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId.Value, documentUpdateIn.key.Value, "Log - End", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
+            registerEventRepository.SaveRegisterEvent(documentUpdateIn.userId, documentUpdateIn.key, "Log - End", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
             return documentUpdateOut;
         }
 
@@ -322,7 +322,7 @@ namespace Repository
         public List<int> GetRemainingDocumentPages(RemainingDocumenPagestIn remainingDocumenPagestIn)
         {
             List<int> pages = new List<int>();
-            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
+            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId, remainingDocumenPagestIn.key, "Log - Start", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
 
             using (var db = new DBContext())
             {
@@ -330,7 +330,7 @@ namespace Repository
                 pages.AddRange(db.DeletedPages.Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == remainingDocumenPagestIn.documentId).Select(x => x.Page).ToList());
             }
 
-            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId.Value, remainingDocumenPagestIn.key.Value, "Log - End", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
+            registerEventRepository.SaveRegisterEvent(remainingDocumenPagestIn.userId, remainingDocumenPagestIn.key, "Log - End", "Repository.DocumentRepository.GetRemainingDocumentPages", "");
             return pages;
         }
 

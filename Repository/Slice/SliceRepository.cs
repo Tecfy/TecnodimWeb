@@ -17,7 +17,7 @@ namespace Repository
         public SliceOut GetSlice(SliceIn sliceIn)
         {
             SliceOut sliceOut = new SliceOut();
-            registerEventRepository.SaveRegisterEvent(sliceIn.userId.Value, sliceIn.key.Value, "Log - Start", "Repository.SliceRepository.GetSlice", "");
+            registerEventRepository.SaveRegisterEvent(sliceIn.userId, sliceIn.key, "Log - Start", "Repository.SliceRepository.GetSlice", "");
 
             using (var db = new DBContext())
             {
@@ -49,14 +49,14 @@ namespace Repository
                                     .FirstOrDefault();
             }
 
-            registerEventRepository.SaveRegisterEvent(sliceIn.userId.Value, sliceIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlice", "");
+            registerEventRepository.SaveRegisterEvent(sliceIn.userId, sliceIn.key, "Log - End", "Repository.SliceRepository.GetSlice", "");
             return sliceOut;
         }
 
         public SliceOut GetSlicePending(SlicePendingIn slicePendingIn)
         {
             SliceOut sliceOut = new SliceOut();
-            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId.Value, slicePendingIn.key.Value, "Log - Start", "Repository.SliceRepository.GetSlicePending", "");
+            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId, slicePendingIn.key, "Log - Start", "Repository.SliceRepository.GetSlicePending", "");
 
             using (var db = new DBContext())
             {
@@ -94,19 +94,19 @@ namespace Repository
 
                     if (document.DocumentStatusId == (int)EDocumentStatus.PartiallyClassificated)
                     {
-                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicePendingIn.userId.Value, key = slicePendingIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicePendingIn.userId, key = slicePendingIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
                     }
                 }
             }            
 
-            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId.Value, slicePendingIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlicePending", "");
+            registerEventRepository.SaveRegisterEvent(slicePendingIn.userId, slicePendingIn.key, "Log - End", "Repository.SliceRepository.GetSlicePending", "");
             return sliceOut;
         }
 
         public SlicesOut GetSlices(SlicesIn slicesIn)
         {
             SlicesOut slicesOut = new SlicesOut();
-            registerEventRepository.SaveRegisterEvent(slicesIn.userId.Value, slicesIn.key.Value, "Log - Start", "Repository.SliceRepository.GetSlices", "");
+            registerEventRepository.SaveRegisterEvent(slicesIn.userId, slicesIn.key, "Log - Start", "Repository.SliceRepository.GetSlices", "");
 
             using (var db = new DBContext())
             {
@@ -126,12 +126,12 @@ namespace Repository
 
                     if (document.DocumentStatusId == (int)EDocumentStatus.PartiallyClassificated)
                     {
-                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicesIn.userId.Value, key = slicesIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
+                        documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = slicesIn.userId, key = slicesIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
                     }
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(slicesIn.userId.Value, slicesIn.key.Value, "Log - End", "Repository.SliceRepository.GetSlices", "");
+            registerEventRepository.SaveRegisterEvent(slicesIn.userId, slicesIn.key, "Log - End", "Repository.SliceRepository.GetSlices", "");
             return slicesOut;
         }
 
@@ -139,7 +139,7 @@ namespace Repository
         {
             SliceOut sliceOut = new SliceOut();
 
-            registerEventRepository.SaveRegisterEvent(sliceIn.userId.Value, sliceIn.key.Value, "Log - Start", "Repository.SliceRepository.SaveSlices", "");
+            registerEventRepository.SaveRegisterEvent(sliceIn.userId, sliceIn.key, "Log - Start", "Repository.SliceRepository.SaveSlices", "");
 
             using (var db = new DBContext())
             {
@@ -152,7 +152,7 @@ namespace Repository
 
                 if (document.DocumentStatusId == (int)EDocumentStatus.New)
                 {
-                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceIn.userId.Value, key = sliceIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallySlice });
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceIn.userId, key = sliceIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallySlice });
                 }
 
                 Slices slice = new Slices();
@@ -171,7 +171,7 @@ namespace Repository
                 sliceOut.result.sliceId = slice.SliceId;
             }
 
-            registerEventRepository.SaveRegisterEvent(sliceIn.userId.Value, sliceIn.key.Value, "Log - End", "Repository.SliceRepository.SaveSlices", "");
+            registerEventRepository.SaveRegisterEvent(sliceIn.userId, sliceIn.key, "Log - End", "Repository.SliceRepository.SaveSlices", "");
             return sliceOut;
         }
 
@@ -179,7 +179,7 @@ namespace Repository
         {
             SliceOut sliceOut = new SliceOut();
 
-            registerEventRepository.SaveRegisterEvent(sliceUpdateIn.userId.Value, sliceUpdateIn.key.Value, "Log - Start", "Repository.SliceRepository.UpdateSlice", "");
+            registerEventRepository.SaveRegisterEvent(sliceUpdateIn.userId, sliceUpdateIn.key, "Log - Start", "Repository.SliceRepository.UpdateSlice", "");
 
             using (var db = new DBContext())
             {
@@ -200,11 +200,11 @@ namespace Repository
 
                 if (document.DocumentStatusId == (int)EDocumentStatus.Slice)
                 {
-                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceUpdateIn.userId.Value, key = sliceUpdateIn.key.Value, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallyClassificated });
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { userId = sliceUpdateIn.userId, key = sliceUpdateIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallyClassificated });
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(sliceUpdateIn.userId.Value, sliceUpdateIn.key.Value, "Log - End", "Repository.SliceRepository.UpdateSlice", "");
+            registerEventRepository.SaveRegisterEvent(sliceUpdateIn.userId, sliceUpdateIn.key, "Log - End", "Repository.SliceRepository.UpdateSlice", "");
             return sliceOut;
         }
     }

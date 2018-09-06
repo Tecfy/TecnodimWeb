@@ -13,7 +13,7 @@ namespace Repository
         {
             SlicePageOut slicePageOut = new SlicePageOut();
 
-            registerEventRepository.SaveRegisterEvent(slicePageIn.userId.Value, slicePageIn.key.Value, "Log - Start", "Repository.SlicePageRepository.SaveSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageIn.userId, slicePageIn.key, "Log - Start", "Repository.SlicePageRepository.SaveSlicePage", "");
 
             using (var db = new DBContext())
             {
@@ -27,13 +27,13 @@ namespace Repository
                 slicePageOut.result.slicePageId = slicePages.SlicePageId;
             }
 
-            registerEventRepository.SaveRegisterEvent(slicePageIn.userId.Value, slicePageIn.key.Value, "Log - End", "Repository.SlicePageRepository.SaveSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageIn.userId, slicePageIn.key, "Log - End", "Repository.SlicePageRepository.SaveSlicePage", "");
             return slicePageOut;
         }
 
         public void DeleteSlicePage(SlicePageDeleteIn slicePageDeleteIn)
         {
-            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId.Value, slicePageDeleteIn.key.Value, "Log - Start", "Repository.SlicePageRepository.DeleteSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId, slicePageDeleteIn.key, "Log - Start", "Repository.SlicePageRepository.DeleteSlicePage", "");
 
             using (var db = new DBContext())
             {
@@ -45,12 +45,12 @@ namespace Repository
                 db.SaveChanges();
             }
 
-            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId.Value, slicePageDeleteIn.key.Value, "Log - End", "Repository.SlicePageRepository.DeleteSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.userId, slicePageDeleteIn.key, "Log - End", "Repository.SlicePageRepository.DeleteSlicePage", "");
         }
 
         public void UpdateSlicePage(SlicePageUpdateIn slicePageUpdateIn)
         {
-            registerEventRepository.SaveRegisterEvent(slicePageUpdateIn.userId.Value, slicePageUpdateIn.key.Value, "Log - Start", "Repository.SlicePageRepository.UpdateSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageUpdateIn.userId, slicePageUpdateIn.key, "Log - Start", "Repository.SlicePageRepository.UpdateSlicePage", "");
 
             using (var db = new DBContext())
             {
@@ -66,7 +66,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(slicePageUpdateIn.userId.Value, slicePageUpdateIn.key.Value, "Log - End", "Repository.SlicePageRepository.UpdateSlicePage", "");
+            registerEventRepository.SaveRegisterEvent(slicePageUpdateIn.userId, slicePageUpdateIn.key, "Log - End", "Repository.SlicePageRepository.UpdateSlicePage", "");
         }
     }
 }

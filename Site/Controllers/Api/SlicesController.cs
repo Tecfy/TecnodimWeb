@@ -19,13 +19,13 @@ namespace Site.Api.Controllers
         public SliceOut GetSliceById(int id)
         {
             SliceOut sliceOut = new SliceOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SliceIn sliceIn = new SliceIn() { sliceId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    SliceIn sliceIn = new SliceIn() { sliceId = id, userId = User.Identity.GetUserId(), key = Key };
 
                     sliceOut = sliceRepository.GetSlice(sliceIn);
                 }
@@ -46,7 +46,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlice", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlice", ex.Message);
 
                 sliceOut.successMessage = null;
                 sliceOut.messages.Add(ex.Message);
@@ -59,13 +59,13 @@ namespace Site.Api.Controllers
         public SliceOut GetSlicePending(int id)
         {
             SliceOut sliceOut = new SliceOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key };
 
                     sliceOut = sliceRepository.GetSlicePending(slicePendingIn);
                 }
@@ -86,7 +86,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlicePending", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlicePending", ex.Message);
 
                 sliceOut.successMessage = null;
                 sliceOut.messages.Add(ex.Message);
@@ -99,13 +99,13 @@ namespace Site.Api.Controllers
         public SlicesOut GetSlicesByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = null };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = null };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -126,7 +126,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
 
                 slicesOut.successMessage = null;
                 slicesOut.messages.Add(ex.Message);
@@ -139,13 +139,13 @@ namespace Site.Api.Controllers
         public SlicesOut GetSlicesNotClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = false };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = false };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -166,7 +166,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
 
                 slicesOut.successMessage = null;
                 slicesOut.messages.Add(ex.Message);
@@ -179,13 +179,13 @@ namespace Site.Api.Controllers
         public SlicesOut GetSlicesClassificatedByDocumentId(int id)
         {
             SlicesOut slicesOut = new SlicesOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = new Guid(User.Identity.GetUserId()), key = Key, classificated = true };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = true };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -206,7 +206,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.GetSlices", ex.Message);
 
                 slicesOut.successMessage = null;
                 slicesOut.messages.Add(ex.Message);
@@ -219,13 +219,13 @@ namespace Site.Api.Controllers
         public SliceOut Post(SliceSaveIn sliceIn)
         {
             SliceOut sliceOut = new SliceOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    sliceIn.userId = new Guid(User.Identity.GetUserId());
+                    sliceIn.userId = User.Identity.GetUserId();
                     sliceIn.key = Key;
 
                     sliceOut = sliceRepository.SaveSlice(sliceIn);
@@ -249,7 +249,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.SlicesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.Post", ex.Message);
 
                 sliceOut.successMessage = null;
                 sliceOut.messages.Add(ex.Message);

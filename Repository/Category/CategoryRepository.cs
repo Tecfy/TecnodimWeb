@@ -296,7 +296,7 @@ namespace Repository
         public ApiCategoryOut GetCategory(ApiCategoryIn categoryIn)
         {
             ApiCategoryOut categoryOut = new ApiCategoryOut();
-            registerEventRepository.SaveRegisterEvent(categoryIn.userId.Value, categoryIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategory", "");
+            registerEventRepository.SaveRegisterEvent(categoryIn.userId, categoryIn.key, "Log - Start", "Repository.CategoryRepository.GetCategory", "");
 
             using (var db = new DBContext())
             {
@@ -326,14 +326,14 @@ namespace Repository
                 categoryOut.result.parents = categoryOut.result.parents.OrderBy(x => x).ToList();
             }
 
-            registerEventRepository.SaveRegisterEvent(categoryIn.userId.Value, categoryIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategory", "");
+            registerEventRepository.SaveRegisterEvent(categoryIn.userId, categoryIn.key, "Log - End", "Repository.CategoryRepository.GetCategory", "");
             return categoryOut;
         }
 
         public ApiCategorySearchOut GetCategorySearch(ApiCategorySearchIn categorySearchIn)
         {
             ApiCategorySearchOut categorySearchOut = new ApiCategorySearchOut();
-            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId.Value, categorySearchIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategorySearch", "");
+            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId, categorySearchIn.key, "Log - Start", "Repository.CategoryRepository.GetCategorySearch", "");
 
             using (var db = new DBContext())
             {
@@ -363,14 +363,14 @@ namespace Repository
                 categorySearchOut.result.parents = categorySearchOut.result.parents.OrderBy(x => x).ToList();
             }
 
-            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId.Value, categorySearchIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategorySearch", "");
+            registerEventRepository.SaveRegisterEvent(categorySearchIn.userId, categorySearchIn.key, "Log - End", "Repository.CategoryRepository.GetCategorySearch", "");
             return categorySearchOut;
         }
 
         public ApiCategoriesOut GetCategories(ApiCategoriesIn categoriesIn)
         {
             ApiCategoriesOut categoriesOut = new ApiCategoriesOut();
-            registerEventRepository.SaveRegisterEvent(categoriesIn.userId.Value, categoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetCategories", "");
+            registerEventRepository.SaveRegisterEvent(categoriesIn.userId, categoriesIn.key, "Log - Start", "Repository.CategoryRepository.GetCategories", "");
 
             using (var db = new DBContext())
             {
@@ -385,14 +385,14 @@ namespace Repository
                                          .ToList();
             }
 
-            registerEventRepository.SaveRegisterEvent(categoriesIn.userId.Value, categoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategories", "");
+            registerEventRepository.SaveRegisterEvent(categoriesIn.userId, categoriesIn.key, "Log - End", "Repository.CategoryRepository.GetCategories", "");
             return categoriesOut;
         }
 
         public ApiECMCategoriesOut GetECMCategories(ApiECMCategoriesIn ecmCategoriesIn)
         {
             ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
 
             ecmCategoriesOut = categoryApi.GetECMCategories();
 
@@ -430,7 +430,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
             return ecmCategoriesOut;
         }
 

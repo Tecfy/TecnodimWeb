@@ -15,7 +15,7 @@ namespace Repository
         public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId.Value, documentDetailIn.key.Value, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
 
             string registration = string.Empty;
 
@@ -43,7 +43,7 @@ namespace Repository
 
             documentDetailOut.result.NotClassificated = slicesOut.result.Count;
 
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId.Value, documentDetailIn.key.Value, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
             return documentDetailOut;
         }
     }

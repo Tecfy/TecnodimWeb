@@ -21,13 +21,13 @@ namespace Site.Api.Controllers
         public ApiCategoryOut GetCategoryById(int id)
         {
             ApiCategoryOut categoryOut = new ApiCategoryOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, userId = User.Identity.GetUserId(), key = Key };
 
                     categoryOut = categoryRepository.GetCategory(categoryIn);
                 }
@@ -48,7 +48,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategory", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategory", ex.Message);
 
                 categoryOut.successMessage = null;
                 categoryOut.messages.Add(i18n.Resource.UnknownError);
@@ -61,13 +61,13 @@ namespace Site.Api.Controllers
         public ApiCategorySearchOut GetCategoryBySearch(string code)
         {
             ApiCategorySearchOut categorySearchOut = new ApiCategorySearchOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, userId = User.Identity.GetUserId(), key = Key };
 
                     categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
                 }
@@ -88,7 +88,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategorySearch", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetCategorySearch", ex.Message);
 
                 categorySearchOut.successMessage = null;
                 categorySearchOut.messages.Add(i18n.Resource.UnknownError);
@@ -101,13 +101,13 @@ namespace Site.Api.Controllers
         public ApiCategoriesOut GetCategories()
         {
             ApiCategoriesOut categoriesOut = new ApiCategoriesOut();
-            Guid Key = Guid.NewGuid();
+            string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategoriesIn categoriesIn = new ApiCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                    ApiCategoriesIn categoriesIn = new ApiCategoriesIn() { userId = User.Identity.GetUserId(), key = Key };
 
                     categoriesOut = categoryRepository.GetCategories(categoriesIn);
                 }
@@ -128,7 +128,7 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.CategoriesController.Get", ex.Message);
 
                 categoriesOut.successMessage = null;
                 categoriesOut.messages.Add(ex.Message);
@@ -143,13 +143,13 @@ namespace Site.Api.Controllers
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
-                Guid Key = Guid.NewGuid();
+                string Key = Guid.NewGuid().ToString();
 
                 try
                 {
                     if (ModelState.IsValid)
                     {
-                        ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                        ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = User.Identity.GetUserId(), key = Key };
 
                         ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
                     }
@@ -170,7 +170,7 @@ namespace Site.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
+                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
 
                     ecmCategoriesOut.successMessage = null;
                     ecmCategoriesOut.messages.Add(ex.Message);

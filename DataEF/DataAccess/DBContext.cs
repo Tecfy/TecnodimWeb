@@ -906,11 +906,13 @@ namespace DataEF.DataAccess
 		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? DeletedDate { get; set; } // DeletedDate
 
+		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "UserId", ResourceType = typeof(i18n.Resource))]
-		public Guid UserId { get; set; } // UserId
+		public string UserId { get; set; } // UserId
 
+		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
-		public Guid Identifier { get; set; } // Identifier
+		public string Identifier { get; set; } // Identifier
 
 		[StringLength(100, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "Type", ResourceType = typeof(i18n.Resource))]
@@ -944,9 +946,9 @@ namespace DataEF.DataAccess
         [DataEF.Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
-        public Guid UserId { get; set; } // UserId
+        public string UserId { get; set; } // UserId
 
-        public Guid Identifier { get; set; } // Identifier
+        public string Identifier { get; set; } // Identifier
 
         public string Type { get; set; } // Type
 
@@ -958,7 +960,7 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
-            Identifier = Guid.NewGuid();
+            Identifier = "newid()";
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1655,11 +1657,11 @@ namespace DataEF.DataAccess
             Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
             Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
-            Property(x => x.Identifier).HasColumnName("Identifier").IsRequired();
-            Property(x => x.Type).HasColumnName("Type").IsRequired().HasMaxLength(100);
-            Property(x => x.Source).HasColumnName("Source").IsRequired();
-            Property(x => x.Text).HasColumnName("Text").IsRequired();
+            Property(x => x.UserId).HasColumnName("UserId").IsOptional().HasMaxLength(128);
+            Property(x => x.Identifier).HasColumnName("Identifier").IsOptional().HasMaxLength(128);
+            Property(x => x.Type).HasColumnName("Type").IsOptional().HasMaxLength(100);
+            Property(x => x.Source).HasColumnName("Source").IsOptional();
+            Property(x => x.Text).HasColumnName("Text").IsOptional();
             InitializePartial();
         }
         partial void InitializePartial();

@@ -20,11 +20,13 @@ namespace DataEF.DataAccess.Model
         [Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
+        [StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "UserId", ResourceType = typeof(i18n.Resource))]
-        public Guid UserId { get; set; } // UserId
+        public string UserId { get; set; } // UserId
 
+        [StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
-        public Guid Identifier { get; set; } // Identifier
+        public string Identifier { get; set; } // Identifier
 
         [StringLength(100, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Type", ResourceType = typeof(i18n.Resource))]

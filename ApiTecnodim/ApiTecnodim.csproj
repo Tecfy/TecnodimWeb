@@ -88,10 +88,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\DataEF\DataEF.csproj">
-      <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
-      <Name>DataEF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
       <Name>Helper</Name>
