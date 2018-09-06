@@ -58,7 +58,8 @@ namespace WSSync
         {
             EventLog.WriteEntry("Serviço Inicializado.", EventLogEntryType.Information);
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 60000;
+            //1000*60*60=1hora
+            timer.Interval = 3600000;
             timer.Enabled = true;
         }
 

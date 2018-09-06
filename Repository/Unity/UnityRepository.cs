@@ -33,7 +33,17 @@ namespace Repository
                 unitsOut.totalCount = db.Units.Count(x => x.Active == true && x.DeletedDate == null);
 
                 unitsOut.result = db.Units
-                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Where(x => x.Active == true 
+                                            && x.DeletedDate == null
+                                            &&
+                                            (
+                                                string.IsNullOrEmpty(unitsIn.filter)
+                                                ||
+                                                (
+                                                    x.Name.Contains(unitsIn.filter)
+                                                )
+                                            )
+                                    )
                                    .Select(x => new UnitsVM()
                                    {
                                        UnityId = x.UnityId,
