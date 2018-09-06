@@ -42,7 +42,21 @@ namespace Repository
                 categoriesOut.totalCount = db.Categories.Count(x => x.Active == true && x.DeletedDate == null);
 
                 categoriesOut.result = db.Categories
-                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Where(x => x.Active == true 
+                                            && x.DeletedDate == null
+                                            &&
+                                            (
+                                                string.IsNullOrEmpty(categoriesIn.filter)
+                                                ||
+                                                (
+                                                    x.Categories1.Name.Contains(categoriesIn.filter)
+                                                    ||
+                                                    x.Name.Contains(categoriesIn.filter)
+                                                    ||
+                                                    x.Code.Contains(categoriesIn.filter)
+                                                )
+                                            )
+                                    )
                                    .Select(x => new CategoriesVM()
                                    {
                                        CategoryId = x.CategoryId,

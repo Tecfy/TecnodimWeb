@@ -33,7 +33,21 @@ namespace Repository
                 usersOut.totalCount = db.Users.Count(x => x.Active == true && x.DeletedDate == null);
 
                 usersOut.result = db.Users
-                                   .Where(x => x.Active == true && x.DeletedDate == null)
+                                   .Where(x => x.Active == true 
+                                            && x.DeletedDate == null
+                                            && 
+                                            (
+                                                string.IsNullOrEmpty(usersIn.filter)
+                                                ||
+                                                (
+                                                    x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name.Contains(usersIn.filter)
+                                                    ||
+                                                    (x.FirstName + " " + x.LastName).Contains(usersIn.filter)
+                                                    ||
+                                                    x.AspNetUsers.Email.Contains(usersIn.filter)
+                                                )
+                                            )
+                                   )
                                    .Select(x => new UsersVM()
                                    {
                                        UserId = x.UserId,

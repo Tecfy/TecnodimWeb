@@ -41,7 +41,7 @@
             // 
             this.serviceInstaller.Description = "Automatiza a chamada de URLs com intervalos definidos";
             this.serviceInstaller.DisplayName = "Tecnodim - Sync";
-            this.serviceInstaller.ServiceName = "Tecnodim - Sync";
+            this.serviceInstaller.ServiceName = "WSSync";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

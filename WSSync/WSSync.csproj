@@ -60,11 +60,11 @@
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sync.cs">
+    <Compile Include="WSSync.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Sync.Designer.cs">
-      <DependentUpon>Sync.cs</DependentUpon>
+    <Compile Include="WSSync.Designer.cs">
+      <DependentUpon>WSSync.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

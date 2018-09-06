@@ -1,6 +1,6 @@
 ﻿namespace WSSync
 {
-    partial class Sync
+    partial class WSSync
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.ServiceName = "Sync";
+            this.ServiceName = "WSSync";
         }
 
         #endregion
