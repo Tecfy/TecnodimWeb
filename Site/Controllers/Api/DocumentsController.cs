@@ -6,6 +6,8 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -17,84 +19,90 @@ namespace Site.Api.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         DocumentRepository documentRepository = new DocumentRepository();
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public ECMDocumentsOut GetECMDocuments()
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage GetECMDocuments()
         {
-            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-            Guid Key = Guid.NewGuid();
-
-            try
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (ModelState.IsValid)
-                {
-                    ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
+                Guid Key = Guid.NewGuid();
 
-                    ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
-                }
-                else
+                try
                 {
-                    foreach (ModelState modelState in ModelState.Values)
+                    if (ModelState.IsValid)
                     {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
+                        ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                        ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
+                    }
+                    else
+                    {
+                        foreach (ModelState modelState in ModelState.Values)
                         {
-                            foreach (ModelError error in errors)
+                            var errors = modelState.Errors;
+                            if (errors.Any())
                             {
-                                throw new Exception(error.ErrorMessage);
+                                foreach (ModelError error in errors)
+                                {
+                                    throw new Exception(error.ErrorMessage);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
 
-                ecmDocumentsOut.successMessage = null;
-                ecmDocumentsOut.messages.Add(ex.Message);
-            }
+                    ecmDocumentsOut.successMessage = null;
+                    ecmDocumentsOut.messages.Add(ex.Message);
+                }
+            });
 
-            return ecmDocumentsOut;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public ECMDocumentsSendOut GetECMSendDocuments()
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage GetECMSendDocuments()
         {
-            ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
-            Guid Key = Guid.NewGuid();
-
-            try
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (ModelState.IsValid)
-                {
-                    ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
+                Guid Key = Guid.NewGuid();
 
-                    ecmDocumentsSendOut = documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
-                }
-                else
+                try
                 {
-                    foreach (ModelState modelState in ModelState.Values)
+                    if (ModelState.IsValid)
                     {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
+                        ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                        ecmDocumentsSendOut = documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
+                    }
+                    else
+                    {
+                        foreach (ModelState modelState in ModelState.Values)
                         {
-                            foreach (ModelError error in errors)
+                            var errors = modelState.Errors;
+                            if (errors.Any())
                             {
-                                throw new Exception(error.ErrorMessage);
+                                foreach (ModelError error in errors)
+                                {
+                                    throw new Exception(error.ErrorMessage);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
 
-                ecmDocumentsSendOut.successMessage = null;
-                ecmDocumentsSendOut.messages.Add(ex.Message);
-            }
+                    ecmDocumentsSendOut.successMessage = null;
+                    ecmDocumentsSendOut.messages.Add(ex.Message);
+                }
+            });
 
-            return ecmDocumentsSendOut;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]

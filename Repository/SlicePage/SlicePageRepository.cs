@@ -1,9 +1,7 @@
 ﻿using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
-using Model.VM;
 using System;
-using System.Linq;
 
 namespace Repository
 {

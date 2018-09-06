@@ -1,6 +1,6 @@
-﻿using System.Web.Http;
+﻿using Microsoft.Owin.Security.OAuth;
+using System.Web.Http;
 using System.Web.Http.Cors;
-using Microsoft.Owin.Security.OAuth;
 
 namespace Site
 {
@@ -33,7 +33,7 @@ namespace Site
 
             // WebAPI when dealing with JSON & JavaScript!
             // Setup json serialization to serialize classes to camel (std. Json format)
-            var formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            var formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;            
             formatter.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
 
             // Adding JSON type web api formatting.

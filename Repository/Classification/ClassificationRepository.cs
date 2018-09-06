@@ -1,5 +1,4 @@
-﻿using DataEF.DataAccess;
-using Model.In;
+﻿using Model.In;
 using Model.Out;
 
 namespace Repository

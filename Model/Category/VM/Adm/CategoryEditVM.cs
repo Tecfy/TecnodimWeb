@@ -1,6 +1,4 @@
-﻿using Model.Out;
-
-namespace Model.VM
+﻿namespace Model.VM
 {
     public class CategoryEditVM
     {

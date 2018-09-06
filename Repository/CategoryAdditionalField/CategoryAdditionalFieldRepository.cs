@@ -1,10 +1,8 @@
-﻿using ApiTecnodim;
-using DataEF.DataAccess;
+﻿using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Repository

@@ -1,5 +1,4 @@
 ﻿using Helper.RestRequestHelper;
-using Model.In;
 using Model.Out;
 using RestSharp;
 using System;

@@ -4,6 +4,8 @@ using Model.Out;
 using Repository;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -135,44 +137,48 @@ namespace Site.Api.Controllers
             return categoriesOut;
         }
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public ApiECMCategoriesOut GetECMCategories()
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage GetECMCategories()
         {
-            ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
-            Guid Key = Guid.NewGuid();
-
-            try
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (ModelState.IsValid)
-                {
-                    ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+                ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
+                Guid Key = Guid.NewGuid();
 
-                    ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
-                }
-                else
+                try
                 {
-                    foreach (ModelState modelState in ModelState.Values)
+                    if (ModelState.IsValid)
                     {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
+                        ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = new Guid(User.Identity.GetUserId()), key = Key };
+
+                        ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
+                    }
+                    else
+                    {
+                        foreach (ModelState modelState in ModelState.Values)
                         {
-                            foreach (ModelError error in errors)
+                            var errors = modelState.Errors;
+                            if (errors.Any())
                             {
-                                throw new Exception(error.ErrorMessage);
+                                foreach (ModelError error in errors)
+                                {
+                                    throw new Exception(error.ErrorMessage);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.GetUserId()), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
 
-                ecmCategoriesOut.successMessage = null;
-                ecmCategoriesOut.messages.Add(ex.Message);
-            }
+                    ecmCategoriesOut.successMessage = null;
+                    ecmCategoriesOut.messages.Add(ex.Message);
+                }
 
-            return ecmCategoriesOut;
+            });
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Model.VM
+﻿namespace Model.VM
 {
     public class UnityEditVM
     {
