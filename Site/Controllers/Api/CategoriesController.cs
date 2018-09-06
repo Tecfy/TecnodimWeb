@@ -142,40 +142,18 @@ namespace Site.Api.Controllers
         {
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                ApiECMCategoriesOut ecmCategoriesOut = new ApiECMCategoriesOut();
                 string Key = Guid.NewGuid().ToString();
 
                 try
                 {
-                    if (ModelState.IsValid)
-                    {
-                        ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = User.Identity.GetUserId(), key = Key };
+                    ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = "", key = Key };
 
-                        ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
-                    }
-                    else
-                    {
-                        foreach (ModelState modelState in ModelState.Values)
-                        {
-                            var errors = modelState.Errors;
-                            if (errors.Any())
-                            {
-                                foreach (ModelError error in errors)
-                                {
-                                    throw new Exception(error.ErrorMessage);
-                                }
-                            }
-                        }
-                    }
+                    categoryRepository.GetECMCategories(ecmCategoriesIn);
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
-
-                    ecmCategoriesOut.successMessage = null;
-                    ecmCategoriesOut.messages.Add(ex.Message);
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
                 }
-
             });
 
             return Request.CreateResponse(HttpStatusCode.OK);

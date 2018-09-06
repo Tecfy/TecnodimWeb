@@ -24,38 +24,18 @@ namespace Site.Api.Controllers
         {
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
                 string Key = Guid.NewGuid().ToString();
 
                 try
                 {
-                    if (ModelState.IsValid)
-                    {
-                        ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = User.Identity.GetUserId(), key = Key };
+                    ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = "", key = Key };
 
-                        ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
-                    }
-                    else
-                    {
-                        foreach (ModelState modelState in ModelState.Values)
-                        {
-                            var errors = modelState.Errors;
-                            if (errors.Any())
-                            {
-                                foreach (ModelError error in errors)
-                                {
-                                    throw new Exception(error.ErrorMessage);
-                                }
-                            }
-                        }
-                    }
+                    documentRepository.GetECMDocuments(ecmDocumentsIn);
+
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
-
-                    ecmDocumentsOut.successMessage = null;
-                    ecmDocumentsOut.messages.Add(ex.Message);
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
                 }
             });
 
@@ -67,38 +47,18 @@ namespace Site.Api.Controllers
         {
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
                 string Key = Guid.NewGuid().ToString();
 
                 try
                 {
-                    if (ModelState.IsValid)
-                    {
-                        ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = User.Identity.GetUserId(), key = Key };
+                    ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = "", key = Key };
 
-                        ecmDocumentsSendOut = documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
-                    }
-                    else
-                    {
-                        foreach (ModelState modelState in ModelState.Values)
-                        {
-                            var errors = modelState.Errors;
-                            if (errors.Any())
-                            {
-                                foreach (ModelError error in errors)
-                                {
-                                    throw new Exception(error.ErrorMessage);
-                                }
-                            }
-                        }
-                    }
+                    documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
+
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
-
-                    ecmDocumentsSendOut.successMessage = null;
-                    ecmDocumentsSendOut.messages.Add(ex.Message);
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMSendDocuments", ex.Message);
                 }
             });
 
