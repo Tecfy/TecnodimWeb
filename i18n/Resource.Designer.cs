@@ -637,7 +637,7 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parente.
+        ///   Looks up a localized string similar to Categoria Superior.
         /// </summary>
         public static string Parent {
             get {
@@ -804,6 +804,15 @@ namespace i18n {
         public static string Sending {
             get {
                 return ResourceManager.GetString("Sending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seqüência.
+        /// </summary>
+        public static string Sequence {
+            get {
+                return ResourceManager.GetString("Sequence", resourceCulture);
             }
         }
         

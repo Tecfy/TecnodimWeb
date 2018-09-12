@@ -247,7 +247,7 @@
     <value>Exibindo {0} a {1} de {2} registros</value>
   </data>
   <data name="Parent" xml:space="preserve">
-    <value>Parente</value>
+    <value>Categoria Superior</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Senha</value>
@@ -422,5 +422,8 @@
   </data>
   <data name="PB" xml:space="preserve">
     <value>PB</value>
+  </data>
+  <data name="Sequence" xml:space="preserve">
+    <value>Seqüência</value>
   </data>
 </root>
