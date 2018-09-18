@@ -93,6 +93,7 @@ namespace Site.Adm.Controllers
                 Code = categoryEditOut.result.Code,
                 Name = categoryEditOut.result.Name,
                 pb = categoryEditOut.result.pb,
+                Release = categoryEditOut.result.Release,
                 ShowIdentifier = categoryEditOut.result.ShowIdentifier,
                 ShowCompetence = categoryEditOut.result.ShowCompetence,
                 ShowValidity = categoryEditOut.result.ShowValidity,
@@ -154,6 +155,19 @@ namespace Site.Adm.Controllers
                     return Json(new { status = "ERROR", id, msg }, JsonRequestBehavior.AllowGet);
                 }
             }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Synchronize()
+        {
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                categoryRepository.GetECMCategories(new ApiECMCategoriesIn { userId = User.Identity.Name, key = Key });
+            }
+            catch { }
 
             return RedirectToAction("Index");
         }

@@ -700,6 +700,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Liberar uso na classificação?.
+        /// </summary>
+        public static string Release {
+            get {
+                return ResourceManager.GetString("Release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lembra-me?.
         /// </summary>
         public static string Remember {
@@ -867,6 +876,15 @@ namespace i18n {
         public static string Status {
             get {
                 return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sincronizar.
+        /// </summary>
+        public static string Synchronize {
+            get {
+                return ResourceManager.GetString("Synchronize", resourceCulture);
             }
         }
         

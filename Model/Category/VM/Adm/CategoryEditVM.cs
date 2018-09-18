@@ -12,6 +12,8 @@
 
         public bool pb { get; set; }
 
+        public bool Release { get; set; }
+
         public bool ShowIdentifier { get; set; }
 
         public bool ShowCompetence { get; set; }

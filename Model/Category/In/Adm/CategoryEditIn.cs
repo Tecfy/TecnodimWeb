@@ -20,6 +20,9 @@ namespace Model.In
         [Display(Name = "PB", ResourceType = typeof(i18n.Resource))]
         public bool pb { get; set; }
 
+        [Display(Name = "Release", ResourceType = typeof(i18n.Resource))]
+        public bool Release { get; set; }
+
 
         [Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
         public bool ShowIdentifier { get; set; }

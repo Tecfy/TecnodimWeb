@@ -42,7 +42,7 @@ namespace Repository
                 categoriesOut.totalCount = db.Categories.Count(x => x.Active == true && x.DeletedDate == null);
 
                 categoriesOut.result = db.Categories
-                                   .Where(x => x.Active == true 
+                                   .Where(x => x.Active == true
                                             && x.DeletedDate == null
                                             &&
                                             (
@@ -128,6 +128,7 @@ namespace Repository
                                        Code = x.Code,
                                        Name = x.Name,
                                        pb = x.Pb,
+                                       Release = x.Release,
 
                                        ShowIdentifier = x.CategoryAdditionalFields
                                                          .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Identifier),
@@ -201,6 +202,7 @@ namespace Repository
 
                 category.EditedDate = DateTime.Now;
                 category.Pb = categoryEditIn.pb;
+                category.Release = categoryEditIn.Release;
 
                 db.Entry(category).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -315,7 +317,7 @@ namespace Repository
             using (var db = new DBContext())
             {
                 categoryOut.result = db.Categories
-                                    .Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == categoryIn.categoryId)
+                                    .Where(x => x.DeletedDate == null && x.Active == true && x.Release == true && x.CategoryId == categoryIn.categoryId)
                                     .Select(x => new ApiCategoryVM()
                                     {
                                         categoryId = x.CategoryId,
@@ -352,7 +354,7 @@ namespace Repository
             using (var db = new DBContext())
             {
                 categorySearchOut.result = db.Categories
-                                    .Where(x => x.DeletedDate == null && x.Active == true && x.Code == categorySearchIn.code)
+                                    .Where(x => x.DeletedDate == null && x.Active == true && x.Release == true && x.Code == categorySearchIn.code)
                                     .Select(x => new ApiCategorySearchVM()
                                     {
                                         categoryId = x.CategoryId,
@@ -389,7 +391,7 @@ namespace Repository
             using (var db = new DBContext())
             {
                 categoriesOut.result = db.Categories
-                                         .Where(x => x.DeletedDate == null && x.Active == true)
+                                         .Where(x => x.DeletedDate == null && x.Active == true && x.Release == true)
                                          .Select(x => new ApiCategoriesVM()
                                          {
                                              categoryId = x.CategoryId,

@@ -426,4 +426,10 @@
   <data name="Sequence" xml:space="preserve">
     <value>Seqüência</value>
   </data>
+  <data name="Synchronize" xml:space="preserve">
+    <value>Sincronizar</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Liberar uso na classificação?</value>
+  </data>
 </root>

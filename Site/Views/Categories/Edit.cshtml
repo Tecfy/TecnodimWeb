@@ -109,6 +109,12 @@
         @Html.ValidationMessageFor(model => model.pb)
     </div>
 
+    <div class="form-group">
+        @Html.EditorFor(model => model.Release, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.Release, new { @class = "form-check-label", @for = "Release" })
+        @Html.ValidationMessageFor(model => model.Release)
+    </div>
+
     <h5>@i18n.Resource.AdditionalFields</h5>
 
     <div class="row">

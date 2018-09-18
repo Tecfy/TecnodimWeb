@@ -36,5 +36,8 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "PB", ResourceType = typeof(i18n.Resource))]
         public bool Pb { get; set; } // PB
+
+        [Display(Name = "Release", ResourceType = typeof(i18n.Resource))]
+        public bool Release { get; set; } // Release
     }
 }
