@@ -39,36 +39,38 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                categoriesOut.totalCount = db.Categories.Count(x => x.Active == true && x.DeletedDate == null);
+                var query = db.Categories
+                              .Where(x => x.Active == true
+                                      && x.DeletedDate == null
+                                      &&
+                                      (
+                                          string.IsNullOrEmpty(categoriesIn.filter)
+                                          ||
+                                          (
+                                              x.Categories1.Name.Contains(categoriesIn.filter)
+                                              ||
+                                              x.Name.Contains(categoriesIn.filter)
+                                              ||
+                                              x.Code.Contains(categoriesIn.filter)
+                                          )
+                                      ));
+                               
 
-                categoriesOut.result = db.Categories
-                                   .Where(x => x.Active == true
-                                            && x.DeletedDate == null
-                                            &&
-                                            (
-                                                string.IsNullOrEmpty(categoriesIn.filter)
-                                                ||
-                                                (
-                                                    x.Categories1.Name.Contains(categoriesIn.filter)
-                                                    ||
-                                                    x.Name.Contains(categoriesIn.filter)
-                                                    ||
-                                                    x.Code.Contains(categoriesIn.filter)
-                                                )
-                                            )
-                                    )
-                                   .Select(x => new CategoriesVM()
-                                   {
-                                       CategoryId = x.CategoryId,
-                                       Parent = x.Categories1.Name,
-                                       Code = x.Code,
-                                       Name = x.Name,
-                                       CreatedDate = x.CreatedDate
-                                   })
-                                   .OrderBy(categoriesIn.sort, !categoriesIn.sortdirection.Equals("asc"))
-                                   .Skip((categoriesIn.currentPage.Value - 1) * categoriesIn.qtdEntries.Value)
-                                   .Take(categoriesIn.qtdEntries.Value)
-                                   .ToList();
+                categoriesOut.totalCount = query.Count();
+
+                categoriesOut.result = query
+                                       .Select(x => new CategoriesVM()
+                                       {
+                                           CategoryId = x.CategoryId,
+                                           Parent = x.Categories1.Name,
+                                           Code = x.Code,
+                                           Name = x.Name,
+                                           CreatedDate = x.CreatedDate
+                                       })
+                                       .OrderBy(categoriesIn.sort, !categoriesIn.sortdirection.Equals("asc"))
+                                       .Skip((categoriesIn.currentPage.Value - 1) * categoriesIn.qtdEntries.Value)
+                                       .Take(categoriesIn.qtdEntries.Value)
+                                       .ToList();
             }
 
             return categoriesOut;

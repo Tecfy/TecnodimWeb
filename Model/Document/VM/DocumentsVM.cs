@@ -1,4 +1,6 @@
-﻿namespace Model.VM
+﻿using System;
+
+namespace Model.VM
 {
     public class DocumentsVM
     {
@@ -10,6 +12,8 @@
 
         public int statusId { get; set; }
 
-        public string status { get; set; }        
+        public string status { get; set; }
+        
+        public DateTime CreatedDate { get; set; }
     }
 }

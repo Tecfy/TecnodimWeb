@@ -10,6 +10,8 @@ namespace Model.In
 
         public string name { get; set; }
 
+        public int documentStatusId { get; set; }
+
         public List<int> documentStatusIds { get; set; }
     }
 }

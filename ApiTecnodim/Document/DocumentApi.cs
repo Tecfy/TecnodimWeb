@@ -89,8 +89,37 @@ namespace ApiTecnodim
                     throw new Exception(ecmDocumentSaveOut.messages.FirstOrDefault());
                 }
 
-
                 return ecmDocumentSaveOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ECMDocumentDeletedOut DeleteECMDocumentArchive(ECMDocumentDeletedIn ecmDocumentDeletedIn)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.DeleteECMDocumentArchive"].ToString());
+
+                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmDocumentDeletedIn));
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception(i18n.Resource.UnknownError);
+                }
+
+                ECMDocumentDeletedOut ecmDocumentDeletedOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentDeletedOut>(response.Content);
+
+                if (!ecmDocumentDeletedOut.success)
+                {
+                    throw new Exception(ecmDocumentDeletedOut.messages.FirstOrDefault());
+                }
+
+                return ecmDocumentDeletedOut;
             }
             catch (Exception ex)
             {

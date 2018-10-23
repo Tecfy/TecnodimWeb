@@ -1,4 +1,5 @@
 ﻿using Helper.Enum;
+using Helper.Utility;
 using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
@@ -54,7 +55,6 @@ namespace Site.Api.Controllers
                     ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = "", key = Key };
 
                     documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
-
                 }
                 catch (Exception ex)
                 {
@@ -66,7 +66,7 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentSlices(int unityId, string registration = null, string name = null)
+        public DocumentsOut GetDocumentSlices(int unityId, string registration = null, string name = null, int documentStatusId = 0, int currentPage = 1, int qtdEntries = 50)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             string Key = Guid.NewGuid().ToString();
@@ -79,7 +79,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.New);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -110,7 +110,7 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsOut GetDocumentClassificateds(int unityId, string registration = null, string name = null)
+        public DocumentsOut GetDocumentClassificateds(int unityId, string registration = null, string name = null, int documentStatusId = 0, int currentPage = 1, int qtdEntries = 50)
         {
             DocumentsOut documentsOut = new DocumentsOut();
             string Key = Guid.NewGuid().ToString();
@@ -124,7 +124,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
                     documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }

@@ -120,11 +120,13 @@
     <Compile Include="Common\VM\IdentityModels.cs" />
     <Compile Include="Document\In\DocumentsSentIn.cs" />
     <Compile Include="Document\In\DocumentsFinishedIn.cs" />
+    <Compile Include="Document\In\ECMDocumentDeletedIn.cs" />
     <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
     <Compile Include="Document\In\ECMDocumentsSendIn.cs" />
     <Compile Include="Document\In\DocumentUpdateIn.cs" />
     <Compile Include="Document\In\ECMDocumentsIn.cs" />
     <Compile Include="Document\Out\DocumentsSentOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentDeletedOut.cs" />
     <Compile Include="Document\Out\ECMDocumentSaveOut.cs" />
     <Compile Include="Document\Out\DocumentsFinishedOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsSendOut.cs" />

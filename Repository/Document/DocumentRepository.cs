@@ -157,11 +157,14 @@ namespace Repository
 
             #region .: Update Documents :.
 
-            using (var db = new DBContext())
+            foreach (var item in documentsSentOut.result)
             {
-                foreach (var item in documentsSentOut.result)
+                string externalId;
+
+                using (var db = new DBContext())
                 {
                     Documents document = db.Documents.Find(item.documentId);
+                    externalId = document.ExternalId;
 
                     document.DocumentStatusId = (int)EDocumentStatus.Sent;
                     document.EditedDate = DateTime.Now;
@@ -169,6 +172,14 @@ namespace Repository
                     db.Entry(document).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
+
+                try
+                {
+                    ECMDocumentDeletedIn ecmDocumentDeletedIn = new ECMDocumentDeletedIn() { externalId = externalId, userId = ecmDocumentsSendIn.userId, key = ecmDocumentsSendIn.key };
+
+                    documentApi.DeleteECMDocumentArchive(ecmDocumentDeletedIn);
+                }
+                catch { }
             }
 
             #endregion
@@ -267,21 +278,31 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                documentsOut.result = db.Documents
-                                        .Where(x => x.Active == true
-                                                    && x.DeletedDate == null
-                                                    && documentsIn.documentStatusIds.Contains(x.DocumentStatusId)
-                                                    && x.UnityId == documentsIn.unityId
-                                                    && (documentsIn.registration == null || x.Registration.Contains(documentsIn.registration))
-                                                    && (documentsIn.name == null || x.Name.Contains(documentsIn.name)))
-                                        .Select(x => new DocumentsVM()
-                                        {
-                                            documentId = x.DocumentId,
-                                            name = x.Name,
-                                            registration = x.Registration,
-                                            statusId = x.DocumentStatusId,
-                                            status = x.DocumentStatus.Name,
-                                        }).ToList();
+                var query = db.Documents
+                              .Where(x => x.Active == true
+                                          && x.DeletedDate == null
+                                          && documentsIn.documentStatusIds.Contains(x.DocumentStatusId)
+                                          && x.UnityId == documentsIn.unityId
+                                          && (documentsIn.registration == null || x.Registration.Contains(documentsIn.registration))
+                                          && (documentsIn.name == null || x.Name.Contains(documentsIn.name))
+                                          && (documentsIn.documentStatusId == 0 || x.DocumentStatusId == documentsIn.documentStatusId));
+
+                documentsOut.totalCount = query.Count();
+
+                documentsOut.result = query
+                                      .Select(x => new DocumentsVM()
+                                      {
+                                          documentId = x.DocumentId,
+                                          name = x.Name,
+                                          registration = x.Registration,
+                                          statusId = x.DocumentStatusId,
+                                          status = x.DocumentStatus.Name,
+                                          CreatedDate = x.CreatedDate,
+                                      })
+                                      .OrderBy(documentsIn.sort, !documentsIn.sortdirection.Equals("asc"))
+                                      .Skip((documentsIn.currentPage.Value - 1) * documentsIn.qtdEntries.Value)
+                                      .Take(documentsIn.qtdEntries.Value)
+                                      .ToList();
             }
 
             registerEventRepository.SaveRegisterEvent(documentsIn.userId, documentsIn.key, "Log - End", "Repository.DocumentRepository.GetDocuments", "");

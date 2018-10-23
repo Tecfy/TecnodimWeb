@@ -11,5 +11,7 @@ namespace Model.Out
         }
 
         public List<DocumentsVM> result { get; set; }
+
+        public int? totalCount { get; set; }
     }
 }
