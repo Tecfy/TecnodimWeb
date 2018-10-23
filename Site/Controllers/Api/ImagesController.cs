@@ -31,7 +31,7 @@ namespace Site.Api.Controllers
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
                 return response;

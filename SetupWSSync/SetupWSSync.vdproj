@@ -28,13 +28,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_24028E85D2D18F4B4667F1E3F14E8ED2"
+        "OwnerKey" = "8:_E2B759ECDF9045DA9F8E1091E72D738E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E2B759ECDF9045DA9F8E1091E72D738E"
+        "OwnerKey" = "8:_24028E85D2D18F4B4667F1E3F14E8ED2"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -55,6 +55,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -71,6 +79,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -215,15 +231,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:WSSync"
-        "ProductCode" = "8:{67010FE9-7A1C-4760-B9BF-ACADC3948F11}"
-        "PackageCode" = "8:{B86DB919-DF15-47D6-B619-1EA30662258B}"
+        "ProductCode" = "8:{19205FE3-C7FB-4A4B-A680-A1F5E35A980C}"
+        "PackageCode" = "8:{E4B35BB2-4B62-44EE-8735-0BF3ECBBE1EB}"
         "UpgradeCode" = "8:{255431C1-8D1D-42B3-97F1-D93279FECD47}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:Tecfy"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
