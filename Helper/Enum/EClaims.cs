@@ -8,5 +8,7 @@ namespace Helper.Enum
         Recortar = 1,
         [Description("Classificar")]
         Classificar = 2,
+        [Description("Digitalizar")]
+        Digitalizar = 3,
     }
 }
