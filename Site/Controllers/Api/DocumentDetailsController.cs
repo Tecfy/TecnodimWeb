@@ -16,6 +16,47 @@ namespace Site.Api.Controllers
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
+        public DocumentsDetailOut GetDocumentsDetail(string registration, string unity)
+        {
+            DocumentsDetailOut documentsDetailOut = new DocumentsDetailOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    DocumentsDetailIn documentsDetailIn = new DocumentsDetailIn() { Registration = registration, Unity = unity, userId = User.Identity.GetUserId(), key = Key };
+
+                    documentsDetailOut = documentDetailRepository.GetDocumentsDetail(documentsDetailIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentsDetail", ex.Message);
+
+                documentsDetailOut.result = null;
+                documentsDetailOut.successMessage = null;
+                documentsDetailOut.messages.Add(ex.Message);
+            }
+
+            return documentsDetailOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentDetailOut GetDocumentDetailByDocumentId(int id)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();

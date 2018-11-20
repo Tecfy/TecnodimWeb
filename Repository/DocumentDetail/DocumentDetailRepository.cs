@@ -12,6 +12,17 @@ namespace Repository
         SliceRepository sliceRepository = new SliceRepository();
         DocumentDetailApi documentDetailApi = new DocumentDetailApi();
 
+        public DocumentsDetailOut GetDocumentsDetail(DocumentsDetailIn documentsDetailIn)
+        {
+            DocumentsDetailOut documentsDetailOut = new DocumentsDetailOut();
+            registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
+
+            documentsDetailOut = documentDetailApi.GetDocumentsDetail(documentsDetailIn.Registration, documentsDetailIn.Unity);
+
+            registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
+            return documentsDetailOut;
+        }
+
         public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();

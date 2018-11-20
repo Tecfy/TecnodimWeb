@@ -432,4 +432,13 @@
   <data name="Release" xml:space="preserve">
     <value>Liberar uso na classificação?</value>
   </data>
+  <data name="Work" xml:space="preserve">
+    <value>Trabalho</value>
+  </data>
+  <data name="WorkCategory" xml:space="preserve">
+    <value>Categoria do trabalho</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Arquivo</value>
+  </data>
 </root>

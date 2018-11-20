@@ -97,6 +97,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arquivo.
+        /// </summary>
+        public static string Archive {
+            get {
+                return ResourceManager.GetString("Archive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tem certeza?.
         /// </summary>
         public static string AreYouSure {
@@ -1002,6 +1011,24 @@ namespace i18n {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trabalho.
+        /// </summary>
+        public static string Work {
+            get {
+                return ResourceManager.GetString("Work", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria do trabalho.
+        /// </summary>
+        public static string WorkCategory {
+            get {
+                return ResourceManager.GetString("WorkCategory", resourceCulture);
             }
         }
     }

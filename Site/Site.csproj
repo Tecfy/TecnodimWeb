@@ -193,6 +193,8 @@
     <Compile Include="Controllers\Api\PDFsController.cs" />
     <Compile Include="Controllers\Api\SlicePagesController.cs" />
     <Compile Include="Controllers\Api\SlicesController.cs" />
+    <Compile Include="Controllers\Api\WorkCategoriesController.cs" />
+    <Compile Include="Controllers\Api\WorksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -313,6 +315,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Works\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

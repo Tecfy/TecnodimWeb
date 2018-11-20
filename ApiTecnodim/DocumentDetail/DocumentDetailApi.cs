@@ -9,6 +9,31 @@ namespace ApiTecnodim
 {
     public partial class DocumentDetailApi
     {
+        public DocumentsDetailOut GetDocumentsDetail(string registration, string unity)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.GetECMDocumentsDetail"].ToString(), registration, unity));
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                DocumentsDetailOut documentsDetailOut = SimpleJson.SimpleJson.DeserializeObject<DocumentsDetailOut>(response.Content);
+
+                if (!documentsDetailOut.success)
+                {
+                    throw new Exception(documentsDetailOut.messages.FirstOrDefault());
+                }
+
+                return documentsDetailOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public DocumentDetailOut GetDocumentDetail(string registration)
         {
             try

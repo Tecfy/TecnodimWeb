@@ -118,6 +118,9 @@
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
     <Compile Include="Common\In\PaginateIn.cs" />
     <Compile Include="Common\VM\IdentityModels.cs" />
+    <Compile Include="DocumentDetail\In\DocumentsDetailIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentsDetailOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentsDetailVM.cs" />
     <Compile Include="Document\In\DocumentsSentIn.cs" />
     <Compile Include="Document\In\DocumentsFinishedIn.cs" />
     <Compile Include="Document\In\ECMDocumentDeletedIn.cs" />
@@ -222,6 +225,20 @@
     <Compile Include="User\VM\UserEditVM.cs" />
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
+    <Compile Include="WorkCategory\In\ECMWorkCategorySaveIn.cs" />
+    <Compile Include="WorkCategory\In\WorkCategoryIn.cs" />
+    <Compile Include="WorkCategory\Out\ECMWorkCategorySaveOut.cs" />
+    <Compile Include="WorkCategory\Out\WorkCategoryOut.cs" />
+    <Compile Include="WorkCategory\VM\WorkCategoryVM.cs" />
+    <Compile Include="Work\In\WorkIn.cs" />
+    <Compile Include="Work\In\WorksRegistrationIn.cs" />
+    <Compile Include="Work\In\WorksIn.cs" />
+    <Compile Include="Work\Out\WorkOut.cs" />
+    <Compile Include="Work\Out\WorksRegistrationOut.cs" />
+    <Compile Include="Work\Out\WorksOut.cs" />
+    <Compile Include="Work\VM\WorksRegistrationVM.cs" />
+    <Compile Include="Work\VM\WorkVM.cs" />
+    <Compile Include="Work\VM\WorksVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
