@@ -140,6 +140,12 @@
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
+    <Compile Include="JobPageInfo\In\JobPageInfoIn.cs" />
+    <Compile Include="JobStatus\In\JobsStatusIn.cs" />
+    <Compile Include="JobStatus\In\JobStatusIn.cs" />
+    <Compile Include="Job\In\JobWebRequestIn.cs" />
+    <Compile Include="Job\Out\JobsWebRequestOut.cs" />
+    <Compile Include="Job\VM\JobsWebRequestVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
@@ -225,20 +231,20 @@
     <Compile Include="User\VM\UserEditVM.cs" />
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
-    <Compile Include="WorkCategory\In\ECMWorkCategorySaveIn.cs" />
-    <Compile Include="WorkCategory\In\WorkCategoryIn.cs" />
-    <Compile Include="WorkCategory\Out\ECMWorkCategorySaveOut.cs" />
-    <Compile Include="WorkCategory\Out\WorkCategoryOut.cs" />
-    <Compile Include="WorkCategory\VM\WorkCategoryVM.cs" />
-    <Compile Include="Work\In\WorkIn.cs" />
-    <Compile Include="Work\In\WorksRegistrationIn.cs" />
-    <Compile Include="Work\In\WorksIn.cs" />
-    <Compile Include="Work\Out\WorkOut.cs" />
-    <Compile Include="Work\Out\WorksRegistrationOut.cs" />
-    <Compile Include="Work\Out\WorksOut.cs" />
-    <Compile Include="Work\VM\WorksRegistrationVM.cs" />
-    <Compile Include="Work\VM\WorkVM.cs" />
-    <Compile Include="Work\VM\WorksVM.cs" />
+    <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryIn.cs" />
+    <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryOut.cs" />
+    <Compile Include="JobCategory\VM\JobCategoryVM.cs" />
+    <Compile Include="Job\In\JobIn.cs" />
+    <Compile Include="Job\In\JobsRegistrationIn.cs" />
+    <Compile Include="Job\In\JobsIn.cs" />
+    <Compile Include="Job\Out\JobOut.cs" />
+    <Compile Include="Job\Out\JobsRegistrationOut.cs" />
+    <Compile Include="Job\Out\JobsOut.cs" />
+    <Compile Include="Job\VM\JobsRegistrationVM.cs" />
+    <Compile Include="Job\VM\JobVM.cs" />
+    <Compile Include="Job\VM\JobsVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />

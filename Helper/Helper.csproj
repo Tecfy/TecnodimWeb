@@ -71,6 +71,7 @@
     <Compile Include="Enum\EAdditionalField.cs" />
     <Compile Include="Enum\EClaims.cs" />
     <Compile Include="Enum\EDocumentStatus.cs" />
+    <Compile Include="Enum\EJobStatus.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Linq\EnumerableCustom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

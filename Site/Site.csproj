@@ -190,11 +190,12 @@
     <Compile Include="Controllers\Api\DocumentDetailsController.cs" />
     <Compile Include="Controllers\Api\DocumentsController.cs" />
     <Compile Include="Controllers\Api\ImagesController.cs" />
+    <Compile Include="Controllers\Api\JobsWebRequest.cs" />
     <Compile Include="Controllers\Api\PDFsController.cs" />
     <Compile Include="Controllers\Api\SlicePagesController.cs" />
     <Compile Include="Controllers\Api\SlicesController.cs" />
-    <Compile Include="Controllers\Api\WorkCategoriesController.cs" />
-    <Compile Include="Controllers\Api\WorksController.cs" />
+    <Compile Include="Controllers\Api\JobCategoriesController.cs" />
+    <Compile Include="Controllers\Api\JobsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -315,7 +316,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Works\" />
+    <Folder Include="Views\Jobs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

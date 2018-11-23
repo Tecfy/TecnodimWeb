@@ -163,8 +163,9 @@
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
     <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
-    <Compile Include="WorkCategory\WorkCategoryRepository.cs" />
-    <Compile Include="Work\WorkRepository.cs" />
+    <Compile Include="JobCategory\JobCategoryRepository.cs" />
+    <Compile Include="JobWebRequest\JobWebRequestRepository.cs" />
+    <Compile Include="Job\JobRepository.cs" />
     <Compile Include="SliceCategoryAdditionalField\SliceCategoryAdditionalFieldRepository.cs" />
     <Compile Include="SlicePage\SlicePageRepository.cs" />
     <Compile Include="Document\DocumentRepository.cs" />
