@@ -7,13 +7,11 @@ namespace Model.VM
     {
         public int JobId { get; set; }
 
-        public string Code { get; set; }
-
         public string Registration { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
+
+        public string Name { get; set; }
 
 
-        public List<JobCategoryVM> JobCategories { get; set; }
+        public List<JobCategoriesRegistrationVM> JobCategories { get; set; }
     }
 }

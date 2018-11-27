@@ -140,12 +140,10 @@
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesRegistrationVM.cs" />
     <Compile Include="JobPageInfo\In\JobPageInfoIn.cs" />
     <Compile Include="JobStatus\In\JobsStatusIn.cs" />
     <Compile Include="JobStatus\In\JobStatusIn.cs" />
-    <Compile Include="Job\In\JobWebRequestIn.cs" />
-    <Compile Include="Job\Out\JobsWebRequestOut.cs" />
-    <Compile Include="Job\VM\JobsWebRequestVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
@@ -236,15 +234,9 @@
     <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryOut.cs" />
     <Compile Include="JobCategory\VM\JobCategoryVM.cs" />
-    <Compile Include="Job\In\JobIn.cs" />
     <Compile Include="Job\In\JobsRegistrationIn.cs" />
-    <Compile Include="Job\In\JobsIn.cs" />
-    <Compile Include="Job\Out\JobOut.cs" />
     <Compile Include="Job\Out\JobsRegistrationOut.cs" />
-    <Compile Include="Job\Out\JobsOut.cs" />
     <Compile Include="Job\VM\JobsRegistrationVM.cs" />
-    <Compile Include="Job\VM\JobVM.cs" />
-    <Compile Include="Job\VM\JobsVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
