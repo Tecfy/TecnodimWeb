@@ -511,6 +511,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trabalho.
+        /// </summary>
+        public static string Job {
+            get {
+                return ResourceManager.GetString("Job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria do Trabalho.
+        /// </summary>
+        public static string JobCategory {
+            get {
+                return ResourceManager.GetString("JobCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Último Login.
         /// </summary>
         public static string LastLogin {
@@ -1011,24 +1029,6 @@ namespace i18n {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trabalho.
-        /// </summary>
-        public static string Work {
-            get {
-                return ResourceManager.GetString("Work", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Categoria do trabalho.
-        /// </summary>
-        public static string WorkCategory {
-            get {
-                return ResourceManager.GetString("WorkCategory", resourceCulture);
             }
         }
     }

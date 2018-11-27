@@ -141,9 +141,6 @@
     <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
     <Compile Include="JobCategory\VM\JobCategoriesRegistrationVM.cs" />
-    <Compile Include="JobPageInfo\In\JobPageInfoIn.cs" />
-    <Compile Include="JobStatus\In\JobsStatusIn.cs" />
-    <Compile Include="JobStatus\In\JobStatusIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
@@ -230,10 +227,9 @@
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
     <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
-    <Compile Include="JobCategory\In\JobCategoryIn.cs" />
+    <Compile Include="JobCategory\In\JobCategorySaveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
-    <Compile Include="JobCategory\Out\JobCategoryOut.cs" />
-    <Compile Include="JobCategory\VM\JobCategoryVM.cs" />
+    <Compile Include="JobCategory\Out\JobCategorySaveOut.cs" />
     <Compile Include="Job\In\JobsRegistrationIn.cs" />
     <Compile Include="Job\Out\JobsRegistrationOut.cs" />
     <Compile Include="Job\VM\JobsRegistrationVM.cs" />

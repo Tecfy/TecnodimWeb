@@ -29,7 +29,7 @@ namespace Site.Controllers.Api
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobsByRegistration", ex.Message);
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobsByRegistration", ex.Message);
 
                 jobsRegistrationOut.successMessage = null;
                 jobsRegistrationOut.messages.Add(ex.Message);

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Model.In
 {
-    public class JobCategoryIn : BaseIn
+    public class JobCategorySaveIn : BaseIn
     {
         [Required]
         [Display(Name = "JobCategory", ResourceType = typeof(i18n.Resource))]

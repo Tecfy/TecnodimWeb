@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Model.In
 {
@@ -10,10 +10,12 @@ namespace Model.In
 
         public string categoryId { get; set; }
 
-        public string category { get; set; }
-
         public string archive { get; set; }
 
         public string title { get; set; }
+
+        public DateTime dataJob { get; set; }
+
+        public string user { get; set; }
     }
 }

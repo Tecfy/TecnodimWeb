@@ -14,11 +14,11 @@ namespace Repository
 
         #region .: API :.
 
-        public JobCategoryOut SaveJobCategory(JobCategoryIn jobCategoryIn)
+        public JobCategorySaveOut SetJobCategorySave(JobCategorySaveIn jobCategorySaveIn)
         {
-            JobCategoryOut jobCategoryOut = new JobCategoryOut();
+            JobCategorySaveOut jobCategoryOut = new JobCategorySaveOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryIn.userId, jobCategoryIn.key, "Log - Start", "Repository.JobCategoryRepository.SaveJobCategory", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.userId, jobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategorySave", "");
 
             #region .: Job Category :.
 
@@ -27,14 +27,16 @@ namespace Repository
             using (var db = new DBContext())
             {
                 ecmJobCategorySaveIn = db.JobCategories
-                                          .Where(x => x.JobCategoryId == jobCategoryIn.jobCategoryId)
+                                          .Where(x => x.JobCategoryId == jobCategorySaveIn.jobCategoryId)
                                           .Select(x => new ECMJobCategorySaveIn()
                                           {
                                               registration = x.Jobs.Registration,
+                                              code = x.Code,
                                               categoryId = x.Categories.Code,
-                                              category = x.Categories.Name,
-                                              archive = jobCategoryIn.archive,
-                                              title = x.Categories.Name + ".pdf"
+                                              archive = jobCategorySaveIn.archive,
+                                              title = x.Categories.Name + ".pdf",
+                                              dataJob = x.Jobs.CreatedDate,
+                                              user = x.Jobs.Users.Registration
                                           })
                                           .FirstOrDefault();
 
@@ -48,7 +50,7 @@ namespace Repository
 
             #region .: Sent New Document :.
 
-            ECMJobCategorySaveOut ecmJobCategorySaveOut = jobCategoryApi.PostECMJobCategorySave(ecmJobCategorySaveIn);
+            ECMJobCategorySaveOut ecmJobCategorySaveOut = jobCategoryApi.SetECMJobCategorySave(ecmJobCategorySaveIn);
 
             if (!ecmJobCategorySaveOut.success)
             {
@@ -61,8 +63,9 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryIn.jobCategoryId).FirstOrDefault();
+                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategorySaveIn.jobCategoryId).FirstOrDefault();
 
+                jobCategory.Received = true;
                 jobCategory.EditedDate = DateTime.Now;
 
                 db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
@@ -71,7 +74,7 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryIn.userId, jobCategoryIn.key, "Log - End", "Repository.JobCategoryRepository.SaveJobCategory", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.userId, jobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategorySave", "");
             return jobCategoryOut;
         }
 

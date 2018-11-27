@@ -16,11 +16,11 @@ namespace ApiTecnodim
 
         #region .: Posts :.
 
-        public ECMJobCategorySaveOut PostECMJobCategorySave(ECMJobCategorySaveIn ecmJobCategorySaveIn)
+        public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn ecmJobCategorySaveIn)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.PostECMJobCategorySave"].ToString());
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.SetECMJobCategorySave"].ToString());
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmJobCategorySaveIn));
 

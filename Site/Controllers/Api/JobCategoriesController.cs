@@ -15,20 +15,19 @@ namespace Site.Controllers.Api
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
-        [AllowAnonymous, HttpPost, Route("")]
-        public JobCategoryOut Post(JobCategoryIn jobCategoryIn)
+        [AllowAnonymous, HttpPost]
+        public JobCategorySaveOut SetJobCategorySave(JobCategorySaveIn jobCategorySaveIn)
         {
-            JobCategoryOut jobCategoryOut = new JobCategoryOut();
+            JobCategorySaveOut jobCategorySaveOut = new JobCategorySaveOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    jobCategoryIn.userId = User.Identity.GetUserId();
-                    jobCategoryIn.key = Key;
+                    jobCategorySaveIn.key = Key;
 
-                    jobCategoryOut = jobCategoryRepository.SaveJobCategory(jobCategoryIn);
+                    jobCategorySaveOut = jobCategoryRepository.SetJobCategorySave(jobCategorySaveIn);
                 }
                 else
                 {
@@ -47,13 +46,13 @@ namespace Site.Controllers.Api
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.SetJobCategorySave", ex.Message);
 
-                jobCategoryOut.successMessage = null;
-                jobCategoryOut.messages.Add(ex.Message);
+                jobCategorySaveOut.successMessage = null;
+                jobCategorySaveOut.messages.Add(ex.Message);
             }
 
-            return jobCategoryOut;
+            return jobCategorySaveOut;
         }
 
     }
