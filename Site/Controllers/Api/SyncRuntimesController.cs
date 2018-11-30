@@ -4,6 +4,7 @@ using Repository;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Web.Configuration;
 using System.Web.Http;
 
 namespace Site.Controllers.Api
@@ -25,6 +26,7 @@ namespace Site.Controllers.Api
                 try
                 {
                     SyncRuntimesIn syncRuntimesIn = new SyncRuntimesIn { key = Key };
+                    string urlBase = WebConfigurationManager.AppSettings["UrlBase"];
 
                     syncRuntimesOut = syncRuntimeRepository.GetSyncRuntimes(syncRuntimesIn);
 
@@ -34,7 +36,7 @@ namespace Site.Controllers.Api
                         {
                             using (HttpClient httpClient = new HttpClient())
                             {
-                                var response = httpClient.GetAsync(item.URL).Result;
+                                var response = httpClient.GetAsync(string.Format("{0}/{1}", urlBase, item.URL)).Result;
                                 if (response.IsSuccessStatusCode)
                                 {
                                     SyncRuntimeSaveIn syncRuntimeSaveIn = new SyncRuntimeSaveIn { key = Key, SyncRuntimeId = item.SyncRuntimeId };

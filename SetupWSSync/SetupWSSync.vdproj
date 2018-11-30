@@ -62,6 +62,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -86,6 +94,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -231,15 +247,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:WSSync"
-        "ProductCode" = "8:{19205FE3-C7FB-4A4B-A680-A1F5E35A980C}"
-        "PackageCode" = "8:{E4B35BB2-4B62-44EE-8735-0BF3ECBBE1EB}"
+        "ProductCode" = "8:{7A72E513-7063-4499-BEE3-18E28F3F43BE}"
+        "PackageCode" = "8:{1D53B79E-D398-48A1-971F-327E8893E80C}"
         "UpgradeCode" = "8:{255431C1-8D1D-42B3-97F1-D93279FECD47}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Tecfy"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
