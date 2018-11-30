@@ -1,6 +1,6 @@
 ﻿namespace Model.VM
 {
-    public class DocumentsDetailVM
+    public class DocumentDetailsByRegistrationVM
     {
         public string unity { get; set; }
 

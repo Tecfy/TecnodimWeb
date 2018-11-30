@@ -1,4 +1,5 @@
 ﻿using Helper.RestRequestHelper;
+using Model.In;
 using Model.Out;
 using RestSharp;
 using System;
@@ -9,24 +10,26 @@ namespace ApiTecnodim
 {
     public partial class DocumentDetailApi
     {
-        public DocumentsDetailOut GetDocumentsDetail(string registration, string unity)
+        #region .: GET :.
+
+        public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(string registration, string unity)
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.GetECMDocumentsDetail"].ToString(), registration, unity));
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.GetECMDocumentDetailsByRegistration"].ToString(), registration, unity));
 
                 var request = RestRequestHelper.Get(Method.GET);
 
                 IRestResponse response = client.Execute(request);
 
-                DocumentsDetailOut documentsDetailOut = SimpleJson.SimpleJson.DeserializeObject<DocumentsDetailOut>(response.Content);
+                DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailsByRegistrationOut>(response.Content);
 
-                if (!documentsDetailOut.success)
+                if (!documentDetailsByRegistrationOut.success)
                 {
-                    throw new Exception(documentsDetailOut.messages.FirstOrDefault());
+                    throw new Exception(documentDetailsByRegistrationOut.messages.FirstOrDefault());
                 }
 
-                return documentsDetailOut;
+                return documentDetailsByRegistrationOut;
             }
             catch (Exception ex)
             {
@@ -58,5 +61,41 @@ namespace ApiTecnodim
                 throw new Exception(ex.Message);
             }
         }
+
+        #endregion
+
+        #region .: Posts :.
+
+        public ECMDocumentDetailSaveOut PostECMDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.PostECMDocumentDetailSave"].ToString());
+
+                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMDocumentDetailSaveIn));
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception(i18n.Resource.UnknownError);
+                }
+
+                ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentDetailSaveOut>(response.Content);
+
+                if (!eCMDocumentDetailSaveOut.success)
+                {
+                    throw new Exception(eCMDocumentDetailSaveOut.messages.FirstOrDefault());
+                }
+
+                return eCMDocumentDetailSaveOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

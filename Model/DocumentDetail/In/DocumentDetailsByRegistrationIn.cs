@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class DocumentsDetailIn : BaseIn
+    public class DocumentDetailsByRegistrationIn : BaseIn
     {
         [Required]
         [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]

@@ -4,6 +4,8 @@ using Model.Out;
 using Repository;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -16,18 +18,18 @@ namespace Site.Api.Controllers
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentsDetailOut GetDocumentsDetail(string registration, string unity)
+        public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(string registration, string unity)
         {
-            DocumentsDetailOut documentsDetailOut = new DocumentsDetailOut();
+            DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = new DocumentDetailsByRegistrationOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentsDetailIn documentsDetailIn = new DocumentsDetailIn() { Registration = registration, Unity = unity, userId = User.Identity.GetUserId(), key = Key };
+                    DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, userId = User.Identity.GetUserId(), key = Key };
 
-                    documentsDetailOut = documentDetailRepository.GetDocumentsDetail(documentsDetailIn);
+                    documentDetailsByRegistrationOut = documentDetailRepository.GetDocumentDetailsByRegistration(documentDetailsByRegistrationIn);
                 }
                 else
                 {
@@ -46,14 +48,14 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentsDetail", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetailsByRegistration", ex.Message);
 
-                documentsDetailOut.result = null;
-                documentsDetailOut.successMessage = null;
-                documentsDetailOut.messages.Add(ex.Message);
+                documentDetailsByRegistrationOut.result = null;
+                documentDetailsByRegistrationOut.successMessage = null;
+                documentDetailsByRegistrationOut.messages.Add(ex.Message);
             }
 
-            return documentsDetailOut;
+            return documentDetailsByRegistrationOut;
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
@@ -95,6 +97,28 @@ namespace Site.Api.Controllers
             }
 
             return documentDetailOut;
+        }
+
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage GetDocumentDetails()
+        {
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                string Key = Guid.NewGuid().ToString();
+
+                try
+                {
+                    DocumentDetailsIn documentDetailsIn = new DocumentDetailsIn() { key = Key };
+
+                    documentDetailRepository.GetDocumentDetails(documentDetailsIn);
+                }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetails", ex.Message);
+                }
+            });
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

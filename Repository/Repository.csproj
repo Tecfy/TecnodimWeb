@@ -97,6 +97,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
@@ -163,6 +164,8 @@
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
     <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
+    <Compile Include="DocumentDetailSER\DocumentDetailSERRepository.cs" />
+    <Compile Include="SyncRuntime\SyncRuntimeRepository.cs" />
     <Compile Include="JobCategory\JobCategoryRepository.cs" />
     <Compile Include="Job\JobRepository.cs" />
     <Compile Include="SliceCategoryAdditionalField\SliceCategoryAdditionalFieldRepository.cs" />
@@ -203,7 +206,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

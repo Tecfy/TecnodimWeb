@@ -2,6 +2,7 @@
 using DataEF.DataAccess;
 using Model.In;
 using Model.Out;
+using System;
 using System.Linq;
 
 namespace Repository
@@ -11,16 +12,21 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         SliceRepository sliceRepository = new SliceRepository();
         DocumentDetailApi documentDetailApi = new DocumentDetailApi();
+        DocumentDetailSERRepository documentDetailSERRepository = new DocumentDetailSERRepository();
 
-        public DocumentsDetailOut GetDocumentsDetail(DocumentsDetailIn documentsDetailIn)
+        #region .: Api :.
+
+        public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(DocumentDetailsByRegistrationIn documentsDetailIn)
         {
-            DocumentsDetailOut documentsDetailOut = new DocumentsDetailOut();
+            DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = new DocumentDetailsByRegistrationOut();
+
             registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
 
-            documentsDetailOut = documentDetailApi.GetDocumentsDetail(documentsDetailIn.Registration, documentsDetailIn.Unity);
+            documentDetailsByRegistrationOut = documentDetailApi.GetDocumentDetailsByRegistration(documentsDetailIn.Registration, documentsDetailIn.Unity);
 
             registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
-            return documentsDetailOut;
+
+            return documentDetailsByRegistrationOut;
         }
 
         public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
@@ -57,5 +63,18 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(documentDetailIn.userId, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
             return documentDetailOut;
         }
+
+        public DocumentDetailsOut GetDocumentDetails(DocumentDetailsIn documentDetailsIn)
+        {
+            DocumentDetailsOut documentDetailsOut = new DocumentDetailsOut();
+            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+
+            documentDetailSERRepository.GetDocumentDetailSER();
+
+            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+            return documentDetailsOut;
+        }
+
+        #endregion
     }
 }

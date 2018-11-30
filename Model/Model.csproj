@@ -118,9 +118,13 @@
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
     <Compile Include="Common\In\PaginateIn.cs" />
     <Compile Include="Common\VM\IdentityModels.cs" />
-    <Compile Include="DocumentDetail\In\DocumentsDetailIn.cs" />
-    <Compile Include="DocumentDetail\Out\DocumentsDetailOut.cs" />
-    <Compile Include="DocumentDetail\VM\DocumentsDetailVM.cs" />
+    <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailsIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailsByRegistrationIn.cs" />
+    <Compile Include="DocumentDetail\Out\ECMDocumentDetailSaveOut.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailsOut.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailsByRegistrationOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailsByRegistrationVM.cs" />
     <Compile Include="Document\In\DocumentsSentIn.cs" />
     <Compile Include="Document\In\DocumentsFinishedIn.cs" />
     <Compile Include="Document\In\ECMDocumentDeletedIn.cs" />
@@ -140,6 +144,10 @@
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
+    <Compile Include="SyncRuntime\In\SyncRuntimeSaveIn.cs" />
+    <Compile Include="SyncRuntime\In\SyncRuntimesIn.cs" />
+    <Compile Include="SyncRuntime\Out\SyncRuntimesOut.cs" />
+    <Compile Include="SyncRuntime\VM\SyncRuntimesVM.cs" />
     <Compile Include="JobCategory\VM\JobCategoriesRegistrationVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldIn.cs" />
