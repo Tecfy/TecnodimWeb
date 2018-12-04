@@ -2,6 +2,8 @@
 {
     public class ECMDocumentDetailSaveIn : BaseIn
     {
+        public int studentId { get; set; }
+
         public string unityCode { get; set; }
 
         public string cpf { get; set; }

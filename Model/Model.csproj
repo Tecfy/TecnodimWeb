@@ -125,6 +125,7 @@
     <Compile Include="DocumentDetail\Out\DocumentDetailsOut.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailsByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\VM\DocumentDetailsByRegistrationVM.cs" />
+    <Compile Include="DocumentDetail\VM\ECMDocumentDetailSaveVM.cs" />
     <Compile Include="Document\In\DocumentsSentIn.cs" />
     <Compile Include="Document\In\DocumentsFinishedIn.cs" />
     <Compile Include="Document\In\ECMDocumentDeletedIn.cs" />
