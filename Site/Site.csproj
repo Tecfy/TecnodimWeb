@@ -227,6 +227,7 @@
     <Compile Include="Controllers\Adm\UsersController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CategoriesController.cs" />
+    <Compile Include="Controllers\Api\ScanningsController.cs" />
     <Compile Include="Controllers\Api\ClassificationsController.cs" />
     <Compile Include="Controllers\Api\DeletedPagesController.cs" />
     <Compile Include="Controllers\Api\DocumentDetailsController.cs" />
@@ -366,13 +367,13 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
       <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\i18n\i18n.csproj">
-      <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
-      <Name>i18n</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{3d00df5f-2824-42e0-acc1-20461615e42c}</Project>

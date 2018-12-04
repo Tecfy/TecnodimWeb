@@ -14,11 +14,11 @@ namespace Repository
 
         #region .: API :.
 
-        public JobCategorySaveOut SetJobCategorySave(JobCategorySaveIn jobCategorySaveIn)
+        public JobCategoryArchiveOut SetJobCategorySave(JobCategoryArchiveIn jobCategorySaveIn)
         {
-            JobCategorySaveOut jobCategoryOut = new JobCategorySaveOut();
+            JobCategoryArchiveOut jobCategoryOut = new JobCategoryArchiveOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.userId, jobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategorySave", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategorySave", "");
 
             #region .: Job Category :.
 
@@ -74,8 +74,39 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.userId, jobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategorySave", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategorySave", "");
             return jobCategoryOut;
+        }
+
+        public JobCategoryCreateOut CreateJobCategory(JobCategoryCreateIn jobCategoryCreateIn)
+        {
+            JobCategoryCreateOut jobCategoryCreateOut = new JobCategoryCreateOut();
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryCreateIn.id, jobCategoryCreateIn.key, "Log - Start", "Repository.JobCategoryRepository.CreateJobCategory", "");
+
+            using (var db = new DBContext())
+            {
+                JobCategories jobCategory = new JobCategories
+                {
+                    Active = true,
+                    CreatedDate = DateTime.Now,
+                    JobId = jobCategoryCreateIn.jobId,
+                    CategoryId = jobCategoryCreateIn.categoryId,
+                    Code = jobCategoryCreateIn.code,
+                    Received = false,
+                    Send = false,
+                    Sending = false,
+                    SendingDate = null
+                };
+
+                db.JobCategories.Add(jobCategory);
+                db.SaveChanges();
+
+                jobCategoryCreateOut.result.jobCategoryId = jobCategory.JobCategoryId;
+            }
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryCreateIn.id, jobCategoryCreateIn.key, "Log - End", "Repository.JobCategoryRepository.CreateJobCategory", "");
+            return jobCategoryCreateOut;
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    slicePageDeleteIn.userId = User.Identity.GetUserId();
+                    slicePageDeleteIn.id = User.Identity.GetUserId();
                     slicePageDeleteIn.key = Key;
 
                     slicePageRepository.DeleteSlicePage(slicePageDeleteIn);

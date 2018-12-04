@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers.Api
+namespace Site.Api.Controllers
 {
     [RoutePrefix("Api/JobCategories")]
     public class JobCategoriesController : ApiController
@@ -16,9 +16,9 @@ namespace Site.Controllers.Api
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         [AllowAnonymous, HttpPost]
-        public JobCategorySaveOut SetJobCategorySave(JobCategorySaveIn jobCategorySaveIn)
+        public JobCategoryArchiveOut SetJobCategorySave(JobCategoryArchiveIn jobCategorySaveIn)
         {
-            JobCategorySaveOut jobCategorySaveOut = new JobCategorySaveOut();
+            JobCategoryArchiveOut jobCategorySaveOut = new JobCategoryArchiveOut();
             string Key = Guid.NewGuid().ToString();
 
             try

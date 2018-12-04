@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class JobCategorySaveIn : BaseIn
+    public class JobCategoryArchiveIn : BaseIn
     {
         [Required]
         [Display(Name = "JobCategory", ResourceType = typeof(i18n.Resource))]

@@ -15,7 +15,7 @@ namespace Repository
         {
             ApiSliceCategoryAdditionalFieldOut sliceCategoryAdditionalFieldOut = new ApiSliceCategoryAdditionalFieldOut();
 
-            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId, sliceCategoryAdditionalFieldIn.key, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.id, sliceCategoryAdditionalFieldIn.key, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField", "");
 
             using (var db = new DBContext())
             {
@@ -50,13 +50,13 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.userId, sliceCategoryAdditionalFieldIn.key, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(sliceCategoryAdditionalFieldIn.id, sliceCategoryAdditionalFieldIn.key, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.SaveSliceCategoryAdditionalField", "");
             return sliceCategoryAdditionalFieldOut;
         }
 
         public void DeleteSliceCategoryAdditionalField(ApiSliceCategoryAdditionalFieldDeleteIn apiSliceCategoryAdditionalFieldDeleteIn)
         {
-            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.userId, apiSliceCategoryAdditionalFieldDeleteIn.key, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.id, apiSliceCategoryAdditionalFieldDeleteIn.key, "Log - Start", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
 
             using (var db = new DBContext())
             {
@@ -77,7 +77,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.userId, apiSliceCategoryAdditionalFieldDeleteIn.key, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
+            registerEventRepository.SaveRegisterEvent(apiSliceCategoryAdditionalFieldDeleteIn.id, apiSliceCategoryAdditionalFieldDeleteIn.key, "Log - End", "Repository.SliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField", "");
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, userId = User.Identity.GetUserId(), key = Key };
+                    DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, id = User.Identity.GetUserId(), key = Key };
 
                     documentDetailsByRegistrationOut = documentDetailRepository.GetDocumentDetailsByRegistration(documentDetailsByRegistrationIn);
                 }
@@ -68,7 +68,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key };
+                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
 
                     documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
                 }

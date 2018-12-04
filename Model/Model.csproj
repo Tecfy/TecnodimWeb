@@ -116,6 +116,14 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryCreateOut.cs" />
+    <Compile Include="JobCategory\VM\JobCategoryCreateVM.cs" />
+    <Compile Include="Job\In\JobCreateIn.cs" />
+    <Compile Include="Job\Out\JobCreateOut.cs" />
+    <Compile Include="Job\VM\JobCreateVM.cs" />
+    <Compile Include="Scanning\In\ScanningIn.cs" />
+    <Compile Include="Scanning\Out\ScanningOut.cs" />
     <Compile Include="Common\In\PaginateIn.cs" />
     <Compile Include="Common\VM\IdentityModels.cs" />
     <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
@@ -145,11 +153,12 @@
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
     <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
+    <Compile Include="JobCategory\In\JobCategoryIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimeSaveIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimesIn.cs" />
     <Compile Include="SyncRuntime\Out\SyncRuntimesOut.cs" />
     <Compile Include="SyncRuntime\VM\SyncRuntimesVM.cs" />
-    <Compile Include="JobCategory\VM\JobCategoriesRegistrationVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByRegistrationVM.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\Api\ApiSliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
@@ -236,29 +245,33 @@
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
     <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
-    <Compile Include="JobCategory\In\JobCategorySaveIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryArchiveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
-    <Compile Include="JobCategory\Out\JobCategorySaveOut.cs" />
-    <Compile Include="Job\In\JobsRegistrationIn.cs" />
-    <Compile Include="Job\Out\JobsRegistrationOut.cs" />
-    <Compile Include="Job\VM\JobsRegistrationVM.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryArchiveOut.cs" />
+    <Compile Include="Job\In\JobsByRegistrationIn.cs" />
+    <Compile Include="Job\Out\JobsByRegistrationOut.cs" />
+    <Compile Include="Job\VM\JobsByRegistrationVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
+    <Folder Include="JobCategoryAdditionalField\In\" />
+    <Folder Include="JobCategoryAdditionalField\Out\" />
+    <Folder Include="JobCategoryAdditionalField\VM\" />
     <Folder Include="Page\Out\" />
+    <Folder Include="Scanning\VM\" />
     <Folder Include="SliceCategoryAdditionalField\VM\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
       <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\i18n\i18n.csproj">
-      <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
-      <Name>i18n</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

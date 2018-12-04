@@ -18,7 +18,7 @@ namespace Repository
         public SyncRuntimesOut GetSyncRuntimes(SyncRuntimesIn syncRuntimesIn)
         {
             SyncRuntimesOut syncRuntimesOut = new SyncRuntimesOut();
-            registerEventRepository.SaveRegisterEvent(syncRuntimesIn.userId, syncRuntimesIn.key, "Log - Start", "Repository.SyncRuntimeRepository.GetSyncRuntimes", "");
+            registerEventRepository.SaveRegisterEvent(syncRuntimesIn.id, syncRuntimesIn.key, "Log - Start", "Repository.SyncRuntimeRepository.GetSyncRuntimes", "");
 
             using (var db = new DBContext())
             {
@@ -33,13 +33,13 @@ namespace Repository
                                                 .ToList();
             }
 
-            registerEventRepository.SaveRegisterEvent(syncRuntimesIn.userId, syncRuntimesIn.key, "Log - End", "Repository.SyncRuntimeRepository.GetSyncRuntimes", "");
+            registerEventRepository.SaveRegisterEvent(syncRuntimesIn.id, syncRuntimesIn.key, "Log - End", "Repository.SyncRuntimeRepository.GetSyncRuntimes", "");
             return syncRuntimesOut;
         }
 
         public bool SaveSyncRuntimes(SyncRuntimeSaveIn syncRuntimeSaveIn)
         {
-            registerEventRepository.SaveRegisterEvent(syncRuntimeSaveIn.userId, syncRuntimeSaveIn.key, "Log - Start", "Repository.SyncRuntimeRepository.SaveSyncRuntimes", "");
+            registerEventRepository.SaveRegisterEvent(syncRuntimeSaveIn.id, syncRuntimeSaveIn.key, "Log - Start", "Repository.SyncRuntimeRepository.SaveSyncRuntimes", "");
 
             using (var db = new DBContext())
             {
@@ -50,7 +50,7 @@ namespace Repository
                 db.SaveChanges();
             }
 
-            registerEventRepository.SaveRegisterEvent(syncRuntimeSaveIn.userId, syncRuntimeSaveIn.key, "Log - End", "Repository.SyncRuntimeRepository.SaveSyncRuntimes", "");
+            registerEventRepository.SaveRegisterEvent(syncRuntimeSaveIn.id, syncRuntimeSaveIn.key, "Log - End", "Repository.SyncRuntimeRepository.SaveSyncRuntimes", "");
 
             return true;
         }

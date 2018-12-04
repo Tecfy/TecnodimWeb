@@ -25,7 +25,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SliceIn sliceIn = new SliceIn() { sliceId = id, userId = User.Identity.GetUserId(), key = Key };
+                    SliceIn sliceIn = new SliceIn() { sliceId = id, id = User.Identity.GetUserId(), key = Key };
 
                     sliceOut = sliceRepository.GetSlice(sliceIn);
                 }
@@ -65,7 +65,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key };
+                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
 
                     sliceOut = sliceRepository.GetSlicePending(slicePendingIn);
                 }
@@ -105,7 +105,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = null };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = null };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -145,7 +145,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = false };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = false };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -185,7 +185,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, userId = User.Identity.GetUserId(), key = Key, classificated = true };
+                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = true };
 
                     slicesOut = sliceRepository.GetSlices(slicesIn);
                 }
@@ -225,7 +225,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sliceIn.userId = User.Identity.GetUserId();
+                    sliceIn.id = User.Identity.GetUserId();
                     sliceIn.key = Key;
 
                     sliceOut = sliceRepository.SaveSlice(sliceIn);

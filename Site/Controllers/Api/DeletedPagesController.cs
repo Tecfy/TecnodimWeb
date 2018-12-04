@@ -25,7 +25,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    deletedPageIn.userId = User.Identity.GetUserId();
+                    deletedPageIn.id = User.Identity.GetUserId();
                     deletedPageIn.key = Key;
 
                     deletedPageOut = deletedPageRepository.SaveDeletedPage(deletedPageIn);

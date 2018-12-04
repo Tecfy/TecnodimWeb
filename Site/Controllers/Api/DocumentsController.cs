@@ -28,7 +28,7 @@ namespace Site.Api.Controllers
 
                 try
                 {
-                    ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = "", key = Key };
+                    ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { id = "", key = Key };
 
                     documentRepository.GetECMDocuments(ecmDocumentsIn);
 
@@ -51,7 +51,7 @@ namespace Site.Api.Controllers
 
                 try
                 {
-                    ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { userId = "", key = Key };
+                    ECMDocumentsSendIn ecmDocumentsSendIn = new ECMDocumentsSendIn() { id = "", key = Key };
 
                     documentRepository.GetECMSendDocuments(ecmDocumentsSendIn);
                 }
@@ -78,7 +78,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.New);
                     documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -123,7 +123,7 @@ namespace Site.Api.Controllers
                     documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
                     documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, userId = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
+                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
                     documentsOut = documentRepository.GetDocuments(documentsIn);
                 }
@@ -163,7 +163,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    documentUpdateIn.userId = User.Identity.GetUserId();
+                    documentUpdateIn.id = User.Identity.GetUserId();
                     documentUpdateIn.key = Key;
 
                     documentUpdateOut = documentRepository.PostDocumentUpdateSatus(documentUpdateIn);

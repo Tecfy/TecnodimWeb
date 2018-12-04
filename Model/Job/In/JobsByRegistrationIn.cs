@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class JobsRegistrationIn : BaseIn
+    public class JobsByRegistrationIn : BaseIn
     {
         public string registration { get; set; }
     }

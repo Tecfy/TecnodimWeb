@@ -22,11 +22,11 @@ namespace Repository
         {
             DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = new DocumentDetailsByRegistrationOut();
 
-            registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentsDetailIn.id, documentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
 
             documentDetailsByRegistrationOut = documentDetailApi.GetDocumentDetailsByRegistration(documentsDetailIn.Registration, documentsDetailIn.Unity);
 
-            registerEventRepository.SaveRegisterEvent(documentsDetailIn.userId, documentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentsDetailIn.id, documentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
 
             return documentDetailsByRegistrationOut;
         }
@@ -34,7 +34,7 @@ namespace Repository
         public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
         {
             DocumentDetailOut documentDetailOut = new DocumentDetailOut();
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
 
             string registration = string.Empty;
 
@@ -54,15 +54,15 @@ namespace Repository
 
             SlicesOut slicesOut = new SlicesOut();
 
-            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = true });
+            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, id = documentDetailIn.id, key = documentDetailIn.key, classificated = true });
 
             documentDetailOut.result.Classificated = slicesOut.result.Count;
 
-            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, userId = documentDetailIn.userId, key = documentDetailIn.key, classificated = false });
+            slicesOut = sliceRepository.GetSlices(new SlicesIn { documentId = documentDetailIn.documentId, id = documentDetailIn.id, key = documentDetailIn.key, classificated = false });
 
             documentDetailOut.result.NotClassificated = slicesOut.result.Count;
 
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.userId, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
             return documentDetailOut;
         }
 
@@ -72,7 +72,7 @@ namespace Repository
             ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = new ECMDocumentDetailSaveOut();
             ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn = new ECMDocumentDetailSaveIn();
 
-            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
             #region .: Query :.
 
@@ -94,7 +94,7 @@ namespace Repository
                                     TIPOINGRESSO, 
                                     RECMODIFIEDON, 
                                     CONTROLE 
-                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL";
+                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND CPF IS NOT NULL";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
 
@@ -104,12 +104,12 @@ namespace Repository
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Start Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
                 var querySelect = String.Format(queryString, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString());
                 SqlCommand command = new SqlCommand(querySelect, connection);
 
-                registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - End Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - End Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -135,27 +135,27 @@ namespace Repository
                                 habilitationCode = reader["habilitationCode"].ToString()
                             };
 
-                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Synchronization Start SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Synchronization Start SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
                             eCMDocumentDetailSaveOut = documentDetailApi.PostECMDocumentDetailSave(eCMDocumentDetailSaveIn);
 
-                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Synchronization End SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Synchronization End SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
                             using (SqlConnection connectionUpdate = new SqlConnection(connectionString))
                             {
-                                registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - Start Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                                registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
-                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveIn.registration, eCMDocumentDetailSaveIn.studentId);
+                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveOut.result.registration, eCMDocumentDetailSaveIn.studentId);                                
                                 SqlCommand commandUpdate = new SqlCommand(queryUpdate, connectionUpdate);
                                 connectionUpdate.Open();
                                 commandUpdate.ExecuteNonQuery();
 
-                                registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - End Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+                                registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - End Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
                             }
                         }
                         catch (Exception ex)
                         {
-                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Erro", "Repository.DocumentDetailRepository.GetDocumentDetails", ex.Message);
+                            registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Erro", "Repository.DocumentDetailRepository.GetDocumentDetails", ex.Message);
                         }
                     }
                 }
@@ -167,7 +167,7 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(documentDetailsIn.userId, documentDetailsIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
             return documentDetailsOut;
         }

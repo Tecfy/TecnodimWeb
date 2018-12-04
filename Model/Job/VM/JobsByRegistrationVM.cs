@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model.VM
 {
-    public class JobsRegistrationVM
+    public class JobsByRegistrationVM
     {
         public int JobId { get; set; }
 
@@ -12,6 +12,6 @@ namespace Model.VM
         public string Name { get; set; }
 
 
-        public List<JobCategoriesRegistrationVM> JobCategories { get; set; }
+        public List<JobCategoriesByRegistrationVM> JobCategories { get; set; }
     }
 }

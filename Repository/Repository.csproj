@@ -164,6 +164,8 @@
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
     <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
+    <Compile Include="JobCategoryAdditionalField\JobCategoryAdditionalFieldRepository.cs" />
+    <Compile Include="Scanning\ScanningRepository.cs" />
     <Compile Include="SyncRuntime\SyncRuntimeRepository.cs" />
     <Compile Include="JobCategory\JobCategoryRepository.cs" />
     <Compile Include="Job\JobRepository.cs" />
@@ -187,6 +189,10 @@
       <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
       <Name>DataEF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ApiTecnodim\ApiTecnodim.csproj">
       <Project>{15cadf7d-6c8a-4c64-bcb0-647255a96b2a}</Project>
       <Name>ApiTecnodim</Name>
@@ -194,10 +200,6 @@
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
       <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\i18n\i18n.csproj">
-      <Project>{ee852833-8e6b-4346-88b2-9a0f1cfce91a}</Project>
-      <Name>i18n</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{3d00df5f-2824-42e0-acc1-20461615e42c}</Project>

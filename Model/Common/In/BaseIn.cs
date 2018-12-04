@@ -4,11 +4,11 @@
     {
         public BaseIn()
         {
-            this.userId = null;
+            this.id = null;
             this.key = null;
         }
 
-        public string userId { get; set; }
+        public string id { get; set; }
 
         public string key { get; set; }
     }

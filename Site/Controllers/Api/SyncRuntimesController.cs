@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Web.Configuration;
 using System.Web.Http;
 
-namespace Site.Controllers.Api
+namespace Site.Api.Controllers
 {
     [RoutePrefix("Api/SyncRuntimes")]
     public class SyncRuntimesController : ApiController

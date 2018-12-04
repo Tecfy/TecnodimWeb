@@ -25,7 +25,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    classificationIn.userId = User.Identity.GetUserId();
+                    classificationIn.id = User.Identity.GetUserId();
                     classificationIn.key = Key;
 
                     sliceOut = classificationRepository.SaveClassification(classificationIn);

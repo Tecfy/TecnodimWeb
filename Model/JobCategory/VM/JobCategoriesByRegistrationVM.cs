@@ -2,7 +2,7 @@
 
 namespace Model.VM
 {
-    public class JobCategoriesRegistrationVM
+    public class JobCategoriesByRegistrationVM
     {
         public int JobCategoryId { get; set; }
 

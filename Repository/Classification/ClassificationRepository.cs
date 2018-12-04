@@ -16,13 +16,13 @@ namespace Repository
         {
             ClassificationOut classificationOut = new ClassificationOut();
 
-            registerEventRepository.SaveRegisterEvent(classificationIn.userId, classificationIn.key, "Log - Start", "Repository.ClassificationRepository.SaveClassifications", "");
+            registerEventRepository.SaveRegisterEvent(classificationIn.id, classificationIn.key, "Log - Start", "Repository.ClassificationRepository.SaveClassifications", "");
 
             #region .: Slice :.
 
             SliceUpdateIn sliceUpdateIn = new SliceUpdateIn()
             {
-                userId = classificationIn.userId,
+                id = classificationIn.id,
                 key = classificationIn.key,
                 sliceId = classificationIn.sliceId,
                 categoryId = classificationIn.categoryId,
@@ -38,8 +38,8 @@ namespace Repository
             {
                 SlicePageUpdateIn slicePageUpdateIn = new SlicePageUpdateIn()
                 {
-                    key = classificationIn.userId,
-                    userId = classificationIn.key,
+                    key = classificationIn.id,
+                    id = classificationIn.key,
                     slicePageId = item.slicePageId,
                     page = item.page,
                     rotate = item.rotate
@@ -54,8 +54,8 @@ namespace Repository
 
             sliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField(new ApiSliceCategoryAdditionalFieldDeleteIn
             {
-                key = classificationIn.userId,
-                userId = classificationIn.userId,
+                key = classificationIn.id,
+                id = classificationIn.id,
                 sliceId = classificationIn.sliceId,
                 categoryId = classificationIn.categoryId,
             });
@@ -65,7 +65,7 @@ namespace Repository
                 ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new ApiSliceCategoryAdditionalFieldIn()
                 {
                     key = classificationIn.key,
-                    userId = classificationIn.userId,
+                    id = classificationIn.id,
                     sliceId = classificationIn.sliceId,
                     categoryAdditionalFieldId = item.categoryAdditionalFieldId,
                     categoryId = classificationIn.categoryId,
@@ -77,7 +77,7 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(classificationIn.userId, classificationIn.key, "Log - End", "Repository.ClassificationRepository.SaveClassifications", "");
+            registerEventRepository.SaveRegisterEvent(classificationIn.id, classificationIn.key, "Log - End", "Repository.ClassificationRepository.SaveClassifications", "");
             return classificationOut;
         }
 

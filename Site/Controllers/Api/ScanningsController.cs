@@ -9,26 +9,26 @@ using System.Web.Http.ModelBinding;
 
 namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/PDFs")]
-    public class PDFsController : ApiController
+    [RoutePrefix("Api/Scannings")]
+    public class ScanningsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        PDFRepository pdfRepository = new PDFRepository();
-        DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
+        ScanningRepository scanningRepository = new ScanningRepository();
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public PDFsOut GetPDFs(int id)
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
+        public ScanningOut Post(ScanningIn scanningIn)
         {
-            PDFsOut pdfOut = new PDFsOut();
+            ScanningOut sliceOut = new ScanningOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentIn documentIn = new DocumentIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+                    scanningIn.id = User.Identity.GetUserId();
+                    scanningIn.key = Key;
 
-                    pdfOut = pdfRepository.GetPDFs(documentIn);
+                    sliceOut = scanningRepository.SaveScanning(scanningIn);
                 }
                 else
                 {
@@ -47,14 +47,13 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.PDFsController.Get", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.ScanningsController.Post", ex.Message);
 
-                pdfOut.result = null;
-                pdfOut.successMessage = null;
-                pdfOut.messages.Add(ex.Message);
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
             }
 
-            return pdfOut;
+            return sliceOut;
         }
     }
 }

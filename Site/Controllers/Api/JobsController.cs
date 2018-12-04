@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
-namespace Site.Controllers.Api
+namespace Site.Api.Controllers
 {
     [RoutePrefix("Api/Jobs")]
     public class JobsController : ApiController
@@ -15,27 +15,35 @@ namespace Site.Controllers.Api
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobRepository jobRepository = new JobRepository();
 
+        #region .: API :.
+
+        #region .: Get :.
+
         [AllowAnonymous, HttpGet]
-        public JobsRegistrationOut GetJobsByRegistration(string registration)
+        public JobsByRegistrationOut GetJobsByRegistration(string registration)
         {
-            JobsRegistrationOut jobsRegistrationOut = new JobsRegistrationOut();
+            JobsByRegistrationOut jobsByRegistrationOut = new JobsByRegistrationOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
-                JobsRegistrationIn jobsRegistrationIn = new JobsRegistrationIn() { registration = registration, key = Key };
+                JobsByRegistrationIn jobsByRegistrationIn = new JobsByRegistrationIn() { registration = registration, key = Key };
 
-                jobsRegistrationOut = jobRepository.GetJobsByRegistration(jobsRegistrationIn);
+                jobsByRegistrationOut = jobRepository.GetJobsByRegistration(jobsByRegistrationIn);
             }
             catch (Exception ex)
             {
                 registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobsByRegistration", ex.Message);
 
-                jobsRegistrationOut.successMessage = null;
-                jobsRegistrationOut.messages.Add(ex.Message);
+                jobsByRegistrationOut.successMessage = null;
+                jobsByRegistrationOut.messages.Add(ex.Message);
             }
 
-            return jobsRegistrationOut;
+            return jobsByRegistrationOut;
         }
+
+        #endregion
+
+        #endregion
     }
 }

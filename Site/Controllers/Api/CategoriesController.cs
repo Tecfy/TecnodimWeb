@@ -27,7 +27,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, userId = User.Identity.GetUserId(), key = Key };
+                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, id = User.Identity.GetUserId(), key = Key };
 
                     categoryOut = categoryRepository.GetCategory(categoryIn);
                 }
@@ -67,7 +67,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, userId = User.Identity.GetUserId(), key = Key };
+                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, id = User.Identity.GetUserId(), key = Key };
 
                     categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
                 }
@@ -107,7 +107,7 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ApiCategoriesIn categoriesIn = new ApiCategoriesIn() { userId = User.Identity.GetUserId(), key = Key };
+                    ApiCategoriesIn categoriesIn = new ApiCategoriesIn() { id = User.Identity.GetUserId(), key = Key };
 
                     categoriesOut = categoryRepository.GetCategories(categoriesIn);
                 }
@@ -146,7 +146,7 @@ namespace Site.Api.Controllers
 
                 try
                 {
-                    ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { userId = "", key = Key };
+                    ApiECMCategoriesIn ecmCategoriesIn = new ApiECMCategoriesIn() { id = "", key = Key };
 
                     categoryRepository.GetECMCategories(ecmCategoriesIn);
                 }

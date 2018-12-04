@@ -165,7 +165,7 @@ namespace Site.Adm.Controllers
 
             try
             {
-                categoryRepository.GetECMCategories(new ApiECMCategoriesIn { userId = User.Identity.Name, key = Key });
+                categoryRepository.GetECMCategories(new ApiECMCategoriesIn { id = User.Identity.Name, key = Key });
             }
             catch { }
 
