@@ -122,7 +122,9 @@
     <Compile Include="Job\In\JobCreateIn.cs" />
     <Compile Include="Job\Out\JobCreateOut.cs" />
     <Compile Include="Job\VM\JobCreateVM.cs" />
+    <Compile Include="Scanning\In\ScanningPermissionIn.cs" />
     <Compile Include="Scanning\In\ScanningIn.cs" />
+    <Compile Include="Scanning\Out\ScanningPermissionOut.cs" />
     <Compile Include="Scanning\Out\ScanningOut.cs" />
     <Compile Include="Common\In\PaginateIn.cs" />
     <Compile Include="Common\VM\IdentityModels.cs" />

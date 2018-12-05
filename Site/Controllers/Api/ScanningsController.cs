@@ -15,6 +15,29 @@ namespace Site.Api.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         ScanningRepository scanningRepository = new ScanningRepository();
 
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public ScanningPermissionOut GetPermission()
+        {
+            ScanningPermissionOut scanningPermissionOut = new ScanningPermissionOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                ScanningPermissionIn scanningPermissionIn = new ScanningPermissionIn { id = User.Identity.GetUserId(), key = Key };
+
+                scanningPermissionOut = scanningRepository.GetPermission(scanningPermissionIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.ScanningsController.GetPermission", ex.Message);
+
+                scanningPermissionOut.successMessage = null;
+                scanningPermissionOut.messages.Add(ex.Message);
+            }
+
+            return scanningPermissionOut;
+        }
+
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public ScanningOut Post(ScanningIn scanningIn)
         {

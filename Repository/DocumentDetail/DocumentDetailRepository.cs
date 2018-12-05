@@ -77,23 +77,13 @@ namespace Repository
             #region .: Query :.
 
             string queryString = @"SELECT TOP({0}) _key AS StudentId,
-                                    CODCOLIGADA AS affiliateCode, 
-                                    COLIGADA, 
-                                    CODFILIAL AS branchCode, 
                                     FILIAL AS unity, 
                                     UNIDADE AS unityCode, 
                                     RA AS registration, 
                                     NOME AS name, 
                                     CPF AS cpf, 
-                                    RG, 
-                                    CODCURSO AS courseCode, 
-                                    CODHABILITACAO AS habilitationCode, 
                                     CURSO AS course, 
-                                    SITUACAO AS status, 
-                                    CODTIPOINGRESSO, 
-                                    TIPOINGRESSO, 
-                                    RECMODIFIEDON, 
-                                    CONTROLE 
+                                    SITUACAO AS status
                                  FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND CPF IS NOT NULL";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
@@ -128,11 +118,7 @@ namespace Repository
                                 registration = reader["registration"].ToString(),
                                 name = reader["name"].ToString(),
                                 status = reader["status"].ToString(),
-                                unity = reader["unity"].ToString(),
-                                affiliateCode = int.Parse(reader["affiliateCode"].ToString()),
-                                courseCode = int.Parse(reader["courseCode"].ToString()),
-                                branchCode = int.Parse(reader["branchCode"].ToString()),
-                                habilitationCode = reader["habilitationCode"].ToString()
+                                unity = reader["unity"].ToString()
                             };
 
                             registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Synchronization Start SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");

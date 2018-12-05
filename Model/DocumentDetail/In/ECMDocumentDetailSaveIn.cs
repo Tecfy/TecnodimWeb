@@ -17,13 +17,5 @@
         public string status { get; set; }
 
         public string unity { get; set; }
-
-        public int affiliateCode { get; set; }
-
-        public int courseCode { get; set; }
-
-        public int branchCode { get; set; }
-
-        public string habilitationCode { get; set; }
     }
 }

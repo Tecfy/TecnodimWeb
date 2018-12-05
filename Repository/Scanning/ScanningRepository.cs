@@ -4,6 +4,7 @@ using Model.In;
 using Model.Out;
 using System;
 using System.Linq;
+using System.Web.Configuration;
 
 namespace Repository
 {
@@ -14,6 +15,33 @@ namespace Repository
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         #region .: Methods :.
+
+        public ScanningPermissionOut GetPermission(ScanningPermissionIn scanningPermissionIn)
+        {
+            ScanningPermissionOut scanningPermissionOut = new ScanningPermissionOut();
+            registerEventRepository.SaveRegisterEvent(scanningPermissionIn.id, scanningPermissionIn.key, "Log - Start", "Repository.ScanningRepository.GetPermission", "");
+
+            if (!bool.Parse(WebConfigurationManager.AppSettings["Scanning.Multiple"].ToString()))
+            {
+                using (var db = new DBContext())
+                {
+                    int jobStatus = (int)EJobStatus.Sent;
+
+                    bool job = db.Jobs.Any(x => x.DeletedDate == null
+                                            && x.Active == true
+                                            && x.Users.AspNetUserId == scanningPermissionIn.id
+                                            && x.JobStatusId != jobStatus);
+
+                    if (job)
+                    {
+                        scanningPermissionOut.messages.Add(i18n.Resource.MessagePendingSscan);
+                    }
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(scanningPermissionIn.id, scanningPermissionIn.key, "Log - End", "Repository.ScanningRepository.GetPermission", "");
+            return scanningPermissionOut;
+        }
 
         public ScanningOut SaveScanning(ScanningIn scanningIn)
         {
