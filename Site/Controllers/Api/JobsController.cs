@@ -42,6 +42,29 @@ namespace Site.Api.Controllers
             return jobsByRegistrationOut;
         }
 
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public JobsByUserOut GetJobsByUser()
+        {
+            JobsByUserOut jobsByUserOut = new JobsByUserOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key };
+
+                jobsByUserOut = jobRepository.GetJobsByUser(jobsByUserIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobsByUser", ex.Message);
+
+                jobsByUserOut.successMessage = null;
+                jobsByUserOut.messages.Add(ex.Message);
+            }
+
+            return jobsByUserOut;
+        }
+
         #endregion
 
         #endregion

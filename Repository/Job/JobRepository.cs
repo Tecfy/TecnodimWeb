@@ -46,6 +46,32 @@ namespace Repository
             return jobsByRegistrationOut;
         }
 
+        public JobsByUserOut GetJobsByUser(JobsByUserIn jobsByUserIn)
+        {
+            JobsByUserOut jobsByUserOut = new JobsByUserOut();
+            registerEventRepository.SaveRegisterEvent(jobsByUserIn.id, jobsByUserIn.key, "Log - Start", "Repository.JobRepository.GetJobsByUser", "");
+
+            using (var db = new DBContext())
+            {
+                jobsByUserOut.result = db.Jobs
+                                         .Where(x => x.Active == true
+                                                    && x.DeletedDate == null
+                                                    && x.Users.AspNetUserId == jobsByUserIn.id
+                                                    && x.JobCategories.Count(y => y.Received == false) > 0)
+                                         .Select(x => new JobsByUserVM()
+                                         {
+                                             JobId = x.JobId,
+                                             Registration = x.Registration,
+                                             Name = x.Name,
+                                             Unity = x.Units.Name
+                                         })
+                                         .ToList();
+            }
+
+            registerEventRepository.SaveRegisterEvent(jobsByUserIn.id, jobsByUserIn.key, "Log - End", "Repository.JobRepository.GetJobsByUser", "");
+            return jobsByUserOut;
+        }
+
         public JobCreateOut CreateJob(JobCreateIn jobsCreateIn)
         {
             JobCreateOut jobCreateOut = new JobCreateOut();
@@ -62,7 +88,8 @@ namespace Repository
                     JobStatusId = (int)EJobStatus.New,
                     Registration = jobsCreateIn.registration,
                     Name = jobsCreateIn.name,
-                    Sent = false
+                    Sent = false,
+                    UnityId = jobsCreateIn.unityId
                 };
 
                 db.Jobs.Add(job);

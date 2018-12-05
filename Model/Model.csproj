@@ -120,8 +120,11 @@
     <Compile Include="JobCategory\Out\JobCategoryCreateOut.cs" />
     <Compile Include="JobCategory\VM\JobCategoryCreateVM.cs" />
     <Compile Include="Job\In\JobCreateIn.cs" />
+    <Compile Include="Job\In\JobsByUserIn.cs" />
     <Compile Include="Job\Out\JobCreateOut.cs" />
+    <Compile Include="Job\Out\JobsByUserOut.cs" />
     <Compile Include="Job\VM\JobCreateVM.cs" />
+    <Compile Include="Job\VM\JobsByUserVM.cs" />
     <Compile Include="Scanning\In\ScanningPermissionIn.cs" />
     <Compile Include="Scanning\In\ScanningIn.cs" />
     <Compile Include="Scanning\Out\ScanningPermissionOut.cs" />

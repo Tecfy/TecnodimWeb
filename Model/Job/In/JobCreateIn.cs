@@ -9,5 +9,7 @@
         public string registration { get; set; }
 
         public string name { get; set; }
+
+        public int unityId { get; set; }
     }
 }

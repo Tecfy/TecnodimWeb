@@ -65,6 +65,7 @@ namespace Repository
                 jobStatusId = (int)EJobStatus.New,
                 registration = scanningIn.registration,
                 name = scanningIn.name,
+                unityId = scanningIn.unityId
             };
 
             jobCreateOut = jobRepository.CreateJob(jobsCreateIn);
