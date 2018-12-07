@@ -32,7 +32,7 @@ namespace Repository
                                                     JobId = x.JobId,
                                                     Registration = x.Registration,
                                                     Name = x.Name,
-                                                    JobCategories = x.JobCategories.Where(y => y.Received == false)
+                                                    JobCategories = x.JobCategories.Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
                                                     .Select(y => new JobCategoriesByRegistrationVM()
                                                     {
                                                         JobCategoryId = y.JobCategoryId,

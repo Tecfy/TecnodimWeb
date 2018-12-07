@@ -99,7 +99,7 @@ namespace Site.Api.Controllers
                     jobCategoryDisapproveIn.id = User.Identity.GetUserId();
                     jobCategoryDisapproveIn.key = Key;
 
-                    jobCategoryRepository.SetJobCategoryDisapprove(jobCategoryDisapproveIn);
+                    jobCategoryDisapproveOut = jobCategoryRepository.SetJobCategoryDisapprove(jobCategoryDisapproveIn);
                 }
                 else
                 {
@@ -125,6 +125,47 @@ namespace Site.Api.Controllers
             }
 
             return jobCategoryDisapproveOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public JobCategoryDeletedOut SetJobCategoryDeleted(JobCategoryDeletedIn jobCategoryDeletedIn)
+        {
+            JobCategoryDeletedOut jobCategoryDeletedOut = new JobCategoryDeletedOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    jobCategoryDeletedIn.id = User.Identity.GetUserId();
+                    jobCategoryDeletedIn.key = Key;
+
+                    jobCategoryDeletedOut = jobCategoryRepository.SetJobCategoryDeleted(jobCategoryDeletedIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.SetJobCategoryDeleted", ex.Message);
+
+                jobCategoryDeletedOut.successMessage = null;
+                jobCategoryDeletedOut.messages.Add(ex.Message);
+            }
+
+            return jobCategoryDeletedOut;
         }
 
         #endregion

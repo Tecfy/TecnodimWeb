@@ -146,6 +146,36 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryDisapprove", "");
             return jobCategoryDisapproveOut;
         }
+ 
+        public JobCategoryDeletedOut SetJobCategoryDeleted(JobCategoryDeletedIn jobCategoryDeletedIn)
+        {
+            JobCategoryDeletedOut jobCategoryDeletedOut = new JobCategoryDeletedOut();
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryDeleted", "");
+
+            #region .: Job Category :.
+
+            using (var db = new DBContext())
+            {
+                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryDeletedIn.jobCategoryId && x.Jobs.Users.AspNetUserId == jobCategoryDeletedIn.id).FirstOrDefault();
+
+                if (jobCategory == null)
+                {
+                    throw new Exception(i18n.Resource.NoDataFound);
+                }
+
+                jobCategory.Active = false;
+                jobCategory.DeletedDate = DateTime.Now;
+
+                db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryDeleted", "");
+            return jobCategoryDeletedOut;
+        }
 
         public JobCategoryCreateOut CreateJobCategory(JobCategoryCreateIn jobCategoryCreateIn)
         {
