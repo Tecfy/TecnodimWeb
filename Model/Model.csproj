@@ -123,7 +123,9 @@
     <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldOut.cs" />
     <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
     <Compile Include="JobCategory\In\JobCategoriesByJobIdIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryDisapproveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryDisapproveOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryCreateOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoriesByJobIdOut.cs" />
     <Compile Include="JobCategory\VM\ECMJobCategoryVM.cs" />

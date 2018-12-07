@@ -19,6 +19,33 @@ namespace Site.Api.Controllers
 
         #region .: Get :.
 
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public JobCategoriesByJobIdOut GetJobCategoriesByJobId(int jobId)
+        {
+            JobCategoriesByJobIdOut jobCategoriesByJobIdOut = new JobCategoriesByJobIdOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobCategoriesByJobIdIn jobCategoriesByJobIdIn = new JobCategoriesByJobIdIn() { jobId = jobId, id = User.Identity.GetUserId(), key = Key };
+
+                jobCategoriesByJobIdOut = jobCategoryRepository.GetJobCategoriesByJobId(jobCategoriesByJobIdIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.GetJobCategoriesByJobId", ex.Message);
+
+                jobCategoriesByJobIdOut.successMessage = null;
+                jobCategoriesByJobIdOut.messages.Add(ex.Message);
+            }
+
+            return jobCategoriesByJobIdOut;
+        }
+
+        #endregion
+
+        #region .: Post :.
+
         [AllowAnonymous, HttpPost]
         public JobCategoryArchiveOut SetJobCategorySave(JobCategoryArchiveIn jobCategorySaveIn)
         {
@@ -59,32 +86,46 @@ namespace Site.Api.Controllers
             return jobCategorySaveOut;
         }
 
-        [Authorize(Roles = "Usuário"), HttpGet]
-        public JobCategoriesByJobIdOut GetJobCategoriesByJobId(int jobId)
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public JobCategoryDisapproveOut SetJobCategoryDisapprove(JobCategoryDisapproveIn jobCategoryDisapproveIn)
         {
-            JobCategoriesByJobIdOut jobCategoriesByJobIdOut = new JobCategoriesByJobIdOut();
+            JobCategoryDisapproveOut jobCategoryDisapproveOut = new JobCategoryDisapproveOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
-                JobCategoriesByJobIdIn jobCategoriesByJobIdIn = new JobCategoriesByJobIdIn() { jobId = jobId, id = User.Identity.GetUserId(), key = Key };
+                if (ModelState.IsValid)
+                {
+                    jobCategoryDisapproveIn.id = User.Identity.GetUserId();
+                    jobCategoryDisapproveIn.key = Key;
 
-                jobCategoriesByJobIdOut = jobCategoryRepository.GetJobCategoriesByJobId(jobCategoriesByJobIdIn);
+                    jobCategoryRepository.SetJobCategoryDisapprove(jobCategoryDisapproveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.GetJobCategoriesByJobId", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.SetJobCategoryDisapprove", ex.Message);
 
-                jobCategoriesByJobIdOut.successMessage = null;
-                jobCategoriesByJobIdOut.messages.Add(ex.Message);
+                jobCategoryDisapproveOut.successMessage = null;
+                jobCategoryDisapproveOut.messages.Add(ex.Message);
             }
 
-            return jobCategoriesByJobIdOut;
+            return jobCategoryDisapproveOut;
         }
-
-        #endregion
-
-        #region .: Post :.
 
         #endregion
 

@@ -117,6 +117,36 @@ namespace Repository
             return jobCategoryOut;
         }
 
+        public JobCategoryDisapproveOut SetJobCategoryDisapprove(JobCategoryDisapproveIn jobCategoryDisapproveIn)
+        {
+            JobCategoryDisapproveOut jobCategoryDisapproveOut = new JobCategoryDisapproveOut();
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryDisapprove", "");
+
+            #region .: Job Category :.
+
+            using (var db = new DBContext())
+            {
+                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryDisapproveIn.jobCategoryId && x.Jobs.Users.AspNetUserId == jobCategoryDisapproveIn.id).FirstOrDefault();
+
+                if (jobCategory == null)
+                {
+                    throw new Exception(i18n.Resource.NoDataFound);
+                }
+
+                jobCategory.EditedDate = DateTime.Now;
+                jobCategory.Received = false;
+
+                db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryDisapprove", "");
+            return jobCategoryDisapproveOut;
+        }
+
         public JobCategoryCreateOut CreateJobCategory(JobCategoryCreateIn jobCategoryCreateIn)
         {
             JobCategoryCreateOut jobCategoryCreateOut = new JobCategoryCreateOut();
