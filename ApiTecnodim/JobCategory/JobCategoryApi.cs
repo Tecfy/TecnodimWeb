@@ -12,6 +12,31 @@ namespace ApiTecnodim
     {
         #region .: Gets :.
 
+        public ECMJobCategoryOut GetECMJobCategory(string externalId)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.GetECMJobCategory"].ToString(), externalId));
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                ECMJobCategoryOut eCMJobCategoryOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobCategoryOut>(response.Content);
+
+                if (!eCMJobCategoryOut.success)
+                {
+                    throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                }
+
+                return eCMJobCategoryOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region .: Posts :.

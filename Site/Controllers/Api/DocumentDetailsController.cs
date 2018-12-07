@@ -25,26 +25,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, id = User.Identity.GetUserId(), key = Key };
+                DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, id = User.Identity.GetUserId(), key = Key };
 
-                    documentDetailsByRegistrationOut = documentDetailRepository.GetDocumentDetailsByRegistration(documentDetailsByRegistrationIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                documentDetailsByRegistrationOut = documentDetailRepository.GetDocumentDetailsByRegistration(documentDetailsByRegistrationIn);
             }
             catch (Exception ex)
             {
@@ -66,26 +49,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+                DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
 
-                    documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
             }
             catch (Exception ex)
             {

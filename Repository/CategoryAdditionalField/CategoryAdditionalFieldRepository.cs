@@ -114,5 +114,28 @@ namespace Repository
         }
 
         #endregion
+
+        #region .: API :.
+
+        public CategoryAdditionalFieldsOut GetCategoryAdditionalFieldsByCategoryId(CategoryAdditionalFieldsIn categoryAdditionalFieldsIn)
+        {
+            CategoryAdditionalFieldsOut categoryAdditionalFieldsOut = new CategoryAdditionalFieldsOut();
+
+            using (var db = new DBContext())
+            {
+                categoryAdditionalFieldsOut.result = db.CategoryAdditionalFields
+                                                       .Where(x => x.Active == true
+                                                                   && x.DeletedDate == null
+                                                                   && x.CategoryId == categoryAdditionalFieldsIn.categoryId)
+                                                       .Select(x => new CategoryAdditionalFieldsVM()
+                                                       {
+                                                           categoryAdditionalFieldId = x.CategoryAdditionalFieldId
+                                                       }).ToList();
+            }
+
+            return categoryAdditionalFieldsOut;
+        }
+
+        #endregion
     }
 }

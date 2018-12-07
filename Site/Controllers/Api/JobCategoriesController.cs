@@ -15,6 +15,10 @@ namespace Site.Api.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
+        #region .: API :.
+
+        #region .: Get :.
+
         [AllowAnonymous, HttpPost]
         public JobCategoryArchiveOut SetJobCategorySave(JobCategoryArchiveIn jobCategorySaveIn)
         {
@@ -55,5 +59,35 @@ namespace Site.Api.Controllers
             return jobCategorySaveOut;
         }
 
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public JobCategoriesByJobIdOut GetJobCategoriesByJobId(int jobId)
+        {
+            JobCategoriesByJobIdOut jobCategoriesByJobIdOut = new JobCategoriesByJobIdOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobCategoriesByJobIdIn jobCategoriesByJobIdIn = new JobCategoriesByJobIdIn() { jobId = jobId, id = User.Identity.GetUserId(), key = Key };
+
+                jobCategoriesByJobIdOut = jobCategoryRepository.GetJobCategoriesByJobId(jobCategoriesByJobIdIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.GetJobCategoriesByJobId", ex.Message);
+
+                jobCategoriesByJobIdOut.successMessage = null;
+                jobCategoriesByJobIdOut.messages.Add(ex.Message);
+            }
+
+            return jobCategoriesByJobIdOut;
+        }
+
+        #endregion
+
+        #region .: Post :.
+
+        #endregion
+
+        #endregion
     }
 }

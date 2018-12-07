@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class ApiSliceCategoryAdditionalFieldIn : BaseIn
+    public class SliceCategoryAdditionalFieldIn : BaseIn
     {
         [Required]
         [Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]

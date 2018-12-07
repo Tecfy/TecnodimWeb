@@ -15,6 +15,10 @@ namespace Site.Api.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         SliceRepository sliceRepository = new SliceRepository();
 
+        #region .: API :.
+
+        #region .: Get :.
+
         [Authorize(Roles = "Usuário"), HttpGet]
         public SliceOut GetSliceById(int id)
         {
@@ -23,26 +27,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    SliceIn sliceIn = new SliceIn() { sliceId = id, id = User.Identity.GetUserId(), key = Key };
+                SliceIn sliceIn = new SliceIn() { sliceId = id, id = User.Identity.GetUserId(), key = Key };
 
-                    sliceOut = sliceRepository.GetSlice(sliceIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                sliceOut = sliceRepository.GetSlice(sliceIn);
             }
             catch (Exception ex)
             {
@@ -63,26 +50,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+                SlicePendingIn slicePendingIn = new SlicePendingIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
 
-                    sliceOut = sliceRepository.GetSlicePending(slicePendingIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                sliceOut = sliceRepository.GetSlicePending(slicePendingIn);
             }
             catch (Exception ex)
             {
@@ -103,26 +73,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = null };
+                SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = null };
 
-                    slicesOut = sliceRepository.GetSlices(slicesIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                slicesOut = sliceRepository.GetSlices(slicesIn);
             }
             catch (Exception ex)
             {
@@ -143,26 +96,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = false };
+                SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = false };
 
-                    slicesOut = sliceRepository.GetSlices(slicesIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                slicesOut = sliceRepository.GetSlices(slicesIn);
             }
             catch (Exception ex)
             {
@@ -183,26 +119,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = true };
+                SlicesIn slicesIn = new SlicesIn() { documentId = id, id = User.Identity.GetUserId(), key = Key, classificated = true };
 
-                    slicesOut = sliceRepository.GetSlices(slicesIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                slicesOut = sliceRepository.GetSlices(slicesIn);
             }
             catch (Exception ex)
             {
@@ -214,6 +133,10 @@ namespace Site.Api.Controllers
 
             return slicesOut;
         }
+
+        #endregion
+
+        #region .: Post :.
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public SliceOut Post(SliceSaveIn sliceIn)
@@ -257,5 +180,9 @@ namespace Site.Api.Controllers
                 return sliceOut;
             }
         }
+
+        #endregion
+
+        #endregion
     }
 }

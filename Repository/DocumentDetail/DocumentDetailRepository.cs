@@ -82,9 +82,10 @@ namespace Repository
                                     RA AS registration, 
                                     NOME AS name, 
                                     CPF AS cpf, 
+                                    RG AS rg, 
                                     CURSO AS course, 
                                     SITUACAO AS status
-                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND CPF IS NOT NULL";
+                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND CPF IS NOT NULL AND ('{1}'='' OR UNIDADE='{1}')";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
 
@@ -96,7 +97,7 @@ namespace Repository
             {
                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
-                var querySelect = String.Format(queryString, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString());
+                var querySelect = String.Format(queryString, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString(), WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.Unity"].ToString());
                 SqlCommand command = new SqlCommand(querySelect, connection);
 
                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - End Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
@@ -112,13 +113,14 @@ namespace Repository
                             eCMDocumentDetailSaveIn = new ECMDocumentDetailSaveIn
                             {
                                 studentId = int.Parse(reader["studentId"].ToString()),
-                                unityCode = reader["unityCode"].ToString(),
-                                cpf = HelperFormatCnpjCpf.FormatCPF(reader["cpf"].ToString()),
-                                course = reader["course"].ToString(),
-                                registration = reader["registration"].ToString(),
-                                name = reader["name"].ToString(),
-                                status = reader["status"].ToString(),
-                                unity = reader["unity"].ToString()
+                                unityCode = reader["unityCode"].ToString().Trim(),
+                                cpf = HelperFormatCnpjCpf.FormatCPF(reader["cpf"].ToString().Trim()),
+                                rg = reader["rg"].ToString().Trim(),
+                                course = reader["course"].ToString().Trim(),
+                                registration = reader["registration"].ToString().Trim(),
+                                name = reader["name"].ToString().Trim(),
+                                status = reader["status"].ToString().Trim(),
+                                unity = reader["unity"].ToString().Trim()
                             };
 
                             registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Synchronization Start SE", "Repository.DocumentDetailRepository.GetDocumentDetails", "");

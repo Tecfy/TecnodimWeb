@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class ApiSliceCategoryAdditionalFieldDeleteIn : BaseIn
+    public class SliceCategoryAdditionalFieldDeleteIn : BaseIn
     {
         [Required]
         [Display(Name = "Slice", ResourceType = typeof(i18n.Resource))]

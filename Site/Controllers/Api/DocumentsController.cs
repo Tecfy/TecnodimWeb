@@ -72,30 +72,13 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    List<int> documentStatusIds = new List<int>();
-                    documentStatusIds.Add((int)EDocumentStatus.New);
-                    documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
+                List<int> documentStatusIds = new List<int>();
+                documentStatusIds.Add((int)EDocumentStatus.New);
+                documentStatusIds.Add((int)EDocumentStatus.PartiallySlice);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
+                DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
-                    documentsOut = documentRepository.GetDocuments(documentsIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                documentsOut = documentRepository.GetDocuments(documentsIn);
             }
             catch (Exception ex)
             {
@@ -116,31 +99,14 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    List<int> documentStatusIds = new List<int>();
-                    documentStatusIds.Add((int)EDocumentStatus.Slice);
-                    documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
-                    documentStatusIds.Add((int)EDocumentStatus.Classificated);
+                List<int> documentStatusIds = new List<int>();
+                documentStatusIds.Add((int)EDocumentStatus.Slice);
+                documentStatusIds.Add((int)EDocumentStatus.PartiallyClassificated);
+                documentStatusIds.Add((int)EDocumentStatus.Classificated);
 
-                    DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
+                DocumentsIn documentsIn = new DocumentsIn() { unityId = unityId, registration = registration, name = name, documentStatusId = documentStatusId, id = User.Identity.GetUserId(), key = Key, documentStatusIds = documentStatusIds, currentPage = currentPage, qtdEntries = qtdEntries };
 
-                    documentsOut = documentRepository.GetDocuments(documentsIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                documentsOut = documentRepository.GetDocuments(documentsIn);
             }
             catch (Exception ex)
             {

@@ -52,7 +52,7 @@ namespace Repository
 
             #region .: AdditionalFields :.
 
-            sliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField(new ApiSliceCategoryAdditionalFieldDeleteIn
+            sliceCategoryAdditionalFieldRepository.DeleteSliceCategoryAdditionalField(new SliceCategoryAdditionalFieldDeleteIn
             {
                 key = classificationIn.id,
                 id = classificationIn.id,
@@ -62,7 +62,7 @@ namespace Repository
 
             foreach (var item in classificationIn.additionalFields)
             {
-                ApiSliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new ApiSliceCategoryAdditionalFieldIn()
+                SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn = new SliceCategoryAdditionalFieldIn()
                 {
                     key = classificationIn.key,
                     id = classificationIn.id,

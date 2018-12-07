@@ -102,6 +102,32 @@ namespace Repository
             return jobCreateOut;
         }
 
+        public JobDeleteOut DeleteJob(JobDeleteIn jobDeleteIn)
+        {
+            JobDeleteOut jobDeleteOut = new JobDeleteOut();
+
+            registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Log - Start", "Repository.JobRepository.DeleteJob", "");
+
+            using (var db = new DBContext())
+            {
+                Jobs job = db.Jobs.Where(x => x.JobId == jobDeleteIn.jobId && x.Users.AspNetUserId == jobDeleteIn.id).FirstOrDefault();
+
+                if (job == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                job.Active = false;
+                job.DeletedDate = DateTime.Now;
+
+                db.Entry(job).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Log - End", "Repository.JobRepository.DeleteJob", "");
+            return jobDeleteOut;
+        }
+
         #endregion
     }
 }

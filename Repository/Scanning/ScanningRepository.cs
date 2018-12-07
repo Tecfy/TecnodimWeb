@@ -4,6 +4,7 @@ using Model.In;
 using Model.Out;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Configuration;
 
 namespace Repository
@@ -13,6 +14,8 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobRepository jobRepository = new JobRepository();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
+        CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
+        JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
 
         #region .: Methods :.
 
@@ -47,6 +50,7 @@ namespace Repository
         {
             ScanningOut scanningOut = new ScanningOut();
             JobCreateOut jobCreateOut = new JobCreateOut();
+            JobCategoryCreateOut jobCategoryCreateOut = new JobCategoryCreateOut();
 
             registerEventRepository.SaveRegisterEvent(scanningIn.id, scanningIn.key, "Log - Start", "Repository.ScanningRepository.SaveScanning", "");
 
@@ -72,7 +76,7 @@ namespace Repository
 
             #endregion
 
-            #region .: Pages :.
+            #region .: JobCategories :.
 
             foreach (var item in scanningIn.jobCategories)
             {
@@ -83,6 +87,9 @@ namespace Repository
                     categoryCode = db.Categories.Where(x => x.CategoryId == item.categoryId).FirstOrDefault().Code;
                 }
 
+                var justDigits = new Regex(@"[^\d]");
+                categoryCode = justDigits.Replace(categoryCode, "");
+
                 JobCategoryCreateIn jobCategoryCreateIn = new JobCategoryCreateIn()
                 {
                     key = scanningIn.id,
@@ -92,7 +99,28 @@ namespace Repository
                     code = DateTime.Now.ToString("yyyyMMddHHmmsss") + "-" + scanningIn.registration + "-" + categoryCode
                 };
 
-                jobCategoryRepository.CreateJobCategory(jobCategoryCreateIn);
+                jobCategoryCreateOut = jobCategoryRepository.CreateJobCategory(jobCategoryCreateIn);
+
+                #region .: AdditionalFields :.
+
+                CategoryAdditionalFieldsIn categoryAdditionalFieldsIn = new CategoryAdditionalFieldsIn { key = scanningIn.key, id = scanningIn.id, categoryId = item.categoryId };
+
+                CategoryAdditionalFieldsOut categoryAdditionalFieldsOut = categoryAdditionalFieldRepository.GetCategoryAdditionalFieldsByCategoryId(categoryAdditionalFieldsIn);
+
+                foreach (var categoryAdditionalField in categoryAdditionalFieldsOut.result)
+                {
+                    JobCategoryAdditionalFieldIn jobCategoryAdditionalFieldIn = new JobCategoryAdditionalFieldIn()
+                    {
+                        key = scanningIn.key,
+                        id = scanningIn.id,
+                        jobCategoryId = jobCategoryCreateOut.result.jobCategoryId,
+                        categoryAdditionalFieldId = categoryAdditionalField.categoryAdditionalFieldId,
+                    };
+
+                    jobCategoryAdditionalFieldRepository.SaveJobCategoryAdditionalField(jobCategoryAdditionalFieldIn);
+                }
+
+                #endregion
             }
 
             #endregion

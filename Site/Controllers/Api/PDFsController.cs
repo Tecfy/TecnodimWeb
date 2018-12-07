@@ -24,26 +24,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    DocumentIn documentIn = new DocumentIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+                DocumentIn documentIn = new DocumentIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
 
-                    pdfOut = pdfRepository.GetPDFs(documentIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                pdfOut = pdfRepository.GetPDFs(documentIn);
             }
             catch (Exception ex)
             {

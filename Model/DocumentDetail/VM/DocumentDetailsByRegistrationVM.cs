@@ -10,6 +10,8 @@
 
         public string cpf { get; set; }
 
+        public string rg { get; set; }
+
         public string name { get; set; }
     }
 }

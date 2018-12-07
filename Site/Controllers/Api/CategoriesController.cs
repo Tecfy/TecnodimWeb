@@ -25,26 +25,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, id = User.Identity.GetUserId(), key = Key };
+                ApiCategoryIn categoryIn = new ApiCategoryIn() { categoryId = id, id = User.Identity.GetUserId(), key = Key };
 
-                    categoryOut = categoryRepository.GetCategory(categoryIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                categoryOut = categoryRepository.GetCategory(categoryIn);
             }
             catch (Exception ex)
             {
@@ -65,26 +48,9 @@ namespace Site.Api.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, id = User.Identity.GetUserId(), key = Key };
+                ApiCategorySearchIn categorySearchIn = new ApiCategorySearchIn() { code = code, id = User.Identity.GetUserId(), key = Key };
 
-                    categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                categorySearchOut = categoryRepository.GetCategorySearch(categorySearchIn);
             }
             catch (Exception ex)
             {

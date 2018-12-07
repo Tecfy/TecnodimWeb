@@ -64,6 +64,51 @@ namespace Site.Api.Controllers
 
             return jobsByUserOut;
         }
+       
+        #endregion
+
+        #region .: Post :.
+
+        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
+        public JobDeleteOut Post(JobDeleteIn jobDeleteIn)
+        {
+            JobDeleteOut jobDeleteOut = new JobDeleteOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    jobDeleteIn.id = User.Identity.GetUserId();
+                    jobDeleteIn.key = Key;
+
+                    jobRepository.DeleteJob(jobDeleteIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.Post", ex.Message);
+
+                jobDeleteOut.successMessage = null;
+                jobDeleteOut.messages.Add(ex.Message);
+            }
+
+            return jobDeleteOut;
+        }
 
         #endregion
 
