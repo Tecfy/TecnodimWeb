@@ -14,6 +14,6 @@ namespace Model.VM
 
         public List<JobCategoryPagesVM> jobCategoryPages { get; set; }
 
-        public List<AdditionalFieldVM> additionalFields { get; set; }
+        public List<JobCategoryAdditionalFieldVM> additionalFields { get; set; }
     }
 }

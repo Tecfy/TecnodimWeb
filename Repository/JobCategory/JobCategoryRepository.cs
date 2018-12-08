@@ -49,9 +49,9 @@ namespace Repository
                                                                       }).ToList(),
                                                   additionalFields = x.JobCategoryAdditionalFields
                                                                       .Where(y => y.Active == true && y.DeletedDate == null)
-                                                                      .Select(y => new AdditionalFieldVM()
+                                                                      .Select(y => new JobCategoryAdditionalFieldVM()
                                                                       {
-                                                                          categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                                          jobCategoryAdditionalFieldId = y.JobCategoryAdditionalFieldId,
                                                                           name = y.CategoryAdditionalFields.AdditionalFields.Name,
                                                                           type = y.CategoryAdditionalFields.AdditionalFields.Type,
                                                                           value = y.Value,
@@ -261,6 +261,23 @@ namespace Repository
                 {
                     throw new Exception(i18n.Resource.NoDataFound);
                 }
+
+                #region .: AdditionalFields :.
+
+                foreach (var item in jobCategoryApproveIn.additionalFields)
+                {
+                    JobCategoryAdditionalFieldUpdateIn jobCategoryAdditionalFieldUpdateIn = new JobCategoryAdditionalFieldUpdateIn()
+                    {
+                        key = jobCategoryApproveIn.key,
+                        id = jobCategoryApproveIn.id,
+                        jobCategoryAdditionalFieldId = item.jobCategoryAdditionalFieldId,
+                        value = item.value
+                    };
+
+                    jobCategoryAdditionalFieldRepository.UpdateJobCategoryAdditionalField(jobCategoryAdditionalFieldUpdateIn);
+                }
+
+                #endregion
 
                 jobCategory.EditedDate = DateTime.Now;
                 jobCategory.Send = true;

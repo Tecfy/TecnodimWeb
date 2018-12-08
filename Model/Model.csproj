@@ -119,8 +119,11 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldUpdateIn.cs" />
     <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldIn.cs" />
+    <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldUpdateOut.cs" />
     <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\VM\JobCategoryAdditionalFieldVM.cs" />
     <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
     <Compile Include="JobCategory\In\JobCategoriesByJobIdIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryApproveIn.cs" />
@@ -283,7 +286,6 @@
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
-    <Folder Include="JobCategoryAdditionalField\VM\" />
     <Folder Include="JobCategoryPage\In\" />
     <Folder Include="JobCategoryPage\Out\" />
     <Folder Include="Page\Out\" />
