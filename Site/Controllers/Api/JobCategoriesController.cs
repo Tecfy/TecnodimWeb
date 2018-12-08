@@ -128,6 +128,47 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpPost]
+        public JobCategoryApproveOut SetJobCategoryApprove(JobCategoryApproveIn jobCategoryApproveIn)
+        {
+            JobCategoryApproveOut jobCategoryApproveOut = new JobCategoryApproveOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    jobCategoryApproveIn.id = User.Identity.GetUserId();
+                    jobCategoryApproveIn.key = Key;
+
+                    jobCategoryApproveOut = jobCategoryRepository.SetJobCategoryApprove(jobCategoryApproveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.SetJobCategoryApprove", ex.Message);
+
+                jobCategoryApproveOut.successMessage = null;
+                jobCategoryApproveOut.messages.Add(ex.Message);
+            }
+
+            return jobCategoryApproveOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
         public JobCategoryDeletedOut SetJobCategoryDeleted(JobCategoryDeletedIn jobCategoryDeletedIn)
         {
             JobCategoryDeletedOut jobCategoryDeletedOut = new JobCategoryDeletedOut();
@@ -166,6 +207,47 @@ namespace Site.Api.Controllers
             }
 
             return jobCategoryDeletedOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public JobCategoryIncludeOut SetJobCategoryInclude(JobCategoryIncludeIn jobCategoryIncludeIn)
+        {
+            JobCategoryIncludeOut jobCategoryIncludeOut = new JobCategoryIncludeOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    jobCategoryIncludeIn.id = User.Identity.GetUserId();
+                    jobCategoryIncludeIn.key = Key;
+
+                    jobCategoryIncludeOut = jobCategoryRepository.SetJobCategoryInclude(jobCategoryIncludeIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoriesController.SetJobCategoryInclude", ex.Message);
+
+                jobCategoryIncludeOut.successMessage = null;
+                jobCategoryIncludeOut.messages.Add(ex.Message);
+            }
+
+            return jobCategoryIncludeOut;
         }
 
         #endregion
