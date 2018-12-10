@@ -71,6 +71,66 @@ namespace ApiTecnodim
             }
         }
 
+        public ECMJobSaveOut PostECMJobSave(ECMJobSaveIn eCMJobSaveIn)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.PostECMJobSave"].ToString());
+
+                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMJobSaveIn));
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception(i18n.Resource.UnknownError);
+                }
+
+                ECMJobSaveOut eCMJobSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobSaveOut>(response.Content);
+
+                if (!eCMJobSaveOut.success)
+                {
+                    throw new Exception(eCMJobSaveOut.messages.FirstOrDefault());
+                }
+
+                return eCMJobSaveOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ECMJobDeletedOut DeleteECMJobArchive(ECMJobDeletedIn eCMJobDeletedIn)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.DeleteECMJobArchive"].ToString());
+
+                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMJobDeletedIn));
+
+                IRestResponse response = client.Execute(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception(i18n.Resource.UnknownError);
+                }
+
+                ECMJobDeletedOut eCMJobDeletedOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobDeletedOut>(response.Content);
+                
+                if (!eCMJobDeletedOut.success)
+                {
+                    throw new Exception(eCMJobDeletedOut.messages.FirstOrDefault());
+                }
+
+                return eCMJobDeletedOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
     }
 }

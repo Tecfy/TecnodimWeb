@@ -1,5 +1,6 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper.Enum;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -16,6 +17,7 @@ namespace Repository
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
         JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
+        JobRepository jobRepository = new JobRepository();
         JobCategoryApi jobCategoryApi = new JobCategoryApi();
 
         #region .: API :.
@@ -101,6 +103,7 @@ namespace Repository
                     Code = jobCategoryCreateIn.code,
                     Received = false,
                     Send = false,
+                    Sent = false,
                     Sending = false,
                     SendingDate = null
                 };
@@ -115,11 +118,11 @@ namespace Repository
             return jobCategoryCreateOut;
         }
 
-        public JobCategoryArchiveOut SetJobCategorySave(JobCategoryArchiveIn jobCategorySaveIn)
+        public JobCategoryArchiveOut SaveJobCategory(JobCategoryArchiveIn jobCategorySaveIn)
         {
             JobCategoryArchiveOut jobCategoryOut = new JobCategoryArchiveOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategorySave", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SaveJobCategory", "");
 
             #region .: Job Category :.
 
@@ -207,19 +210,39 @@ namespace Repository
 
                 db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                #region .: Change job status :.
+
+                Jobs job = db.Jobs.Where(x => x.JobId == jobCategory.JobId).FirstOrDefault();
+
+                if (job.JobStatusId == (int)EJobStatus.New)
+                {
+                    jobRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                }
+
+
+                bool received = db.Jobs.Any(x => x.JobId == job.JobId
+                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
+
+                if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
+                {
+                    jobRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                }
+
+                #endregion
             }
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategorySave", "");
+            registerEventRepository.SaveRegisterEvent(jobCategorySaveIn.id, jobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SaveJobCategory", "");
             return jobCategoryOut;
         }
 
-        public JobCategoryDisapproveOut SetJobCategoryDisapprove(JobCategoryDisapproveIn jobCategoryDisapproveIn)
+        public JobCategoryDisapproveOut DisapproveJobCategory(JobCategoryDisapproveIn jobCategoryDisapproveIn)
         {
             JobCategoryDisapproveOut jobCategoryDisapproveOut = new JobCategoryDisapproveOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryDisapprove", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - Start", "Repository.JobCategoryRepository.DisapproveJobCategory", "");
 
             #region .: Job Category :.
 
@@ -234,28 +257,49 @@ namespace Repository
 
                 jobCategory.EditedDate = DateTime.Now;
                 jobCategory.Received = false;
+                jobCategory.Send = false;
+                jobCategory.Sent = false;
+                jobCategory.Sending = false;
+                jobCategory.SendingDate = null;
 
                 db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                #region .: Change job status :.
+
+                Jobs job = db.Jobs.Where(x => x.JobId == jobCategory.JobId).FirstOrDefault();
+
+                bool received = db.Jobs.Any(x => x.JobId == job.JobId
+                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
+
+                if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
+                {
+                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                }
+
+                #endregion
             }
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryDisapprove", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Log - End", "Repository.JobCategoryRepository.DisapproveJobCategory", "");
             return jobCategoryDisapproveOut;
         }
 
-        public JobCategoryApproveOut SetJobCategoryApprove(JobCategoryApproveIn jobCategoryApproveIn)
+        public JobCategoryApproveOut ApproveJobCategory(JobCategoryApproveIn jobCategoryApproveIn)
         {
             JobCategoryApproveOut jobCategoryApproveOut = new JobCategoryApproveOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryApproveIn.id, jobCategoryApproveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryApprove", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryApproveIn.id, jobCategoryApproveIn.key, "Log - Start", "Repository.JobCategoryRepository.ApproveJobCategory", "");
 
             #region .: Job Category :.
 
             using (var db = new DBContext())
             {
-                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryApproveIn.jobCategoryId && x.Jobs.Users.AspNetUserId == jobCategoryApproveIn.id).FirstOrDefault();
+                JobCategories jobCategory = db.JobCategories
+                                              .Where(x => x.JobCategoryId == jobCategoryApproveIn.jobCategoryId
+                                                       && x.Jobs.Users.AspNetUserId == jobCategoryApproveIn.id)
+                                              .FirstOrDefault();
 
                 if (jobCategory == null)
                 {
@@ -288,21 +332,24 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryApproveIn.id, jobCategoryApproveIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryApprove", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryApproveIn.id, jobCategoryApproveIn.key, "Log - End", "Repository.JobCategoryRepository.ApproveJobCategory", "");
             return jobCategoryApproveOut;
         }
 
-        public JobCategoryDeletedOut SetJobCategoryDeleted(JobCategoryDeletedIn jobCategoryDeletedIn)
+        public JobCategoryDeletedOut DeletedJobCategory(JobCategoryDeletedIn jobCategoryDeletedIn)
         {
             JobCategoryDeletedOut jobCategoryDeletedOut = new JobCategoryDeletedOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryDeleted", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - Start", "Repository.JobCategoryRepository.DeletedJobCategory", "");
 
             #region .: Job Category :.
 
             using (var db = new DBContext())
             {
-                JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryDeletedIn.jobCategoryId && x.Jobs.Users.AspNetUserId == jobCategoryDeletedIn.id).FirstOrDefault();
+                JobCategories jobCategory = db.JobCategories
+                                              .Where(x => x.JobCategoryId == jobCategoryDeletedIn.jobCategoryId
+                                                       && x.Jobs.Users.AspNetUserId == jobCategoryDeletedIn.id)
+                                              .FirstOrDefault();
 
                 if (jobCategory == null)
                 {
@@ -314,33 +361,58 @@ namespace Repository
 
                 db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                #region .: Change job status :.
+
+                Jobs job = db.Jobs.Where(x => x.JobId == jobCategory.JobId).FirstOrDefault();
+
+                bool received = db.Jobs.Any(x => x.JobId == job.JobId
+                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
+
+                if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
+                {
+                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                }
+
+                #endregion
             }
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryDeleted", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Log - End", "Repository.JobCategoryRepository.DeletedJobCategory", "");
             return jobCategoryDeletedOut;
         }
 
-        public JobCategoryIncludeOut SetJobCategoryInclude(JobCategoryIncludeIn jobCategoryIncludeIn)
+        public JobCategoryIncludeOut IncludeJobCategory(JobCategoryIncludeIn jobCategoryIncludeIn)
         {
             JobCategoryIncludeOut jobCategoryIncludeOut = new JobCategoryIncludeOut();
             JobCategoryCreateOut jobCategoryCreateOut = new JobCategoryCreateOut();
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryIncludeIn.id, jobCategoryIncludeIn.key, "Log - Start", "Repository.JobCategoryRepository.SetJobCategoryInclude", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryIncludeIn.id, jobCategoryIncludeIn.key, "Log - Start", "Repository.JobCategoryRepository.IncludeJobCategory", "");
 
             #region .: Job Category :.
 
             using (var db = new DBContext())
             {
-                JobCategories jobCategory = db.JobCategories.Where(x => x.Active == true && x.DeletedDate == null && x.CategoryId == jobCategoryIncludeIn.categoryId && x.JobId == jobCategoryIncludeIn.jobId && x.Jobs.Users.AspNetUserId == jobCategoryIncludeIn.id).FirstOrDefault();
+                JobCategories jobCategory = db.JobCategories
+                                              .Where(x => x.Active == true
+                                                       && x.DeletedDate == null
+                                                       && x.CategoryId == jobCategoryIncludeIn.categoryId
+                                                       && x.JobId == jobCategoryIncludeIn.jobId
+                                                       && x.Jobs.Users.AspNetUserId == jobCategoryIncludeIn.id)
+                                              .FirstOrDefault();
 
                 if (jobCategory != null)
                 {
                     throw new Exception(i18n.Resource.ExistingRegistry);
                 }
 
-                Jobs job = db.Jobs.Where(x => x.Active == true && x.DeletedDate == null && x.JobId == jobCategoryIncludeIn.jobId && x.Users.AspNetUserId == jobCategoryIncludeIn.id).FirstOrDefault();
+                Jobs job = db.Jobs
+                             .Where(x => x.Active == true
+                                      && x.DeletedDate == null
+                                      && x.JobId == jobCategoryIncludeIn.jobId
+                                      && x.Users.AspNetUserId == jobCategoryIncludeIn.id)
+                             .FirstOrDefault();
 
                 if (job == null)
                 {
@@ -385,11 +457,23 @@ namespace Repository
                 }
 
                 #endregion
+
+                #region .: Change job status :.
+
+                bool received = db.Jobs.Any(x => x.JobId == job.JobId
+                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
+
+                if (job.JobStatusId == (int)EJobStatus.Digitalized && !received)
+                {
+                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryIncludeIn.id, key = jobCategoryIncludeIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                }
+
+                #endregion
             }
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobCategoryIncludeIn.id, jobCategoryIncludeIn.key, "Log - End", "Repository.JobCategoryRepository.SetJobCategoryInclude", "");
+            registerEventRepository.SaveRegisterEvent(jobCategoryIncludeIn.id, jobCategoryIncludeIn.key, "Log - End", "Repository.JobCategoryRepository.IncludeJobCategory", "");
             return jobCategoryIncludeOut;
         }
 

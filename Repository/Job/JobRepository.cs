@@ -1,10 +1,13 @@
-﻿using DataEF.DataAccess;
+﻿using ApiTecnodim;
+using DataEF.DataAccess;
 using Helper.Enum;
 using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using WebSupergoo.ABCpdf11;
 
 namespace Repository
 {
@@ -12,6 +15,7 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
+        JobCategoryApi jobCategoryApi = new JobCategoryApi();
 
         #region .: API :.
 
@@ -126,6 +130,319 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Log - End", "Repository.JobRepository.DeleteJob", "");
             return jobDeleteOut;
+        }
+
+        public JobSatusOut SatusJob(JobSatusIn jobSatusIn)
+        {
+            JobSatusOut jobSatusOut = new JobSatusOut();
+
+            registerEventRepository.SaveRegisterEvent(jobSatusIn.id, jobSatusIn.key, "Log - Start", "Repository.JobRepository.SetJobSatus", "");
+
+            #region .: Job :.
+
+            using (var db = new DBContext())
+            {
+                Jobs job = db.Jobs.Where(x => x.JobId == jobSatusIn.jobId && x.Users.AspNetUserId == jobSatusIn.id).FirstOrDefault();
+
+                if (job == null)
+                {
+                    throw new Exception(i18n.Resource.NoDataFound);
+                }
+
+                job.EditedDate = DateTime.Now;
+                job.JobStatusId = jobSatusIn.jobStatusId;
+
+                db.Entry(job).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(jobSatusIn.id, jobSatusIn.key, "Log - End", "Repository.JobRepository.SetJobSatus", "");
+            return jobSatusOut;
+        }
+
+        public ECMJobsSendOut GetECMSendJobs(ECMJobsSendIn eCMJobsSendIn)
+        {
+            ECMJobsSendOut eCMJobsSendOut = new ECMJobsSendOut();
+            registerEventRepository.SaveRegisterEvent(eCMJobsSendIn.id, eCMJobsSendIn.key, "Log - Start", "Repository.JobRepository.GetECMSendJobs", "");
+
+            #region .: Search Documents Finished :.
+
+            JobsFinishedOut jobsFinishedOut = GetJobsFinished(new JobsFinishedIn() { id = eCMJobsSendIn.id, key = eCMJobsSendIn.key });
+
+            #endregion
+
+            #region .: Process Queue :.
+
+            foreach (var item in jobsFinishedOut.result)
+            {
+                try
+                {
+                    JobCategoryProcess(item);
+                }
+                catch (Exception ex)
+                {
+                    eCMJobsSendOut.messages.Add(ex.Message);
+                }
+            }
+
+            #endregion
+
+            #region .: Search Jobs Sent :.
+
+            JobsSentOut jobsSentOut = GetJobsSent(new JobsSentIn() { id = eCMJobsSendIn.id, key = eCMJobsSendIn.key });
+
+            #endregion
+
+            #region .: Update Jobs :.
+
+            foreach (var item in jobsSentOut.result)
+            {
+                using (var db = new DBContext())
+                {
+                    Jobs job = db.Jobs.Find(item.jobId);
+
+                    job.JobStatusId = (int)EDocumentStatus.Sent;
+                    job.EditedDate = DateTime.Now;
+
+                    db.Entry(job).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(eCMJobsSendIn.id, eCMJobsSendIn.key, "Log - End", "Repository.JobRepository.GetECMSendJobs", "");
+            return eCMJobsSendOut;
+        }
+
+        #endregion
+
+        #region .: Local :.
+
+        public JobsFinishedOut GetJobsFinished(JobsFinishedIn jobsFinishedIn)
+        {
+            JobsFinishedOut jobsFinishedOut = new JobsFinishedOut();
+            registerEventRepository.SaveRegisterEvent(jobsFinishedIn.id, jobsFinishedIn.key, "Log - Start", "Repository.JobRepository.GetJobsFinished", "");
+
+            #region .: Documents Finished :.
+
+            using (var db = new DBContext())
+            {
+                jobsFinishedOut.result = db.JobCategories
+                                           .Where(x => x.Active == true
+                                               && x.DeletedDate == null
+                                               && x.Sent == false
+                                               && x.Sending == false
+                                               && x.Jobs.Active == true
+                                               && x.Jobs.DeletedDate == null
+                                               && x.Jobs.JobStatusId == (int)EJobStatus.Finished)
+                                           .Select(x => new JobsFinishedVM()
+                                           {
+                                               jobId = x.JobId,
+                                               jobCategoryId = x.JobCategoryId,
+                                               externalId = x.Code,
+                                               registration = x.Jobs.Registration,
+                                               categoryId = x.Categories.Code,
+                                               category = x.Categories.Name,
+                                               pb = x.Categories.Pb,
+                                               title = x.Categories.Name + ".pdf",
+                                               additionalFields = x.JobCategoryAdditionalFields
+                                                                   .Where(y => y.Active == true && y.DeletedDate == null)
+                                                                   .Select(y => new AdditionalFieldSaveVM()
+                                                                   {
+                                                                       additionalFieldId = y.CategoryAdditionalFields.AdditionalFieldId,
+                                                                       value = y.Value,
+                                                                   }).ToList()
+                                           })
+                                           .ToList();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(jobsFinishedIn.id, jobsFinishedIn.key, "Log - End", "Repository.JobRepository.GetJobsFinished", "");
+            return jobsFinishedOut;
+        }
+
+        public JobsSentOut GetJobsSent(JobsSentIn jobsSentIn)
+        {
+            JobsSentOut jobsSentOut = new JobsSentOut();
+            registerEventRepository.SaveRegisterEvent(jobsSentIn.id, jobsSentIn.key, "Log - Start", "Repository.JobRepository.GetJobsSent", "");
+
+            #region .: Documents Finished :.
+
+            using (var db = new DBContext())
+            {
+                jobsSentOut.result = db.Jobs
+                                       .Where(x => x.Active == true
+                                               && x.DeletedDate == null
+                                               && x.JobStatusId == (int)EJobStatus.Finished
+                                               && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Sent == true)))
+                                       .Select(x => new JobsSentVM()
+                                       {
+                                           jobId = x.JobId,
+                                       })
+                                       .ToList();
+            }
+
+            #endregion
+
+            registerEventRepository.SaveRegisterEvent(jobsSentIn.id, jobsSentIn.key, "Log - End", "Repository.JobRepository.GetJobsSent", "");
+            return jobsSentOut;
+        }
+
+        #endregion
+
+        #region .: Helper :.
+
+        private void JobCategoryProcess(JobsFinishedVM jobsFinishedVM)
+        {
+            JobCategories jobCategories = new JobCategories();
+
+            try
+            {
+                #region .: Validate Job Categories :.
+
+                using (var db = new DBContext())
+                {
+                    jobCategories = db.JobCategories
+                                      .Where(x => x.Send == true
+                                               && x.Sent == false
+                                               && x.Sending == false
+                                               && x.JobCategoryId == jobsFinishedVM.jobCategoryId)
+                                      .FirstOrDefault();
+
+                    if (jobCategories == null)
+                    {
+                        throw new Exception(string.Format(i18n.Resource.JobCategoryNoProcess, jobsFinishedVM.jobCategoryId));
+                    }
+
+                    jobCategories.Sending = true;
+                    jobCategories.SendingDate = DateTime.Now;
+
+                    db.Entry(jobCategories).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                #endregion
+
+                #region .: Search Job Categories Original :.
+
+                ECMJobCategoryOut eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(jobsFinishedVM.externalId);
+
+                if (!eCMJobCategoryOut.success)
+                {
+                    throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                }
+
+                #endregion
+
+                #region .: Archive :.
+
+                PDFIn pdfIn = new PDFIn
+                {
+                    archive = eCMJobCategoryOut.result.archive,
+                    pb = jobsFinishedVM.pb
+                };
+
+                string file = HelperDoc(pdfIn);
+
+                if (string.IsNullOrEmpty(file))
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+
+                #endregion
+
+                #region .: Sent Document :.
+
+                List<AdditionalFieldSaveIn> additionalFieldSaveIns = new List<AdditionalFieldSaveIn>();
+
+                if (jobsFinishedVM.additionalFields != null && jobsFinishedVM.additionalFields.Count() > 0)
+                {
+                    foreach (var item in jobsFinishedVM.additionalFields)
+                    {
+                        additionalFieldSaveIns.Add(new AdditionalFieldSaveIn { additionalFieldId = item.additionalFieldId, value = item.value });
+                    }
+                }
+
+                ECMJobSaveIn eCMJobSaveIn = new ECMJobSaveIn
+                {
+                    registration = jobsFinishedVM.registration,
+                    categoryId = jobsFinishedVM.categoryId,
+                    category = jobsFinishedVM.category,
+                    archive = file,
+                    title = jobsFinishedVM.title,
+                    additionalFields = additionalFieldSaveIns
+                };
+
+                ECMJobSaveOut eCMJobSaveOut = jobCategoryApi.PostECMJobSave(eCMJobSaveIn);
+
+                if (!eCMJobSaveOut.success)
+                {
+                    throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                }
+
+                #endregion
+
+                #region .: Update Job Category :.
+
+                using (var db = new DBContext())
+                {
+                    jobCategories.EditedDate = DateTime.Now;
+                    jobCategories.Sent = true;
+                    jobCategories.Sending = false;
+                    jobCategories.SendingDate = DateTime.Now;
+
+                    db.Entry(jobCategories).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                try
+                {
+                    ECMJobDeletedIn eCMJobDeletedIn = new ECMJobDeletedIn() { externalId = jobsFinishedVM.externalId };
+
+                    jobCategoryApi.DeleteECMJobArchive(eCMJobDeletedIn);
+                }
+                catch { }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                if (jobCategories != null)
+                {
+                    using (var db = new DBContext())
+                    {
+                        jobCategories.Sending = false;
+
+                        db.Entry(jobCategories).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string HelperDoc(PDFIn pdfIn)
+        {
+            string archive = string.Empty;
+
+            Doc theDoc = new Doc();
+            theDoc.Read(Convert.FromBase64String(pdfIn.archive));
+
+            if (pdfIn.pb)
+            {
+                theDoc.Rendering.ColorSpace = XRendering.ColorSpaceType.Gray;
+            }
+
+            archive = System.Convert.ToBase64String(theDoc.GetData());
+
+            theDoc.Clear();
+
+            return archive;
         }
 
         #endregion

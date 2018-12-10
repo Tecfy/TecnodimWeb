@@ -58,7 +58,7 @@ namespace Site.Api.Controllers
                 {
                     jobCategorySaveIn.key = Key;
 
-                    jobCategorySaveOut = jobCategoryRepository.SetJobCategorySave(jobCategorySaveIn);
+                    jobCategorySaveOut = jobCategoryRepository.SaveJobCategory(jobCategorySaveIn);
                 }
                 else
                 {
@@ -99,7 +99,7 @@ namespace Site.Api.Controllers
                     jobCategoryDisapproveIn.id = User.Identity.GetUserId();
                     jobCategoryDisapproveIn.key = Key;
 
-                    jobCategoryDisapproveOut = jobCategoryRepository.SetJobCategoryDisapprove(jobCategoryDisapproveIn);
+                    jobCategoryDisapproveOut = jobCategoryRepository.DisapproveJobCategory(jobCategoryDisapproveIn);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace Site.Api.Controllers
                     jobCategoryApproveIn.id = User.Identity.GetUserId();
                     jobCategoryApproveIn.key = Key;
 
-                    jobCategoryApproveOut = jobCategoryRepository.SetJobCategoryApprove(jobCategoryApproveIn);
+                    jobCategoryApproveOut = jobCategoryRepository.ApproveJobCategory(jobCategoryApproveIn);
                 }
                 else
                 {
@@ -181,7 +181,7 @@ namespace Site.Api.Controllers
                     jobCategoryDeletedIn.id = User.Identity.GetUserId();
                     jobCategoryDeletedIn.key = Key;
 
-                    jobCategoryDeletedOut = jobCategoryRepository.SetJobCategoryDeleted(jobCategoryDeletedIn);
+                    jobCategoryDeletedOut = jobCategoryRepository.DeletedJobCategory(jobCategoryDeletedIn);
                 }
                 else
                 {
@@ -222,7 +222,7 @@ namespace Site.Api.Controllers
                     jobCategoryIncludeIn.id = User.Identity.GetUserId();
                     jobCategoryIncludeIn.key = Key;
 
-                    jobCategoryIncludeOut = jobCategoryRepository.SetJobCategoryInclude(jobCategoryIncludeIn);
+                    jobCategoryIncludeOut = jobCategoryRepository.IncludeJobCategory(jobCategoryIncludeIn);
                 }
                 else
                 {
