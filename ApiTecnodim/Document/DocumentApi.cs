@@ -40,7 +40,6 @@ namespace ApiTecnodim
         public ECMDocumentsOut GetECMDocuments()
         {
             try
-
             {
                 var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.GetECMDocuments"].ToString());
 

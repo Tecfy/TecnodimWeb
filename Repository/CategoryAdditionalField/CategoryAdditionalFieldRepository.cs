@@ -9,8 +9,6 @@ namespace Repository
 {
     public class CategoryAdditionalFieldRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-
         #region .: Adm :.
 
         public bool Delete(int categoryAdditionalFieldId)
