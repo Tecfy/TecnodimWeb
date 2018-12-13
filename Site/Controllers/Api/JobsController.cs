@@ -14,8 +14,9 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Jobs")]
     public class JobsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        JobRepository jobRepository = new JobRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private JobRepository jobRepository = new JobRepository();
+        private JobStatusRepository jobStatusRepository = new JobStatusRepository();
 
         #region .: API :.
 
@@ -147,7 +148,7 @@ namespace Site.Api.Controllers
                     jobSatusIn.id = User.Identity.GetUserId();
                     jobSatusIn.key = Key;
 
-                    jobSatusOut = jobRepository.SatusJob(jobSatusIn);
+                    jobSatusOut = jobStatusRepository.SatusJob(jobSatusIn);
                 }
                 else
                 {

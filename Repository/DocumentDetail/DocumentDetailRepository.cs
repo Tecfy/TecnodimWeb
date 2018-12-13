@@ -12,9 +12,9 @@ namespace Repository
 {
     public partial class DocumentDetailRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SliceRepository sliceRepository = new SliceRepository();
-        DocumentDetailApi documentDetailApi = new DocumentDetailApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SliceRepository sliceRepository = new SliceRepository();
+        private DocumentDetailApi documentDetailApi = new DocumentDetailApi();
 
         #region .: Api :.
 
@@ -133,7 +133,7 @@ namespace Repository
                             {
                                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
-                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveOut.result.registration, eCMDocumentDetailSaveIn.studentId);                                
+                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveOut.result.registration, eCMDocumentDetailSaveIn.studentId);
                                 SqlCommand commandUpdate = new SqlCommand(queryUpdate, connectionUpdate);
                                 connectionUpdate.Open();
                                 commandUpdate.ExecuteNonQuery();

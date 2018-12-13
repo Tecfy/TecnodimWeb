@@ -164,6 +164,8 @@
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
     <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
+    <Compile Include="JobStatus\JobStatusRepository.cs" />
+    <Compile Include="ScanningImage\ScanningImageRepository.cs" />
     <Compile Include="JobCategoryAdditionalField\JobCategoryAdditionalFieldRepository.cs" />
     <Compile Include="Scanning\ScanningRepository.cs" />
     <Compile Include="SyncRuntime\SyncRuntimeRepository.cs" />

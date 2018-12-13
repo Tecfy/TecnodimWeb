@@ -16,8 +16,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Documents")]
     public class DocumentsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentRepository documentRepository = new DocumentRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private DocumentRepository documentRepository = new DocumentRepository();
 
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMDocuments()

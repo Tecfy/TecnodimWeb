@@ -8,7 +8,7 @@ namespace Repository
 {
     public partial class JobCategoryAdditionalFieldRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
         public JobCategoryAdditionalFieldOut SaveJobCategoryAdditionalField(JobCategoryAdditionalFieldIn jobCategoryAdditionalFieldIn)
         {

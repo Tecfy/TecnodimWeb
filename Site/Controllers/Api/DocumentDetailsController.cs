@@ -14,8 +14,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/DocumentDetails")]
     public class DocumentDetailsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(string registration, string unity)

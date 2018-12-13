@@ -14,10 +14,10 @@ namespace Repository
 {
     public partial class DocumentRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        UnityRepository unityRepository = new UnityRepository();
-        AttributeApi attributeApi = new AttributeApi();
-        DocumentApi documentApi = new DocumentApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private UnityRepository unityRepository = new UnityRepository();
+        private AttributeApi attributeApi = new AttributeApi();
+        private DocumentApi documentApi = new DocumentApi();
 
         #region .: API :.
 

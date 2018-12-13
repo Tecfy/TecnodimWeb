@@ -227,6 +227,7 @@
     <Compile Include="Controllers\Adm\UsersController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CategoriesController.cs" />
+    <Compile Include="Controllers\Api\ScanningImagesController.cs" />
     <Compile Include="Controllers\Api\ScanningsController.cs" />
     <Compile Include="Controllers\Api\ClassificationsController.cs" />
     <Compile Include="Controllers\Api\DeletedPagesController.cs" />

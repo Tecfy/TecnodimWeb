@@ -12,8 +12,8 @@ namespace Repository
 {
     public partial class PDFRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DocumentRepository documentRepository = new DocumentRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private DocumentRepository documentRepository = new DocumentRepository();
 
         #region .: Methods :.
 

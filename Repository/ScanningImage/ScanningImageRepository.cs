@@ -6,20 +6,20 @@ using WebSupergoo.ABCpdf11.Objects;
 
 namespace Repository
 {
-    public partial class ImageRepository
+    public partial class ScanningImageRepository
     {
-        private DocumentRepository documentRepository = new DocumentRepository();
+        private JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         #region .: Methods :.
 
-        public ImageOut GetImage(ImageIn imageIn)
+        public ImageOut GetImageScanning(ImageIn imageIn)
         {
             ImageOut imageOut = new ImageOut();
 
-            ECMDocumentOut eCMDocumentOut = documentRepository.GetECMDocumentByHash(imageIn.hash);
+            ECMJobCategoryOut eCMJobCategoryOut = jobCategoryRepository.GetECMJobCategoryByHash(imageIn.hash);
 
             Doc theDoc = new Doc();
-            theDoc.Read(Convert.FromBase64String(eCMDocumentOut.result.archive));
+            theDoc.Read(Convert.FromBase64String(eCMJobCategoryOut.result.archive));
 
             if (theDoc.PageCount < imageIn.page || imageIn.page <= 0)
             {

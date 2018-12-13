@@ -7,7 +7,7 @@ namespace Repository
 {
     public partial class SlicePageRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
         public SlicePageOut SaveSlicePage(SlicePageIn slicePageIn)
         {

@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Classifications")]
     public class ClassificationsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        ClassificationRepository classificationRepository = new ClassificationRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private ClassificationRepository classificationRepository = new ClassificationRepository();
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public ClassificationOut Post(ClassificationIn classificationIn)

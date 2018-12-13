@@ -15,9 +15,9 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Account")]
     public class AccountController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        UnityRepository unityRepository = new UnityRepository();
-        UserRepository userRepository = new UserRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private UnityRepository unityRepository = new UnityRepository();
+        private UserRepository userRepository = new UserRepository();
 
         [HttpPost, Route("Login"), AllowAnonymous]
         public AccessResultOut Login(AccessIn accessIn)

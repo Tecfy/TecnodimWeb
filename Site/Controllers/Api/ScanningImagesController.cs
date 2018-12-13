@@ -9,20 +9,20 @@ using System.Web.Http;
 
 namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/Images")]
-    public class ImagesController : ApiController
+    [RoutePrefix("Api/ScanningImages")]
+    public class ScanningImagesController : ApiController
     {
-        private ImageRepository imageRepository = new ImageRepository();
+        private ScanningImageRepository scanningImageRepository = new ScanningImageRepository();
 
         [HttpGet]
-        public HttpResponseMessage GetImage(string hash, int page, bool thumb = false)
+        public HttpResponseMessage GetImageScanning(string hash, int page, bool thumb = false)
         {
             ImageOut imageOut = new ImageOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                imageOut = imageRepository.GetImage(new ImageIn() { hash = hash, page = page, thumb = thumb });
+                imageOut = scanningImageRepository.GetImageScanning(new ImageIn() { hash = hash, page = page, thumb = thumb });
 
                 MemoryStream ms = new MemoryStream(imageOut.result.image);
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };

@@ -12,9 +12,9 @@ namespace Repository
 {
     public class CategoryRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
-        CategoryApi categoryApi = new CategoryApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
+        private CategoryApi categoryApi = new CategoryApi();
 
         #region .: Adm :.
 

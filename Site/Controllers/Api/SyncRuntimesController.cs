@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/SyncRuntimes")]
     public class SyncRuntimesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SyncRuntimeRepository syncRuntimeRepository = new SyncRuntimeRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SyncRuntimeRepository syncRuntimeRepository = new SyncRuntimeRepository();
 
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetSyncRuntimes()

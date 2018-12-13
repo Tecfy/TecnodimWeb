@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/DeletedPages")]
     public class DeletedPagesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public DeletedPageOut Post(DeletedPageIn deletedPageIn)

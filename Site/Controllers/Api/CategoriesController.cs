@@ -14,8 +14,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Categories")]
     public class CategoriesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        CategoryRepository categoryRepository = new CategoryRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private CategoryRepository categoryRepository = new CategoryRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
         public ApiCategoryOut GetCategoryById(int id)

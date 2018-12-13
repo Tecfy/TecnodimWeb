@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/JobCategories")]
     public class JobCategoriesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         #region .: API :.
 

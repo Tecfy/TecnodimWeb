@@ -10,9 +10,9 @@ namespace Repository
 {
     public partial class SliceRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SlicePageRepository slicePageRepository = new SlicePageRepository();
-        DocumentRepository documentRepository = new DocumentRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SlicePageRepository slicePageRepository = new SlicePageRepository();
+        private DocumentRepository documentRepository = new DocumentRepository();
 
         public SliceOut GetSlice(SliceIn sliceIn)
         {

@@ -8,7 +8,7 @@ namespace Repository
 {
     public class DeletedPageRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
         public DeletedPageOut SaveDeletedPage(DeletedPageIn deletedPageIn)
         {

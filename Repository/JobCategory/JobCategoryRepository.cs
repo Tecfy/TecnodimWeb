@@ -14,11 +14,12 @@ namespace Repository
 {
     public partial class JobCategoryRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
-        JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
-        JobRepository jobRepository = new JobRepository();
-        JobCategoryApi jobCategoryApi = new JobCategoryApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
+        private JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
+
+        private JobStatusRepository jobStatusRepository = new JobStatusRepository();
+        private JobCategoryApi jobCategoryApi = new JobCategoryApi();
 
         #region .: API :.
 
@@ -217,7 +218,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.New)
                 {
-                    jobRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
 
@@ -226,7 +227,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -274,7 +275,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -371,7 +372,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -465,7 +466,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.Digitalized && !received)
                 {
-                    jobRepository.SatusJob(new JobSatusIn { id = jobCategoryIncludeIn.id, key = jobCategoryIncludeIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryIncludeIn.id, key = jobCategoryIncludeIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
                 #endregion
