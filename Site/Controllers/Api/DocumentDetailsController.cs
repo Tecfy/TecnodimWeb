@@ -18,14 +18,14 @@ namespace Site.Api.Controllers
         private DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(string registration, string unity)
+        public DocumentDetailsByRegistrationOut GetDocumentDetailsByRegistration(string registration, int unityId)
         {
             DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = new DocumentDetailsByRegistrationOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
-                DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, Unity = unity, id = User.Identity.GetUserId(), key = Key };
+                DocumentDetailsByRegistrationIn documentDetailsByRegistrationIn = new DocumentDetailsByRegistrationIn() { Registration = registration, UnityId = unityId, id = User.Identity.GetUserId(), key = Key };
 
                 documentDetailsByRegistrationOut = documentDetailRepository.GetDocumentDetailsByRegistration(documentDetailsByRegistrationIn);
             }

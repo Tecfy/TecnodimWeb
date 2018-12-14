@@ -36,12 +36,15 @@ namespace Repository
                                                     JobId = x.JobId,
                                                     Registration = x.Registration,
                                                     Name = x.Name,
-                                                    JobCategories = x.JobCategories.Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
-                                                    .Select(y => new JobCategoriesByRegistrationVM()
-                                                    {
-                                                        JobCategoryId = y.JobCategoryId,
-                                                        Category = y.Categories.Code + " - " + y.Categories.Name,
-                                                    }).ToList()
+                                                    Unity = x.Units.Name,
+                                                    Course = x.Course,
+                                                    JobCategories = x.JobCategories
+                                                                     .Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
+                                                                     .Select(y => new JobCategoriesByRegistrationVM()
+                                                                     {
+                                                                         JobCategoryId = y.JobCategoryId,
+                                                                         Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
+                                                                     }).ToList()
                                                 })
                                                 .ToList();
             }
@@ -67,7 +70,9 @@ namespace Repository
                                              JobId = x.JobId,
                                              Registration = x.Registration,
                                              Name = x.Name,
-                                             Unity = x.Units.Name
+                                             Unity = x.Units.Name,
+                                             Course = x.Course,
+                                             Status = x.JobStatus.Name
                                          })
                                          .ToList();
             }
@@ -93,7 +98,8 @@ namespace Repository
                     Registration = jobsCreateIn.registration,
                     Name = jobsCreateIn.name,
                     Sent = false,
-                    UnityId = jobsCreateIn.unityId
+                    UnityId = jobsCreateIn.unityId,
+                    Course = jobsCreateIn.course
                 };
 
                 db.Jobs.Add(job);

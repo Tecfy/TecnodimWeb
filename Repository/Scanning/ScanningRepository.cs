@@ -69,6 +69,7 @@ namespace Repository
                 jobStatusId = (int)EJobStatus.New,
                 registration = scanningIn.registration,
                 name = scanningIn.name,
+                course = scanningIn.course,
                 unityId = scanningIn.unityId
             };
 

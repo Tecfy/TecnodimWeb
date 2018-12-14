@@ -10,6 +10,8 @@
 
         public string name { get; set; }
 
+        public string course { get; set; }
+
         public int unityId { get; set; }
     }
 }

@@ -11,6 +11,10 @@ namespace Model.VM
 
         public string Name { get; set; }
 
+        public string Course { get; set; }
+
+        public string Unity { get; set; }
+
 
         public List<JobCategoriesByRegistrationVM> JobCategories { get; set; }
     }
