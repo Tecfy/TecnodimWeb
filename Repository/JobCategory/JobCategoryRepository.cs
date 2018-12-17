@@ -47,8 +47,8 @@ namespace Repository
                                                                       {
                                                                           jobCategoryPageId = y.JobCategoryPageId,
                                                                           page = y.Page,
-                                                                          image = "/Images/GetImageScanning/" + x.Hash + "/" + y.Page,
-                                                                          thumb = "/Images/GetImageScanning/" + x.Hash + "/" + y.Page + "/true",
+                                                                          image = "/ScanningImages/GetImageScanning/" + x.Hash + "/" + y.Page,
+                                                                          thumb = "/ScanningImages/GetImageScanning/" + x.Hash + "/" + y.Page + "/true",
                                                                       }).ToList(),
                                                   additionalFields = x.JobCategoryAdditionalFields
                                                                       .Where(y => y.Active == true && y.DeletedDate == null)
@@ -218,7 +218,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.New)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
 
@@ -227,7 +227,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategorySaveIn.id, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.SatusJob(new JobSatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
