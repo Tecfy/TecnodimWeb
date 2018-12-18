@@ -4,15 +4,22 @@ using Microsoft.Owin.Security.WsFederation;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ADFS.Controllers
+namespace Site.Api.Controllers
 {
+    [RoutePrefix("Api/Auth")]
     public class AuthController : Controller
     {
+        [Route("/")]
+        public ActionResult retornCallback()
+        {
+            return View();
+        }
+
         public void sso()
         {
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" }, 
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/retornCallback" }, 
                     WsFederationAuthenticationDefaults.AuthenticationType);
             }
         }
