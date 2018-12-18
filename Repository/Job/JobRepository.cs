@@ -44,6 +44,7 @@ namespace Repository
                                                                      {
                                                                          JobCategoryId = y.JobCategoryId,
                                                                          Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
+                                                                         pb = y.Categories.Pb
                                                                      }).ToList()
                                                 })
                                                 .ToList();
@@ -73,12 +74,13 @@ namespace Repository
                                           Unity = x.Units.Name,
                                           Course = x.Course,
                                           JobCategories = x.JobCategories
-                                                            .Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
-                                                            .Select(y => new JobCategoriesByIdVM()
-                                                            {
-                                                                JobCategoryId = y.JobCategoryId,
-                                                                Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
-                                                            }).ToList()
+                                                           .Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
+                                                           .Select(y => new JobCategoriesByIdVM()
+                                                           {
+                                                               JobCategoryId = y.JobCategoryId,
+                                                               Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
+                                                               pb = y.Categories.Pb
+                                                           }).ToList()
                                       })
                                       .FirstOrDefault();
             }
