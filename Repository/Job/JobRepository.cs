@@ -30,7 +30,7 @@ namespace Repository
                                                 .Where(x => x.Active == true
                                                          && x.DeletedDate == null
                                                          && x.Users.Registration == jobsByRegistrationIn.registration
-                                                         && x.JobCategories.Count(y => y.Received == false) > 0)
+                                                         && x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == false) > 0)
                                                 .Select(x => new JobsByRegistrationVM()
                                                 {
                                                     JobId = x.JobId,
@@ -51,6 +51,40 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(jobsByRegistrationIn.id, jobsByRegistrationIn.key, "Log - End", "Repository.JobRepository.GetJobsByRegistration", "");
             return jobsByRegistrationOut;
+        }
+
+        public JobByIdOut GetJobById(JobByIdIn jobByIdIn)
+        {
+            JobByIdOut jobByIdOut = new JobByIdOut();
+            registerEventRepository.SaveRegisterEvent(jobByIdIn.id, jobByIdIn.key, "Log - Start", "Repository.JobRepository.GetJobById", "");
+
+            using (var db = new DBContext())
+            {
+                jobByIdOut.result = db.Jobs
+                                      .Where(x => x.Active == true
+                                                  && x.DeletedDate == null
+                                                  && x.JobId == jobByIdIn.jobId
+                                                  && x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == false) > 0)
+                                      .Select(x => new JobByIdVM()
+                                      {
+                                          JobId = x.JobId,
+                                          Registration = x.Registration,
+                                          Name = x.Name,
+                                          Unity = x.Units.Name,
+                                          Course = x.Course,
+                                          JobCategories = x.JobCategories
+                                                            .Where(y => y.Active == true && y.DeletedDate == null && y.Received == false)
+                                                            .Select(y => new JobCategoriesByIdVM()
+                                                            {
+                                                                JobCategoryId = y.JobCategoryId,
+                                                                Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
+                                                            }).ToList()
+                                      })
+                                      .FirstOrDefault();
+            }
+
+            registerEventRepository.SaveRegisterEvent(jobByIdIn.id, jobByIdIn.key, "Log - End", "Repository.JobRepository.GetJobById", "");
+            return jobByIdOut;
         }
 
         public JobsByUserOut GetJobsByUser(JobsByUserIn jobsByUserIn)

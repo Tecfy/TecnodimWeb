@@ -12,17 +12,17 @@ namespace Repository
 
         #region .: API :.
 
-        public JobSatusOut SatusJob(JobSatusIn jobSatusIn)
+        public JobStatusOut StatusJob(JobStatusIn jobStatusIn)
         {
-            JobSatusOut jobSatusOut = new JobSatusOut();
+            JobStatusOut jobStatusOut = new JobStatusOut();
 
-            registerEventRepository.SaveRegisterEvent(jobSatusIn.id, jobSatusIn.key, "Log - Start", "Repository.JobRepository.SetJobSatus", "");
+            registerEventRepository.SaveRegisterEvent(jobStatusIn.id, jobStatusIn.key, "Log - Start", "Repository.JobRepository.StatusJob", "");
 
             #region .: Job :.
 
             using (var db = new DBContext())
             {
-                Jobs job = db.Jobs.Where(x => x.JobId == jobSatusIn.jobId && x.Users.AspNetUserId == jobSatusIn.id).FirstOrDefault();
+                Jobs job = db.Jobs.Where(x => x.JobId == jobStatusIn.jobId && x.Users.AspNetUserId == jobStatusIn.id).FirstOrDefault();
 
                 if (job == null)
                 {
@@ -30,7 +30,7 @@ namespace Repository
                 }
 
                 job.EditedDate = DateTime.Now;
-                job.JobStatusId = jobSatusIn.jobStatusId;
+                job.JobStatusId = jobStatusIn.jobStatusId;
 
                 db.Entry(job).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -38,8 +38,8 @@ namespace Repository
 
             #endregion
 
-            registerEventRepository.SaveRegisterEvent(jobSatusIn.id, jobSatusIn.key, "Log - End", "Repository.JobRepository.SetJobSatus", "");
-            return jobSatusOut;
+            registerEventRepository.SaveRegisterEvent(jobStatusIn.id, jobStatusIn.key, "Log - End", "Repository.JobRepository.StatusJob", "");
+            return jobStatusOut;
         }
 
         #endregion

@@ -48,6 +48,29 @@ namespace Site.Api.Controllers
         }
 
         [AllowAnonymous, HttpGet]
+        public JobByIdOut GetJobById(int jobId)
+        {
+            JobByIdOut jobByIdOut = new JobByIdOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobByIdIn jobByIdIn = new JobByIdIn() { jobId = jobId, key = Key };
+
+                jobByIdOut = jobRepository.GetJobById(jobByIdIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobById", ex.Message);
+
+                jobByIdOut.successMessage = null;
+                jobByIdOut.messages.Add(ex.Message);
+            }
+
+            return jobByIdOut;
+        }
+
+        [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMSendJobs()
         {
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -143,19 +166,19 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpPost]
-        public JobSatusOut SetJobSatus(JobSatusIn jobSatusIn)
+        public JobStatusOut SetJobStatus(JobStatusIn jobStatusIn)
         {
-            JobSatusOut jobSatusOut = new JobSatusOut();
+            JobStatusOut jobStatusOut = new JobStatusOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    jobSatusIn.id = User.Identity.GetUserId();
-                    jobSatusIn.key = Key;
+                    jobStatusIn.id = User.Identity.GetUserId();
+                    jobStatusIn.key = Key;
 
-                    jobSatusOut = jobStatusRepository.SatusJob(jobSatusIn);
+                    jobStatusOut = jobStatusRepository.StatusJob(jobStatusIn);
                 }
                 else
                 {
@@ -174,13 +197,13 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.SetJobSatus", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.SetJobStatus", ex.Message);
 
-                jobSatusOut.successMessage = null;
-                jobSatusOut.messages.Add(ex.Message);
+                jobStatusOut.successMessage = null;
+                jobStatusOut.messages.Add(ex.Message);
             }
 
-            return jobSatusOut;
+            return jobStatusOut;
         }
 
         #endregion

@@ -218,16 +218,14 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.New)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
-
-                bool received = db.Jobs.Any(x => x.JobId == job.JobId
-                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
+                bool received = db.Jobs.Any(x => x.JobId == job.JobId && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = job.Users.AspNetUserId, key = jobCategorySaveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -275,7 +273,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -372,7 +370,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
 
                 #endregion
@@ -466,7 +464,7 @@ namespace Repository
 
                 if (job.JobStatusId == (int)EJobStatus.Digitalized && !received)
                 {
-                    jobStatusRepository.SatusJob(new JobSatusIn { id = jobCategoryIncludeIn.id, key = jobCategoryIncludeIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryIncludeIn.id, key = jobCategoryIncludeIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
                 #endregion

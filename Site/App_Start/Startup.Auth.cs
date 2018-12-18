@@ -43,27 +43,28 @@ namespace Site
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    LoginPath = new PathString("/Account/Login"),
-            //    LogoutPath = new PathString("/Account/LogOff"),
-            //    ExpireTimeSpan = TimeSpan.FromHours(12),
-            //});
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Api/AccountAd/SignIn"),
-                LogoutPath = new PathString("/Api/AccountAd/SignOut"),
+                LoginPath = new PathString("/Account/Login"),
+                LogoutPath = new PathString("/Account/LogOff"),
                 ExpireTimeSpan = TimeSpan.FromHours(12),
             });
-           
-            app.UseWsFederationAuthentication(
-                new WsFederationAuthenticationOptions
-                {
-                    Wtrealm = realm,
-                    MetadataAddress = adfsMetadata
-                });
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            //    LoginPath = new PathString("/Api/AccountAd/SignIn"),
+            //    LogoutPath = new PathString("/Api/AccountAd/SignOut"),
+            //    ExpireTimeSpan = TimeSpan.FromHours(12),
+            //});
+
+            //app.UseWsFederationAuthentication(
+            //    new WsFederationAuthenticationOptions
+            //    {
+            //        Wtrealm = realm,
+            //        MetadataAddress = adfsMetadata
+            //    });
+
             // Configure the application for OAuth based flow
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions

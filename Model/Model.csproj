@@ -119,8 +119,9 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
-    <Compile Include="JobStatus\In\JobSatusIn.cs" />
-    <Compile Include="JobStatus\Out\JobSatusOut.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByIdVM.cs" />
+    <Compile Include="JobStatus\In\JobStatusIn.cs" />
+    <Compile Include="JobStatus\Out\JobStatusOut.cs" />
     <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldUpdateIn.cs" />
     <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldIn.cs" />
     <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldUpdateOut.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
     <Compile Include="JobCategory\In\JobCategoriesByJobIdIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryApproveIn.cs" />
+    <Compile Include="Job\In\JobByIdIn.cs" />
     <Compile Include="Job\In\JobsSentIn.cs" />
     <Compile Include="Job\In\ECMJobDeletedIn.cs" />
     <Compile Include="Job\In\ECMJobSaveIn.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="JobCategory\In\JobCategoryDisapproveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryApproveOut.cs" />
+    <Compile Include="Job\Out\JobByIdOut.cs" />
     <Compile Include="Job\Out\JobsSentOut.cs" />
     <Compile Include="Job\Out\ECMJobDeletedOut.cs" />
     <Compile Include="Job\Out\ECMJobSaveOut.cs" />
@@ -158,6 +161,7 @@
     <Compile Include="Job\Out\JobDeleteOut.cs" />
     <Compile Include="Job\Out\JobCreateOut.cs" />
     <Compile Include="Job\Out\JobsByUserOut.cs" />
+    <Compile Include="Job\VM\JobByIdVM.cs" />
     <Compile Include="Job\VM\JobsSentVM.cs" />
     <Compile Include="Job\VM\JobsFinishedVM.cs" />
     <Compile Include="Job\VM\JobCreateVM.cs" />

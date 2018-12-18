@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class JobSatusIn : BaseIn
+    public class JobStatusIn : BaseIn
     {
         [Required]
         [Display(Name = "Job", ResourceType = typeof(i18n.Resource))]
