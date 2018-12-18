@@ -58,8 +58,6 @@ namespace Site
                 ExpireTimeSpan = TimeSpan.FromHours(12),
             });
            
-
-
             app.UseWsFederationAuthentication(
                 new WsFederationAuthenticationOptions
                 {

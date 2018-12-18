@@ -17,11 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSSync", "WSSync\WSSync.csp
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupWSSync", "SetupWSSync\SetupWSSync.vdproj", "{9308D3A8-B3D9-41CE-9E9D-D7153C1E23DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "i18n", "..\tecnodim_api\i18n\i18n.csproj", "{D1ECEB7F-0D76-415F-9E3B-627E2BA86ABD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "i18n", "..\TecnodimWeb-API\i18n\i18n.csproj", "{D1ECEB7F-0D76-415F-9E3B-627E2BA86ABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataEF", "..\tecnodim_api\DataEF\DataEF.csproj", "{008B818A-ADE8-4772-81A9-C327F49E1CAD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADFS", "ADFS\ADFS.csproj", "{CDCF3A78-78EB-4087-88B1-99262D3AF812}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataEF", "..\TecnodimWeb-API\DataEF\DataEF.csproj", "{008B818A-ADE8-4772-81A9-C327F49E1CAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

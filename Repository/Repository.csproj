@@ -187,11 +187,11 @@
     <Compile Include="User\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tecnodim_api\DataEF\DataEF.csproj">
+    <ProjectReference Include="..\..\TecnodimWeb-API\DataEF\DataEF.csproj">
       <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
       <Name>DataEF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tecnodim_api\i18n\i18n.csproj">
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
       <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
       <Name>i18n</Name>
     </ProjectReference>

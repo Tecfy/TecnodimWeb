@@ -308,7 +308,7 @@
     <Folder Include="SliceCategoryAdditionalField\VM\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tecnodim_api\i18n\i18n.csproj">
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
       <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
       <Name>i18n</Name>
     </ProjectReference>

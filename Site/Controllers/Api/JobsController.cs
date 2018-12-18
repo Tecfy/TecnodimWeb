@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Helper.Enum;
+using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
 using Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -75,7 +77,12 @@ namespace Site.Api.Controllers
 
             try
             {
-                JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key };
+                List<int> jobSatusIds = new List<int>();
+                jobSatusIds.Add((int)EJobStatus.New);
+                jobSatusIds.Add((int)EJobStatus.PartiallyDigitalized);
+                jobSatusIds.Add((int)EJobStatus.Digitalized);                
+
+                JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key, jobStatusIds = jobSatusIds };
 
                 jobsByUserOut = jobRepository.GetJobsByUser(jobsByUserIn);
             }
