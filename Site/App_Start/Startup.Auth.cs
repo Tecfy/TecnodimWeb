@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.WsFederation;
 using Model;
 using Owin;
 using Repository;
 using Site.Providers;
 using System;
+using System.Configuration;
 
 namespace Site
 {
@@ -27,26 +30,42 @@ namespace Site
         #endregion
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
+        private static string realm = ConfigurationManager.AppSettings["ida:Wtrealm"];
+        private static string adfsMetadata = ConfigurationManager.AppSettings["ida:ADFSMetadata"];
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            //    LoginPath = new PathString("/Account/Login"),
+            //    LogoutPath = new PathString("/Account/LogOff"),
+            //    ExpireTimeSpan = TimeSpan.FromHours(12),
+            //});
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                LogoutPath = new PathString("/Account/LogOff"),
+                LoginPath = new PathString("/Api/AccountAd/SignIn"),
+                LogoutPath = new PathString("/Api/AccountAd/SignOut"),
                 ExpireTimeSpan = TimeSpan.FromHours(12),
             });
+           
 
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
+            app.UseWsFederationAuthentication(
+                new WsFederationAuthenticationOptions
+                {
+                    Wtrealm = realm,
+                    MetadataAddress = adfsMetadata
+                });
             // Configure the application for OAuth based flow
             PublicClientId = "self";
             OAuthOptions = new OAuthAuthorizationServerOptions
