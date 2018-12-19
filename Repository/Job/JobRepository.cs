@@ -100,8 +100,7 @@ namespace Repository
                                          .Where(x => x.Active == true
                                                     && x.DeletedDate == null
                                                     && jobsByUserIn.jobStatusIds.Contains(x.JobStatusId)
-                                                    && x.Users.AspNetUserId == jobsByUserIn.id
-                                                    && x.JobCategories.Count(y => y.Received == false) > 0)
+                                                    && x.Users.AspNetUserId == jobsByUserIn.id)
                                          .Select(x => new JobsByUserVM()
                                          {
                                              JobId = x.JobId,

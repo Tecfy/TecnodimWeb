@@ -100,10 +100,12 @@ namespace Site.Api.Controllers
 
             try
             {
-                List<int> jobSatusIds = new List<int>();
-                jobSatusIds.Add((int)EJobStatus.New);
-                jobSatusIds.Add((int)EJobStatus.PartiallyDigitalized);
-                jobSatusIds.Add((int)EJobStatus.Digitalized);                
+                List<int> jobSatusIds = new List<int>
+                {
+                    (int)EJobStatus.New,
+                    (int)EJobStatus.PartiallyDigitalized,
+                    (int)EJobStatus.Digitalized
+                };
 
                 JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key, jobStatusIds = jobSatusIds };
 
