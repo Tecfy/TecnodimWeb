@@ -43,27 +43,27 @@ namespace Site
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                LogoutPath = new PathString("/Account/LogOff"),
-                ExpireTimeSpan = TimeSpan.FromHours(12),
-            });
             //app.UseCookieAuthentication(new CookieAuthenticationOptions
             //{
             //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    //LoginPath = new PathString("/Api/Auth/sso"),
-            //    //LogoutPath = new PathString("/Api/Auth/slo"),
+            //    LoginPath = new PathString("/Account/Login"),
+            //    LogoutPath = new PathString("/Account/LogOff"),
             //    ExpireTimeSpan = TimeSpan.FromHours(12),
             //});
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                //LoginPath = new PathString("/Api/Auth/sso"),
+                //LogoutPath = new PathString("/Api/Auth/slo"),
+                ExpireTimeSpan = TimeSpan.FromHours(12),
+            });
 
-            //app.UseWsFederationAuthentication(
-            //    new WsFederationAuthenticationOptions
-            //    {
-            //        Wtrealm = realm,
-            //        MetadataAddress = adfsMetadata
-            //    });
+            app.UseWsFederationAuthentication(
+                new WsFederationAuthenticationOptions
+                {
+                    Wtrealm = realm,
+                    MetadataAddress = adfsMetadata
+                });
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
