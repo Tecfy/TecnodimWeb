@@ -1,5 +1,6 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper;
 using Helper.Enum;
 using Model.In;
 using Model.Out;
@@ -442,17 +443,23 @@ namespace Repository
         {
             string archive = string.Empty;
 
-            Doc theDoc = new Doc();
-            theDoc.Read(Convert.FromBase64String(pdfIn.archive));
+            Doc docOld = new Doc();
+            Doc docNew = new Doc();
+            docOld.Read(Convert.FromBase64String(pdfIn.archive));
 
             if (pdfIn.pb)
             {
-                theDoc.Rendering.ColorSpace = XRendering.ColorSpaceType.Gray;
+                docNew = PB.Converter(docOld);
+
+                archive = System.Convert.ToBase64String(docNew.GetData());
+            }
+            else
+            {
+                archive = System.Convert.ToBase64String(docOld.GetData());
             }
 
-            archive = System.Convert.ToBase64String(theDoc.GetData());
-
-            theDoc.Clear();
+            docOld.Clear();
+            docNew.Clear();
 
             return archive;
         }
