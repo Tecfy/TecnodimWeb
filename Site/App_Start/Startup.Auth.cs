@@ -6,7 +6,6 @@ using Microsoft.Owin.Security.OAuth;
 using Model;
 using Owin;
 using Repository;
-using Site.Models;
 using Site.Providers;
 using Sustainsys.Saml2;
 using Sustainsys.Saml2.Configuration;
@@ -79,6 +78,7 @@ namespace Site
             app.UseSaml2Authentication(CreateSaml2Options());
 
         }
+
         private static Saml2AuthenticationOptions CreateSaml2Options()
         {
             var spOptions = CreateSPOptions();
@@ -87,6 +87,7 @@ namespace Site
                 SPOptions = spOptions
             };
 
+            //Alterei Com Informações do ADFS
             var idp = new IdentityProvider(new EntityId("http://sts.sempreser.com.br/adfs/services/trust"), spOptions)
             {
                 AllowUnsolicitedAuthnResponse = true,
@@ -96,6 +97,7 @@ namespace Site
                 LoadMetadata = true
             };
 
+            //Alterei Com Informações do ADFS
             idp.SigningKeys.AddConfiguredKey(
                 new X509Certificate2(
                     HostingEnvironment.MapPath(
@@ -110,6 +112,7 @@ namespace Site
 
             return Saml2Options;
         }
+
         private static SPOptions CreateSPOptions()
         {
             var portuguese = "pt-br";
@@ -119,6 +122,7 @@ namespace Site
             organization.DisplayNames.Add(new LocalizedName("Tecnodim", portuguese));
             organization.Urls.Add(new LocalizedUri(new Uri("http://www.Tecnodim.com.br"), portuguese));
 
+            //Alterei Com Informações do Projeto
             var spOptions = new SPOptions
             {
                 EntityId = new EntityId("https://technodimweb-dev.tecfy.com.br/IdSrv3/Saml2"),
@@ -161,6 +165,7 @@ namespace Site
 
             spOptions.AttributeConsumingServices.Add(attributeConsumingService);
 
+            //Alterei Com Informações do Projeto
             spOptions.ServiceCertificates.Add(new X509Certificate2(
                 AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "/App_Data/Sustainsys.Saml2.Tests.pfx"));
 
@@ -168,6 +173,4 @@ namespace Site
         }
 
     }
-
-
 }

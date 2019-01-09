@@ -84,7 +84,7 @@ namespace Site.Adm.Controllers
                     return View(loginVM);
             }
         }
-        // POST: /Account/ExternalLogin
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -93,6 +93,7 @@ namespace Site.Adm.Controllers
             //// Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
+
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -167,6 +168,7 @@ namespace Site.Adm.Controllers
             }
             return RedirectToAction("Index", "Home", new { area = "Adm" });
         }
+
         private const string XsrfKey = "XsrfId";
 
         internal class ChallengeResult : HttpUnauthorizedResult
@@ -197,6 +199,7 @@ namespace Site.Adm.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }
