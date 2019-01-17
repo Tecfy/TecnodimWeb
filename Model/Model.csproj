@@ -107,6 +107,9 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailByJobIdIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailDocumentIdOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailDocumentIdVM.cs" />
     <Compile Include="JobCategory\VM\JobCategoriesByIdVM.cs" />
     <Compile Include="JobStatus\In\JobStatusIn.cs" />
     <Compile Include="JobStatus\Out\JobStatusOut.cs" />
@@ -197,9 +200,9 @@
     <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldDeleteIn.cs" />
     <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
     <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
-    <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
-    <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
-    <Compile Include="DocumentDetail\VM\DocumentDetailVM.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailByDocumentIdIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailJobIdOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailJobIdVM.cs" />
     <Compile Include="DeletedPage\In\DeletedPageIn.cs" />
     <Compile Include="DeletedPage\Out\DeletedPageOut.cs" />
     <Compile Include="Category\In\Api\ApiCategoryIn.cs" />

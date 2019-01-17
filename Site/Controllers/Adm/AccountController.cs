@@ -4,6 +4,8 @@ using Microsoft.Owin.Security;
 using Model.VM;
 using Repository;
 using Site.Models;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;

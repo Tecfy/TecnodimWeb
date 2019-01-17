@@ -2,11 +2,11 @@
 
 namespace Model.In
 {
-    public class DocumentDetailIn : BaseIn
+    public class DocumentDetailByJobIdIn : BaseIn
     {
         [Required]
-        [Display(Name = "DocumentId", ResourceType = typeof(i18n.Resource))]
+        [Display(Name = "JobId", ResourceType = typeof(i18n.Resource))]
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
-        public int documentId { get; set; }
+        public int jobId { get; set; }
     }
 }

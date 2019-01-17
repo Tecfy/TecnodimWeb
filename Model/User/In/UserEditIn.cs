@@ -32,6 +32,11 @@ namespace Model.In
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+        [Display(Name = "ExternalUser", ResourceType = typeof(i18n.Resource))]
+        public string Registration { get; set; }
+
         [Display(Name = "NewPassword", ResourceType = typeof(i18n.Resource))]
         public bool NewPassword { get; set; }
        

@@ -33,9 +33,9 @@ namespace Repository
                 usersOut.totalCount = db.Users.Count(x => x.Active == true && x.DeletedDate == null);
 
                 usersOut.result = db.Users
-                                   .Where(x => x.Active == true 
+                                   .Where(x => x.Active == true
                                             && x.DeletedDate == null
-                                            && 
+                                            &&
                                             (
                                                 string.IsNullOrEmpty(usersIn.filter)
                                                 ||
@@ -54,6 +54,7 @@ namespace Repository
                                        Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
                                        Name = x.FirstName + " " + x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
                                        CreatedDate = x.CreatedDate,
                                    })
                                    .OrderBy(usersIn.sort, !usersIn.sortdirection.Equals("asc"))
@@ -93,6 +94,7 @@ namespace Repository
                                        Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
                                        Name = x.FirstName + " " + x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
                                    }).FirstOrDefault();
             }
 
@@ -115,6 +117,7 @@ namespace Repository
                                        FirstName = x.FirstName,
                                        LastName = x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
                                        Claims = x.AspNetUsers.AspNetUserClaims.Select(y => y.ClaimType).ToList(),
                                        Units = x.UserUnits.Select(y => y.Units.Name).ToList(),
                                    }).FirstOrDefault();
@@ -133,7 +136,8 @@ namespace Repository
                 {
                     AspNetUserId = userCreateIn.AspNetUserId,
                     FirstName = userCreateIn.FirstName,
-                    LastName = userCreateIn.LastName
+                    LastName = userCreateIn.LastName,
+                    Registration = userCreateIn.Registration,
                 };
 
                 db.Users.Add(user);
@@ -147,6 +151,7 @@ namespace Repository
                                        Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
                                        Name = x.FirstName + " " + x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
                                    }).FirstOrDefault();
             }
 
@@ -164,6 +169,7 @@ namespace Repository
                 user.EditedDate = DateTime.Now;
                 user.FirstName = userEditVM.FirstName;
                 user.LastName = userEditVM.LastName;
+                user.Registration = userEditVM.Registration;
 
                 db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -176,6 +182,7 @@ namespace Repository
                                        Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
                                        Name = x.FirstName + " " + x.LastName,
                                        Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
                                    }).FirstOrDefault();
             }
 

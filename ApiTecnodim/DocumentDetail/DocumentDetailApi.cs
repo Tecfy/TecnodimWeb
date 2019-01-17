@@ -37,7 +37,32 @@ namespace ApiTecnodim
             }
         }
 
-        public DocumentDetailOut GetDocumentDetail(string registration)
+        public DocumentDetailJobIdOut GetECMDocumentDetailByRegistration(string registration, string unity)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.GetECMDocumentDetailByRegistration"].ToString(), registration, unity));
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                DocumentDetailJobIdOut documentDetailJobIdOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailJobIdOut>(response.Content);
+
+                if (!documentDetailJobIdOut.success)
+                {
+                    throw new Exception(documentDetailJobIdOut.messages.FirstOrDefault());
+                }
+
+                return documentDetailJobIdOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public DocumentDetailDocumentIdOut GetDocumentDetailDocumentId(string registration)
         {
             try
             {
@@ -47,14 +72,14 @@ namespace ApiTecnodim
 
                 IRestResponse response = client.Execute(request);
 
-                DocumentDetailOut documentDetailOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailOut>(response.Content);
+                DocumentDetailDocumentIdOut documentDetailDocumentIdOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailDocumentIdOut>(response.Content);
 
-                if (!documentDetailOut.success)
+                if (!documentDetailDocumentIdOut.success)
                 {
-                    throw new Exception(documentDetailOut.messages.FirstOrDefault());
+                    throw new Exception(documentDetailDocumentIdOut.messages.FirstOrDefault());
                 }
 
-                return documentDetailOut;
+                return documentDetailDocumentIdOut;
             }
             catch (Exception ex)
             {

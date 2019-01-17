@@ -17,6 +17,9 @@ namespace Model.VM
         [Display(Name = "Email", ResourceType = typeof(i18n.Resource))]
         public string Email { get; set; }
 
+        [Display(Name = "ExternalUser", ResourceType = typeof(i18n.Resource))]
+        public string Registration { get; set; }
+
         [Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
         public DateTime CreatedDate { get; set; }
     }

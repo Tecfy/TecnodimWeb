@@ -23,6 +23,9 @@ else
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Registration)
+        </td>
+        <td>
             <div>
                 <a href="@Url.Action("Details", new { id = item.UserId })" title="@i18n.Resource.View">
                     <span data-feather="archive"></span>
