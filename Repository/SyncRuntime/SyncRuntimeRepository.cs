@@ -11,7 +11,7 @@ namespace Repository
 {
     public partial class SyncRuntimeRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
         #region .: API :.
 

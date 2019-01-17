@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Scannings")]
     public class ScanningsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        ScanningRepository scanningRepository = new ScanningRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private ScanningRepository scanningRepository = new ScanningRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
         public ScanningPermissionOut GetPermission()

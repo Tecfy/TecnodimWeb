@@ -1,10 +1,11 @@
 ﻿@using Model.VM
+@using Site.Models
 @model LoginVM
 @{
-                /**/
+    /**/
 
-                Layout = "~/Views/Shared/_LayoutLogin.cshtml";
-                ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewBag.Title = "Login";
 }
 
 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form" }))
@@ -48,10 +49,16 @@
                         <button class="btn btn-lg btn-outline-dark btn-block" type="submit">@i18n.Resource.LogIn</button>
                     </div>
                 </div>
+
             </div>
 
             <p class="mt-5 mb-3 text-muted text-center">&copy; @DateTime.Now.Year</p>
         </div>
     </div>
-
 }
+
+<div class="col-md-12">
+    <section id="socialLoginForm">
+        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    </section>
+</div>

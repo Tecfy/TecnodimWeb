@@ -5,10 +5,10 @@ namespace Repository
 {
     public partial class ClassificationRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SliceRepository SliceRepository = new SliceRepository();
-        SlicePageRepository slicePageRepository = new SlicePageRepository();
-        SliceCategoryAdditionalFieldRepository sliceCategoryAdditionalFieldRepository = new SliceCategoryAdditionalFieldRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SliceRepository sliceRepository = new SliceRepository();
+        private SlicePageRepository slicePageRepository = new SlicePageRepository();
+        private SliceCategoryAdditionalFieldRepository sliceCategoryAdditionalFieldRepository = new SliceCategoryAdditionalFieldRepository();
 
         #region .: Methods :.
 
@@ -28,7 +28,7 @@ namespace Repository
                 categoryId = classificationIn.categoryId,
             };
 
-            SliceRepository.UpdateSlice(sliceUpdateIn);
+            sliceRepository.UpdateSlice(sliceUpdateIn);
 
             #endregion
 

@@ -9,7 +9,7 @@ namespace Repository
 {
     public partial class SliceCategoryAdditionalFieldRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
         public SliceCategoryAdditionalFieldOut SaveSliceCategoryAdditionalField(SliceCategoryAdditionalFieldIn sliceCategoryAdditionalFieldIn)
         {

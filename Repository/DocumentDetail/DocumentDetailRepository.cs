@@ -12,9 +12,9 @@ namespace Repository
 {
     public partial class DocumentDetailRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SliceRepository sliceRepository = new SliceRepository();
-        DocumentDetailApi documentDetailApi = new DocumentDetailApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SliceRepository sliceRepository = new SliceRepository();
+        private DocumentDetailApi documentDetailApi = new DocumentDetailApi();
 
         #region .: Api :.
 
@@ -24,7 +24,21 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(documentsDetailIn.id, documentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
 
-            documentDetailsByRegistrationOut = documentDetailApi.GetDocumentDetailsByRegistration(documentsDetailIn.Registration, documentsDetailIn.Unity);
+            string uninyCode = string.Empty;
+
+            using (var db = new DBContext())
+            {
+                Units unit = db.Units.Where(x => x.UnityId == documentsDetailIn.UnityId).FirstOrDefault();
+
+                if (unit == null)
+                {
+                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                uninyCode = unit.ExternalId;
+            }
+
+            documentDetailsByRegistrationOut = documentDetailApi.GetDocumentDetailsByRegistration(documentsDetailIn.Registration, uninyCode);
 
             registerEventRepository.SaveRegisterEvent(documentsDetailIn.id, documentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentsDetail", "");
 
@@ -85,7 +99,7 @@ namespace Repository
                                     RG AS rg, 
                                     CURSO AS course, 
                                     SITUACAO AS status
-                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND CPF IS NOT NULL AND ('{1}'='' OR UNIDADE='{1}')";
+                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND ('{1}'='' OR UNIDADE='{1}')";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
 
@@ -133,7 +147,7 @@ namespace Repository
                             {
                                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Update", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
-                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveOut.result.registration, eCMDocumentDetailSaveIn.studentId);                                
+                                var queryUpdate = string.Format(queryStringUpdate, eCMDocumentDetailSaveOut.result.registration, eCMDocumentDetailSaveIn.studentId);
                                 SqlCommand commandUpdate = new SqlCommand(queryUpdate, connectionUpdate);
                                 connectionUpdate.Open();
                                 commandUpdate.ExecuteNonQuery();

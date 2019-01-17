@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Slices")]
     public class SlicesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SliceRepository sliceRepository = new SliceRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SliceRepository sliceRepository = new SliceRepository();
 
         #region .: API :.
 

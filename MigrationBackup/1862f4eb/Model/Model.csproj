@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D00DF5F-2824-42E0-ACC1-20461615E42C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Model</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Hom|AnyCPU'">
+    <OutputPath>bin\Hom\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\Prod\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\In\AccessIn.cs" />
+    <Compile Include="Account\Out\AccessResultOut.cs" />
+    <Compile Include="Account\VM\AccessResultVM.cs" />
+    <Compile Include="AdditionalField\In\AdditionalFieldSaveIn.cs" />
+    <Compile Include="AdditionalField\VM\AdditionalFieldSaveVM.cs" />
+    <Compile Include="AspNetUserClaim\In\AspNetUserClaimIn.cs" />
+    <Compile Include="AspNetUserClaim\Out\AspNetUserClaimOut.cs" />
+    <Compile Include="AspNetUserClaim\VM\AspNetUserClaimVM.cs" />
+    <Compile Include="AspNetRole\In\AspNetRolesIn.cs" />
+    <Compile Include="AspNetRole\Out\AspNetRolesOut.cs" />
+    <Compile Include="AspNetRole\VM\AspNetRolesVM.cs" />
+    <Compile Include="Attribute\In\ECMAttributeIn.cs" />
+    <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
+    <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldCreateIn.cs" />
+    <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldEditIn.cs" />
+    <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldsIn.cs" />
+    <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldsOut.cs" />
+    <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldOut.cs" />
+    <Compile Include="CategoryAdditionalField\VM\CategoryAdditionalFieldsVM.cs" />
+    <Compile Include="CategoryAdditionalField\VM\CategoryAdditionalFieldVM.cs" />
+    <Compile Include="CategoryAdditionalField\VM\CategoryAdditionalFieldEditVM.cs" />
+    <Compile Include="Category\In\Adm\CategoriesIn.cs" />
+    <Compile Include="Category\In\Adm\CategoryCreateIn.cs" />
+    <Compile Include="Category\In\Adm\CategoryEditIn.cs" />
+    <Compile Include="Category\In\Adm\CategoryIn.cs" />
+    <Compile Include="Category\In\Api\ApiECMCategoriesIn.cs" />
+    <Compile Include="Category\In\Api\ApiCategorySearchIn.cs" />
+    <Compile Include="Category\Out\Adm\CategoriesDDLOut.cs" />
+    <Compile Include="Category\Out\Adm\CategoriesOut.cs" />
+    <Compile Include="Category\Out\Adm\CategoryEditOut.cs" />
+    <Compile Include="Category\Out\Adm\CategoryOut.cs" />
+    <Compile Include="Category\Out\Api\ApiECMCategoriesOut.cs" />
+    <Compile Include="Category\Out\Api\ApiCategorySearchOut.cs" />
+    <Compile Include="Category\VM\Adm\CategoriesDDLVM.cs" />
+    <Compile Include="Category\VM\Adm\CategoriesVM.cs" />
+    <Compile Include="Category\VM\Adm\CategoryEditVM.cs" />
+    <Compile Include="Category\VM\Adm\CategoryVM.cs" />
+    <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
+    <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByIdVM.cs" />
+    <Compile Include="JobStatus\In\JobStatusIn.cs" />
+    <Compile Include="JobStatus\Out\JobStatusOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldUpdateIn.cs" />
+    <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldIn.cs" />
+    <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldUpdateOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\VM\JobCategoryAdditionalFieldVM.cs" />
+    <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoriesByJobIdIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryApproveIn.cs" />
+    <Compile Include="Job\In\JobByIdIn.cs" />
+    <Compile Include="Job\In\JobsSentIn.cs" />
+    <Compile Include="Job\In\ECMJobDeletedIn.cs" />
+    <Compile Include="Job\In\ECMJobSaveIn.cs" />
+    <Compile Include="Job\In\JobsFinishedIn.cs" />
+    <Compile Include="Job\In\ECMJobsSendIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryIncludeIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryDeletedIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryDisapproveIn.cs" />
+    <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryApproveOut.cs" />
+    <Compile Include="Job\Out\JobByIdOut.cs" />
+    <Compile Include="Job\Out\JobsSentOut.cs" />
+    <Compile Include="Job\Out\ECMJobDeletedOut.cs" />
+    <Compile Include="Job\Out\ECMJobSaveOut.cs" />
+    <Compile Include="Job\Out\JobsFinishedOut.cs" />
+    <Compile Include="Job\Out\ECMJobsSendOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryIncludeOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryDeletedOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryDisapproveOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryCreateOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoriesByJobIdOut.cs" />
+    <Compile Include="JobCategory\VM\ECMJobCategoryVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoryCreateVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByJobIdVM.cs" />
+    <Compile Include="Job\In\JobCreateIn.cs" />
+    <Compile Include="Job\In\JobDeleteIn.cs" />
+    <Compile Include="Job\In\JobsByUserIn.cs" />
+    <Compile Include="Job\Out\JobDeleteOut.cs" />
+    <Compile Include="Job\Out\JobCreateOut.cs" />
+    <Compile Include="Job\Out\JobsByUserOut.cs" />
+    <Compile Include="Job\VM\JobByIdVM.cs" />
+    <Compile Include="Job\VM\JobsSentVM.cs" />
+    <Compile Include="Job\VM\JobsFinishedVM.cs" />
+    <Compile Include="Job\VM\JobCreateVM.cs" />
+    <Compile Include="Job\VM\JobsByUserVM.cs" />
+    <Compile Include="Scanning\In\ScanningPermissionIn.cs" />
+    <Compile Include="Scanning\In\ScanningIn.cs" />
+    <Compile Include="Scanning\Out\ScanningPermissionOut.cs" />
+    <Compile Include="Scanning\Out\ScanningOut.cs" />
+    <Compile Include="Common\In\PaginateIn.cs" />
+    <Compile Include="Common\VM\IdentityModels.cs" />
+    <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailsIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailsByRegistrationIn.cs" />
+    <Compile Include="DocumentDetail\Out\ECMDocumentDetailSaveOut.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailsOut.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailsByRegistrationOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailsByRegistrationVM.cs" />
+    <Compile Include="DocumentDetail\VM\ECMDocumentDetailSaveVM.cs" />
+    <Compile Include="Document\In\DocumentsSentIn.cs" />
+    <Compile Include="Document\In\DocumentsFinishedIn.cs" />
+    <Compile Include="Document\In\ECMDocumentDeletedIn.cs" />
+    <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
+    <Compile Include="Document\In\ECMDocumentsSendIn.cs" />
+    <Compile Include="Document\In\DocumentUpdateIn.cs" />
+    <Compile Include="Document\In\ECMDocumentsIn.cs" />
+    <Compile Include="Document\Out\DocumentsSentOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentDeletedOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentSaveOut.cs" />
+    <Compile Include="Document\Out\DocumentsFinishedOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentsSendOut.cs" />
+    <Compile Include="Document\Out\DocumentUpdateOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentsOut.cs" />
+    <Compile Include="Document\VM\DocumentsSentVM.cs" />
+    <Compile Include="Document\VM\DocumentsFinishedVM.cs" />
+    <Compile Include="Document\VM\ECMDocumentsVM.cs" />
+    <Compile Include="CategoryAdditionalField\In\CategoryAdditionalFieldIn.cs" />
+    <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
+    <Compile Include="JobCategory\In\JobCategoryIn.cs" />
+    <Compile Include="JobCategoryPage\VM\JobCategoryPagesVM.cs" />
+    <Compile Include="SyncRuntime\In\SyncRuntimeSaveIn.cs" />
+    <Compile Include="SyncRuntime\In\SyncRuntimesIn.cs" />
+    <Compile Include="SyncRuntime\Out\SyncRuntimesOut.cs" />
+    <Compile Include="SyncRuntime\VM\SyncRuntimesVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByRegistrationVM.cs" />
+    <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldDeleteIn.cs" />
+    <Compile Include="SliceCategoryAdditionalField\In\SliceCategoryAdditionalFieldIn.cs" />
+    <Compile Include="AdditionalField\In\AdditionalFieldIn.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailVM.cs" />
+    <Compile Include="DeletedPage\In\DeletedPageIn.cs" />
+    <Compile Include="DeletedPage\Out\DeletedPageOut.cs" />
+    <Compile Include="Category\In\Api\ApiCategoryIn.cs" />
+    <Compile Include="Category\Out\Api\ApiCategoryOut.cs" />
+    <Compile Include="Category\VM\Api\ApiCategoryVM.cs" />
+    <Compile Include="Classification\Out\ClassificationOut.cs" />
+    <Compile Include="Classification\VM\ClassificationVM.cs" />
+    <Compile Include="SliceCategoryAdditionalField\Out\SliceCategoryAdditionalFieldOut.cs" />
+    <Compile Include="SlicePage\In\SlicePageIn.cs" />
+    <Compile Include="SlicePage\In\SlicePageDeleteIn.cs" />
+    <Compile Include="SlicePage\In\SlicePageUpdateIn.cs" />
+    <Compile Include="SlicePage\In\SlicePagesIn.cs" />
+    <Compile Include="SlicePage\Out\SlicePageDeleteOut.cs" />
+    <Compile Include="SlicePage\Out\SlicePageOut.cs" />
+    <Compile Include="SlicePage\Out\SlicePagesOut.cs" />
+    <Compile Include="SlicePage\VM\SlicePagesFinishedVM.cs" />
+    <Compile Include="SlicePage\VM\SlicePagesVM.cs" />
+    <Compile Include="SlicePage\VM\SlicePageVM.cs" />
+    <Compile Include="Slice\In\SlicePendingIn.cs" />
+    <Compile Include="Slice\In\SliceIn.cs" />
+    <Compile Include="Slice\In\SliceUpdateIn.cs" />
+    <Compile Include="Slice\In\SlicesIn.cs" />
+    <Compile Include="Slice\In\SliceSaveIn.cs" />
+    <Compile Include="Slice\Out\SlicesOut.cs" />
+    <Compile Include="Slice\Out\SliceOut.cs" />
+    <Compile Include="Slice\VM\SlicesVM.cs" />
+    <Compile Include="Slice\VM\SliceVM.cs" />
+    <Compile Include="Common\In\BaseIn.cs" />
+    <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Document\In\RemainingDocumenPagestIn.cs" />
+    <Compile Include="Document\In\DocumentsIn.cs" />
+    <Compile Include="Document\In\DocumentIn.cs" />
+    <Compile Include="Document\Out\DocumentsOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentOut.cs" />
+    <Compile Include="Document\VM\DocumentsVM.cs" />
+    <Compile Include="Document\VM\DocumentVM.cs" />
+    <Compile Include="Image\In\ImageIn.cs" />
+    <Compile Include="Image\Out\ImageOut.cs" />
+    <Compile Include="Image\VM\ImageVM.cs" />
+    <Compile Include="AdditionalField\VM\AdditionalFieldVM.cs" />
+    <Compile Include="Page\In\PageDeletedPageIn.cs" />
+    <Compile Include="Page\In\PageRatingIn.cs" />
+    <Compile Include="Page\In\PageClippingIn.cs" />
+    <Compile Include="Page\VM\PageVM.cs" />
+    <Compile Include="PDF\In\PDFIn.cs" />
+    <Compile Include="PDF\Out\PDFOut.cs" />
+    <Compile Include="PDF\Out\PDFsOut.cs" />
+    <Compile Include="PDF\VM\PDFsVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Category\In\Api\ApiCategoriesIn.cs" />
+    <Compile Include="Category\Out\Api\ApiCategoriesOut.cs" />
+    <Compile Include="Category\VM\Api\ApiCategoriesVM.cs" />
+    <Compile Include="Classification\In\ClassificationIn.cs" />
+    <Compile Include="UserUnity\In\UserUnityCreateIn.cs" />
+    <Compile Include="UserUnity\Out\UserUnityOut.cs" />
+    <Compile Include="UserUnity\VM\UserUnityVM.cs" />
+    <Compile Include="Unity\In\UnityCreateIn.cs" />
+    <Compile Include="Unity\In\UnityEditIn.cs" />
+    <Compile Include="Unity\In\UnityIn.cs" />
+    <Compile Include="Unity\In\UnitsIn.cs" />
+    <Compile Include="Unity\Out\UnitsDDLOut.cs" />
+    <Compile Include="Unity\Out\UnityEditOut.cs" />
+    <Compile Include="Unity\Out\UnityOut.cs" />
+    <Compile Include="Unity\Out\UnitsOut.cs" />
+    <Compile Include="Unity\VM\UnitsDDLVM.cs" />
+    <Compile Include="Unity\VM\UnityEditVM.cs" />
+    <Compile Include="Unity\VM\UnitsVM.cs" />
+    <Compile Include="Unity\VM\UnityVM.cs" />
+    <Compile Include="User\In\UserIn.cs" />
+    <Compile Include="User\In\UsersIn.cs" />
+    <Compile Include="User\In\UserEditIn.cs" />
+    <Compile Include="User\In\UserCreateIn.cs" />
+    <Compile Include="User\Out\UserEditOut.cs" />
+    <Compile Include="User\Out\UsersOut.cs" />
+    <Compile Include="User\Out\UserOut.cs" />
+    <Compile Include="User\VM\LoginVM.cs" />
+    <Compile Include="User\VM\UserEditVM.cs" />
+    <Compile Include="User\VM\UserVM.cs" />
+    <Compile Include="User\VM\UsersVM.cs" />
+    <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
+    <Compile Include="JobCategory\In\JobCategoryArchiveIn.cs" />
+    <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
+    <Compile Include="JobCategory\Out\JobCategoryArchiveOut.cs" />
+    <Compile Include="Job\In\JobsByRegistrationIn.cs" />
+    <Compile Include="Job\Out\JobsByRegistrationOut.cs" />
+    <Compile Include="Job\VM\JobsByRegistrationVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AdditionalField\Out\" />
+    <Folder Include="Attribute\VM\" />
+    <Folder Include="Common\Out\" />
+    <Folder Include="DeletedPage\VM\" />
+    <Folder Include="JobCategoryPage\In\" />
+    <Folder Include="JobCategoryPage\Out\" />
+    <Folder Include="JobStatus\VM\" />
+    <Folder Include="Page\Out\" />
+    <Folder Include="Scanning\VM\" />
+    <Folder Include="SliceCategoryAdditionalField\VM\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

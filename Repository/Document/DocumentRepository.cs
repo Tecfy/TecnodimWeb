@@ -1,5 +1,6 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper;
 using Helper.Enum;
 using Model.In;
 using Model.Out;
@@ -14,10 +15,10 @@ namespace Repository
 {
     public partial class DocumentRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        UnityRepository unityRepository = new UnityRepository();
-        AttributeApi attributeApi = new AttributeApi();
-        DocumentApi documentApi = new DocumentApi();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private UnityRepository unityRepository = new UnityRepository();
+        private AttributeApi attributeApi = new AttributeApi();
+        private DocumentApi documentApi = new DocumentApi();
 
         #region .: API :.
 
@@ -139,10 +140,12 @@ namespace Repository
             {
                 try
                 {
-                    DocumentSliceProcess(item);
+                    DocumentSliceProcess(item, ecmDocumentsSendIn.id, ecmDocumentsSendIn.key);
                 }
                 catch (Exception ex)
                 {
+                    registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Erro", "Repository.DocumentRepository.GetECMSendDocuments", ex.Message);
+
                     ecmDocumentsSendOut.messages.Add(ex.Message);
                 }
             }
@@ -355,8 +358,10 @@ namespace Repository
             return pages;
         }
 
-        private void DocumentSliceProcess(DocumentsFinishedVM documentsFinishedVM)
+        private void DocumentSliceProcess(DocumentsFinishedVM documentsFinishedVM, string id, string key)
         {
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.DocumentRepository.DocumentSliceProcess", "");
+
             Slices slice = new Slices();
 
             try
@@ -401,7 +406,7 @@ namespace Repository
                     pages = documentsFinishedVM.pages,
                 };
 
-                string file = Rotate(pdfIn);
+                string file = Rotate(pdfIn, id, key);
 
                 if (string.IsNullOrEmpty(file))
                 {
@@ -469,38 +474,48 @@ namespace Repository
 
                 throw new Exception(ex.Message);
             }
+
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.DocumentRepository.DocumentSliceProcess", "");
         }
 
-        public string Rotate(PDFIn pdfIn)
+        public string Rotate(PDFIn pdfIn, string id, string key)
         {
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.DocumentRepository.DocumentSliceProcess", "");
+
             string archive = string.Empty;
 
-            Doc theDoc = new Doc();
-            theDoc.Read(Convert.FromBase64String(pdfIn.archive));
+            Doc docOld = new Doc();
+            Doc docNew = new Doc();
+            docOld.Read(Convert.FromBase64String(pdfIn.archive));
 
-            int theCount = theDoc.PageCount;
+            int theCount = docOld.PageCount;
             string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
-            theDoc.RemapPages(thePages);
+            docOld.RemapPages(thePages);
 
-            for (int p = 1; p <= theDoc.PageCount; p++)
+            for (int p = 1; p <= docOld.PageCount; p++)
             {
-                theDoc.PageNumber = p;
+                docOld.PageNumber = p;
 
                 if (pdfIn.pages[p - 1].rotate != null && pdfIn.pages[p - 1].rotate > 0)
                     if (pdfIn.pages[p - 1].rotate % 90 == 0)
-                        theDoc.SetInfo(theDoc.Page, "/Rotate", pdfIn.pages[p - 1].rotate.ToString());
-
-
+                        docOld.SetInfo(docOld.Page, "/Rotate", pdfIn.pages[p - 1].rotate.ToString());
             }
 
             if (pdfIn.pb)
             {
-                theDoc.Rendering.ColorSpace = XRendering.ColorSpaceType.Gray;
+                docNew = PB.Converter(docOld);
+
+                archive = System.Convert.ToBase64String(docNew.GetData());
+            }
+            else
+            {
+                archive = System.Convert.ToBase64String(docOld.GetData());
             }
 
-            archive = System.Convert.ToBase64String(theDoc.GetData());
+            docOld.Clear();
+            docNew.Clear();
 
-            theDoc.Clear();
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.DocumentRepository.Rotate", "");
 
             return archive;
         }

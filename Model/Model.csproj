@@ -36,18 +36,6 @@
     <OutputPath>bin\Prod\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -119,16 +107,34 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="JobCategory\VM\JobCategoriesByIdVM.cs" />
+    <Compile Include="JobStatus\In\JobStatusIn.cs" />
+    <Compile Include="JobStatus\Out\JobStatusOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldUpdateIn.cs" />
     <Compile Include="JobCategoryAdditionalField\In\JobCategoryAdditionalFieldIn.cs" />
+    <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldUpdateOut.cs" />
     <Compile Include="JobCategoryAdditionalField\Out\JobCategoryAdditionalFieldOut.cs" />
+    <Compile Include="JobCategoryAdditionalField\VM\JobCategoryAdditionalFieldVM.cs" />
     <Compile Include="JobCategory\In\JobCategoryCreateIn.cs" />
     <Compile Include="JobCategory\In\JobCategoriesByJobIdIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryApproveIn.cs" />
+    <Compile Include="Job\In\JobByIdIn.cs" />
+    <Compile Include="Job\In\JobsSentIn.cs" />
+    <Compile Include="Job\In\ECMJobDeletedIn.cs" />
+    <Compile Include="Job\In\ECMJobSaveIn.cs" />
+    <Compile Include="Job\In\JobsFinishedIn.cs" />
+    <Compile Include="Job\In\ECMJobsSendIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryIncludeIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryDeletedIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryDisapproveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryApproveOut.cs" />
+    <Compile Include="Job\Out\JobByIdOut.cs" />
+    <Compile Include="Job\Out\JobsSentOut.cs" />
+    <Compile Include="Job\Out\ECMJobDeletedOut.cs" />
+    <Compile Include="Job\Out\ECMJobSaveOut.cs" />
+    <Compile Include="Job\Out\JobsFinishedOut.cs" />
+    <Compile Include="Job\Out\ECMJobsSendOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryIncludeOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryDeletedOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryDisapproveOut.cs" />
@@ -143,6 +149,9 @@
     <Compile Include="Job\Out\JobDeleteOut.cs" />
     <Compile Include="Job\Out\JobCreateOut.cs" />
     <Compile Include="Job\Out\JobsByUserOut.cs" />
+    <Compile Include="Job\VM\JobByIdVM.cs" />
+    <Compile Include="Job\VM\JobsSentVM.cs" />
+    <Compile Include="Job\VM\JobsFinishedVM.cs" />
     <Compile Include="Job\VM\JobCreateVM.cs" />
     <Compile Include="Job\VM\JobsByUserVM.cs" />
     <Compile Include="Scanning\In\ScanningPermissionIn.cs" />
@@ -283,15 +292,15 @@
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
-    <Folder Include="JobCategoryAdditionalField\VM\" />
     <Folder Include="JobCategoryPage\In\" />
     <Folder Include="JobCategoryPage\Out\" />
+    <Folder Include="JobStatus\VM\" />
     <Folder Include="Page\Out\" />
     <Folder Include="Scanning\VM\" />
     <Folder Include="SliceCategoryAdditionalField\VM\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\tecnodim_api\i18n\i18n.csproj">
+    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
       <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
       <Name>i18n</Name>
     </ProjectReference>
@@ -302,7 +311,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework">
+      <Version>6.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <Version>2.2.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

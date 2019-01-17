@@ -9,5 +9,10 @@
         public string Name { get; set; }
 
         public string Unity { get; set; }
+
+        public string Course { get; set; }
+
+        public string Status { get; set; }
     }
+
 }

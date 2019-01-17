@@ -11,11 +11,11 @@ namespace Repository
 {
     public partial class ScanningRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        JobRepository jobRepository = new JobRepository();
-        JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
-        CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
-        JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private JobRepository jobRepository = new JobRepository();
+        private JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
+        private CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
+        private JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
 
         #region .: Methods :.
 
@@ -69,6 +69,7 @@ namespace Repository
                 jobStatusId = (int)EJobStatus.New,
                 registration = scanningIn.registration,
                 name = scanningIn.name,
+                course = scanningIn.course,
                 unityId = scanningIn.unityId
             };
 

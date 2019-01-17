@@ -20,6 +20,11 @@ namespace Model.In
         [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
         public int unityId { get; set; }
 
+        [Required]
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+        [Display(Name = "Course", ResourceType = typeof(i18n.Resource))]
+        public string course { get; set; }
+
 
         [Display(Name = "JobCategories", ResourceType = typeof(i18n.Resource))]
         public List<JobCategoryIn> jobCategories { get; set; }

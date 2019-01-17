@@ -12,9 +12,9 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/PDFs")]
     public class PDFsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        PDFRepository pdfRepository = new PDFRepository();
-        DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private PDFRepository pdfRepository = new PDFRepository();
+        private DeletedPageRepository deletedPageRepository = new DeletedPageRepository();
 
         [Authorize(Roles = "Usuário"), HttpGet]
         public PDFsOut GetPDFs(int id)

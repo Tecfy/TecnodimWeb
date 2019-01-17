@@ -36,8 +36,9 @@
     <OutputPath>bin\Prod\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.3.1\lib\net452\RestSharp.dll</HintPath>
+    <Reference Include="ABCpdf, Version=11.2.0.1, Culture=neutral, PublicKeyToken=a7a0b3f5184f2169, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\ABCpdf.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>True</Private>
@@ -45,6 +46,7 @@
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web">
       <Private>True</Private>
     </Reference>
@@ -75,13 +77,16 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Helper\HelperFormatCnpjCpf.cs" />
     <Compile Include="Linq\EnumerableCustom.cs" />
+    <Compile Include="PDF\HelperColorMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestRequestHelper\RestRequestHelper.cs" />
     <Compile Include="Utility\AppSettings.cs" />
     <Compile Include="Utility\Ready.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="RestSharp">
+      <Version>106.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

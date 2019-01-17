@@ -10,8 +10,8 @@ namespace Model.In
         public string Registration { get; set; }
 
         [Required]
-        [StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
-        public string Unity { get; set; }
+        [Range(1, int.MaxValue, ErrorMessageResourceName = "RequiredFieldInt", ErrorMessageResourceType = typeof(i18n.Resource))]
+        public int UnityId { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/SlicePages")]
     public class SlicePagesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        SlicePageRepository slicePageRepository = new SlicePageRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private SlicePageRepository slicePageRepository = new SlicePageRepository();
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public SlicePageDeleteOut Post(SlicePageDeleteIn slicePageDeleteIn)

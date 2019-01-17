@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Helper.Enum;
+using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
 using Repository;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -12,8 +16,9 @@ namespace Site.Api.Controllers
     [RoutePrefix("Api/Jobs")]
     public class JobsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        JobRepository jobRepository = new JobRepository();
+        private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private JobRepository jobRepository = new JobRepository();
+        private JobStatusRepository jobStatusRepository = new JobStatusRepository();
 
         #region .: API :.
 
@@ -42,6 +47,51 @@ namespace Site.Api.Controllers
             return jobsByRegistrationOut;
         }
 
+        [AllowAnonymous, HttpGet]
+        public JobByIdOut GetJobById(int jobId)
+        {
+            JobByIdOut jobByIdOut = new JobByIdOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobByIdIn jobByIdIn = new JobByIdIn() { jobId = jobId, key = Key };
+
+                jobByIdOut = jobRepository.GetJobById(jobByIdIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobById", ex.Message);
+
+                jobByIdOut.successMessage = null;
+                jobByIdOut.messages.Add(ex.Message);
+            }
+
+            return jobByIdOut;
+        }
+
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage GetECMSendJobs()
+        {
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                string Key = Guid.NewGuid().ToString();
+
+                try
+                {
+                    ECMJobsSendIn eCMJobsSendIn = new ECMJobsSendIn() { id = "", key = Key };
+
+                    jobRepository.GetECMSendJobs(eCMJobsSendIn);
+                }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.JobsController.GetECMSendJobs", ex.Message);
+                }
+            });
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         [Authorize(Roles = "Usuário"), HttpGet]
         public JobsByUserOut GetJobsByUser()
         {
@@ -50,7 +100,14 @@ namespace Site.Api.Controllers
 
             try
             {
-                JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key };
+                List<int> jobSatusIds = new List<int>
+                {
+                    (int)EJobStatus.New,
+                    (int)EJobStatus.PartiallyDigitalized,
+                    (int)EJobStatus.Digitalized
+                };
+
+                JobsByUserIn jobsByUserIn = new JobsByUserIn { id = User.Identity.GetUserId(), key = Key, jobStatusIds = jobSatusIds };
 
                 jobsByUserOut = jobRepository.GetJobsByUser(jobsByUserIn);
             }
@@ -64,13 +121,13 @@ namespace Site.Api.Controllers
 
             return jobsByUserOut;
         }
-       
+
         #endregion
 
         #region .: Post :.
 
-        [Authorize(Roles = "Usuário"), HttpPost, Route("")]
-        public JobDeleteOut Post(JobDeleteIn jobDeleteIn)
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public JobDeleteOut SetJobDelete(JobDeleteIn jobDeleteIn)
         {
             JobDeleteOut jobDeleteOut = new JobDeleteOut();
             string Key = Guid.NewGuid().ToString();
@@ -101,13 +158,54 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.SetJobDelete", ex.Message);
 
                 jobDeleteOut.successMessage = null;
                 jobDeleteOut.messages.Add(ex.Message);
             }
 
             return jobDeleteOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public JobStatusOut SetJobStatus(JobStatusIn jobStatusIn)
+        {
+            JobStatusOut jobStatusOut = new JobStatusOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    jobStatusIn.id = User.Identity.GetUserId();
+                    jobStatusIn.key = Key;
+
+                    jobStatusOut = jobStatusRepository.StatusJob(jobStatusIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.SetJobStatus", ex.Message);
+
+                jobStatusOut.successMessage = null;
+                jobStatusOut.messages.Add(ex.Message);
+            }
+
+            return jobStatusOut;
         }
 
         #endregion

@@ -11,9 +11,16 @@ public static class HelperFormatCnpjCpf
 
     public static string FormatCPF(string CPF)
     {
-        CPF = DeleteFormat(CPF);
+        if (!string.IsNullOrEmpty(CPF))
+        {
+            CPF = DeleteFormat(CPF);
 
-        return Convert.ToUInt64(CPF).ToString(@"000\.000\.000\-00");
+            return Convert.ToUInt64(CPF).ToString(@"000\.000\.000\-00");
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public static string DeleteFormat(string Codigo)
