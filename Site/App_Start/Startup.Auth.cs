@@ -3,25 +3,30 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Microsoft.Owin.Security.WsFederation;
 using Model;
 using Owin;
 using Repository;
 using Site.Providers;
+using Sustainsys.Saml2;
+using Sustainsys.Saml2.Configuration;
+using Sustainsys.Saml2.Metadata;
+using Sustainsys.Saml2.Owin;
+using Sustainsys.Saml2.WebSso;
 using System;
-using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
+using System.Web.Hosting;
 
 namespace Site
 {
     public partial class Startup
     {
         #region Public /Protected Properties.
-       
+
         /// <summary>
         /// OAUTH options property.
         /// </summary>
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
-       
+
         /// <summary>
         /// Public client ID property.
         /// </summary>
@@ -29,9 +34,6 @@ namespace Site
 
         #endregion
 
-        // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
-        private static string realm = ConfigurationManager.AppSettings["ida:Wtrealm"];
-        private static string adfsMetadata = ConfigurationManager.AppSettings["ida:ADFSMetadata"];
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context and user manager to use a single instance per request
@@ -50,20 +52,6 @@ namespace Site
                 LogoutPath = new PathString("/Account/LogOff"),
                 ExpireTimeSpan = TimeSpan.FromHours(12),
             });
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    //LoginPath = new PathString("/Api/Auth/sso"),
-            //    //LogoutPath = new PathString("/Api/Auth/slo"),
-            //    ExpireTimeSpan = TimeSpan.FromHours(12),
-            //});
-
-            //app.UseWsFederationAuthentication(
-            //    new WsFederationAuthenticationOptions
-            //    {
-            //        Wtrealm = realm,
-            //        MetadataAddress = adfsMetadata
-            //    });
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
@@ -85,25 +73,104 @@ namespace Site
             // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseSaml2Authentication(CreateSaml2Options());
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
         }
-    }    
+
+        private static Saml2AuthenticationOptions CreateSaml2Options()
+        {
+            var spOptions = CreateSPOptions();
+            var Saml2Options = new Saml2AuthenticationOptions(false)
+            {
+                SPOptions = spOptions
+            };
+
+            //Alterei Com Informações do ADFS
+            var idp = new IdentityProvider(new EntityId("http://sts.sempreser.com.br/adfs/services/trust"), spOptions)
+            {
+                AllowUnsolicitedAuthnResponse = true,
+                Binding = Saml2BindingType.HttpRedirect,
+                SingleSignOnServiceUrl = new Uri("https://sts.sempreser.com.br/adfs/ls"),
+                MetadataLocation = "https://sts.sempreser.com.br/FederationMetadata/2007-06/FederationMetadata.xml",
+                LoadMetadata = true
+            };
+
+            //Alterei Com Informações do ADFS
+            idp.SigningKeys.AddConfiguredKey(
+                new X509Certificate2(
+                    HostingEnvironment.MapPath(
+                        "~/App_Data/stubidp.sustainsys.com.cer")));
+
+            Saml2Options.IdentityProviders.Add(idp);
+
+            // It's enough to just create the federation and associate it
+            // with the options. The federation will load the metadata and
+            // update the options with any identity providers found.
+            new Federation("https://sts.sempreser.com.br/FederationMetadata/2007-06/FederationMetadata.xml", true, Saml2Options);
+
+            return Saml2Options;
+        }
+
+        private static SPOptions CreateSPOptions()
+        {
+            var portuguese = "pt-br";
+
+            var organization = new Organization();
+            organization.Names.Add(new LocalizedName("Tecnodim", portuguese));
+            organization.DisplayNames.Add(new LocalizedName("Tecnodim", portuguese));
+            organization.Urls.Add(new LocalizedUri(new Uri("http://www.Tecnodim.com.br"), portuguese));
+
+            //Alterei Com Informações do Projeto
+            var spOptions = new SPOptions
+            {
+                EntityId = new EntityId("https://technodimweb-dev.tecfy.com.br/IdSrv3/Saml2"),
+                ReturnUrl = new Uri("https://technodimweb-dev.tecfy.com.br/"),
+                //DiscoveryServiceUrl = new Uri("http://localhost:52071/DiscoveryService"),
+                ModulePath = "/IdSrv3/Saml2",
+                Organization = organization
+            };
+
+            var techContact = new ContactPerson
+            {
+                Type = ContactType.Technical
+            };
+            techContact.EmailAddresses.Add("Saml2@example.com");
+            spOptions.Contacts.Add(techContact);
+
+            var supportContact = new ContactPerson
+            {
+                Type = ContactType.Support
+            };
+            supportContact.EmailAddresses.Add("support@example.com");
+            spOptions.Contacts.Add(supportContact);
+
+            var attributeConsumingService = new AttributeConsumingService
+            {
+                IsDefault = true,
+                ServiceNames = { new LocalizedName("Saml2", "en") }
+            };
+
+            attributeConsumingService.RequestedAttributes.Add(
+                new RequestedAttribute("urn:someName")
+                {
+                    FriendlyName = "Some Name",
+                    IsRequired = true,
+                    NameFormat = RequestedAttribute.AttributeNameFormatUri
+                });
+
+            attributeConsumingService.RequestedAttributes.Add(
+                new RequestedAttribute("Minimal"));
+
+            spOptions.AttributeConsumingServices.Add(attributeConsumingService);
+
+            //Alterei Com Informações do Projeto
+            spOptions.ServiceCertificates.Add(new X509Certificate2(
+                AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "/App_Data/Sustainsys.Saml2.Tests.pfx"));
+
+            return spOptions;
+        }
+
+    }
 }
