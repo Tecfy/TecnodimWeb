@@ -76,7 +76,7 @@ namespace Site
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            //app.UseSaml2Authentication(CreateSaml2Options());
+            app.UseSaml2Authentication(CreateSaml2Options());
         }
 
         private static Saml2AuthenticationOptions CreateSaml2Options()
