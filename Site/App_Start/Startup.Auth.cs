@@ -93,12 +93,13 @@ namespace Site
                 AllowUnsolicitedAuthnResponse = true,
                 Binding = Saml2BindingType.HttpRedirect,
                 SingleSignOnServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.LS"]),
+                SingleLogoutServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.Logout"]),
                 MetadataLocation = WebConfigurationManager.AppSettings["ADFS.FederationMetadata"],
                 LoadMetadata = true
             };
 
             //Alterei Com Informações do ADFS
-            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(HostingEnvironment.MapPath(WebConfigurationManager.AppSettings["ADFS.Path.SigningKey"])));
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(HostingEnvironment.MapPath(WebConfigurationManager.AppSettings["ADFS.Path.SigningKey"]), "", X509KeyStorageFlags.MachineKeySet));
 
             Saml2Options.IdentityProviders.Add(idp);
 
@@ -161,8 +162,8 @@ namespace Site
 
             spOptions.AttributeConsumingServices.Add(attributeConsumingService);
 
-            //Alterei Com Informações do Projeto
-            spOptions.ServiceCertificates.Add(new X509Certificate2(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + WebConfigurationManager.AppSettings["ADFS.Path.ServiceCertificate"]));
+            //Alterei Com Informações do Projeto            
+            spOptions.ServiceCertificates.Add(new X509Certificate2(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + WebConfigurationManager.AppSettings["ADFS.Path.ServiceCertificate"], "", X509KeyStorageFlags.MachineKeySet));
 
             return spOptions;
         }

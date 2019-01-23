@@ -101,6 +101,23 @@ namespace Repository
             return userOut;
         }
 
+        public UserByTokenOut GetByToken(UserByTokenIn userByTokenIn)
+        {
+            UserByTokenOut userByTokenOut = new UserByTokenOut();
+
+            using (var db = new DBContext())
+            {
+                userByTokenOut.result = db.Users
+                                        .Where(x => x.Active == true && x.DeletedDate == null && x.Token == userByTokenIn.Token)
+                                        .Select(x => new UserByTokenVM()
+                                        {
+                                            Registration = x.Registration,
+                                        }).FirstOrDefault();
+            }
+
+            return userByTokenOut;
+        }
+
         public UserEditOut GetEditById(UserIn userIn)
         {
             UserEditOut userOut = new UserEditOut();
@@ -158,6 +175,39 @@ namespace Repository
             return userOut;
         }
 
+        public UserOut Insert(UserCreateExternalIn userCreateExternalIn)
+        {
+            UserOut userOut = new UserOut();
+
+            using (var db = new DBContext())
+            {
+                Users user = new Users
+                {
+                    AspNetUserId = userCreateExternalIn.AspNetUserId,
+                    FirstName = userCreateExternalIn.FirstName,
+                    LastName = userCreateExternalIn.LastName,
+                    Registration = userCreateExternalIn.Registration,
+                    Token = userCreateExternalIn.Token,
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                userOut.result = db.Users
+                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UserId == user.UserId)
+                                   .Select(x => new UserVM()
+                                   {
+                                       UserId = x.UserId,
+                                       Role = x.AspNetUsers.AspNetUserRoles.FirstOrDefault().AspNetRoles.Name,
+                                       Name = x.FirstName + " " + x.LastName,
+                                       Email = x.AspNetUsers.Email,
+                                       Registration = x.Registration,
+                                   }).FirstOrDefault();
+            }
+
+            return userOut;
+        }
+
         public UserOut Update(UserEditIn userEditVM)
         {
             UserOut userOut = new UserOut();
@@ -187,6 +237,22 @@ namespace Repository
             }
 
             return userOut;
+        }
+
+        public void Update(string userId, string token)
+        {
+            UserOut userOut = new UserOut();
+
+            using (var db = new DBContext())
+            {
+                Users user = db.Users.Where(x => x.AspNetUserId == userId).FirstOrDefault();
+
+                user.EditedDate = DateTime.Now;
+                user.Token = token;
+
+                db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
         }
     }
 }

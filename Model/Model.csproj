@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\In\AccessExternalIn.cs" />
     <Compile Include="Account\In\AccessIn.cs" />
     <Compile Include="Account\Out\AccessResultOut.cs" />
     <Compile Include="Account\VM\AccessResultVM.cs" />
@@ -271,15 +272,19 @@
     <Compile Include="Unity\VM\UnityEditVM.cs" />
     <Compile Include="Unity\VM\UnitsVM.cs" />
     <Compile Include="Unity\VM\UnityVM.cs" />
+    <Compile Include="User\In\UserCreateExternalIn.cs" />
+    <Compile Include="User\In\UserByTokenIn.cs" />
     <Compile Include="User\In\UserIn.cs" />
     <Compile Include="User\In\UsersIn.cs" />
     <Compile Include="User\In\UserEditIn.cs" />
     <Compile Include="User\In\UserCreateIn.cs" />
     <Compile Include="User\Out\UserEditOut.cs" />
+    <Compile Include="User\Out\UserByTokenOut.cs" />
     <Compile Include="User\Out\UsersOut.cs" />
     <Compile Include="User\Out\UserOut.cs" />
     <Compile Include="User\VM\LoginVM.cs" />
     <Compile Include="User\VM\UserEditVM.cs" />
+    <Compile Include="User\VM\UserByTokenVM.cs" />
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
     <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
