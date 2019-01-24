@@ -310,7 +310,8 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="App_Data\stubidp.sustainsys.com.cer" />
-    <Content Include="App_Data\Sustainsys.Saml2.Tests.pfx" />
+    <Content Include="App_Data\Sustainsys.Saml2.Tecnodim.pfx" />
+    <Content Include="App_Data\Tecnodim.pfx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />

@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace Site.Adm.Controllers
 {
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public class AccountController : Controller
     {
         private readonly UserRepository userRepository = new UserRepository();
@@ -200,12 +200,18 @@ namespace Site.Adm.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult LogOff(string returnUrl)
+        {
+            AuthenticationManager.SignOut();
+            return Redirect(returnUrl);
         }
 
         protected override void Dispose(bool disposing)
