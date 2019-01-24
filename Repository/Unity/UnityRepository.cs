@@ -33,7 +33,7 @@ namespace Repository
                 unitsOut.totalCount = db.Units.Count(x => x.Active == true && x.DeletedDate == null);
 
                 unitsOut.result = db.Units
-                                   .Where(x => x.Active == true 
+                                   .Where(x => x.Active == true
                                             && x.DeletedDate == null
                                             &&
                                             (
@@ -145,6 +145,11 @@ namespace Repository
                 unityId = db.Units
                             .Where(x => x.Active == true && x.DeletedDate == null && x.ExternalId == code)
                             .Select(x => x.UnityId).FirstOrDefault();
+
+                if (unityId <= 0 || unityId == null)
+                {
+                    unityId = Insert(new UnityCreateIn { ExternalId = code, Name = code }).result.UnityId;
+                }
             }
 
             return unityId;

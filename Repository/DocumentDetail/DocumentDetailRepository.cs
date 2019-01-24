@@ -45,10 +45,47 @@ namespace Repository
             return documentDetailsByRegistrationOut;
         }
 
-        public DocumentDetailOut GetDocumentDetail(DocumentDetailIn documentDetailIn)
+        public DocumentDetailJobIdOut GetDocumentDetailByJobId(DocumentDetailByJobIdIn documentDetailIn)
         {
-            DocumentDetailOut documentDetailOut = new DocumentDetailOut();
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            DocumentDetailJobIdOut documentDetailOut = new DocumentDetailJobIdOut();
+
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetailByJobId", "");
+
+            string registration = string.Empty;
+            string uninyCode = string.Empty;
+
+            using (var db = new DBContext())
+            {
+                Jobs jobs = db.Jobs.Where(x => x.JobId == documentDetailIn.jobId).FirstOrDefault();
+
+                if (jobs == null)
+                {
+                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                registration = jobs.Registration;
+
+                Units unit = db.Units.Where(x => x.UnityId == jobs.UnityId).FirstOrDefault();
+
+                if (unit == null)
+                {
+                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                uninyCode = unit.ExternalId;
+            }
+
+            documentDetailOut = documentDetailApi.GetECMDocumentDetailByRegistration(registration, uninyCode);
+
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetailByJobId", "");
+
+            return documentDetailOut;
+        }
+
+        public DocumentDetailDocumentIdOut GetDocumentDetailByDocumentId(DocumentDetailByDocumentIdIn documentDetailIn)
+        {
+            DocumentDetailDocumentIdOut documentDetailOut = new DocumentDetailDocumentIdOut();
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetailByDocumentId", "");
 
             string registration = string.Empty;
 
@@ -64,7 +101,7 @@ namespace Repository
                 registration = document.Registration;
             }
 
-            documentDetailOut = documentDetailApi.GetDocumentDetail(registration);
+            documentDetailOut = documentDetailApi.GetDocumentDetailDocumentId(registration);
 
             SlicesOut slicesOut = new SlicesOut();
 
@@ -76,7 +113,7 @@ namespace Repository
 
             documentDetailOut.result.NotClassificated = slicesOut.result.Count;
 
-            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(documentDetailIn.id, documentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetDocumentDetailByDocumentId", "");
             return documentDetailOut;
         }
 

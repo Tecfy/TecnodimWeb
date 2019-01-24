@@ -14,6 +14,7 @@ using Sustainsys.Saml2.Owin;
 using Sustainsys.Saml2.WebSso;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Web.Configuration;
 using System.Web.Hosting;
 
 namespace Site
@@ -76,7 +77,6 @@ namespace Site
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             app.UseSaml2Authentication(CreateSaml2Options());
-
         }
 
         private static Saml2AuthenticationOptions CreateSaml2Options()
@@ -88,27 +88,24 @@ namespace Site
             };
 
             //Alterei Com Informações do ADFS
-            var idp = new IdentityProvider(new EntityId("http://sts.sempreser.com.br/adfs/services/trust"), spOptions)
+            var idp = new IdentityProvider(new EntityId(WebConfigurationManager.AppSettings["ADFS.Trust"]), spOptions)
             {
                 AllowUnsolicitedAuthnResponse = true,
                 Binding = Saml2BindingType.HttpRedirect,
-                SingleSignOnServiceUrl = new Uri("https://sts.sempreser.com.br/adfs/ls"),
-                MetadataLocation = "https://sts.sempreser.com.br/FederationMetadata/2007-06/FederationMetadata.xml",
+                SingleSignOnServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.LS"]),
+                MetadataLocation = WebConfigurationManager.AppSettings["ADFS.FederationMetadata"],
                 LoadMetadata = true
             };
 
             //Alterei Com Informações do ADFS
-            idp.SigningKeys.AddConfiguredKey(
-                new X509Certificate2(
-                    HostingEnvironment.MapPath(
-                        "~/App_Data/stubidp.sustainsys.com.cer")));
+            idp.SigningKeys.AddConfiguredKey(new X509Certificate2(HostingEnvironment.MapPath(WebConfigurationManager.AppSettings["ADFS.Path.SigningKey"]), "", X509KeyStorageFlags.MachineKeySet));
 
             Saml2Options.IdentityProviders.Add(idp);
 
             // It's enough to just create the federation and associate it
             // with the options. The federation will load the metadata and
             // update the options with any identity providers found.
-            new Federation("https://sts.sempreser.com.br/FederationMetadata/2007-06/FederationMetadata.xml", true, Saml2Options);
+            new Federation(WebConfigurationManager.AppSettings["ADFS.FederationMetadata"], true, Saml2Options);
 
             return Saml2Options;
         }
@@ -118,17 +115,17 @@ namespace Site
             var portuguese = "pt-br";
 
             var organization = new Organization();
-            organization.Names.Add(new LocalizedName("Tecnodim", portuguese));
-            organization.DisplayNames.Add(new LocalizedName("Tecnodim", portuguese));
-            organization.Urls.Add(new LocalizedUri(new Uri("http://www.Tecnodim.com.br"), portuguese));
+            organization.Names.Add(new LocalizedName(WebConfigurationManager.AppSettings["ADFS.Organization.Name"], portuguese));
+            organization.DisplayNames.Add(new LocalizedName(WebConfigurationManager.AppSettings["ADFS.Organization.Name"], portuguese));
+            organization.Urls.Add(new LocalizedUri(new Uri(WebConfigurationManager.AppSettings["ADFS.Organization.Url"]), portuguese));
 
             //Alterei Com Informações do Projeto
             var spOptions = new SPOptions
             {
-                EntityId = new EntityId("https://technodimweb-dev.tecfy.com.br/IdSrv3/Saml2"),
-                ReturnUrl = new Uri("https://technodimweb-dev.tecfy.com.br/"),
+                EntityId = new EntityId(WebConfigurationManager.AppSettings["ADFS.EntityId"]),
+                ReturnUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.ReturnUrl"]),
                 //DiscoveryServiceUrl = new Uri("http://localhost:52071/DiscoveryService"),
-                ModulePath = "/IdSrv3/Saml2",
+                ModulePath = WebConfigurationManager.AppSettings["ADFS.Path.Module"],
                 Organization = organization
             };
 
@@ -136,14 +133,14 @@ namespace Site
             {
                 Type = ContactType.Technical
             };
-            techContact.EmailAddresses.Add("Saml2@example.com");
+            techContact.EmailAddresses.Add(WebConfigurationManager.AppSettings["ADFS.Organization.Email.Technical"]);
             spOptions.Contacts.Add(techContact);
 
             var supportContact = new ContactPerson
             {
                 Type = ContactType.Support
             };
-            supportContact.EmailAddresses.Add("support@example.com");
+            supportContact.EmailAddresses.Add(WebConfigurationManager.AppSettings["ADFS.Organization.Email.Support"]);
             spOptions.Contacts.Add(supportContact);
 
             var attributeConsumingService = new AttributeConsumingService
@@ -160,14 +157,12 @@ namespace Site
                     NameFormat = RequestedAttribute.AttributeNameFormatUri
                 });
 
-            attributeConsumingService.RequestedAttributes.Add(
-                new RequestedAttribute("Minimal"));
+            attributeConsumingService.RequestedAttributes.Add(new RequestedAttribute("Minimal"));
 
             spOptions.AttributeConsumingServices.Add(attributeConsumingService);
 
-            //Alterei Com Informações do Projeto
-            spOptions.ServiceCertificates.Add(new X509Certificate2(
-                AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "/App_Data/Sustainsys.Saml2.Tests.pfx"));
+            //Alterei Com Informações do Projeto            
+            spOptions.ServiceCertificates.Add(new X509Certificate2(AppDomain.CurrentDomain.SetupInformation.ApplicationBase + WebConfigurationManager.AppSettings["ADFS.Path.ServiceCertificate"], "", X509KeyStorageFlags.MachineKeySet));
 
             return spOptions;
         }

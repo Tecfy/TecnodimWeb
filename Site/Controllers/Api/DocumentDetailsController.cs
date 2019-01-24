@@ -42,16 +42,40 @@ namespace Site.Api.Controllers
         }
 
         [Authorize(Roles = "Usuário"), HttpGet]
-        public DocumentDetailOut GetDocumentDetailByDocumentId(int id)
+        public DocumentDetailJobIdOut GetDocumentDetailByJobId(int id)
         {
-            DocumentDetailOut documentDetailOut = new DocumentDetailOut();
+            DocumentDetailJobIdOut documentDetailOut = new DocumentDetailJobIdOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
-                DocumentDetailIn documentDetailIn = new DocumentDetailIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+                DocumentDetailByJobIdIn documentDetailIn = new DocumentDetailByJobIdIn() { jobId = id, id = User.Identity.GetUserId(), key = Key };
 
-                documentDetailOut = documentDetailRepository.GetDocumentDetail(documentDetailIn);
+                documentDetailOut = documentDetailRepository.GetDocumentDetailByJobId(documentDetailIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
+
+                documentDetailOut.result = null;
+                documentDetailOut.successMessage = null;
+                documentDetailOut.messages.Add(ex.Message);
+            }
+
+            return documentDetailOut;
+        }
+
+        [Authorize(Roles = "Usuário"), HttpGet]
+        public DocumentDetailDocumentIdOut GetDocumentDetailByDocumentId(int id)
+        {
+            DocumentDetailDocumentIdOut documentDetailOut = new DocumentDetailDocumentIdOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                DocumentDetailByDocumentIdIn documentDetailIn = new DocumentDetailByDocumentIdIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+
+                documentDetailOut = documentDetailRepository.GetDocumentDetailByDocumentId(documentDetailIn);
             }
             catch (Exception ex)
             {

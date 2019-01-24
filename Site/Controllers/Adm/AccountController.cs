@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Model;
+using Model.In;
+using Model.Out;
 using Model.VM;
 using Repository;
 using Site.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace Site.Adm.Controllers
@@ -13,6 +20,9 @@ namespace Site.Adm.Controllers
     [Authorize(Roles = "Administrador")]
     public class AccountController : Controller
     {
+        private readonly UserRepository userRepository = new UserRepository();
+        private readonly UserUnityRepository userUnityRepository = new UserUnityRepository();
+        private readonly UnityRepository unityRepository = new UnityRepository();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -85,22 +95,53 @@ namespace Site.Adm.Controllers
             }
         }
 
-        [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        public ActionResult ExternalLogin(string provider, string token, string returnUrl)
         {
             //// Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl, Token = token }));
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl, string token)
         {
+            UserCreateExternalIn userCreateExternalIn = new UserCreateExternalIn { Token = token };
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+
             if (loginInfo == null)
             {
-                return RedirectToAction("Login");
+                return Redirect(returnUrl + "?message=error&token=" + token);
+            }
+            else
+            {
+                var identity = (ClaimsIdentity)loginInfo.ExternalIdentity;
+
+                if (identity.IsAuthenticated)
+                {
+                    foreach (System.Security.Claims.Claim claim in identity.Claims)
+                    {
+                        if (claim.Type == WebConfigurationManager.AppSettings["ADFS.FirstName"])
+                        {
+                            userCreateExternalIn.FirstName = claim.Value;
+                        }
+                        else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.LastName"])
+                        {
+                            userCreateExternalIn.LastName = claim.Value;
+                        }
+                        else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.Registration"])
+                        {
+                            userCreateExternalIn.Registration = claim.Value;
+                        }
+                        else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.Email"])
+                        {
+                            userCreateExternalIn.Email = claim.Value;
+                        }
+                        else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.Unit"])
+                        {
+                            userCreateExternalIn.Unit = claim.Value;
+                        }
+                    }
+                }
             }
 
             // Sign in the user with this external login provider if the user already has a login
@@ -108,17 +149,53 @@ namespace Site.Adm.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
+                    var applicationUser = await UserManager.FindByNameAsync(userCreateExternalIn.Registration);
+
+                    userRepository.Update(applicationUser.Id, token);
+
+                    return Redirect(returnUrl + "?message=success&token=" + token);
+
                 case SignInStatus.Failure:
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+
+                    var user = new ApplicationUser { UserName = userCreateExternalIn.Registration, Email = userCreateExternalIn.Email };
+                    var resultUser = await UserManager.CreateAsync(user);
+                    if (resultUser.Succeeded)
+                    {
+                        resultUser = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                        if (resultUser.Succeeded)
+                        {
+                            user.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole()
+                            {
+                                RoleId = WebConfigurationManager.AppSettings["Site.Areas.Adm.Controllers.Role.Usuario"],
+                                UserId = user.Id
+                            });
+
+                            await UserManager.UpdateAsync(user);
+
+                            userCreateExternalIn.AspNetUserId = user.Id;
+
+                            UserOut userOut = new UserOut();
+                            userOut = userRepository.Insert(userCreateExternalIn);
+
+                            int? unityId = unityRepository.GetByCode(userCreateExternalIn.Unit);
+
+                            userUnityRepository.Insert(new UserUnityCreateIn { UnityId = unityId.Value, UserId = userOut.result.UserId });
+
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                            return Redirect(returnUrl + "?message=success&token=" + token);
+                        }
+                        else
+                        {
+                            return Redirect(returnUrl + "?message=error&token=" + token);
+                        }
+                    }
+                    else
+                    {
+                        return Redirect(returnUrl + "?message=error&token=" + token);
+                    }
             }
         }
 
@@ -128,6 +205,13 @@ namespace Site.Adm.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult LogOff(string returnUrl)
+        {
+            AuthenticationManager.SignOut();
+            return Redirect(returnUrl);
         }
 
         protected override void Dispose(bool disposing)

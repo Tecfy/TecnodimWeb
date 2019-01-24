@@ -19,10 +19,12 @@
             if (role == roleUser) {
                 $('#divClaims').show();
                 $('#divUnits').show();
+                $('#divRegistration').show();
             }
             else {
                 $('#divClaims').hide();
                 $('#divUnits').hide();
+                $('#divRegistration').hide();
             }
         }
 
@@ -91,6 +93,12 @@
         @Html.LabelFor(model => model.Email, new { @for = "Email" })
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = i18n.Resource.Email })
         @Html.ValidationMessageFor(model => model.Email)
+    </div>
+
+    <div class="form-group" id="divRegistration">
+        @Html.LabelFor(model => model.Registration, new { @for = "Registration" })
+        @Html.TextBoxFor(m => m.Registration, new { @class = "form-control", @placeholder = i18n.Resource.ExternalUser })
+        @Html.ValidationMessageFor(model => model.Registration)
     </div>
 
     <div class="form-group">

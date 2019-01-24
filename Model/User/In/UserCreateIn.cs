@@ -27,6 +27,11 @@ namespace Model.In
         public string LastName { get; set; }
 
         [Required]
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+        [Display(Name = "ExternalUser", ResourceType = typeof(i18n.Resource))]
+        public string Registration { get; set; }
+
+        [Required]
         [Display(Name = "Email", ResourceType = typeof(i18n.Resource))]
         [EmailAddress]
         public string Email { get; set; }

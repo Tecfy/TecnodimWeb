@@ -50,7 +50,22 @@ namespace Site.Providers
             // Initialization.
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            var form = await context.Request.ReadFormAsync();
+
+            ApplicationUser user = new ApplicationUser();
+
+            if (string.Equals(form["client_id"], "0", StringComparison.OrdinalIgnoreCase))
+            {
+                user = await userManager.FindAsync(context.UserName, context.Password);
+            }
+            else if (string.Equals(form["client_id"], "1", StringComparison.OrdinalIgnoreCase))
+            {
+                user = await userManager.FindByNameAsync(context.UserName);
+            }
+            else
+            {
+                throw new Exception(i18n.Resource.RegisterNotFound);
+            }
 
             // Verification.
             if (user == null && user.LockoutEnabled == false)
