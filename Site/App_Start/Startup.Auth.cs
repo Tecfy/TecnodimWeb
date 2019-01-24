@@ -93,7 +93,7 @@ namespace Site
                 AllowUnsolicitedAuthnResponse = true,
                 Binding = Saml2BindingType.HttpRedirect,
                 SingleSignOnServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.LS"]),
-                SingleLogoutServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.Logout"]),
+                //SingleLogoutServiceUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.Logout"]),
                 MetadataLocation = WebConfigurationManager.AppSettings["ADFS.FederationMetadata"],
                 LoadMetadata = true
             };
