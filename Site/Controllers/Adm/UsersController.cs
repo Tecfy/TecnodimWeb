@@ -242,6 +242,7 @@ namespace Site.Adm.Controllers
                 Email = userEditOut.result.Email,
                 Claims = userEditOut.result.Claims,
                 Units = userEditOut.result.Units,
+                Registration = userEditOut.result.Registration,
             };
 
             #region Roles

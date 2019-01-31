@@ -449,7 +449,7 @@ namespace Repository
 
             if (pdfIn.pb)
             {
-                docNew = PB.Converter(docOld);
+                //docNew = PB.Converter(docOld);
 
                 archive = System.Convert.ToBase64String(docNew.GetData());
             }
