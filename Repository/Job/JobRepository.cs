@@ -216,7 +216,7 @@ namespace Repository
                 {
                     Jobs job = db.Jobs.Find(item.jobId);
 
-                    job.JobStatusId = (int)EDocumentStatus.Sent;
+                    job.JobStatusId = (int)EJobStatus.Sent;
                     job.EditedDate = DateTime.Now;
 
                     db.Entry(job).State = System.Data.Entity.EntityState.Modified;
@@ -447,16 +447,16 @@ namespace Repository
             Doc docNew = new Doc();
             docOld.Read(Convert.FromBase64String(pdfIn.archive));
 
-            if (pdfIn.pb)
-            {
-                //docNew = PB.Converter(docOld);
+            //if (pdfIn.pb)
+            //{
+            //    docNew = PB.Converter(docOld);
 
-                archive = System.Convert.ToBase64String(docNew.GetData());
-            }
-            else
-            {
-                archive = System.Convert.ToBase64String(docOld.GetData());
-            }
+            //    archive = System.Convert.ToBase64String(docNew.GetData());
+            //}
+            //else
+            //{
+            archive = System.Convert.ToBase64String(docOld.GetData());
+            //}
 
             docOld.Clear();
             docNew.Clear();

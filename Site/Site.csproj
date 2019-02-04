@@ -472,7 +472,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50478</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://adm.tecnodimweb.tecfy.com.br/</IISUrl>
+          <IISUrl>http://localhost:9098/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

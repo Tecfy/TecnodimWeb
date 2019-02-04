@@ -268,12 +268,9 @@ namespace Repository
 
                 Jobs job = db.Jobs.Where(x => x.JobId == jobCategory.JobId).FirstOrDefault();
 
-                bool received = db.Jobs.Any(x => x.JobId == job.JobId
-                                             && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
-
-                if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
+                if (job.JobStatusId == (int)EJobStatus.Digitalized)
                 {
-                    jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
+                    jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryDisapproveIn.id, key = jobCategoryDisapproveIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.PartiallyDigitalized });
                 }
 
                 #endregion
@@ -368,7 +365,7 @@ namespace Repository
                 bool received = db.Jobs.Any(x => x.JobId == job.JobId
                                              && (x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null) == x.JobCategories.Count(y => y.Active == true && y.DeletedDate == null && y.Received == true)));
 
-                if (job.JobStatusId == (int)EJobStatus.PartiallyDigitalized && received)
+                if ((job.JobStatusId == (int)EJobStatus.PartiallyDigitalized || job.JobStatusId == (int)EJobStatus.New) && received)
                 {
                     jobStatusRepository.StatusJob(new JobStatusIn { id = jobCategoryDeletedIn.id, key = jobCategoryDeletedIn.key, jobId = job.JobId, jobStatusId = (int)EJobStatus.Digitalized });
                 }
