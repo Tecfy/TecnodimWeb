@@ -80,6 +80,7 @@
     <Compile Include="Enum\EDocumentStatus.cs" />
     <Compile Include="Enum\EJobStatus.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Helper\HelperEncrypt.cs" />
     <Compile Include="Helper\HelperFormatCnpjCpf.cs" />
     <Compile Include="Linq\EnumerableCustom.cs" />
     <Compile Include="PDF\HelperColorMatrix.cs" />

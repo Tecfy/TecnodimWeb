@@ -110,7 +110,7 @@ namespace Site.Adm.Controllers
 
             if (loginInfo == null)
             {
-                return Redirect(returnUrl + "?message=error&token=" + token);
+                return Redirect(returnUrl + "?type=error&message=Usuário não encontrado!");
             }
             else
             {
@@ -154,7 +154,7 @@ namespace Site.Adm.Controllers
 
                     userRepository.Update(applicationUser.Id, token);
 
-                    return Redirect(returnUrl + "?message=success&token=" + token);
+                    return Redirect(returnUrl + "?type=success&message=Sucesso&token=" + token);
 
                 case SignInStatus.Failure:
                 default:
@@ -185,16 +185,36 @@ namespace Site.Adm.Controllers
 
                             await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                            return Redirect(returnUrl + "?message=success&token=" + token);
+                            return Redirect(returnUrl + "?type=success&message=Sucesso&token=" + token);
                         }
                         else
                         {
-                            return Redirect(returnUrl + "?message=error&token=" + token);
+                            string msg = string.Empty;
+
+                            foreach (var item in resultUser.Errors)
+                            {
+                                if (string.IsNullOrEmpty(msg))
+                                    msg = item.ToString();
+                                else
+                                    msg += "</br>" + item.ToString();
+                            }
+
+                            return Redirect(returnUrl + "?type=error&message=" + msg);
                         }
                     }
                     else
                     {
-                        return Redirect(returnUrl + "?message=error&token=" + token);
+                        string msg = string.Empty;
+
+                        foreach (var item in resultUser.Errors)
+                        {
+                            if (string.IsNullOrEmpty(msg))
+                                msg = item.ToString();
+                            else
+                                msg += "</br>" + item.ToString();
+                        }
+
+                        return Redirect(returnUrl + "?type=error&message=" + msg);
                     }
             }
         }
