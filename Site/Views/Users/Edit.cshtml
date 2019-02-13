@@ -94,7 +94,7 @@
         @foreach (var unity in units)
         {
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="@(unity.Value)" id="units" name="units" @(Model.Units.Contains(unity.Text) ? "checked=\"checked\"" : "")>
+                <input class="form-check-input" type="checkbox" value="@(unity.Value)" id="units" name="units" @(Model.Units.Contains(unity.Value) ? "checked=\"checked\"" : "")>
                 <label class="form-check-label" for="units">
                     @(unity.Text)
                 </label>

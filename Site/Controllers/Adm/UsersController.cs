@@ -449,7 +449,10 @@ namespace Site.Adm.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                foreach (var item in error.Split('.'))
+                {
+                    ModelState.AddModelError("", item);
+                }
             }
         }
 

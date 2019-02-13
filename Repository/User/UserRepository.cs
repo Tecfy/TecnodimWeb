@@ -136,7 +136,7 @@ namespace Repository
                                        Email = x.AspNetUsers.Email,
                                        Registration = x.Registration,
                                        Claims = x.AspNetUsers.AspNetUserClaims.Select(y => y.ClaimType).ToList(),
-                                       Units = x.UserUnits.Select(y => y.Units.Name).ToList(),
+                                       Units = x.UserUnits.Select(y => y.Units.UnityId.ToString()).ToList(),
                                    }).FirstOrDefault();
             }
 
