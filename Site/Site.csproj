@@ -312,7 +312,6 @@
     <Content Include="App_Data\stubidp.sustainsys.com.cer" />
     <Content Include="App_Data\Sustainsys.Saml2.Tecnodim.pfx" />
     <Content Include="App_Data\Tecnodim.pfx" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -325,8 +324,9 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
+    <None Include="Properties\PublishProfiles\Homologação SER.pubxml" />
+    <None Include="Properties\PublishProfiles\Homologação.pubxml" />
+    <None Include="Properties\PublishProfiles\Produção SER.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -354,6 +354,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -403,13 +404,7 @@
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
     <None Include="Web.Hom.config">
       <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Prod.config">
-      <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Web.SERProd.config">
-      <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup />
