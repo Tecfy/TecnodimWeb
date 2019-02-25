@@ -6,8 +6,6 @@ namespace Model.In
     {
         public string registration { get; set; }
 
-        public string code { get; set; }
-
         public string categoryId { get; set; }
 
         public string archive { get; set; }
@@ -17,5 +15,7 @@ namespace Model.In
         public DateTime dataJob { get; set; }
 
         public string user { get; set; }
+
+        public string extension { get; set; }
     }
 }

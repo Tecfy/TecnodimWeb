@@ -258,9 +258,9 @@ namespace Repository
                                                externalId = x.Code,
                                                registration = x.Jobs.Registration,
                                                categoryId = x.Categories.Code,
-                                               category = x.Categories.Name,
-                                               pb = x.Categories.Pb,
-                                               title = x.Categories.Name + ".pdf",
+                                               title = x.Categories.Name,
+                                               user = x.Jobs.Users.Registration,
+                                               extension = ".pdf",
                                                additionalFields = x.JobCategoryAdditionalFields
                                                                    .Where(y => y.Active == true && y.DeletedDate == null)
                                                                    .Select(y => new AdditionalFieldSaveVM()
@@ -355,8 +355,7 @@ namespace Repository
 
                 PDFIn pdfIn = new PDFIn
                 {
-                    archive = eCMJobCategoryOut.result.archive,
-                    pb = jobsFinishedVM.pb
+                    archive = eCMJobCategoryOut.result.archive
                 };
 
                 string file = HelperDoc(pdfIn);
@@ -384,9 +383,10 @@ namespace Repository
                 {
                     registration = jobsFinishedVM.registration,
                     categoryId = jobsFinishedVM.categoryId,
-                    category = jobsFinishedVM.category,
                     archive = file,
                     title = jobsFinishedVM.title,
+                    user = jobsFinishedVM.user,
+                    extension = jobsFinishedVM.extension,
                     additionalFields = additionalFieldSaveIns
                 };
 

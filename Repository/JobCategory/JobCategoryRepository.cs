@@ -136,12 +136,12 @@ namespace Repository
                                           .Select(x => new ECMJobCategorySaveIn()
                                           {
                                               registration = x.Jobs.Registration,
-                                              code = x.Code,
                                               categoryId = x.Categories.Code,
                                               archive = jobCategorySaveIn.archive,
-                                              title = x.Categories.Name + ".pdf",
+                                              title = x.Categories.Name,
                                               dataJob = x.Jobs.CreatedDate,
-                                              user = x.Jobs.Users.Registration
+                                              user = x.Jobs.Users.Registration,
+                                              extension = ".pdf"
                                           })
                                           .FirstOrDefault();
 

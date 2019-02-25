@@ -8,11 +8,21 @@ namespace Model.In
 
         public string categoryId { get; set; }
 
-        public string category { get; set; }
-
         public string archive { get; set; }
 
         public string title { get; set; }
+
+        public string user { get; set; }
+
+        public string sliceUser { get; set; }
+
+        public string sliceUserRegistration { get; set; }
+
+        public string classificationUser { get; set; }
+
+        public string classificationUserRegistration { get; set; }
+
+        public string extension { get; set; }
 
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
     }

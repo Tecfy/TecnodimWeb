@@ -214,14 +214,19 @@ namespace Repository
                                                         && x.Documents.DocumentStatusId == (int)EDocumentStatus.Finished)
                                                .Select(x => new DocumentsFinishedVM()
                                                {
+                                                   registration = x.Documents.Registration,
+                                                   categoryId = x.Categories.Code,
                                                    documentId = x.DocumentId,
                                                    sliceId = x.SliceId,
                                                    externalId = x.Documents.ExternalId,
-                                                   registration = x.Documents.Registration,
-                                                   categoryId = x.Categories.Code,
-                                                   category = x.Categories.Name,
+                                                   title = x.Categories.Name,
                                                    pb = x.Categories.Pb,
-                                                   title = x.Categories.Name + ".pdf",
+                                                   user = x.Users1 != null ? x.Users1.Registration : "",
+                                                   sliceUser = x.Users1 != null ? x.Users1.FirstName + " " + x.Users1.LastName : "",
+                                                   sliceUserRegistration = x.Users1 != null ? x.Users1.Registration : "",
+                                                   classificationUser = x.Users != null ? x.Users.FirstName + " " + x.Users.LastName : "",
+                                                   classificationUserRegistration = x.Users != null ? x.Users.Registration : "",
+                                                   extension = ".pdf",
                                                    pages = x.SlicePages
                                                             .Where(y => y.Active == true && y.DeletedDate == null)
                                                             .Select(y => new SlicePagesFinishedVM()
@@ -431,9 +436,14 @@ namespace Repository
                 {
                     registration = documentsFinishedVM.registration,
                     categoryId = documentsFinishedVM.categoryId,
-                    category = documentsFinishedVM.category,
                     archive = file,
                     title = documentsFinishedVM.title,
+                    user = documentsFinishedVM.user,
+                    sliceUser = documentsFinishedVM.sliceUser,
+                    sliceUserRegistration = documentsFinishedVM.sliceUserRegistration,
+                    classificationUser = documentsFinishedVM.classificationUser,
+                    classificationUserRegistration = documentsFinishedVM.classificationUserRegistration,
+                    extension = documentsFinishedVM.extension,
                     additionalFields = additionalFieldSaveIns
                 };
 

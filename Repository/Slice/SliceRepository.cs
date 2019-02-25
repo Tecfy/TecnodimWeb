@@ -97,7 +97,7 @@ namespace Repository
                         documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { id = slicePendingIn.id, key = slicePendingIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
                     }
                 }
-            }            
+            }
 
             registerEventRepository.SaveRegisterEvent(slicePendingIn.id, slicePendingIn.key, "Log - End", "Repository.SliceRepository.GetSlicePending", "");
             return sliceOut;
@@ -155,9 +155,15 @@ namespace Repository
                     documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { id = sliceIn.id, key = sliceIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallySlice });
                 }
 
-                Slices slice = new Slices();
-                slice.DocumentId = document.DocumentId;
-                slice.Name = sliceIn.name;
+                int userId = 0;
+                userId = db.Users.Where(x => x.AspNetUserId == sliceIn.id).FirstOrDefault().UserId;
+
+                Slices slice = new Slices
+                {
+                    DocumentId = document.DocumentId,
+                    Name = sliceIn.name,
+                    SliceUserId = userId
+                };
 
                 db.Slices.Add(slice);
                 db.SaveChanges();
@@ -190,8 +196,12 @@ namespace Repository
                     throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
+                int userId = 0;
+                userId = db.Users.Where(x => x.AspNetUserId == sliceUpdateIn.id).FirstOrDefault().UserId;
+
                 slice.EditedDate = DateTime.Now;
                 slice.CategoryId = sliceUpdateIn.categoryId;
+                slice.ClassificationUserId = userId;
 
                 db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
