@@ -440,6 +440,7 @@ namespace Repository
                     {
                         category.Code = item.code;
                         category.Name = item.name;
+                        category.ParentId = CategorySave(ecmCategoriesOut.result, item.parentId);
                         category.EditedDate = DateTime.Now;
 
                         db.Entry(category).State = System.Data.Entity.EntityState.Modified;

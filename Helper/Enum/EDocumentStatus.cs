@@ -18,5 +18,7 @@ namespace Helper.Enum
         Finished = 6,
         [Description("Enviado")]
         Sent = 7,
+        [Description("Cancelado")]
+        Canceled = 8,
     }
 }
