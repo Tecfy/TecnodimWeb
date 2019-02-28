@@ -36,6 +36,9 @@ namespace Model.In
         [Display(Name = "DocumentView", ResourceType = typeof(i18n.Resource))]
         public bool ShowDocumentView { get; set; }
 
+        [Display(Name = "Note", ResourceType = typeof(i18n.Resource))]
+        public bool ShowNote { get; set; }
+    
 
         [Display(Name = "Identifier", ResourceType = typeof(i18n.Resource))]
         public CategoryAdditionalFieldVM Identifier { get; set; }
@@ -48,5 +51,8 @@ namespace Model.In
 
         [Display(Name = "DocumentView", ResourceType = typeof(i18n.Resource))]
         public CategoryAdditionalFieldVM DocumentView { get; set; }
+
+        [Display(Name = "Note", ResourceType = typeof(i18n.Resource))]
+        public CategoryAdditionalFieldVM Note { get; set; }
     }
 }

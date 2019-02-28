@@ -11,12 +11,14 @@
         var showCompetenceOld = @(Model.ShowCompetence ? 1 : 0);
         var showValidityOld = @(Model.ShowValidity ? 1 : 0);
         var showDocumentViewOld = @(Model.ShowDocumentView ? 1 : 0);
+        var showNoteOld = @(Model.ShowNote ? 1 : 0);
 
         $(function () {
             DisplayIdentifier(showIdentifierOld);
             DisplayCompetence(showCompetenceOld);
             DisplayValidity(showValidityOld);
             DisplayDocumentView(showDocumentViewOld);
+            DisplayNote(showNoteOld);
         });
 
         function DisplayIdentifier(value) {
@@ -55,6 +57,15 @@
             }
         }
 
+        function DisplayNote(value) {
+            if (value) {
+                $('#divNote').show();
+            }
+            else {
+                $('#divNote').hide();
+            }
+        }
+
         $(function () {
             $("html").on("click", ".btnCancel", function (e) {
                 window.location = "@(Url.Action("Index", "Categories"))";
@@ -74,6 +85,10 @@
 
             $("html").on("click", '#ShowDocumentView', function () {
                 DisplayDocumentView($("#ShowDocumentView").prop("checked"));
+            });
+
+            $("html").on("click", '#ShowNote', function () {
+                DisplayNote($("#ShowNote").prop("checked"));
             });
         });
     </script>
@@ -223,6 +238,34 @@
                     @Html.EditorFor(model => model.DocumentView.Single, new { @class = "form-check-input" })
                     @Html.LabelFor(m => m.DocumentView.Single, new { @class = "form-check-label", @for = "DocumentView_Single" })
                     @Html.ValidationMessageFor(model => model.DocumentView.Single)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-3 form-group">
+            @Html.EditorFor(model => model.ShowNote, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.ShowNote, new { @class = "form-check-label", @for = "ShowNote" })
+            @Html.ValidationMessageFor(model => model.ShowNote)
+        </div>
+
+        <div class="col-9 form-group" id="divNote">
+            @Html.HiddenFor(model => model.Note.CategoryAdditionalFieldId)
+            @Html.HiddenFor(model => model.Note.AdditionalFieldId)
+            @Html.HiddenFor(model => model.Note.CategoryId)
+            <div class="row">
+                <div class="col-3">
+                    @Html.EditorFor(model => model.Note.Required, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.Note.Required, new { @class = "form-check-label", @for = "Note_Required" })
+                    @Html.ValidationMessageFor(model => model.Note.Required)
+                </div>
+                <div class="col-3">
+                    @Html.EditorFor(model => model.Note.Single, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.Note.Single, new { @class = "form-check-label", @for = "Note_Single" })
+                    @Html.ValidationMessageFor(model => model.Note.Single)
                 </div>
             </div>
         </div>

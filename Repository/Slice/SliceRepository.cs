@@ -162,7 +162,8 @@ namespace Repository
                 {
                     DocumentId = document.DocumentId,
                     Name = sliceIn.name,
-                    SliceUserId = userId
+                    SliceUserId = userId,
+                    SliceDate = DateTime.Now,
                 };
 
                 db.Slices.Add(slice);
@@ -202,6 +203,7 @@ namespace Repository
                 slice.EditedDate = DateTime.Now;
                 slice.CategoryId = sliceUpdateIn.categoryId;
                 slice.ClassificationUserId = userId;
+                slice.ClassificationDate = DateTime.Now;
 
                 db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

@@ -98,10 +98,12 @@ namespace Site.Adm.Controllers
                 ShowCompetence = categoryEditOut.result.ShowCompetence,
                 ShowValidity = categoryEditOut.result.ShowValidity,
                 ShowDocumentView = categoryEditOut.result.ShowDocumentView,
+                ShowNote = categoryEditOut.result.ShowNote,
                 Identifier = categoryEditOut.result.Identifier != null ? categoryEditOut.result.Identifier : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Identifier),
                 Competence = categoryEditOut.result.Competence != null ? categoryEditOut.result.Competence : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Competence),
                 Validity = categoryEditOut.result.Validity != null ? categoryEditOut.result.Validity : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Validity),
                 DocumentView = categoryEditOut.result.DocumentView != null ? categoryEditOut.result.DocumentView : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.DocumentView),
+                Note = categoryEditOut.result.Note != null ? categoryEditOut.result.Note : new Model.VM.CategoryAdditionalFieldVM(categoryEditOut.result.CategoryId, (int)EAdditionalField.Note),
             };
 
             return View(categoryEditIn);

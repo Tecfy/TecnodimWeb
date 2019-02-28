@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Model.In
 {
@@ -23,6 +24,10 @@ namespace Model.In
         public string classificationUserRegistration { get; set; }
 
         public string extension { get; set; }
+
+        public DateTime classificationDate { get; set; }
+
+        public DateTime sliceDate { get; set; }
 
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
     }

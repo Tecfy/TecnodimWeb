@@ -187,6 +187,21 @@ namespace Repository
                                                            Required = y.Required,
                                                            Single = y.Single
                                                        }).FirstOrDefault(),
+
+                                       ShowNote = x.CategoryAdditionalFields
+                                                           .Any(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Note),
+
+                                       Note = x.CategoryAdditionalFields
+                                                       .Where(y => y.Active == true && y.DeletedDate == null && y.AdditionalFieldId == (int)EAdditionalField.Note)
+                                                       .Select(y => new CategoryAdditionalFieldVM()
+                                                       {
+                                                           CategoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                           AdditionalFieldId = y.AdditionalFieldId,
+                                                           CategoryId = y.CategoryId,
+                                                           Required = y.Required,
+                                                           Single = y.Single
+                                                       }).FirstOrDefault(),
+
                                    }).FirstOrDefault();
 
             }
@@ -289,6 +304,27 @@ namespace Repository
                     if (categoryEditIn.DocumentView.CategoryAdditionalFieldId > 0)
                     {
                         categoryAdditionalFieldRepository.Delete(categoryEditIn.DocumentView.CategoryAdditionalFieldId.Value);
+                    }
+                }
+                #endregion
+
+                #region Note
+                if (categoryEditIn.ShowNote)
+                {
+                    if (categoryEditIn.Note.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Update(new CategoryAdditionalFieldEditIn { CategoryAdditionalFieldId = categoryEditIn.Note.CategoryAdditionalFieldId.Value, AdditionalFieldId = categoryEditIn.Note.AdditionalFieldId, CategoryId = categoryEditIn.Note.CategoryId, Required = categoryEditIn.Note.Required, Single = categoryEditIn.Note.Single });
+                    }
+                    else
+                    {
+                        categoryAdditionalFieldRepository.Insert(new CategoryAdditionalFieldCreateIn { AdditionalFieldId = categoryEditIn.Note.AdditionalFieldId, CategoryId = categoryEditIn.Note.CategoryId, Required = categoryEditIn.Note.Required, Single = categoryEditIn.Note.Single });
+                    }
+                }
+                else
+                {
+                    if (categoryEditIn.Note.CategoryAdditionalFieldId > 0)
+                    {
+                        categoryAdditionalFieldRepository.Delete(categoryEditIn.Note.CategoryAdditionalFieldId.Value);
                     }
                 }
                 #endregion

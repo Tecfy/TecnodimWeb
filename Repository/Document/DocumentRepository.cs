@@ -104,11 +104,11 @@ namespace Repository
                                 db.Documents.Add(document);
                                 db.SaveChanges();
 
-                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = item.externalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = item.externalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.CutOut"].ToString() });
                             }
                             else
                             {
-                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Value"].ToString() });
+                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.CutOut"].ToString() });
                             }
                         }
                         else
@@ -227,6 +227,8 @@ namespace Repository
                                                    classificationUser = x.Users != null ? x.Users.FirstName + " " + x.Users.LastName : "",
                                                    classificationUserRegistration = x.Users != null ? x.Users.Registration : "",
                                                    extension = ".pdf",
+                                                   classificationDate = x.ClassificationDate.Value,
+                                                   sliceDate = x.SliceDate.Value,
                                                    pages = x.SlicePages
                                                             .Where(y => y.Active == true && y.DeletedDate == null)
                                                             .Select(y => new SlicePagesFinishedVM()
@@ -334,8 +336,30 @@ namespace Repository
                 document.DocumentStatusId = documentUpdateIn.documentStatusId;
                 document.EditedDate = DateTime.Now;
 
+                if (documentUpdateIn.documentStatusId == (int)EDocumentStatus.Slice)
+                {
+                    document.SliceDate = DateTime.Now;
+                }
+                else if (documentUpdateIn.documentStatusId == (int)EDocumentStatus.Classificated)
+                {
+                    document.ClassificationDate = DateTime.Now;
+                }
+
                 db.Entry(document).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                if (documentUpdateIn.documentStatusId == (int)EDocumentStatus.Slice)
+                {
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Sort"].ToString() });
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.SliceDate"].ToString(), value = document.SliceDate.Value.ToString("yyyy-MM-dd") });
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.SliceTime"].ToString(), value = document.SliceDate.Value.ToString("HH:mm") });
+                }
+                else if (documentUpdateIn.documentStatusId == (int)EDocumentStatus.Classificated)
+                {
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Classified"].ToString() });
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.ClassificationDate"].ToString(), value = document.ClassificationDate.Value.ToString("yyyy-MM-dd") });
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn { externalId = document.ExternalId, attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.ClassificationTime"].ToString(), value = document.ClassificationDate.Value.ToString("HH:mm") });
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(documentUpdateIn.id, documentUpdateIn.key, "Log - End", "Repository.DocumentRepository.PostDocumentUpdateSatus", "");
@@ -444,6 +468,8 @@ namespace Repository
                     classificationUser = documentsFinishedVM.classificationUser,
                     classificationUserRegistration = documentsFinishedVM.classificationUserRegistration,
                     extension = documentsFinishedVM.extension,
+                    classificationDate = documentsFinishedVM.classificationDate,
+                    sliceDate = documentsFinishedVM.sliceDate,
                     additionalFields = additionalFieldSaveIns
                 };
 

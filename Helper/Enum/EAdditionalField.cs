@@ -12,5 +12,7 @@ namespace Helper.Enum
         Validity = 3,
         [Description("Visualização do documento")]
         DocumentView = 4,
+        [Description("Observação")]
+        Note = 5,
     }
 }

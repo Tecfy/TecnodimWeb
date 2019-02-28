@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Model.VM
 {
@@ -29,6 +30,10 @@ namespace Model.VM
         public string classificationUserRegistration { get; set; }
 
         public string extension { get; set; }
+
+        public DateTime classificationDate { get; set; }
+
+        public DateTime sliceDate { get; set; }
 
         public List<SlicePagesFinishedVM> pages { get; set; }
 
