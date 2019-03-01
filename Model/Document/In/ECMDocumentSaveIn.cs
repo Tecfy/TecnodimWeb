@@ -25,9 +25,9 @@ namespace Model.In
 
         public string extension { get; set; }
 
-        public DateTime classificationDate { get; set; }
+        public string classificationDate { get; set; }
 
-        public DateTime sliceDate { get; set; }
+        public string sliceDate { get; set; }
 
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
     }
