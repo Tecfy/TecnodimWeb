@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Model.VM
+﻿namespace Model.VM
 {
     public class CategoryAdditionalFieldsVM : ResultServiceVM
     {

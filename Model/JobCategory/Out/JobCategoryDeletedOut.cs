@@ -1,6 +1,4 @@
-﻿using Model.VM;
-
-namespace Model.Out
+﻿namespace Model.Out
 {
     public class JobCategoryDeletedOut : ResultServiceVM
     {

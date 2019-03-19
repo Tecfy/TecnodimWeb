@@ -113,6 +113,9 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="Permission\In\PermissionsIn.cs" />
+    <Compile Include="Permission\Out\PermissionsOut.cs" />
+    <Compile Include="Permission\VM\PermissionsVM.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailByJobIdIn.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailDocumentIdOut.cs" />
     <Compile Include="DocumentDetail\VM\DocumentDetailDocumentIdVM.cs" />

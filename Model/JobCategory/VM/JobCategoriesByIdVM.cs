@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Model.VM
+﻿namespace Model.VM
 {
     public class JobCategoriesByIdVM
     {
