@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.Configuration;
 
 namespace Repository
 {
@@ -16,6 +17,7 @@ namespace Repository
     {
         private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         private PermissionApi permissionApi = new PermissionApi();
+        private AttributeApi attributeApi = new AttributeApi();
 
         #region .: Api :.
 
@@ -61,6 +63,7 @@ namespace Repository
         private void PermissionsProcess(PermissionsVM permissionsVM, string id, string key)
         {
             registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.PermissionRepository.PermissionsProcess", "");
+            DateTime now = DateTime.Now;
 
             try
             {
@@ -199,7 +202,7 @@ namespace Repository
 
                 #endregion
 
-                #region .: Synchronization TecnodimWeb:.
+                #region .: Synchronization TecnodimWeb :.
 
                 using (var db = new DBContext())
                 {
@@ -244,6 +247,20 @@ namespace Repository
                 }
 
                 #endregion
+
+                #region .: Synchronization  Attribute :.
+
+                List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                {
+                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.PermissionDate"].ToString(), value = now.ToString("yyyy-MM-dd") },
+                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.PermissionTime"].ToString(), value = now.ToString("HH:mm") },
+                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.PermissionStatus"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute.PermissionStatusValue"].ToString() },
+                };
+
+                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(permissionsVM.externalId, itens));
+
+                #endregion
+
             }
             catch (Exception ex)
             {
