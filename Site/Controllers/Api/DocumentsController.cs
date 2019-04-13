@@ -1,13 +1,10 @@
-﻿using Helper;
-using Helper.Enum;
+﻿using Helper.Enum;
 using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
 using Repository;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
