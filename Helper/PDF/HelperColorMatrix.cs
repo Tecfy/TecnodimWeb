@@ -71,11 +71,11 @@ namespace Helper
             ColorMatrix TempMatrix = new ColorMatrix
             {
                 Matrix = new float[][]{
-                    new float[] { .8f, .8f, .8f, 0, 0 },
-                    new float[] { .8f, .8f, .8f, 0, 0 },
-                    new float[] { .8f, .8f, .8f, 0, 0 },
+                    new float[] { .75f, .75f, .75f, 0, 0 },
+                    new float[] { .7f, .7f, .7f, 0, 0 },
+                    new float[] { .75f, .75f, .75f, 0, 0 },
                     new float[] { 0, 0, 0, 1, 0 },
-                    new float[] { -1.25f, -1.25f, -1.25f, 0, 1 }
+                    new float[] { -1f, -1f, -1f, 0, 1 }
                 }
             };
 

@@ -454,7 +454,7 @@ namespace Repository
             //}
             //else
             //{
-            archive = System.Convert.ToBase64String(docOld.GetData());
+            archive = Convert.ToBase64String(docOld.GetData());
             //}
 
             docOld.Clear();

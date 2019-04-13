@@ -1,10 +1,13 @@
-﻿using Helper.Enum;
+﻿using Helper;
+using Helper.Enum;
 using Microsoft.AspNet.Identity;
 using Model.In;
 using Model.Out;
 using Repository;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -203,5 +206,17 @@ namespace Site.Api.Controllers
 
             return documentUpdateOut;
         }
+
+        [AllowAnonymous, HttpGet]
+        public HttpResponseMessage ConvertDocumentPB()
+        {
+            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                documentRepository.ConvertDocumentPB(@"D:\Rudolf\Tecfy\Tecnodim\Demandas\2019-04-01-Tecnodim\SER_GESTÃO DOUMENTOS_ESPECIFICAÇÕES_4.pdf");
+            });
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
     }
 }

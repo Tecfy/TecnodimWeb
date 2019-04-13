@@ -7,6 +7,7 @@ using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
@@ -241,7 +242,7 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
             return ecmDocumentsValidateOut;
         }
-        
+
         public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments(ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn)
         {
             ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
@@ -253,6 +254,19 @@ namespace Repository
             return eCMDocumentsValidateAdInterfaceOut;
         }
 
+        public void ConvertDocumentPB(string document)
+        {
+            Doc docOld = new Doc();
+            Doc docNew = new Doc();
+            docOld.Read(document);
+
+            docNew = PB.Converter(docOld);
+
+            File.WriteAllBytes(@"D:\Rudolf\Tecfy\Tecnodim\Demandas\2019-04-01-Tecnodim\SER_GESTÃO DOUMENTOS_ESPECIFICAÇÕES_4_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_sss") + ".pdf", docNew.GetData());
+
+            docOld.Clear();
+            docNew.Clear();
+        }
         #endregion
 
         #region .: Local :.
@@ -592,7 +606,7 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.DocumentRepository.DocumentSliceProcess", "");
         }
 
-        public string Rotate(PDFIn pdfIn, string id, string key)
+        private string Rotate(PDFIn pdfIn, string id, string key)
         {
             registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.DocumentRepository.DocumentSliceProcess", "");
 
@@ -619,11 +633,11 @@ namespace Repository
             {
                 docNew = PB.Converter(docOld);
 
-                archive = System.Convert.ToBase64String(docNew.GetData());
+                archive = Convert.ToBase64String(docNew.GetData());
             }
             else
             {
-                archive = System.Convert.ToBase64String(docOld.GetData());
+                archive = Convert.ToBase64String(docOld.GetData());
             }
 
             docOld.Clear();
