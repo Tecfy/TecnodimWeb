@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public AspNetUserClaimOut()
         {
-            this.result = new List<AspNetUserClaimVM>();
+            result = new List<AspNetUserClaimVM>();
         }
 
         public List<AspNetUserClaimVM> result { get; set; }

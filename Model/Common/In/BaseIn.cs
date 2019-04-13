@@ -4,8 +4,8 @@
     {
         public BaseIn()
         {
-            this.id = null;
-            this.key = null;
+            id = null;
+            key = null;
         }
 
         public string id { get; set; }

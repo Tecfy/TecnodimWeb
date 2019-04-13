@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public DocumentDetailJobIdOut()
         {
-            this.result = new DocumentDetailJobIdVM();
+            result = new DocumentDetailJobIdVM();
         }
 
         public DocumentDetailJobIdVM result { get; set; }

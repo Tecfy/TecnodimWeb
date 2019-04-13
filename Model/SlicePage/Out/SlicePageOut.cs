@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public SlicePageOut()
         {
-            this.result = new SlicePageVM();
+            result = new SlicePageVM();
         }
 
         public SlicePageVM result { get; set; }

@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ApiCategorySearchOut()
         {
-            this.result = new ApiCategorySearchVM();
+            result = new ApiCategorySearchVM();
         }
 
         public ApiCategorySearchVM result { get; set; }

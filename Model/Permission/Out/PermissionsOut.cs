@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public PermissionsOut()
         {
-            this.result = new List<PermissionsVM>();
+            result = new List<PermissionsVM>();
         }
 
         public List<PermissionsVM> result { get; set; }

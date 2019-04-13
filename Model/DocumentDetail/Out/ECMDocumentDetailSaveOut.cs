@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ECMDocumentDetailSaveOut()
         {
-            this.result = new ECMDocumentDetailSaveVM();
+            result = new ECMDocumentDetailSaveVM();
         }
 
         public ECMDocumentDetailSaveVM result { get; set; }

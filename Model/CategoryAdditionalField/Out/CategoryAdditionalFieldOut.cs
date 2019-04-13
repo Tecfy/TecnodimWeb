@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public CategoryAdditionalFieldOut()
         {
-            this.result = new CategoryAdditionalFieldVM();
+            result = new CategoryAdditionalFieldVM();
         }
 
         public CategoryAdditionalFieldVM result { get; set; }

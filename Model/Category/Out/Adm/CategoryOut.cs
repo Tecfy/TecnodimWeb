@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public CategoryOut()
         {
-            this.result = new CategoryVM();
+            result = new CategoryVM();
         }
 
         public CategoryVM result { get; set; }

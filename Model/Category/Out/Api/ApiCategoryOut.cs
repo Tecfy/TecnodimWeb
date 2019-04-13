@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ApiCategoryOut()
         {
-            this.result = new ApiCategoryVM();
+            result = new ApiCategoryVM();
         }
 
         public ApiCategoryVM result { get; set; }

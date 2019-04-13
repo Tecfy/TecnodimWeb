@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public ApiECMCategoriesOut()
         {
-            this.result = new List<ApiECMCategoriesVM>();
+            result = new List<ApiECMCategoriesVM>();
         }
 
         public List<ApiECMCategoriesVM> result { get; set; }

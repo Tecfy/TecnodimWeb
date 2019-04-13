@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public JobByIdOut()
         {
-            this.result = new JobByIdVM();
+            result = new JobByIdVM();
         }
 
         public JobByIdVM result { get; set; }

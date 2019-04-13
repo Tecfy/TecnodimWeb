@@ -189,6 +189,13 @@ namespace Repository
                     ECMDocumentDeletedIn ecmDocumentDeletedIn = new ECMDocumentDeletedIn() { externalId = externalId, id = ecmDocumentsSendIn.id, key = ecmDocumentsSendIn.key };
 
                     documentApi.DeleteECMDocumentArchive(ecmDocumentDeletedIn);
+
+                    List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                    {
+                        new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Finished"].ToString() },
+                    };
+
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(externalId, itens));
                 }
                 catch { }
             }
@@ -197,6 +204,53 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
             return ecmDocumentsSendOut;
+        }
+
+        public ECMDocumentsValidateOut GetECMValidateDocuments(ECMDocumentsValidateIn ecmDocumentsValidateIn)
+        {
+            ECMDocumentsValidateOut ecmDocumentsValidateOut = new ECMDocumentsValidateOut();
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
+
+            ecmDocumentsValidateOut = documentApi.GetECMValidateDocuments();
+
+            if (ecmDocumentsValidateOut.result != null && ecmDocumentsValidateOut.result.Count > 0)
+            {
+                using (var db = new DBContext())
+                {
+                    Documents document = new Documents();
+
+                    foreach (var item in ecmDocumentsValidateOut.result)
+                    {
+                        document = new Documents();
+                        document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
+
+                        if (document != null)
+                        {
+                            if (document.DocumentStatusId != (int)EDocumentStatus.Sent)
+                            {
+                                document.DocumentStatusId = (int)EDocumentStatus.Canceled;
+
+                                db.Entry(document).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
+            return ecmDocumentsValidateOut;
+        }
+        
+        public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments(ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn)
+        {
+            ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
+            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.id, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
+
+            eCMDocumentsValidateAdInterfaceOut = documentApi.GetECMValidateAdInterfaceDocuments();
+
+            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.id, eCMDocumentsValidateAdInterfaceIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
+            return eCMDocumentsValidateAdInterfaceOut;
         }
 
         #endregion

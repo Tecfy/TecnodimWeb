@@ -9,8 +9,8 @@ namespace Model
         /// </summary>
         public ResultServiceVM()
         {
-            this.messages = new List<string>();
-            this.successMessage = null;
+            messages = new List<string>();
+            successMessage = null;
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Model
         {
             get
             {
-                return this.messages.Count == 0;
+                return messages.Count == 0;
             }
         }
       

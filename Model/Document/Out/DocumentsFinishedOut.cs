@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public DocumentsFinishedOut()
         {
-            this.result = new List<DocumentsFinishedVM>();
+            result = new List<DocumentsFinishedVM>();
         }
 
         public List<DocumentsFinishedVM> result { get; set; }

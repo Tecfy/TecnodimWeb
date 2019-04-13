@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public SyncRuntimesOut()
         {
-            this.result = new List<SyncRuntimesVM>();
+            result = new List<SyncRuntimesVM>();
         }
 
         public List<SyncRuntimesVM> result { get; set; }

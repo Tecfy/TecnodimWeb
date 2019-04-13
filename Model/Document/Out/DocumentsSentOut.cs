@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public DocumentsSentOut()
         {
-            this.result = new List<DocumentsSentVM>();
+            result = new List<DocumentsSentVM>();
         }
 
         public List<DocumentsSentVM> result { get; set; }

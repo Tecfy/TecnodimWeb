@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public ApiCategoriesOut()
         {
-            this.result = new List<ApiCategoriesVM>();
+            result = new List<ApiCategoriesVM>();
         }
 
         public List<ApiCategoriesVM> result { get; set; }

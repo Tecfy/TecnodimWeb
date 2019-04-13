@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ClassificationOut()
         {
-            this.result = new ClassificationVM();
+            result = new ClassificationVM();
         }
 
         public ClassificationVM result { get; set; }

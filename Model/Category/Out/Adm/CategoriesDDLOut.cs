@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public CategoriesDDLOut()
         {
-            this.result = new List<CategoriesDDLVM>();
+            result = new List<CategoriesDDLVM>();
         }
 
         public List<CategoriesDDLVM> result { get; set; }

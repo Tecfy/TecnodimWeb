@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ImageOut()
         {
-            this.result = new ImageVM();
+            result = new ImageVM();
         }
 
         public ImageVM result { get; set; }

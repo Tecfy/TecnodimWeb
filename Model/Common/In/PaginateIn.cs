@@ -6,13 +6,13 @@ namespace Model
     {
         public PaginateIn()
         {
-            this.qtdEntries = int.Parse(Ready.AppSettings["Pagination.qtdEntries"]);
-            this.qtdActionNumber = int.Parse(Ready.AppSettings["Pagination.qtdActionNumber"]);
-            this.amount = null;
-            this.currentPage = 1;
-            this.sort = "CreatedDate";
-            this.sortdirection = "asc";
-            this.filter = "";
+            qtdEntries = int.Parse(Ready.AppSettings["Pagination.qtdEntries"]);
+            qtdActionNumber = int.Parse(Ready.AppSettings["Pagination.qtdActionNumber"]);
+            amount = null;
+            currentPage = 1;
+            sort = "CreatedDate";
+            sortdirection = "asc";
+            filter = "";
         }
 
         public int? qtdEntries { get; set; }

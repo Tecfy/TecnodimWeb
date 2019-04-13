@@ -113,6 +113,11 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="Document\In\ECMDocumentsValidateAdInterfaceIn.cs" />
+    <Compile Include="Document\In\ECMDocumentsValidateIn.cs" />
+    <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
+    <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
+    <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
     <Compile Include="Permission\Out\PermissionsOut.cs" />
     <Compile Include="Permission\VM\PermissionsVM.cs" />

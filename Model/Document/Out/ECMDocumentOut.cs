@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ECMDocumentOut()
         {
-            this.result = new DocumentVM();
+            result = new DocumentVM();
         }
 
         public DocumentVM result { get; set; }

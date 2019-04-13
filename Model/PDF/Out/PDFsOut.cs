@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public PDFsOut()
         {
-            this.result = new List<PDFsVM>();
+            result = new List<PDFsVM>();
         }
 
         public List<PDFsVM> result { get; set; }

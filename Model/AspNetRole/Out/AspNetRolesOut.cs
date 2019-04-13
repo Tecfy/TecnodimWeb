@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public AspNetRolesOut()
         {
-            this.result = new List<AspNetRolesVM>();
+            result = new List<AspNetRolesVM>();
         }
 
         public List<AspNetRolesVM> result { get; set; }

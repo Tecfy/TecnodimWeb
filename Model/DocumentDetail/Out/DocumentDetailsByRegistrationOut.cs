@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public DocumentDetailsByRegistrationOut()
         {
-            this.result = new List<DocumentDetailsByRegistrationVM>();
+            result = new List<DocumentDetailsByRegistrationVM>();
         }
 
         public List<DocumentDetailsByRegistrationVM> result { get; set; }

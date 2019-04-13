@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public UserByTokenOut()
         {
-            this.result = new UserByTokenVM();
+            result = new UserByTokenVM();
         }
 
         public UserByTokenVM result { get; set; }

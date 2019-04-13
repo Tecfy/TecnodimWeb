@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public SlicesOut()
         {
-            this.result = new List<SlicesVM>();
+            result = new List<SlicesVM>();
         }
 
         public List<SlicesVM> result { get; set; }

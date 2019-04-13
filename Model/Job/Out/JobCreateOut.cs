@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public JobCreateOut()
         {
-            this.result = new JobCreateVM();
+            result = new JobCreateVM();
         }
 
         public JobCreateVM result { get; set; }

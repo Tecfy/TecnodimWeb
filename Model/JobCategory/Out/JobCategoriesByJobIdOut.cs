@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public JobCategoriesByJobIdOut()
         {
-            this.result = new List<JobCategoriesByJobIdVM>();
+            result = new List<JobCategoriesByJobIdVM>();
         }
 
         public List<JobCategoriesByJobIdVM> result { get; set; }

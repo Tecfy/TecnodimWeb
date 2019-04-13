@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public UnityOut()
         {
-            this.result = new UnityVM();
+            result = new UnityVM();
         }
 
         public UnityVM result { get; set; }

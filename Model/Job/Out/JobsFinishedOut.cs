@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public JobsFinishedOut()
         {
-            this.result = new List<JobsFinishedVM>();
+            result = new List<JobsFinishedVM>();
         }
 
         public List<JobsFinishedVM> result { get; set; }

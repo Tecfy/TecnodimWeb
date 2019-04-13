@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public ECMDocumentsOut()
         {
-            this.result = new List<ECMDocumentsVM>();
+            result = new List<ECMDocumentsVM>();
         }
 
         public List<ECMDocumentsVM> result { get; set; }

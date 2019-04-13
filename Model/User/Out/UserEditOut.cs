@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public UserEditOut()
         {
-            this.result = new UserEditVM();
+            result = new UserEditVM();
         }
 
         public UserEditVM result { get; set; }

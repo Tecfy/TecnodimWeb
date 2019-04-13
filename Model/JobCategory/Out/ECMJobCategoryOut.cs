@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public ECMJobCategoryOut()
         {
-            this.result = new ECMJobCategoryVM();
+            result = new ECMJobCategoryVM();
         }
 
         public ECMJobCategoryVM result { get; set; }

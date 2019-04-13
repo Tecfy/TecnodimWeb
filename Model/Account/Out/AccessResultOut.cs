@@ -6,7 +6,7 @@ namespace Model.Out
     {
         public AccessResultOut()
         {
-            this.result = new AccessResultVM();
+            result = new AccessResultVM();
         }
 
         public AccessResultVM result { get; set; }

@@ -7,7 +7,7 @@ namespace Model.Out
     {
         public UnitsDDLOut()
         {
-            this.result = new List<UnitsDDLVM>();
+            result = new List<UnitsDDLVM>();
         }
 
         public List<UnitsDDLVM> result { get; set; }

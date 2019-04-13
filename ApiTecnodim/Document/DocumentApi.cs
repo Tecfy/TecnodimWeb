@@ -62,6 +62,56 @@ namespace ApiTecnodim
             }
         }
 
+        public ECMDocumentsValidateOut GetECMValidateDocuments()
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.GetECMValidateDocuments"].ToString());
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                ECMDocumentsValidateOut eCMDocumentsValidateOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentsValidateOut>(response.Content);
+
+                if (!eCMDocumentsValidateOut.success)
+                {
+                    throw new Exception(eCMDocumentsValidateOut.messages.FirstOrDefault());
+                }
+
+                return eCMDocumentsValidateOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments()
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.GetECMValidateAdInterfaceDocuments"].ToString());
+
+                var request = RestRequestHelper.Get(Method.GET);
+
+                IRestResponse response = client.Execute(request);
+
+                ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentsValidateAdInterfaceOut>(response.Content);
+
+                if (!eCMDocumentsValidateAdInterfaceOut.success)
+                {
+                    throw new Exception(eCMDocumentsValidateAdInterfaceOut.messages.FirstOrDefault());
+                }
+
+                return eCMDocumentsValidateAdInterfaceOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region .: Posts :.
