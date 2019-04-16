@@ -136,7 +136,11 @@ namespace Repository
                                     RG AS rg, 
                                     CURSO AS course, 
                                     SITUACAO AS status
-                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS WHERE CONTROLE IS NULL AND ('{1}'='' OR UNIDADE='{1}')";
+                                 FROM BASE_ALUNOS_GESTAODOCUMENTOS 
+                                    WHERE 
+                                        CONTROLE IS NULL 
+                                        AND ('{1}'='' OR UNIDADE='{1}')
+                                    ORDER BY RECMODIFIEDON ASC";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
 
