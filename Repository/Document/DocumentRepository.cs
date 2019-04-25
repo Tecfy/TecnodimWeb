@@ -116,6 +116,14 @@ namespace Repository
             }
             else
             {
+                using (var db = new DBContext())
+                {
+                    documents.Download = false;
+
+                    db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
                 throw new Exception(i18n.Resource.FileNotFound);
             }
 
