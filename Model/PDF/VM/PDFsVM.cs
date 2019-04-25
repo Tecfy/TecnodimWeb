@@ -1,11 +1,13 @@
-﻿namespace Model.VM
+﻿using System.Collections.Generic;
+
+namespace Model.VM
 {
     public class PDFsVM
     {
-        public int page { get; set; }
+        public List<int> pages { get; set; }
 
-        public string thumb { get; set; }
+        public string path { get; set; }
 
-        public string image { get; set; }
+        public string pathThumb { get; set; }
     }
 }

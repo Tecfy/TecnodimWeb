@@ -2,6 +2,7 @@
 using Model.Out;
 using Repository;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Configuration;
@@ -26,7 +27,7 @@ namespace Site.Api.Controllers
                 try
                 {
                     SyncRuntimesIn syncRuntimesIn = new SyncRuntimesIn { key = Key };
-                    string urlBase = WebConfigurationManager.AppSettings["UrlBase"];
+                    string urlBase = WebConfigurationManager.AppSettings["UrlBase"] + "/Api";
 
                     syncRuntimesOut = syncRuntimeRepository.GetSyncRuntimes(syncRuntimesIn);
 

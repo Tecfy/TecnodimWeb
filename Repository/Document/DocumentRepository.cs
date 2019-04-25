@@ -2,6 +2,7 @@
 using DataEF.DataAccess;
 using Helper;
 using Helper.Enum;
+using Helper.ServerMap;
 using Model.In;
 using Model.Out;
 using Model.VM;
@@ -25,49 +26,129 @@ namespace Repository
 
         #region .: ECM :.
 
-        public ECMDocumentOut GetECMDocumentById(DocumentIn documentIn)
+        public void GetECMDocument(DocumentIn documentIn, string pathFile)
         {
-            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
-
-            string externalId = string.Empty;
-            Guid hash = new Guid();
+            Documents documents = new Documents();
+            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
             using (var db = new DBContext())
             {
-                Documents document = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
+                documents = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
 
-                if (document == null)
+                if (documents == null)
                 {
                     throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
-                externalId = document.ExternalId;
-                hash = document.Hash;
+                documents.Download = true;
+                documents.DownloadDate = DateTime.Now;
+
+                db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
             }
 
-            ecmDocumentOut = documentApi.GetECMDocument(externalId);
-            ecmDocumentOut.result.hash = hash.ToString();
+            if (!File.Exists(pathFile))
+            {
+                ECMDocumentOut eCMDocumentOut = documentApi.GetECMDocument(documents.ExternalId);
 
-            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
-            return ecmDocumentOut;
+                if (!eCMDocumentOut.success)
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+            }
+
+            if (File.Exists(pathFile))
+            {
+                try
+                {
+                    Doc theDoc = new Doc();
+                    theDoc.Read(pathFile);
+
+                    string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+                    string pathImages = Path.Combine(path, "Pages", documents.Hash.ToString(), "Images");
+                    string pathThumb = Path.Combine(path, "Pages", documents.Hash.ToString(), "Thumbs");
+
+                    if (!Directory.Exists(pathImages))
+                    {
+                        Directory.CreateDirectory(pathImages);
+                    }
+
+                    if (!Directory.Exists(pathThumb))
+                    {
+                        Directory.CreateDirectory(pathThumb);
+                    }
+
+                    documents.Pages = theDoc.PageCount;
+
+                    for (int i = 1; i <= theDoc.PageCount; i++)
+                    {
+                        Doc singlePagePdf = new Doc();
+                        singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = theDoc.MediaBox.String;
+                        singlePagePdf.AddPage();
+                        singlePagePdf.AddImageDoc(theDoc, i, null);
+                        singlePagePdf.FrameRect();
+
+                        File.WriteAllBytes(Path.Combine(pathImages, i + ".jpg"), singlePagePdf.Rendering.GetData(".jpg"));
+                        singlePagePdf.Rendering.DotsPerInch = 20;
+                        File.WriteAllBytes(Path.Combine(pathThumb, i + ".jpg"), singlePagePdf.Rendering.GetData(".jpg"));
+                    }
+
+                    using (var db = new DBContext())
+                    {
+                        documents.Download = false;
+
+                        db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                catch
+                {
+                    using (var db = new DBContext())
+                    {
+                        documents.Download = false;
+
+                        db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    throw new Exception(i18n.Resource.UnknownError);
+                }
+            }
+            else
+            {
+                throw new Exception(i18n.Resource.FileNotFound);
+            }
+
+            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
         }
 
-        public ECMDocumentOut GetECMDocumentByHash(string hash)
+        public DocumentOut GetECMDocumentById(DocumentIn documentIn)
         {
-            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            Guid guid = Guid.Parse(hash);
-            string externalId = string.Empty;
+            DocumentOut documentOut = new DocumentOut();
+            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentById", "");
 
             using (var db = new DBContext())
             {
-                externalId = db.Documents.Where(x => x.Hash == guid).FirstOrDefault().ExternalId;
+                documentOut.result = db.Documents
+                                          .Where(x => x.DocumentId == documentIn.documentId)
+                                          .Select(x => new DocumentVM()
+                                          {
+                                              DocumentId = x.DocumentId,
+                                              ExternalId = x.ExternalId,
+                                              Hash = x.Hash,
+                                              Pages = x.Pages,
+                                              Download = x.Download
+                                          })
+                                          .FirstOrDefault();
+
+                if (documentOut.result == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
             }
 
-            ecmDocumentOut = documentApi.GetECMDocument(externalId);
-            ecmDocumentOut.result.hash = hash;
-
-            return ecmDocumentOut;
+            registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentById", "");
+            return documentOut;
         }
 
         public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
@@ -85,44 +166,47 @@ namespace Repository
 
                     foreach (var item in ecmDocumentsOut.result)
                     {
-                        document = new Documents();
-                        document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
-
-                        int? unityId = unityRepository.GetByCode(item.unity);
-                        if (unityId != null && unityId > 0)
+                        if (!string.IsNullOrEmpty(item.name) && !string.IsNullOrEmpty(item.registration) && !string.IsNullOrEmpty(item.externalId))
                         {
-                            if (document == null)
+                            document = new Documents();
+                            document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
+
+                            int? unityId = unityRepository.GetByCode(item.unity);
+                            if (unityId != null && unityId > 0)
                             {
-                                document = new Documents
+                                if (document == null)
                                 {
-                                    ExternalId = item.externalId,
-                                    DocumentStatusId = item.documentStatusId,
-                                    UnityId = unityId.Value,
-                                    Registration = item.registration,
-                                    Name = item.name
-                                };
+                                    document = new Documents
+                                    {
+                                        ExternalId = item.externalId,
+                                        DocumentStatusId = item.documentStatusId,
+                                        UnityId = unityId.Value,
+                                        Registration = item.registration,
+                                        Name = item.name
+                                    };
 
-                                db.Documents.Add(document);
-                                db.SaveChanges();
+                                    db.Documents.Add(document);
+                                    db.SaveChanges();
 
-                                List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                                    List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
                                 {
                                     new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
                                 };
-                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(item.externalId, itens));
+                                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(item.externalId, itens));
+                                }
+                                else
+                                {
+                                    List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                                {
+                                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
+                                };
+                                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
+                                }
                             }
                             else
                             {
-                                List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
-                                {
-                                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
-                                };
-                                attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
+                                registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
                             }
-                        }
-                        else
-                        {
-                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
                         }
                     }
                 }
@@ -169,14 +253,18 @@ namespace Repository
 
             #region .: Update Documents :.
 
+            Documents document = new Documents();
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string pathImages = Path.Combine(path, "Pages", "{0}");
+            string pathFile = Path.Combine(path, "Documents", "{0}.pdf");
+
             foreach (var item in documentsSentOut.result)
             {
-                string externalId;
+                document = new Documents();
 
                 using (var db = new DBContext())
                 {
-                    Documents document = db.Documents.Find(item.documentId);
-                    externalId = document.ExternalId;
+                    document = db.Documents.Find(item.documentId);
 
                     document.DocumentStatusId = (int)EDocumentStatus.Sent;
                     document.EditedDate = DateTime.Now;
@@ -187,16 +275,22 @@ namespace Repository
 
                 try
                 {
-                    ECMDocumentDeletedIn ecmDocumentDeletedIn = new ECMDocumentDeletedIn() { externalId = externalId, id = ecmDocumentsSendIn.id, key = ecmDocumentsSendIn.key };
+                    if (File.Exists(string.Format(pathFile, document.ExternalId)))
+                    {
+                        File.Delete(string.Format(pathFile, document.ExternalId));
+                    }
 
-                    documentApi.DeleteECMDocumentArchive(ecmDocumentDeletedIn);
+                    if (Directory.Exists(string.Format(pathImages, document.Hash)))
+                    {
+                        Directory.Delete(string.Format(pathImages, document.Hash), true);
+                    }
 
                     List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
                     {
                         new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Finished"].ToString() },
                     };
 
-                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(externalId, itens));
+                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
                 }
                 catch { }
             }
@@ -211,6 +305,9 @@ namespace Repository
         {
             ECMDocumentsValidateOut ecmDocumentsValidateOut = new ECMDocumentsValidateOut();
             registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string pathImages = Path.Combine(path, "Pages", "{0}");
+            string pathFile = Path.Combine(path, "Documents", "{0}.pdf");
 
             ecmDocumentsValidateOut = documentApi.GetECMValidateDocuments();
 
@@ -229,6 +326,16 @@ namespace Repository
                         {
                             if (document.DocumentStatusId != (int)EDocumentStatus.Sent)
                             {
+                                if (File.Exists(string.Format(pathFile, document.ExternalId)))
+                                {
+                                    File.Delete(string.Format(pathFile, document.ExternalId));
+                                }
+
+                                if (Directory.Exists(string.Format(pathImages, document.Hash)))
+                                {
+                                    Directory.Delete(string.Format(pathImages, document.Hash), true);
+                                }
+
                                 document.DocumentStatusId = (int)EDocumentStatus.Canceled;
 
                                 db.Entry(document).State = System.Data.Entity.EntityState.Modified;
@@ -267,6 +374,7 @@ namespace Repository
             docOld.Clear();
             docNew.Clear();
         }
+
         #endregion
 
         #region .: Local :.
@@ -509,11 +617,18 @@ namespace Repository
 
                 #region .: Search Document Original :.
 
-                ECMDocumentOut ecmDocumentOut = documentApi.GetECMDocument(documentsFinishedVM.externalId);
+                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+                string name = documentsFinishedVM.externalId + ".pdf";
+                string pathFile = Path.Combine(path, "Documents", name);
 
-                if (!ecmDocumentOut.success)
+                if (!File.Exists(pathFile))
                 {
-                    throw new Exception(ecmDocumentOut.messages.FirstOrDefault());
+                    ECMDocumentOut eCMDocumentOut = documentApi.GetECMDocument(documentsFinishedVM.externalId);
+
+                    if (!eCMDocumentOut.success || !File.Exists(pathFile))
+                    {
+                        throw new Exception(eCMDocumentOut.messages.FirstOrDefault());
+                    }
                 }
 
                 #endregion
@@ -522,7 +637,7 @@ namespace Repository
 
                 PDFIn pdfIn = new PDFIn
                 {
-                    archive = ecmDocumentOut.result.archive,
+                    archive = pathFile,
                     pb = documentsFinishedVM.pb,
                     pages = documentsFinishedVM.pages,
                 };
@@ -569,7 +684,7 @@ namespace Repository
 
                 if (!ecmDocumentSaveOut.success)
                 {
-                    throw new Exception(ecmDocumentOut.messages.FirstOrDefault());
+                    throw new Exception(ecmDocumentSaveOut.messages.FirstOrDefault());
                 }
 
                 #endregion
@@ -614,7 +729,7 @@ namespace Repository
 
             Doc docOld = new Doc();
             Doc docNew = new Doc();
-            docOld.Read(Convert.FromBase64String(pdfIn.archive));
+            docOld.Read(pdfIn.archive);
 
             int theCount = docOld.PageCount;
             string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());

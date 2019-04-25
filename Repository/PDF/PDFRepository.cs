@@ -1,12 +1,14 @@
 ﻿using DataEF.DataAccess;
 using Helper.Enum;
+using Helper.ServerMap;
 using Model.In;
 using Model.Out;
-using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
-using WebSupergoo.ABCpdf11;
+using System.Web.Configuration;
 
 namespace Repository
 {
@@ -22,34 +24,84 @@ namespace Repository
             PDFsOut pdfOut = new PDFsOut();
             registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - Start", "Repository.PDFRepository.GetPDFs", "");
 
-            ECMDocumentOut documentOut = documentRepository.GetECMDocumentById(documentIn);
+            DocumentOut documentOut = documentRepository.GetECMDocumentById(documentIn);
 
-            RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, id = documentIn.id, key = documentIn.key };
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string pathImages = Path.Combine(path, "Pages", documentOut.result.Hash.ToString(), "Images");
+            string pathThumb = Path.Combine(path, "Pages", documentOut.result.Hash.ToString(), "Thumbs");
 
-            List<int> pages = new List<int>();
-            pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
+            string name = documentOut.result.ExternalId + ".pdf";
+            string pathFile = Path.Combine(path, "Documents", name);
 
-            Doc theDoc = new Doc();
-            theDoc.Read(Convert.FromBase64String(documentOut.result.archive));
-
-            for (int i = 1; i <= theDoc.PageCount; i++)
+            if (!Directory.Exists(pathImages))
             {
-                if (!pages.Contains(i))
+                Directory.CreateDirectory(pathImages);
+            }
+
+            if (!Directory.Exists(pathThumb))
+            {
+                Directory.CreateDirectory(pathThumb);
+            }
+
+            if (!Directory.Exists(Path.Combine(path, "Documents")))
+            {
+                Directory.CreateDirectory(Path.Combine(path, "Documents"));
+            }
+
+            if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
+            {
+                RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, id = documentIn.id, key = documentIn.key };
+
+                List<int> pages = new List<int>();
+                pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
+
+                pdfOut.result.pages = new List<int>();
+                pdfOut.result.path = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Images/{0}.jpg";
+                pdfOut.result.pathThumb = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Thumbs/{0}.jpg";
+
+                for (int i = 1; i <= documentOut.result.Pages; i++)
                 {
-                    pdfOut.result.Add(new PDFsVM()
+                    if (!pages.Contains(i))
                     {
-                        page = i,
-                        image = string.Format("/Images/GetImage/{0}/{1}", documentOut.result.hash, i),
-                        thumb = string.Format("/Images/GetImage/{0}/{1}/true", documentOut.result.hash, i)
-                    });
+                        pdfOut.result.pages.Add(i);
+                    }
+                }
+            }
+            else
+            {
+                if (!documentOut.result.Download)
+                {
+                    documentRepository.GetECMDocument(documentIn, pathFile);
+
+                    if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
+                    {
+                        RemainingDocumenPagestIn remainingDocumenPagestIn = new RemainingDocumenPagestIn() { documentId = documentIn.documentId, id = documentIn.id, key = documentIn.key };
+
+                        List<int> pages = new List<int>();
+                        pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
+
+                        pdfOut.result.pages = new List<int>();
+                        pdfOut.result.path = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Images/{0}.jpg";
+                        pdfOut.result.pathThumb = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Thumbs/{0}.jpg";
+
+                        for (int i = 1; i <= documentOut.result.Pages; i++)
+                        {
+                            if (!pages.Contains(i))
+                            {
+                                pdfOut.result.pages.Add(i);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
                 }
             }
 
-            theDoc.Clear();
-
             using (var db = new DBContext())
             {
-                if (pdfOut.result == null || pdfOut.result.Count <= 0)
+                if (pdfOut.result == null)
                 {
                     Documents document = db.Documents.Where(x => x.DocumentId == documentIn.documentId).FirstOrDefault();
 

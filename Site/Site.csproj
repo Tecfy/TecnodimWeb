@@ -264,7 +264,6 @@
     <Compile Include="Controllers\Api\DeletedPagesController.cs" />
     <Compile Include="Controllers\Api\DocumentDetailsController.cs" />
     <Compile Include="Controllers\Api\DocumentsController.cs" />
-    <Compile Include="Controllers\Api\ImagesController.cs" />
     <Compile Include="Controllers\Api\PDFsController.cs" />
     <Compile Include="Controllers\Api\SlicePagesController.cs" />
     <Compile Include="Controllers\Api\SlicesController.cs" />

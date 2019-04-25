@@ -100,7 +100,6 @@
     <Compile Include="SlicePage\SlicePageRepository.cs" />
     <Compile Include="Document\DocumentRepository.cs" />
     <Compile Include="Slice\SliceRepository.cs" />
-    <Compile Include="Image\ImageRepository.cs" />
     <Compile Include="PDF\PDFRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Category\CategoryRepository.cs" />

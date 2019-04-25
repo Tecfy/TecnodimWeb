@@ -1,5 +1,4 @@
 ﻿using Model.VM;
-using System.Collections.Generic;
 
 namespace Model.Out
 {
@@ -7,9 +6,9 @@ namespace Model.Out
     {
         public PDFsOut()
         {
-            result = new List<PDFsVM>();
+            result = new PDFsVM();
         }
 
-        public List<PDFsVM> result { get; set; }
+        public PDFsVM result { get; set; }
     }
 }
