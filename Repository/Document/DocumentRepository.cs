@@ -50,11 +50,26 @@ namespace Repository
 
             if (!File.Exists(pathFile))
             {
-                ECMDocumentOut eCMDocumentOut = documentApi.GetECMDocument(documents.ExternalId);
-
-                if (!eCMDocumentOut.success)
+                try
                 {
-                    throw new Exception(i18n.Resource.FileNotFound);
+                    ECMDocumentOut eCMDocumentOut = documentApi.GetECMDocument(documents.ExternalId);
+
+                    if (!eCMDocumentOut.success)
+                    {
+                        throw new Exception(i18n.Resource.FileNotFound);
+                    }
+                }
+                catch
+                {
+                    using (var db = new DBContext())
+                    {
+                        documents.Download = false;
+
+                        db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    throw new Exception(i18n.Resource.UnknownError);
                 }
             }
 
@@ -68,6 +83,8 @@ namespace Repository
                     string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
                     string pathImages = Path.Combine(path, "Pages", documents.Hash.ToString(), "Images");
                     string pathThumb = Path.Combine(path, "Pages", documents.Hash.ToString(), "Thumbs");
+                    int dpi = 100;
+                    int.TryParse(WebConfigurationManager.AppSettings["DPI"], out dpi);
 
                     if (!Directory.Exists(pathImages))
                     {
@@ -85,6 +102,7 @@ namespace Repository
                     {
                         theDoc.PageNumber = i;
                         theDoc.Rect.Resize(theDoc.MediaBox.Width, theDoc.MediaBox.Height);
+                        theDoc.Rendering.DotsPerInch = dpi;
                         theDoc.Rendering.GetBitmap().Save(Path.Combine(pathImages, i + ".jpg"));
                         var bmp = theDoc.Rendering.GetBitmap();
 
@@ -92,7 +110,6 @@ namespace Repository
                     }
 
                     theDoc.Clear();
-                    theDoc.Dispose();
 
                     using (var db = new DBContext())
                     {

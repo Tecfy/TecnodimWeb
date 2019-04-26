@@ -2,6 +2,7 @@
 using Model.Out;
 using System;
 using System.Drawing;
+using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 using WebSupergoo.ABCpdf11.Objects;
 
@@ -27,7 +28,11 @@ namespace Repository
                 throw new Exception(i18n.Resource.PageNotExist);
             }
 
+            int dpi = 100;
+            int.TryParse(WebConfigurationManager.AppSettings["DPI"], out dpi);
+
             theDoc.PageNumber = imageIn.page;
+            theDoc.Rendering.DotsPerInch = dpi;
 
             if (imageIn.thumb)
             {
