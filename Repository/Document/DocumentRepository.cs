@@ -8,6 +8,7 @@ using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web.Configuration;
@@ -82,16 +83,16 @@ namespace Repository
 
                     for (int i = 1; i <= theDoc.PageCount; i++)
                     {
-                        Doc singlePagePdf = new Doc();
-                        singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = theDoc.MediaBox.String;
-                        singlePagePdf.AddPage();
-                        singlePagePdf.AddImageDoc(theDoc, i, null);
-                        singlePagePdf.FrameRect();
+                        theDoc.PageNumber = i;
+                        theDoc.Rect.Resize(theDoc.MediaBox.Width, theDoc.MediaBox.Height);
+                        theDoc.Rendering.GetBitmap().Save(Path.Combine(pathImages, i + ".jpg"));
+                        var bmp = theDoc.Rendering.GetBitmap();
 
-                        File.WriteAllBytes(Path.Combine(pathImages, i + ".jpg"), singlePagePdf.Rendering.GetData(".jpg"));
-                        singlePagePdf.Rendering.DotsPerInch = 20;
-                        File.WriteAllBytes(Path.Combine(pathThumb, i + ".jpg"), singlePagePdf.Rendering.GetData(".jpg"));
+                        HelperImage.Resize((Image)bmp, Path.Combine(pathThumb, i + ".jpg"), 200, HelperImage.TypeSize.Width, 342, 80, false, HelperImage.TypeImage.JPG, Color.White);
                     }
+
+                    theDoc.Clear();
+                    theDoc.Dispose();
 
                     using (var db = new DBContext())
                     {

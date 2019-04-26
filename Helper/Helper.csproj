@@ -82,6 +82,7 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Helper\HelperEncrypt.cs" />
     <Compile Include="Helper\HelperFormatCnpjCpf.cs" />
+    <Compile Include="Helper\HelperImage.cs" />
     <Compile Include="Linq\EnumerableCustom.cs" />
     <Compile Include="PDF\HelperColorMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

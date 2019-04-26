@@ -115,7 +115,7 @@ namespace Site.Adm.Controllers
 
                 if (identity.IsAuthenticated)
                 {
-                    foreach (System.Security.Claims.Claim claim in identity.Claims)
+                    foreach (Claim claim in identity.Claims)
                     {
                         if (claim.Type == WebConfigurationManager.AppSettings["ADFS.FirstName"])
                         {

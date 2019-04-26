@@ -32,7 +32,7 @@ namespace Repository
 
                 if (unit == null)
                 {
-                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 uninyCode = unit.ExternalId;
@@ -60,7 +60,7 @@ namespace Repository
 
                 if (jobs == null)
                 {
-                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 registration = jobs.Registration;
@@ -69,7 +69,7 @@ namespace Repository
 
                 if (unit == null)
                 {
-                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 uninyCode = unit.ExternalId;
@@ -95,7 +95,7 @@ namespace Repository
 
                 if (document == null)
                 {
-                    throw new System.Exception(i18n.Resource.RegisterNotFound);
+                    throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
                 registration = document.Registration;
