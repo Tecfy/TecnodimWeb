@@ -1,6 +1,7 @@
 ﻿using Model.In;
 using Model.Out;
 using System;
+using System.Drawing;
 using WebSupergoo.ABCpdf11;
 using WebSupergoo.ABCpdf11.Objects;
 
@@ -26,28 +27,15 @@ namespace Repository
                 throw new Exception(i18n.Resource.PageNotExist);
             }
 
-            Doc singlePagePdf = new Doc();
-            singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = theDoc.MediaBox.String;
-            singlePagePdf.AddPage();
-            singlePagePdf.AddImageDoc(theDoc, imageIn.page, null);
-            singlePagePdf.FrameRect();
+            theDoc.PageNumber = imageIn.page;
 
             if (imageIn.thumb)
             {
-                singlePagePdf.Rendering.DotsPerInch = 20;
-                Page[] pages = singlePagePdf.ObjectSoup.Catalog.Pages.GetPageArrayAll();
-                foreach (Page page in pages)
-                {
-                    singlePagePdf.Page = page.ID;
-                    using (XImage xi = XImage.FromData(singlePagePdf.Rendering.GetData(".jpg"), null))
-                        page.Thumbnail = PixMap.FromXImage(singlePagePdf.ObjectSoup, xi);
-                }
-
-                imageOut.result.image = singlePagePdf.Rendering.GetData(".jpg");
+                imageOut.result.image = HelperImage.Resize((Image)theDoc.Rendering.GetBitmap(), 200, HelperImage.TypeSize.Width, 342, 80, false, HelperImage.TypeImage.JPG, Color.White);
             }
             else
             {
-                imageOut.result.image = singlePagePdf.Rendering.GetData(".jpg");
+                imageOut.result.image = theDoc.Rendering.GetData(".jpg");
             }
 
             return imageOut;

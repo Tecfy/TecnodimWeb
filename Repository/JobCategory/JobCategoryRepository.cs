@@ -138,6 +138,7 @@ namespace Repository
                                               registration = x.Jobs.Registration,
                                               categoryId = x.Categories.Code,
                                               archive = jobCategorySaveIn.archive,
+                                              code = x.Code,
                                               title = x.Categories.Name,
                                               dataJob = x.Jobs.CreatedDate,
                                               user = x.Jobs.Users.Registration,

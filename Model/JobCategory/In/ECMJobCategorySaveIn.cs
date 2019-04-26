@@ -10,7 +10,9 @@ namespace Model.In
 
         public string archive { get; set; }
 
-        public string title { get; set; }
+        public string code { get; set; }
+
+        public string title { get; set; }        
 
         public DateTime dataJob { get; set; }
 
