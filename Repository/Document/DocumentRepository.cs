@@ -58,12 +58,12 @@ namespace Repository
 
                     if (!eCMDocumentOut.success)
                     {
-                        registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}", documents.ExternalId));
+                        registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}. Message: {1}", documents.ExternalId, eCMDocumentOut.messages.FirstOrDefault()));
 
-                        throw new Exception(i18n.Resource.FileNotFound);
+                        throw new Exception(eCMDocumentOut.messages.FirstOrDefault());
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     using (var db = new DBContext())
                     {
@@ -72,8 +72,6 @@ namespace Repository
                         db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                     }
-
-                    registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
 
                     throw new Exception(i18n.Resource.UnknownError);
                 }
@@ -86,7 +84,7 @@ namespace Repository
                     Doc theDoc = new Doc();
                     theDoc.Read(pathFile);
 
-                    string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+                    string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
                     string pathImages = Path.Combine(path, "Pages", documents.Hash.ToString(), "Images");
                     string pathThumb = Path.Combine(path, "Pages", documents.Hash.ToString(), "Thumbs");
                     int dpi = 100;
@@ -289,7 +287,7 @@ namespace Repository
             #region .: Update Documents :.
 
             Documents document = new Documents();
-            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
             string pathImages = Path.Combine(path, "Pages", "{0}");
             string pathFile = Path.Combine(path, "Documents", "{0}.pdf");
 
@@ -340,7 +338,7 @@ namespace Repository
         {
             ECMDocumentsValidateOut ecmDocumentsValidateOut = new ECMDocumentsValidateOut();
             registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
-            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
             string pathImages = Path.Combine(path, "Pages", "{0}");
             string pathFile = Path.Combine(path, "Documents", "{0}.pdf");
 
@@ -654,7 +652,7 @@ namespace Repository
 
                 #region .: Search Document Original :.
 
-                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
                 string name = documentsFinishedVM.externalId + ".pdf";
                 string pathFile = Path.Combine(path, "Documents", name);
 

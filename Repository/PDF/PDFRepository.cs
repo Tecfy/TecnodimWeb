@@ -25,7 +25,7 @@ namespace Repository
 
             DocumentOut documentOut = documentRepository.GetECMDocumentById(documentIn);
 
-            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
             string pathImages = Path.Combine(path, "Pages", documentOut.result.Hash.ToString(), "Images");
             string pathThumb = Path.Combine(path, "Pages", documentOut.result.Hash.ToString(), "Thumbs");
 
@@ -93,7 +93,7 @@ namespace Repository
 
             #region .: Valid Foders :.
 
-            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path"]);
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
             string pathImages = Path.Combine(path, "Pages", hash.ToString(), "Images");
             string pathThumb = Path.Combine(path, "Pages", hash.ToString(), "Thumbs");
 
