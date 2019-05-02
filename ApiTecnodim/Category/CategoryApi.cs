@@ -17,6 +17,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 ApiECMCategoriesOut ecmCategoriesOut = SimpleJson.SimpleJson.DeserializeObject<ApiECMCategoriesOut>(response.Content);

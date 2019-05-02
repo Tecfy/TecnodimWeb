@@ -48,6 +48,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 ECMDocumentsOut ecmDocumentsOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentsOut>(response.Content);
@@ -73,6 +76,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 ECMDocumentsValidateOut eCMDocumentsValidateOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentsValidateOut>(response.Content);
@@ -97,6 +103,9 @@ namespace ApiTecnodim
                 var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.GetECMValidateAdInterfaceDocuments"].ToString());
 
                 var request = RestRequestHelper.Get(Method.GET);
+
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
 
                 IRestResponse response = client.Execute(request);
 
@@ -127,11 +136,14 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(i18n.Resource.UnknownError);
+                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
                 }
 
                 ECMDocumentSaveOut ecmDocumentSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentSaveOut>(response.Content);

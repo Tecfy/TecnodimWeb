@@ -14,12 +14,14 @@ namespace Repository
         private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         private SlicePageRepository slicePageRepository = new SlicePageRepository();
         private DocumentRepository documentRepository = new DocumentRepository();
+        private PDFRepository pdfRepository = new PDFRepository();
 
         public SliceOut GetSlice(SliceIn sliceIn)
         {
             SliceOut sliceOut = new SliceOut();
             registerEventRepository.SaveRegisterEvent(sliceIn.id, sliceIn.key, "Log - Start", "Repository.SliceRepository.GetSlice", "");
             string path = WebConfigurationManager.AppSettings["UrlBase"];
+            Documents documents = new Documents();
 
             using (var db = new DBContext())
             {
@@ -28,6 +30,7 @@ namespace Repository
                                     .Select(x => new SliceVM()
                                     {
                                         sliceId = x.SliceId,
+                                        documentId = x.DocumentId,
                                         categoryId = x.CategoryId,
                                         name = x.Name,
                                         slicePages = x.SlicePages.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new SlicePageVM()
@@ -49,6 +52,20 @@ namespace Repository
                                         }).ToList()
                                     })
                                     .FirstOrDefault();
+
+                documents = db.Documents.Where(x => x.DocumentId == sliceOut.result.documentId).FirstOrDefault();
+            }
+
+            if (!documents.Download)
+            {
+                if (!pdfRepository.ValidPDFs(documents.DocumentId, documents.ExternalId, documents.Hash.ToString(), sliceIn.id, sliceIn.key))
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+            }
+            else
+            {
+                throw new Exception(i18n.Resource.DownloadFile);
             }
 
             registerEventRepository.SaveRegisterEvent(sliceIn.id, sliceIn.key, "Log - End", "Repository.SliceRepository.GetSlice", "");
@@ -60,6 +77,7 @@ namespace Repository
             SliceOut sliceOut = new SliceOut();
             registerEventRepository.SaveRegisterEvent(slicePendingIn.id, slicePendingIn.key, "Log - Start", "Repository.SliceRepository.GetSlicePending", "");
             string path = WebConfigurationManager.AppSettings["UrlBase"];
+            Documents documents = new Documents();
 
             using (var db = new DBContext())
             {
@@ -100,6 +118,20 @@ namespace Repository
                         documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { id = slicePendingIn.id, key = slicePendingIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.Classificated });
                     }
                 }
+
+                documents = db.Documents.Where(x => x.DocumentId == slicePendingIn.documentId).FirstOrDefault();
+            }
+
+            if (!documents.Download)
+            {
+                if (!pdfRepository.ValidPDFs(documents.DocumentId, documents.ExternalId, documents.Hash.ToString(), slicePendingIn.id, slicePendingIn.key))
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+            }
+            else
+            {
+                throw new Exception(i18n.Resource.DownloadFile);
             }
 
             registerEventRepository.SaveRegisterEvent(slicePendingIn.id, slicePendingIn.key, "Log - End", "Repository.SliceRepository.GetSlicePending", "");

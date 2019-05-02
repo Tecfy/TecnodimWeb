@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -22,8 +23,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMDocuments()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 string Key = Guid.NewGuid().ToString();
 
                 try
@@ -45,8 +49,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMSendDocuments()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 string Key = Guid.NewGuid().ToString();
 
                 try
@@ -67,8 +74,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMValidateDocuments()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 string Key = Guid.NewGuid().ToString();
 
                 try
@@ -89,8 +99,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMValidateAdInterfaceDocuments()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 string Key = Guid.NewGuid().ToString();
 
                 try
@@ -207,8 +220,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage ConvertDocumentPB()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 documentRepository.ConvertDocumentPB(@"D:\Rudolf\Tecfy\Tecnodim\Demandas\2019-04-01-Tecnodim\SER_GESTÃO DOUMENTOS_ESPECIFICAÇÕES_4.pdf");
             });
 

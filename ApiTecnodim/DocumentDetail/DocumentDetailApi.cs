@@ -20,6 +20,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 DocumentDetailsByRegistrationOut documentDetailsByRegistrationOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailsByRegistrationOut>(response.Content);
@@ -45,6 +48,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 DocumentDetailJobIdOut documentDetailJobIdOut = SimpleJson.SimpleJson.DeserializeObject<DocumentDetailJobIdOut>(response.Content);
@@ -69,6 +75,9 @@ namespace ApiTecnodim
                 var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.GetECMDocumentDetail"].ToString(), registration));
 
                 var request = RestRequestHelper.Get(Method.GET);
+
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
 
                 IRestResponse response = client.Execute(request);
 
@@ -99,11 +108,14 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMDocumentDetailSaveIn));
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(i18n.Resource.UnknownError);
+                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
                 }
 
                 ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentDetailSaveOut>(response.Content);

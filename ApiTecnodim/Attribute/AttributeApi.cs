@@ -18,6 +18,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmAttributeIn));
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 ECMAttributeOut ecmAttributeOut = SimpleJson.SimpleJson.DeserializeObject<ECMAttributeOut>(response.Content);

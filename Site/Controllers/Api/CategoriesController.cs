@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -106,8 +107,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetECMCategories()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 string Key = Guid.NewGuid().ToString();
 
                 try

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 
@@ -19,8 +20,11 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetSyncRuntimes()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
                 SyncRuntimesOut syncRuntimesOut = new SyncRuntimesOut();
                 string Key = Guid.NewGuid().ToString();
 

@@ -19,6 +19,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 PermissionsOut PermissionsOut = SimpleJson.SimpleJson.DeserializeObject<PermissionsOut>(response.Content);

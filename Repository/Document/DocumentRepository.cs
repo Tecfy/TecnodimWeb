@@ -38,6 +38,8 @@ namespace Repository
 
                 if (documents == null)
                 {
+                    registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("DocumentId: {0}", documentIn.documentId));
+
                     throw new Exception(i18n.Resource.RegisterNotFound);
                 }
 
@@ -56,10 +58,12 @@ namespace Repository
 
                     if (!eCMDocumentOut.success)
                     {
+                        registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}", documents.ExternalId));
+
                         throw new Exception(i18n.Resource.FileNotFound);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     using (var db = new DBContext())
                     {
@@ -68,6 +72,8 @@ namespace Repository
                         db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                     }
+
+                    registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
 
                     throw new Exception(i18n.Resource.UnknownError);
                 }
@@ -119,7 +125,7 @@ namespace Repository
                         db.SaveChanges();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     using (var db = new DBContext())
                     {
@@ -128,6 +134,7 @@ namespace Repository
                         db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                     }
+                    registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
 
                     throw new Exception(i18n.Resource.UnknownError);
                 }
@@ -141,6 +148,8 @@ namespace Repository
                     db.Entry(documents).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
+
+                registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Erro: {0} PathFile: {1}", i18n.Resource.FileNotFound, pathFile));
 
                 throw new Exception(i18n.Resource.FileNotFound);
             }
@@ -215,17 +224,17 @@ namespace Repository
                                     db.SaveChanges();
 
                                     List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
-                                {
-                                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
-                                };
+                                    {
+                                        new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
+                                    };
                                     attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(item.externalId, itens));
                                 }
                                 else
                                 {
                                     List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
-                                {
-                                    new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
-                                };
+                                    {
+                                        new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
+                                    };
                                     attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
                                 }
                             }
@@ -629,6 +638,8 @@ namespace Repository
 
                     if (slice == null)
                     {
+                        registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", "Slice");
+
                         throw new Exception(string.Format(i18n.Resource.SliceNoProcess, documentsFinishedVM.sliceId));
                     }
 
@@ -653,7 +664,18 @@ namespace Repository
 
                     if (!eCMDocumentOut.success || !File.Exists(pathFile))
                     {
-                        throw new Exception(eCMDocumentOut.messages.FirstOrDefault());
+                        if (!eCMDocumentOut.success)
+                        {
+                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", "Document");
+
+                            throw new Exception(eCMDocumentOut.messages.FirstOrDefault());
+                        }
+                        else
+                        {
+                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", "File Not Found");
+
+                            throw new Exception(i18n.Resource.FileNotFound);
+                        }
                     }
                 }
 
@@ -672,6 +694,8 @@ namespace Repository
 
                 if (string.IsNullOrEmpty(file))
                 {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", "Rotate File");
+
                     throw new Exception(i18n.Resource.FileNotFound);
                 }
 
@@ -693,7 +717,6 @@ namespace Repository
                 {
                     registration = documentsFinishedVM.registration,
                     categoryId = documentsFinishedVM.categoryId,
-                    archive = file,
                     title = documentsFinishedVM.title,
                     user = documentsFinishedVM.user,
                     sliceUser = documentsFinishedVM.sliceUser,
@@ -703,16 +726,28 @@ namespace Repository
                     extension = documentsFinishedVM.extension,
                     classificationDate = documentsFinishedVM.classificationDate.ToString(),
                     sliceDate = documentsFinishedVM.sliceDate.ToString(),
-                    additionalFields = additionalFieldSaveIns
+                    additionalFields = additionalFieldSaveIns,
+                    archive = file
                 };
 
-                ECMDocumentSaveOut ecmDocumentSaveOut = documentApi.PostECMDocumentSave(ecmDocumentSaveIn);
-
-                if (!ecmDocumentSaveOut.success)
+                try
                 {
-                    throw new Exception(ecmDocumentSaveOut.messages.FirstOrDefault());
-                }
+                    ECMDocumentSaveOut ecmDocumentSaveOut = documentApi.PostECMDocumentSave(ecmDocumentSaveIn);
 
+                    if (!ecmDocumentSaveOut.success)
+                    {
+                        registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
+
+                        throw new Exception(ecmDocumentSaveOut.messages.FirstOrDefault());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
+
+                    throw new Exception(ex.Message);
+                }
+               
                 #endregion
 
                 #region .: Update Slice :.
@@ -741,6 +776,8 @@ namespace Repository
                     }
                 }
 
+                registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+
                 throw new Exception(ex.Message);
             }
 
@@ -749,7 +786,7 @@ namespace Repository
 
         private string Rotate(PDFIn pdfIn, string id, string key)
         {
-            registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.DocumentRepository.DocumentSliceProcess", "");
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.DocumentRepository.Rotate", "");
 
             string archive = string.Empty;
 

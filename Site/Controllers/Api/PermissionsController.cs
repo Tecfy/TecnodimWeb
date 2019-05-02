@@ -3,6 +3,7 @@ using Repository;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace Site.Api.Controllers
@@ -16,8 +17,12 @@ namespace Site.Api.Controllers
         [AllowAnonymous, HttpGet]
         public HttpResponseMessage GetPermissions()
         {
+            var currentContext = HttpContext.Current;
+
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                HttpContext.Current = currentContext;
+
                 string Key = Guid.NewGuid().ToString();
 
                 try

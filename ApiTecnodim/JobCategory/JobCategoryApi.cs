@@ -20,6 +20,9 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.GET);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 ECMJobCategoryOut eCMJobCategoryOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobCategoryOut>(response.Content);
@@ -49,11 +52,14 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmJobCategorySaveIn));
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(i18n.Resource.UnknownError);
+                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
                 }
 
                 ECMJobCategorySaveOut ecmJobCategorySaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobCategorySaveOut>(response.Content);
@@ -79,11 +85,14 @@ namespace ApiTecnodim
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMJobSaveIn));
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 IRestResponse response = client.Execute(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(i18n.Resource.UnknownError);
+                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
                 }
 
                 ECMJobSaveOut eCMJobSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobSaveOut>(response.Content);
@@ -111,9 +120,12 @@ namespace ApiTecnodim
 
                 IRestResponse response = client.Execute(request);
 
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(i18n.Resource.UnknownError);
+                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
                 }
 
                 ECMJobDeletedOut eCMJobDeletedOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobDeletedOut>(response.Content);
