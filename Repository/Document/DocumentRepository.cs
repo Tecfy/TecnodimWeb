@@ -402,7 +402,9 @@ namespace Repository
 
             docNew = PB.Converter(docOld);
 
-            File.WriteAllBytes(@"D:\Rudolf\Tecfy\Tecnodim\Demandas\2019-04-01-Tecnodim\SER_GESTÃO DOUMENTOS_ESPECIFICAÇÕES_4_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_sss") + ".pdf", docNew.GetData());
+            FileInfo fileInfo = new FileInfo(document);
+
+            docNew.Save(Path.Combine(fileInfo.DirectoryName, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf(fileInfo.Extension)) + "_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_sss") + fileInfo.Extension));
 
             docOld.Clear();
             docNew.Clear();
@@ -734,18 +736,14 @@ namespace Repository
 
                     if (!ecmDocumentSaveOut.success)
                     {
-                        registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
-
                         throw new Exception(ecmDocumentSaveOut.messages.FirstOrDefault());
                     }
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.DocumentRepository.DocumentSliceProcess", SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
-
                     throw new Exception(ex.Message);
                 }
-               
+
                 #endregion
 
                 #region .: Update Slice :.

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
 namespace Helper
@@ -90,31 +91,25 @@ namespace Helper
     /// <returns>A Doc object of the black and white</returns>
     public class PB
     {
-        public static Doc Converter(Doc docOld)
+        public static Doc Converter(Doc theDoc)
         {
-            Doc docNew = new Doc();
-            docNew.Rect.String = docNew.MediaBox.String = docOld.MediaBox.String;
+            Doc docNew = new Doc();            
+            int dpi = 100;
+            int.TryParse(WebConfigurationManager.AppSettings["DPI"], out dpi);
 
-            for (int i = 1; i <= docOld.PageCount; i++)
+            for (int i = 1; i <= theDoc.PageCount; i++)
             {
-                Doc singlePagePdf = new Doc();
-                singlePagePdf.Rect.String = singlePagePdf.MediaBox.String = docOld.MediaBox.String;
-                singlePagePdf.AddPage();
-                singlePagePdf.AddImageDoc(docOld, i, null);
-                singlePagePdf.FrameRect();
+                theDoc.PageNumber = i;
+                theDoc.Rect.Resize(theDoc.MediaBox.Width, theDoc.MediaBox.Height);
+                theDoc.Rendering.DotsPerInch = dpi;
 
-                byte[] img = singlePagePdf.Rendering.GetData(".jpg");
-                MemoryStream memoryStream = new MemoryStream(img);
+                var bitmapNew = ConvertBlackAndWhite.Convert(theDoc.Rendering.GetBitmap());
 
-                Bitmap bitmapOld = new Bitmap(memoryStream);                
-                Bitmap bitmapNew = ConvertBlackAndWhite.Convert(bitmapOld);
-
+                docNew.Rect.String = docNew.MediaBox.String = theDoc.MediaBox.String;
                 docNew.AddPage();
                 docNew.PageNumber = i;
                 docNew.AddImageBitmap(bitmapNew, true);
-                singlePagePdf.FrameRect();
 
-                bitmapOld.Dispose();
                 bitmapNew.Dispose();
             }
 

@@ -218,14 +218,14 @@ namespace Site.Api.Controllers
         }
 
         [AllowAnonymous, HttpGet]
-        public HttpResponseMessage ConvertDocumentPB()
+        public HttpResponseMessage ConvertDocumentPB(string file)
         {
             var currentContext = HttpContext.Current;
 
             System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 HttpContext.Current = currentContext;
-                documentRepository.ConvertDocumentPB(@"D:\Rudolf\Tecfy\Tecnodim\Demandas\2019-04-01-Tecnodim\SER_GESTÃO DOUMENTOS_ESPECIFICAÇÕES_4.pdf");
+                documentRepository.ConvertDocumentPB(file);
             });
 
             return Request.CreateResponse(HttpStatusCode.OK);

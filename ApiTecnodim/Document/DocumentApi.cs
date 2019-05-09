@@ -132,7 +132,11 @@ namespace ApiTecnodim
         {
             try
             {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.PostECMDocumentSave"].ToString());
+                string uri = WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.PostECMDocumentSave"].ToString();
+
+                var client = new RestClient(uri);
+
+                var x = SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn).Length;
 
                 var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(ecmDocumentSaveIn));
 
@@ -143,7 +147,7 @@ namespace ApiTecnodim
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
+                    throw new Exception(string.Format(" URI: {0}. Message: {1}. Length: {2}", uri, response.ErrorException != null ? response.ErrorException.Message : "NA", x));
                 }
 
                 ECMDocumentSaveOut ecmDocumentSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentSaveOut>(response.Content);

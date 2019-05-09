@@ -8,8 +8,6 @@ namespace Model.In
 
         public string categoryId { get; set; }
 
-        public string archive { get; set; }
-
         public string title { get; set; }
 
         public string user { get; set; }
@@ -29,5 +27,7 @@ namespace Model.In
         public string sliceDate { get; set; }
 
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
+
+        public string archive { get; set; }
     }
 }
