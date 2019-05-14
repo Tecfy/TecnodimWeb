@@ -1,13 +1,17 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
 using Helper.Enum;
+using Helper.ServerMap;
 using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
 namespace Repository
@@ -27,6 +31,7 @@ namespace Repository
         {
             JobCategoriesByJobIdOut jobCategoryByIdOut = new JobCategoriesByJobIdOut();
             registerEventRepository.SaveRegisterEvent(jobCategoryByIdIn.id, jobCategoryByIdIn.key, "Log - Start", "Repository.JobCategoryRepository.GetJobCategoriesByJobId", "");
+            string path = WebConfigurationManager.AppSettings["UrlBase"];
 
             using (var db = new DBContext())
             {
@@ -47,8 +52,8 @@ namespace Repository
                                                                       {
                                                                           jobCategoryPageId = y.JobCategoryPageId,
                                                                           page = y.Page,
-                                                                          image = "/ScanningImages/GetImageScanning/" + x.Hash + "/" + y.Page,
-                                                                          thumb = "/ScanningImages/GetImageScanning/" + x.Hash + "/" + y.Page + "/true",
+                                                                          image = path + "/Files/ScanningPages/" + x.Hash + "/Images/" + y.Page + ".jpg",
+                                                                          thumb = path + "/Files/ScanningPages/" + x.Hash + "/Thumbs/" + y.Page + ".jpg",
                                                                       }).ToList(),
                                                   additionalFields = x.JobCategoryAdditionalFields
                                                                       .Where(y => y.Active == true && y.DeletedDate == null)
@@ -66,23 +71,28 @@ namespace Repository
                                               .ToList();
             }
 
+            foreach (var item in jobCategoryByIdOut.result)
+            {
+                using (var db = new DBContext())
+                {
+                    JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == item.JobCategoryId).FirstOrDefault();
+
+                    if (!jobCategory.Download && jobCategory.Received)
+                    {
+                        ExistPDFs(jobCategory.JobCategoryId, jobCategory.Code, jobCategory.Hash.ToString(), jobCategoryByIdIn.id, jobCategoryByIdIn.key);
+                    }
+                }
+            }
+
             registerEventRepository.SaveRegisterEvent(jobCategoryByIdIn.id, jobCategoryByIdIn.key, "Log - End", "Repository.JobCategoryRepository.GetJobCategoriesByJobId", "");
             return jobCategoryByIdOut;
         }
 
-        public ECMJobCategoryOut GetECMJobCategoryByHash(string hash)
+        public ECMJobCategoryOut GetECMJobCategory(string externalId)
         {
             ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
-            Guid guid = Guid.Parse(hash);
-            string externalId = string.Empty;
-
-            using (var db = new DBContext())
-            {
-                externalId = db.JobCategories.Where(x => x.Hash == guid).FirstOrDefault().Code;
-            }
 
             eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(externalId);
-            eCMJobCategoryOut.result.hash = hash;
 
             return eCMJobCategoryOut;
         }
@@ -231,6 +241,12 @@ namespace Repository
 
                 #endregion
             }
+
+            #endregion
+
+            #region .: :.
+
+            SavePDFs(jobCategorySaveIn.jobCategoryId, jobCategorySaveIn.archive, jobCategorySaveIn.id, jobCategorySaveIn.key);
 
             #endregion
 
@@ -472,6 +488,155 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(jobCategoryIncludeIn.id, jobCategoryIncludeIn.key, "Log - End", "Repository.JobCategoryRepository.IncludeJobCategory", "");
             return jobCategoryIncludeOut;
+        }
+
+        #endregion
+
+        #region .: Helper :.
+
+        private void SavePDFs(int jobCategoryId, string archive, string id, string key)
+        {
+            JobCategories jobCategory = new JobCategories();
+
+            using (var db = new DBContext())
+            {
+                jobCategory = db.JobCategories.Where(x => x.JobCategoryId == jobCategoryId).FirstOrDefault();
+
+                if (jobCategory == null)
+                {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobCategoryRepository.ValidPDFs", string.Format("JobCategoryId: {0}", jobCategoryId));
+
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                jobCategory.Download = true;
+                jobCategory.DownloadDate = DateTime.Now;
+
+                db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            try
+            {
+                Doc theDoc = new Doc();
+                theDoc.Read(archive);
+
+                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
+                string pathImages = Path.Combine(path, "ScanningPages", jobCategory.Hash.ToString(), "Images");
+                string pathThumb = Path.Combine(path, "ScanningPages", jobCategory.Hash.ToString(), "Thumbs");
+                int dpi = 100;
+                int.TryParse(WebConfigurationManager.AppSettings["DPI"], out dpi);
+
+                if (!Directory.Exists(pathImages))
+                {
+                    Directory.CreateDirectory(pathImages);
+                }
+
+                if (!Directory.Exists(pathThumb))
+                {
+                    Directory.CreateDirectory(pathThumb);
+                }
+
+                jobCategory.Pages = theDoc.PageCount;
+
+                for (int i = 1; i <= theDoc.PageCount; i++)
+                {
+                    theDoc.PageNumber = i;
+                    theDoc.Rect.Resize(theDoc.MediaBox.Width, theDoc.MediaBox.Height);
+                    theDoc.Rendering.DotsPerInch = dpi;
+                    theDoc.Rendering.GetBitmap().Save(Path.Combine(pathImages, i + ".jpg"));
+                    var bmp = theDoc.Rendering.GetBitmap();
+
+                    HelperImage.Resize((Image)bmp, Path.Combine(pathThumb, i + ".jpg"), 200, HelperImage.TypeSize.Width, 342, 80, false, HelperImage.TypeImage.JPG, Color.White);
+                }
+
+                theDoc.Clear();
+
+                using (var db = new DBContext())
+                {
+                    jobCategory.Download = false;
+
+                    db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                using (var db = new DBContext())
+                {
+                    jobCategory.Download = false;
+
+                    db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobCategoryRepository.ValidPDFs", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+
+                throw new Exception(i18n.Resource.UnknownError);
+            }
+        }
+
+        public bool ExistPDFs(int jobCategoryId, string externalId, string hash, string id, string key)
+        {
+            bool @return = false;
+
+            #region .: Valid Foders :.
+
+            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
+            string pathImages = Path.Combine(path, "ScanningPages", hash.ToString(), "Images");
+            string pathThumb = Path.Combine(path, "ScanningPages", hash.ToString(), "Thumbs");
+
+            string name = externalId + ".pdf";
+            string pathFile = Path.Combine(path, "JobCategories", name);
+
+            if (!Directory.Exists(pathImages))
+            {
+                Directory.CreateDirectory(pathImages);
+            }
+
+            if (!Directory.Exists(pathThumb))
+            {
+                Directory.CreateDirectory(pathThumb);
+            }
+
+            if (!Directory.Exists(Path.Combine(path, "JobCategories")))
+            {
+                Directory.CreateDirectory(Path.Combine(path, "JobCategories"));
+            }
+
+            #endregion
+
+            #region .: Valid Files :.
+
+            if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
+            {
+                @return = true;
+            }
+            else
+            {
+                GetECMJobCategory(externalId);
+
+                if (File.Exists(pathFile))
+                {
+                    SavePDFs(jobCategoryId, pathFile, id, key);
+
+                    if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
+                    {
+                        @return = true;
+                    }
+                    else
+                    {
+                        @return = false;
+                    }
+                }
+                else
+                {
+                    @return = false;
+                }
+            }
+
+            #endregion
+
+            return @return;
         }
 
         #endregion

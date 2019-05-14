@@ -125,6 +125,12 @@
     </div>
 
     <div class="form-group">
+        @Html.EditorFor(model => model.pbEmbarked, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.pbEmbarked, new { @class = "form-check-label", @for = "pb" })
+        @Html.ValidationMessageFor(model => model.pbEmbarked)
+    </div>
+
+    <div class="form-group">
         @Html.EditorFor(model => model.Release, new { @class = "form-check-input" })
         @Html.LabelFor(m => m.Release, new { @class = "form-check-label", @for = "Release" })
         @Html.ValidationMessageFor(model => model.Release)

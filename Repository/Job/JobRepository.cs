@@ -1,12 +1,16 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
+using Helper;
 using Helper.Enum;
+using Helper.ServerMap;
 using Model.In;
 using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
 namespace Repository
@@ -191,7 +195,7 @@ namespace Repository
             {
                 try
                 {
-                    JobCategoryProcess(item);
+                    JobCategoryProcess(item, eCMJobsSendIn.id, eCMJobsSendIn.key);
                 }
                 catch (Exception ex)
                 {
@@ -258,6 +262,7 @@ namespace Repository
                                                registration = x.Jobs.Registration,
                                                categoryId = x.Categories.Code,
                                                title = x.Categories.Name,
+                                               pbEmbarked = x.Categories.PbEmbarked,
                                                user = x.Jobs.Users.Registration,
                                                extension = ".pdf",
                                                additionalFields = x.JobCategoryAdditionalFields
@@ -308,8 +313,10 @@ namespace Repository
 
         #region .: Helper :.
 
-        private void JobCategoryProcess(JobsFinishedVM jobsFinishedVM)
+        private void JobCategoryProcess(JobsFinishedVM jobsFinishedVM, string id, string key)
         {
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.JobRepository.JobCategoryProcess", "");
+
             JobCategories jobCategories = new JobCategories();
 
             try
@@ -341,11 +348,30 @@ namespace Repository
 
                 #region .: Search Job Categories Original :.
 
-                ECMJobCategoryOut eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(jobsFinishedVM.externalId);
+                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
+                string name = jobsFinishedVM.externalId + ".pdf";
+                string pathImages = Path.Combine(path, "ScanningPages", "{0}");
+                string pathFile = Path.Combine(path, "JobCategories", name);
 
-                if (!eCMJobCategoryOut.success)
+                if (!File.Exists(pathFile))
                 {
-                    throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                    ECMJobCategoryOut eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(jobsFinishedVM.externalId);
+
+                    if (!eCMJobCategoryOut.success || !File.Exists(pathFile))
+                    {
+                        if (!eCMJobCategoryOut.success)
+                        {
+                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "Document");
+
+                            throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                        }
+                        else
+                        {
+                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "File Not Found");
+
+                            throw new Exception(i18n.Resource.FileNotFound);
+                        }
+                    }
                 }
 
                 #endregion
@@ -354,13 +380,16 @@ namespace Repository
 
                 PDFIn pdfIn = new PDFIn
                 {
-                    archive = eCMJobCategoryOut.result.archive
+                    archive = pathFile,
+                    pbEmbarked = jobsFinishedVM.pbEmbarked
                 };
 
                 string file = HelperDoc(pdfIn);
 
                 if (string.IsNullOrEmpty(file))
                 {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "Helper Doc");
+
                     throw new Exception(i18n.Resource.FileNotFound);
                 }
 
@@ -393,7 +422,7 @@ namespace Repository
 
                 if (!eCMJobSaveOut.success)
                 {
-                    throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
+                    throw new Exception(eCMJobSaveOut.messages.FirstOrDefault());
                 }
 
                 #endregion
@@ -413,11 +442,20 @@ namespace Repository
 
                 try
                 {
-                    ECMJobDeletedIn eCMJobDeletedIn = new ECMJobDeletedIn() { externalId = jobsFinishedVM.externalId };
+                    if (File.Exists(string.Format(pathFile)))
+                    {
+                        File.Delete(string.Format(pathFile));
+                    }
 
-                    jobCategoryApi.DeleteECMJobArchive(eCMJobDeletedIn);
+                    if (Directory.Exists(string.Format(pathImages, jobCategories.Hash)))
+                    {
+                        Directory.Delete(string.Format(pathImages, jobCategories.Hash), true);
+                    }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+                }
 
                 #endregion
             }
@@ -434,8 +472,12 @@ namespace Repository
                     }
                 }
 
+                registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+
                 throw new Exception(ex.Message);
             }
+
+            registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.JobRepository.JobCategoryProcess", "");
         }
 
         public string HelperDoc(PDFIn pdfIn)
@@ -446,16 +488,16 @@ namespace Repository
             Doc docNew = new Doc();
             docOld.Read(Convert.FromBase64String(pdfIn.archive));
 
-            //if (pdfIn.pb)
-            //{
-            //    docNew = PB.Converter(docOld);
+            if (pdfIn.pbEmbarked)
+            {
+                docNew = PB.Converter(docOld);
 
-            //    archive = System.Convert.ToBase64String(docNew.GetData());
-            //}
-            //else
-            //{
-            archive = Convert.ToBase64String(docOld.GetData());
-            //}
+                archive = Convert.ToBase64String(docNew.GetData());
+            }
+            else
+            {
+                archive = Convert.ToBase64String(docOld.GetData());
+            }
 
             docOld.Clear();
             docNew.Clear();

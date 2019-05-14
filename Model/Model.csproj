@@ -119,9 +119,6 @@
     <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
     <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
-    <Compile Include="Image\In\ImageIn.cs" />
-    <Compile Include="Image\Out\ImageOut.cs" />
-    <Compile Include="Image\VM\ImageVM.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
     <Compile Include="Permission\Out\PermissionsOut.cs" />
     <Compile Include="Permission\VM\PermissionsVM.cs" />
@@ -141,7 +138,6 @@
     <Compile Include="JobCategory\In\JobCategoryApproveIn.cs" />
     <Compile Include="Job\In\JobByIdIn.cs" />
     <Compile Include="Job\In\JobsSentIn.cs" />
-    <Compile Include="Job\In\ECMJobDeletedIn.cs" />
     <Compile Include="Job\In\ECMJobSaveIn.cs" />
     <Compile Include="Job\In\JobsFinishedIn.cs" />
     <Compile Include="Job\In\ECMJobsSendIn.cs" />
@@ -152,7 +148,6 @@
     <Compile Include="JobCategory\Out\JobCategoryApproveOut.cs" />
     <Compile Include="Job\Out\JobByIdOut.cs" />
     <Compile Include="Job\Out\JobsSentOut.cs" />
-    <Compile Include="Job\Out\ECMJobDeletedOut.cs" />
     <Compile Include="Job\Out\ECMJobSaveOut.cs" />
     <Compile Include="Job\Out\JobsFinishedOut.cs" />
     <Compile Include="Job\Out\ECMJobsSendOut.cs" />

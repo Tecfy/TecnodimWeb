@@ -12,6 +12,8 @@
 
         public bool pb { get; set; }
 
+        public bool pbEmbarked { get; set; }
+
         public bool Release { get; set; }
 
 

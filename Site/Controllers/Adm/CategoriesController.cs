@@ -93,6 +93,7 @@ namespace Site.Adm.Controllers
                 Code = categoryEditOut.result.Code,
                 Name = categoryEditOut.result.Name,
                 pb = categoryEditOut.result.pb,
+                pbEmbarked = categoryEditOut.result.pbEmbarked,
                 Release = categoryEditOut.result.Release,
                 ShowIdentifier = categoryEditOut.result.ShowIdentifier,
                 ShowCompetence = categoryEditOut.result.ShowCompetence,

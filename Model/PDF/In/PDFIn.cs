@@ -9,6 +9,8 @@ namespace Model.In
 
         public bool pb { get; set; }
 
+        public bool pbEmbarked { get; set; }
+
         public List<SlicePagesFinishedVM> pages { get; set; }
     }
 }

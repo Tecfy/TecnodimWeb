@@ -12,6 +12,10 @@ namespace Model.In
 
         public int documentStatusId { get; set; }
 
+        public int documentId { get; set; }
+
+        public string externalId { get; set; }
+
         public List<int> documentStatusIds { get; set; }
     }
 }

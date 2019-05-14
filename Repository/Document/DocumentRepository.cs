@@ -514,7 +514,9 @@ namespace Repository
                                           && x.UnityId == documentsIn.unityId
                                           && (documentsIn.registration == null || x.Registration.Contains(documentsIn.registration))
                                           && (documentsIn.name == null || x.Name.Contains(documentsIn.name))
-                                          && (documentsIn.documentStatusId == 0 || x.DocumentStatusId == documentsIn.documentStatusId));
+                                          && (documentsIn.documentStatusId == 0 || x.DocumentStatusId == documentsIn.documentStatusId)
+                                          && (string.IsNullOrEmpty(documentsIn.externalId) || x.ExternalId == documentsIn.externalId)
+                                          && (documentsIn.documentId == 0 || x.DocumentId == documentsIn.documentId));
 
                 documentsOut.totalCount = query.Count();
 
@@ -526,7 +528,8 @@ namespace Repository
                                           registration = x.Registration,
                                           statusId = x.DocumentStatusId,
                                           status = x.DocumentStatus.Name,
-                                          CreatedDate = x.CreatedDate,
+                                          externalId = x.ExternalId,
+                                          createdDate = x.CreatedDate,
                                       })
                                       .OrderBy(documentsIn.sort, !documentsIn.sortdirection.Equals("asc"))
                                       .Skip((documentsIn.currentPage.Value - 1) * documentsIn.qtdEntries.Value)

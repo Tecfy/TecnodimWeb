@@ -110,39 +110,6 @@ namespace ApiTecnodim
             }
         }
 
-        public ECMJobDeletedOut DeleteECMJobArchive(ECMJobDeletedIn eCMJobDeletedIn)
-        {
-            try
-            {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.JobCategoryApi.DeleteECMJobArchive"].ToString());
-
-                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMJobDeletedIn));
-
-                IRestResponse response = client.Execute(request);
-
-                client.Timeout = (1000 * 60 * 60);
-                client.ReadWriteTimeout = (1000 * 60 * 60);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
-                }
-
-                ECMJobDeletedOut eCMJobDeletedOut = SimpleJson.SimpleJson.DeserializeObject<ECMJobDeletedOut>(response.Content);
-                
-                if (!eCMJobDeletedOut.success)
-                {
-                    throw new Exception(eCMJobDeletedOut.messages.FirstOrDefault());
-                }
-
-                return eCMJobDeletedOut;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         #endregion
     }
 }

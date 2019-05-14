@@ -13,7 +13,9 @@ namespace Model.VM
         public int statusId { get; set; }
 
         public string status { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
+
+        public string externalId { get; set; }
+
+        public DateTime createdDate { get; set; }
     }
 }
