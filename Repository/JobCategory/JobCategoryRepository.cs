@@ -246,7 +246,7 @@ namespace Repository
 
             #region .: :.
 
-            SavePDFs(jobCategorySaveIn.jobCategoryId, jobCategorySaveIn.archive, jobCategorySaveIn.id, jobCategorySaveIn.key);
+            SavePDFs(jobCategorySaveIn.jobCategoryId, jobCategorySaveIn.id, jobCategorySaveIn.key, null, jobCategorySaveIn.archive);
 
             #endregion
 
@@ -494,7 +494,7 @@ namespace Repository
 
         #region .: Helper :.
 
-        private void SavePDFs(int jobCategoryId, string archive, string id, string key)
+        private void SavePDFs(int jobCategoryId, string id, string key, string pathArchive = null, string archive = null)
         {
             JobCategories jobCategory = new JobCategories();
 
@@ -519,7 +519,14 @@ namespace Repository
             try
             {
                 Doc theDoc = new Doc();
-                theDoc.Read(archive);
+                if (!string.IsNullOrEmpty(archive))
+                {
+                    theDoc.Read(Convert.FromBase64String(archive));
+                }
+                else
+                {
+                    theDoc.Read(pathArchive);
+                }
 
                 string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
                 string pathImages = Path.Combine(path, "ScanningPages", jobCategory.Hash.ToString(), "Images");
@@ -617,7 +624,7 @@ namespace Repository
 
                 if (File.Exists(pathFile))
                 {
-                    SavePDFs(jobCategoryId, pathFile, id, key);
+                    SavePDFs(jobCategoryId, id, key, pathFile, null);
 
                     if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
                     {
