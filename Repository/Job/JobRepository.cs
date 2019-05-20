@@ -486,7 +486,7 @@ namespace Repository
 
             Doc docOld = new Doc();
             Doc docNew = new Doc();
-            docOld.Read(Convert.FromBase64String(pdfIn.archive));
+            docOld.Read(pdfIn.archive);
 
             if (pdfIn.pbEmbarked)
             {
