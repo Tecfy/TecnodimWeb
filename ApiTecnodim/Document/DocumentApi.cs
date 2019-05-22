@@ -166,5 +166,37 @@ namespace ApiTecnodim
         }
 
         #endregion
+
+        #region .: Delete :.
+
+        public ECMDocumentDeleteOut DeleteECMDocument(string externalId)
+        {
+            try
+            {
+                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + string.Format(WebConfigurationManager.AppSettings["ApiTecnodim.DocumentApi.DeleteECMDocument"].ToString(), externalId));
+
+                var request = RestRequestHelper.Get(Method.DELETE);
+
+                client.Timeout = (1000 * 60 * 60);
+                client.ReadWriteTimeout = (1000 * 60 * 60);
+
+                IRestResponse response = client.Execute(request);
+
+                ECMDocumentDeleteOut eCMDocumentDeleteOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentDeleteOut>(response.Content);
+
+                if (!eCMDocumentDeleteOut.success)
+                {
+                    throw new Exception(eCMDocumentDeleteOut.messages.FirstOrDefault());
+                }
+
+                return eCMDocumentDeleteOut;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

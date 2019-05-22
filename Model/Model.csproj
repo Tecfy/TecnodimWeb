@@ -113,6 +113,7 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentOut.cs" />
     <Compile Include="Document\In\ECMDocumentsValidateAdInterfaceIn.cs" />
     <Compile Include="Document\In\ECMDocumentsValidateIn.cs" />

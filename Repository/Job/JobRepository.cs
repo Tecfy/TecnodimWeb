@@ -20,6 +20,7 @@ namespace Repository
         private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         private JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
         private JobCategoryApi jobCategoryApi = new JobCategoryApi();
+        private DocumentApi documentApi = new DocumentApi();
 
         #region .: API :.
 
@@ -160,6 +161,8 @@ namespace Repository
 
             using (var db = new DBContext())
             {
+                #region .: Change job :.
+
                 Jobs job = db.Jobs.Where(x => x.JobId == jobDeleteIn.jobId && x.Users.AspNetUserId == jobDeleteIn.id).FirstOrDefault();
 
                 if (job == null)
@@ -172,6 +175,92 @@ namespace Repository
 
                 db.Entry(job).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                #endregion
+
+                #region .: Change job categories :.
+
+                List<JobCategories> jobCategories = db.JobCategories.Where(x => x.DeletedDate == null && x.Active == true && x.JobId == job.JobId).ToList();
+
+                foreach (var jobCategory in jobCategories)
+                {
+                    #region .: Change job category :.
+
+                    jobCategory.Active = false;
+                    jobCategory.DeletedDate = DateTime.Now;
+
+                    db.Entry(jobCategory).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    #endregion
+
+                    #region .: Change job category pages :.
+
+                    List<JobCategoryPages> jobCategoryPages = db.JobCategoryPages.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategory.JobCategoryId).ToList();
+
+                    foreach (var item in jobCategoryPages)
+                    {
+                        item.Active = false;
+                        item.DeletedDate = DateTime.Now;
+
+                        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    #endregion
+
+                    #region .: Change job category additional fields :.
+
+                    List<JobCategoryAdditionalFields> jobCategoryAdditionalFields = db.JobCategoryAdditionalFields.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategory.JobCategoryId).ToList();
+
+                    foreach (var item in jobCategoryAdditionalFields)
+                    {
+                        item.Active = false;
+                        item.DeletedDate = DateTime.Now;
+
+                        db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                    #endregion
+
+                    #region .: Delete Document :.
+
+                    string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
+                    string name = jobCategory.Code + ".pdf";
+                    string pathImages = Path.Combine(path, "ScanningPages", "{0}");
+                    string pathFile = Path.Combine(path, "JobCategories", name);
+
+                    try
+                    {
+                        documentApi.DeleteECMDocument(jobCategory.Code);
+                    }
+                    catch (Exception ex)
+                    {
+                        registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Erro", "Repository.JobRepository.DeleteJob", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+                    }
+
+                    try
+                    {
+                        if (File.Exists(string.Format(pathFile)))
+                        {
+                            File.Delete(string.Format(pathFile));
+                        }
+
+                        if (Directory.Exists(string.Format(pathImages, jobCategory.Hash)))
+                        {
+                            Directory.Delete(string.Format(pathImages, jobCategory.Hash), true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Erro", "Repository.JobRepository.DeleteJob", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+                    }
+
+                    #endregion
+                }
+
+                #endregion
             }
 
             registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Log - End", "Repository.JobRepository.DeleteJob", "");

@@ -22,6 +22,7 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(sliceIn.id, sliceIn.key, "Log - Start", "Repository.SliceRepository.GetSlice", "");
             string path = WebConfigurationManager.AppSettings["UrlBase"];
             Documents documents = new Documents();
+            string now = DateTime.Now.ToString("yyyyMMddHHmmsss");
 
             using (var db = new DBContext())
             {
@@ -38,8 +39,8 @@ namespace Repository
                                             slicePageId = y.SlicePageId,
                                             page = y.Page,
                                             rotate = y.Rotate,
-                                            image = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Images/" + y.Page + ".jpg",
-                                            thumb = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Thumbs/" + y.Page + ".jpg",
+                                            image = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Images/" + y.Page + ".jpg?" + now,
+                                            thumb = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Thumbs/" + y.Page + ".jpg?" + now,
                                         }).ToList(),
                                         additionalFields = x.SliceCategoryAdditionalFields.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new AdditionalFieldVM()
                                         {
@@ -78,6 +79,7 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(slicePendingIn.id, slicePendingIn.key, "Log - Start", "Repository.SliceRepository.GetSlicePending", "");
             string path = WebConfigurationManager.AppSettings["UrlBase"];
             Documents documents = new Documents();
+            string now = DateTime.Now.ToString("yyyyMMddHHmmsss");
 
             using (var db = new DBContext())
             {
@@ -93,8 +95,8 @@ namespace Repository
                                             slicePageId = y.SlicePageId,
                                             page = y.Page,
                                             rotate = y.Rotate,
-                                            image = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Images/" + y.Page + ".jpg",
-                                            thumb = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Thumbs/" + y.Page + ".jpg",
+                                            image = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Images/" + y.Page + ".jpg?" + now,
+                                            thumb = path + "/Files/Pages/" + y.Slices.Documents.Hash + "/Thumbs/" + y.Page + ".jpg?" + now,
                                         }).ToList(),
                                         additionalFields = x.SliceCategoryAdditionalFields.Where(y => y.Active == true && y.DeletedDate == null).Select(y => new AdditionalFieldVM()
                                         {

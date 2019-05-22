@@ -31,6 +31,7 @@ namespace Repository
 
             string name = documentOut.result.ExternalId + ".pdf";
             string pathFile = Path.Combine(path, "Documents", name);
+            string now = DateTime.Now.ToString("yyyyMMddHHmmsss");
 
             if (!documentOut.result.Download)
             {
@@ -48,8 +49,8 @@ namespace Repository
                     pages = documentRepository.GetRemainingDocumentPages(remainingDocumenPagestIn);
 
                     pdfOut.result.pages = new List<int>();
-                    pdfOut.result.path = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Images/{0}.jpg";
-                    pdfOut.result.pathThumb = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Thumbs/{0}.jpg";
+                    pdfOut.result.path = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Images/{0}.jpg?" + now;
+                    pdfOut.result.pathThumb = WebConfigurationManager.AppSettings["UrlBase"] + "/Files/Pages/" + documentOut.result.Hash.ToString() + "/Thumbs/{0}.jpg?" + now;
 
                     for (int i = 1; i <= documentOut.result.Pages; i++)
                     {
