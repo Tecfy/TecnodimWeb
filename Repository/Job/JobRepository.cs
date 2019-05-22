@@ -529,6 +529,19 @@ namespace Repository
                     db.SaveChanges();
                 }
 
+                #endregion
+
+                #region .: Delete Document :.
+
+                try
+                {
+                    documentApi.DeleteECMDocument(jobCategories.Code);
+                }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+                }
+
                 try
                 {
                     if (File.Exists(string.Format(pathFile)))
