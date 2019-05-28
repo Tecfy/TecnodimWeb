@@ -243,6 +243,19 @@ namespace Repository
                             db.AspNetUserClaims.Add(aspNetUserClaim);
                             db.SaveChanges();
                         }
+
+                        if (permissionsVM.digitalizaMPF)
+                        {
+                            AspNetUserClaims aspNetUserClaim = new AspNetUserClaims
+                            {
+                                UserId = user.AspNetUserId,
+                                ClaimType = EClaims.Digitalizar.ToString(),
+                                ClaimValue = EClaims.Digitalizar.ToString()
+                            };
+
+                            db.AspNetUserClaims.Add(aspNetUserClaim);
+                            db.SaveChanges();
+                        }
                     }
                 }
 

@@ -9,6 +9,8 @@
         public bool classify { get; set; }
 
         public bool slice { get; set; }
+
+        public bool digitalizaMPF { get; set; }
        
         public string name { get; set; }
 
