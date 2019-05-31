@@ -35,17 +35,20 @@ namespace Repository
 
             #region .: Process Queue :.
 
-            foreach (var item in permissionsOut.result)
+            if (permissionsOut.result != null)
             {
-                try
+                foreach (var item in permissionsOut.result)
                 {
-                    PermissionsProcess(item, permissionsIn.id, permissionsIn.key);
-                }
-                catch (Exception ex)
-                {
-                    registerEventRepository.SaveRegisterEvent(permissionsIn.id, permissionsIn.key, "Erro", "Repository.PermissionRepository.GetPermissions", ex.Message);
+                    try
+                    {
+                        PermissionsProcess(item, permissionsIn.id, permissionsIn.key);
+                    }
+                    catch (Exception ex)
+                    {
+                        registerEventRepository.SaveRegisterEvent(permissionsIn.id, permissionsIn.key, "Erro", "Repository.PermissionRepository.GetPermissions", ex.Message);
 
-                    permissionsOut.messages.Add(ex.Message);
+                        permissionsOut.messages.Add(ex.Message);
+                    }
                 }
             }
 

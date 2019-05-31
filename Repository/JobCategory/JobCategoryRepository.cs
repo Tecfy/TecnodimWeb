@@ -304,16 +304,16 @@ namespace Repository
 
                 #region .: Change job category additional fields :.
 
-                List<JobCategoryAdditionalFields> jobCategoryAdditionalFields = db.JobCategoryAdditionalFields.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategory.JobCategoryId).ToList();
+                //List<JobCategoryAdditionalFields> jobCategoryAdditionalFields = db.JobCategoryAdditionalFields.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategory.JobCategoryId).ToList();
 
-                foreach (var item in jobCategoryAdditionalFields)
-                {
-                    item.Active = false;
-                    item.DeletedDate = DateTime.Now;
+                //foreach (var item in jobCategoryAdditionalFields)
+                //{
+                //    item.Active = false;
+                //    item.DeletedDate = DateTime.Now;
 
-                    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
-                }
+                //    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                //    db.SaveChanges();
+                //}
 
                 #endregion
 

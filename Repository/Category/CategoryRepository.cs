@@ -54,7 +54,7 @@ namespace Repository
                                               x.Code.Contains(categoriesIn.filter)
                                           )
                                       ));
-                               
+
 
                 categoriesOut.totalCount = query.Count();
 
@@ -130,6 +130,7 @@ namespace Repository
                                        Code = x.Code,
                                        Name = x.Name,
                                        pb = x.Pb,
+                                       pbEmbarked = x.PbEmbarked,
                                        Release = x.Release,
 
                                        ShowIdentifier = x.CategoryAdditionalFields
@@ -219,7 +220,8 @@ namespace Repository
 
                 category.EditedDate = DateTime.Now;
                 category.Pb = categoryEditIn.pb;
-                category.Release = categoryEditIn.Release;
+                category.PbEmbarked = categoryEditIn.pbEmbarked;
+                category.Release = categoryEditIn.Release;                
 
                 db.Entry(category).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
