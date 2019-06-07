@@ -229,6 +229,23 @@ namespace Repository
                                 }
                                 else
                                 {
+                                    if (!document.Active && document.DeletedDate != null)
+                                    {
+                                        document.DocumentStatusId = (int)EDocumentStatus.New;
+                                        document.Active = true;
+                                        document.CreatedDate = DateTime.Now;
+                                        document.EditedDate = DateTime.Now;
+                                        document.DeletedDate = null;
+                                        document.SliceDate = null;
+                                        document.ClassificationDate = null;
+                                        document.Pages = null;
+                                        document.Download = false;
+                                        document.DownloadDate = null;
+
+                                        db.Entry(document).State = System.Data.Entity.EntityState.Modified;
+                                        db.SaveChanges();
+                                    }
+
                                     List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
                                     {
                                         new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }

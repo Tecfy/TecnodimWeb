@@ -49,7 +49,7 @@ namespace Repository
                                                                      {
                                                                          JobCategoryId = y.JobCategoryId,
                                                                          Category = y.Categories.Code.Trim() + " - " + y.Categories.Name.Trim(),
-                                                                         pb = y.Categories.Pb
+                                                                         pb = y.Categories.PbEmbarked
                                                                      }).ToList()
                                                 })
                                                 .ToList();
@@ -590,16 +590,7 @@ namespace Repository
             Doc docNew = new Doc();
             docOld.Read(pdfIn.archive);
 
-            if (pdfIn.pbEmbarked)
-            {
-                docNew = PB.Converter(docOld);
-
-                archive = Convert.ToBase64String(docNew.GetData());
-            }
-            else
-            {
-                archive = Convert.ToBase64String(docOld.GetData());
-            }
+            archive = Convert.ToBase64String(docOld.GetData());
 
             docOld.Clear();
             docNew.Clear();
