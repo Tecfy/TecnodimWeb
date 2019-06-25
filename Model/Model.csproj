@@ -120,8 +120,11 @@
     <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
     <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
+    <Compile Include="Permission\In\PermissionIn.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
+    <Compile Include="Permission\Out\PermissionOut.cs" />
     <Compile Include="Permission\Out\PermissionsOut.cs" />
+    <Compile Include="Permission\VM\PermissionVM.cs" />
     <Compile Include="Permission\VM\PermissionsVM.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailByJobIdIn.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailDocumentIdOut.cs" />
