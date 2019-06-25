@@ -6,6 +6,7 @@ using Model.In;
 using Model.Out;
 using Model.VM;
 using Repository;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,6 +21,7 @@ namespace Site.Adm.Controllers
         private readonly UserRepository userRepository = new UserRepository();
         private readonly UserUnityRepository userUnityRepository = new UserUnityRepository();
         private readonly UnityRepository unityRepository = new UnityRepository();
+        private readonly PermissionRepository permissionRepository = new PermissionRepository();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -181,6 +183,10 @@ namespace Site.Adm.Controllers
                             userUnityRepository.Insert(new UserUnityCreateIn { UnityId = unityId.Value, UserId = userOut.result.UserId });
 
                             await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                            PermissionIn permissionIn = new PermissionIn { Registration = userCreateExternalIn.Registration, key = Guid.NewGuid().ToString() };
+
+                            permissionRepository.SetPermission(permissionIn);
 
                             return Redirect(returnUrl + "?type=success&message=Sucesso&token=" + token);
                         }
