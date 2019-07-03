@@ -26,7 +26,8 @@ namespace Repository
                                                     SyncRuntimeId = x.SyncRuntimeId,
                                                     URL = x.Url,
                                                     Interval = x.Interval,
-                                                    LastExecution = x.LastExecution
+                                                    LastExecution = x.LastExecution,
+                                                    IsExternal = x.IsExternal
                                                 })
                                                 .ToList();
             }

@@ -76,19 +76,21 @@ namespace Site
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
+#if (!DEBUG)
             app.UseSaml2Authentication(CreateSaml2Options());
+#endif
         }
 
         private static Saml2AuthenticationOptions CreateSaml2Options()
         {
-            var spOptions = CreateSPOptions();
-            var Saml2Options = new Saml2AuthenticationOptions(false)
+            SPOptions spOptions = CreateSPOptions();
+            Saml2AuthenticationOptions Saml2Options = new Saml2AuthenticationOptions(false)
             {
                 SPOptions = spOptions
             };
 
             //Alterei Com Informações do ADFS
-            var idp = new IdentityProvider(new EntityId(WebConfigurationManager.AppSettings["ADFS.Trust"]), spOptions)
+            IdentityProvider idp = new IdentityProvider(new EntityId(WebConfigurationManager.AppSettings["ADFS.Trust"]), spOptions)
             {
                 AllowUnsolicitedAuthnResponse = true,
                 Binding = Saml2BindingType.HttpRedirect,
@@ -112,15 +114,15 @@ namespace Site
 
         private static SPOptions CreateSPOptions()
         {
-            var portuguese = "pt-br";
+            string portuguese = "pt-br";
 
-            var organization = new Organization();
+            Organization organization = new Organization();
             organization.Names.Add(new LocalizedName(WebConfigurationManager.AppSettings["ADFS.Organization.Name"], portuguese));
             organization.DisplayNames.Add(new LocalizedName(WebConfigurationManager.AppSettings["ADFS.Organization.Name"], portuguese));
             organization.Urls.Add(new LocalizedUri(new Uri(WebConfigurationManager.AppSettings["ADFS.Organization.Url"]), portuguese));
 
             //Alterei Com Informações do Projeto
-            var spOptions = new SPOptions
+            SPOptions spOptions = new SPOptions
             {
                 EntityId = new EntityId(WebConfigurationManager.AppSettings["ADFS.EntityId"]),
                 ReturnUrl = new Uri(WebConfigurationManager.AppSettings["ADFS.ReturnUrl"]),
@@ -129,21 +131,21 @@ namespace Site
                 Organization = organization
             };
 
-            var techContact = new ContactPerson
+            ContactPerson techContact = new ContactPerson
             {
                 Type = ContactType.Technical
             };
             techContact.EmailAddresses.Add(WebConfigurationManager.AppSettings["ADFS.Organization.Email.Technical"]);
             spOptions.Contacts.Add(techContact);
 
-            var supportContact = new ContactPerson
+            ContactPerson supportContact = new ContactPerson
             {
                 Type = ContactType.Support
             };
             supportContact.EmailAddresses.Add(WebConfigurationManager.AppSettings["ADFS.Organization.Email.Support"]);
             spOptions.Contacts.Add(supportContact);
 
-            var attributeConsumingService = new AttributeConsumingService
+            AttributeConsumingService attributeConsumingService = new AttributeConsumingService
             {
                 IsDefault = true,
                 ServiceNames = { new LocalizedName("Saml2", "en") }
