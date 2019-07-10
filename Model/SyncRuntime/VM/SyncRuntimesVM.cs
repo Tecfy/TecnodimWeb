@@ -11,5 +11,7 @@ namespace Model.VM
         public int Interval { get; set; }
 
         public DateTime LastExecution { get; set; }
+
+        public bool IsExternal { get; set; }
     }
 }

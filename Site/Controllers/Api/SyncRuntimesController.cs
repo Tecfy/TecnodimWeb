@@ -41,7 +41,18 @@ namespace Site.Api.Controllers
                         {
                             using (HttpClient httpClient = new HttpClient())
                             {
-                                var response = httpClient.GetAsync(string.Format("{0}/{1}", urlBase, item.URL)).Result;
+                                var url = "";
+
+                                if (item.IsExternal)
+                                {
+                                    url = item.URL;
+                                }
+                                else
+                                {
+                                    url = string.Format("{0}/{1}", urlBase, item.URL);
+                                }
+
+                                var response = httpClient.GetAsync(url).Result;
                                 if (response.IsSuccessStatusCode)
                                 {
                                     SyncRuntimeSaveIn syncRuntimeSaveIn = new SyncRuntimeSaveIn { key = Key, SyncRuntimeId = item.SyncRuntimeId };
