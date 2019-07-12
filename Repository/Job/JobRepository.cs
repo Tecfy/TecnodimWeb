@@ -349,6 +349,8 @@ namespace Repository
                                                jobCategoryId = x.JobCategoryId,
                                                externalId = x.Code,
                                                registration = x.Jobs.Registration,
+                                               unityCode = x.Jobs.Units.ExternalId,
+                                               unityName = x.Jobs.Units.Name,
                                                categoryId = x.Categories.Code,
                                                title = x.Categories.Name,
                                                pbEmbarked = x.Categories.PbEmbarked,
@@ -504,6 +506,8 @@ namespace Repository
                     title = jobsFinishedVM.title,
                     user = jobsFinishedVM.user,
                     extension = jobsFinishedVM.extension,
+                    unityCode = jobsFinishedVM.unityCode,
+                    unityName = jobsFinishedVM.unityName,
                     additionalFields = additionalFieldSaveIns
                 };
 
