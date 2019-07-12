@@ -8,6 +8,7 @@ using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -270,7 +271,7 @@ namespace Repository
         {
             ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
             registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Log - Start", "Repository.DocumentRepository.GetECMSendDocuments", "");
-
+            
             #region .: Search Documents Finished :.
 
             DocumentsFinishedOut documentsFinishedOut = GetDocumentsFinished(new DocumentsFinishedIn() { id = ecmDocumentsSendIn.id, key = ecmDocumentsSendIn.key });
@@ -463,6 +464,7 @@ namespace Repository
                                                    classificationUser = x.Users != null ? x.Users.FirstName + " " + x.Users.LastName : "",
                                                    classificationUserRegistration = x.Users != null ? x.Users.Registration : "",
                                                    extension = ".pdf",
+                                                   unityCode = x.Documents.Units.ExternalId,
                                                    classificationDate = x.ClassificationDate.Value,
                                                    sliceDate = x.SliceDate.Value,
                                                    pages = x.SlicePages
@@ -747,7 +749,9 @@ namespace Repository
                     classificationDate = documentsFinishedVM.classificationDate.ToString(),
                     sliceDate = documentsFinishedVM.sliceDate.ToString(),
                     additionalFields = additionalFieldSaveIns,
-                    archive = file
+                    archive = file,
+                    unityCode = documentsFinishedVM.unityCode,
+                    externalId = documentsFinishedVM.externalId
                 };
 
                 try
