@@ -137,7 +137,11 @@ namespace Site.Adm.Controllers
                         }
                         else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.Unit"])
                         {
-                            userCreateExternalIn.Unit = claim.Value;
+                            userCreateExternalIn.Unity = claim.Value;
+                        }
+                        else if (claim.Type == WebConfigurationManager.AppSettings["ADFS.UnitCode"])
+                        {
+                            userCreateExternalIn.UnityCode = claim.Value;
                         }
                     }
                 }
@@ -178,7 +182,7 @@ namespace Site.Adm.Controllers
                             UserOut userOut = new UserOut();
                             userOut = userRepository.Insert(userCreateExternalIn);
 
-                            int? unityId = unityRepository.GetByCode(userCreateExternalIn.Unit);
+                            int? unityId = unityRepository.GetByCode(userCreateExternalIn.UnityCode, userCreateExternalIn.Unity);
 
                             userUnityRepository.Insert(new UserUnityCreateIn { UnityId = unityId.Value, UserId = userOut.result.UserId });
 
