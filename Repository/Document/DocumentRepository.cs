@@ -204,7 +204,7 @@ namespace Repository
                             document = new Documents();
                             document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
 
-                            int? unityId = unityRepository.GetByCode(item.unity);
+                            int? unityId = unityRepository.GetByCode(item.unityCode, item.unity);
                             if (unityId != null && unityId > 0)
                             {
                                 if (document == null)
@@ -255,7 +255,7 @@ namespace Repository
                             }
                             else
                             {
-                                registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unity));
+                                registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unityCode));
                             }
                         }
                     }
