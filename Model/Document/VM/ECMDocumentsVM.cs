@@ -11,5 +11,7 @@
         public string name { get; set; }
 
         public string unity { get; set; }
+
+        public string unityCode { get; set; }
     }
 }

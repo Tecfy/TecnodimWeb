@@ -136,19 +136,19 @@ namespace Repository
             return unityEditOut;
         }
 
-        public int? GetByCode(string code)
+        public int? GetByCode(string unitCode, string unit)
         {
             int? unityId = null;
 
             using (var db = new DBContext())
             {
                 unityId = db.Units
-                            .Where(x => x.Active == true && x.DeletedDate == null && x.ExternalId == code)
+                            .Where(x => x.Active == true && x.DeletedDate == null && x.ExternalId == unitCode)
                             .Select(x => x.UnityId).FirstOrDefault();
 
                 if (unityId <= 0 || unityId == null)
                 {
-                    unityId = Insert(new UnityCreateIn { ExternalId = code, Name = code }).result.UnityId;
+                    unityId = Insert(new UnityCreateIn { ExternalId = unitCode, Name = unit }).result.UnityId;
                 }
             }
 
