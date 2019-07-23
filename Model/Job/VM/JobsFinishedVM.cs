@@ -20,6 +20,10 @@ namespace Model.VM
 
         public string extension { get; set; }
 
+        public string unityCode { get; set; }
+
+        public string unityName { get; set; }
+
         public bool pbEmbarked { get; set; }
 
         public List<AdditionalFieldSaveVM> additionalFields { get; set; }
