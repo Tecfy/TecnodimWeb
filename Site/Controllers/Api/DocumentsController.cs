@@ -231,5 +231,50 @@ namespace Site.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [HttpGet]
+        public DocumentValidateSliceOut GetDocumentValidateSlice(int id)
+        {
+            DocumentValidateSliceOut documentValidateSliceOut = new DocumentValidateSliceOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                DocumentValidateSliceIn documentValidateSliceIn = new DocumentValidateSliceIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+
+                documentValidateSliceOut = documentRepository.GetDocumentValidateSlice(documentValidateSliceIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentValidateSlice", ex.Message);
+
+                documentValidateSliceOut.successMessage = null;
+                documentValidateSliceOut.messages.Add(ex.Message);
+            }
+
+            return documentValidateSliceOut;
+        }
+
+        [HttpGet]
+        public DocumentValidateClassificationOut GetDocumentValidateClassification(int id)
+        {
+            DocumentValidateClassificationOut documentValidateClassificationOut = new DocumentValidateClassificationOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                DocumentValidateClassificationIn documentValidateClassificationIn = new DocumentValidateClassificationIn() { documentId = id, id = User.Identity.GetUserId(), key = Key };
+
+                documentValidateClassificationOut = documentRepository.GetDocumentValidateClassification(documentValidateClassificationIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentValidateClassification", ex.Message);
+
+                documentValidateClassificationOut.successMessage = null;
+                documentValidateClassificationOut.messages.Add(ex.Message);
+            }
+
+            return documentValidateClassificationOut;
+        }
     }
 }
