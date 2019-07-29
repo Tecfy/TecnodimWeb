@@ -24,6 +24,8 @@ namespace Repository
         private AttributeApi attributeApi = new AttributeApi();
         private DocumentApi documentApi = new DocumentApi();
 
+        public DocumentVM Documents { get; private set; }
+
         #region .: API :.
 
         #region .: ECM :.
@@ -271,7 +273,7 @@ namespace Repository
         {
             ECMDocumentsSendOut ecmDocumentsSendOut = new ECMDocumentsSendOut();
             registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Log - Start", "Repository.DocumentRepository.GetECMSendDocuments", "");
-            
+
             #region .: Search Documents Finished :.
 
             DocumentsFinishedOut documentsFinishedOut = GetDocumentsFinished(new DocumentsFinishedIn() { id = ecmDocumentsSendIn.id, key = ecmDocumentsSendIn.key });
@@ -426,6 +428,94 @@ namespace Repository
 
             docOld.Clear();
             docNew.Clear();
+        }
+
+        public DocumentValidateSliceOut GetDocumentValidateSlice(DocumentValidateSliceIn documentValidateSliceIn)
+        {
+            DocumentValidateSliceOut documentValidateSliceOut = new DocumentValidateSliceOut();
+            registerEventRepository.SaveRegisterEvent(documentValidateSliceIn.id, documentValidateSliceIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentValidateSlice", "");
+
+            using (var db = new DBContext())
+            {
+                Documents document = db.Documents.Where(x => x.DocumentId == documentValidateSliceIn.documentId).FirstOrDefault();
+
+                if (document == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                int time = 10;
+                int.TryParse(WebConfigurationManager.AppSettings["Dossier.Security.Time"], out time);
+
+                if (document.SliceStart != null)
+                {
+                    Users userOwner = db.Users.Where(x => x.UserId == document.SliceUser).FirstOrDefault();
+
+                    if (userOwner.AspNetUserId != documentValidateSliceIn.id)
+                    {
+                        if (document.SliceStart.Value.AddMinutes(time) > DateTime.Now)
+                        {
+                            throw new Exception(string.Format(i18n.Resource.DocumentValidateMessage, userOwner.FirstName + " " + userOwner.LastName));
+                        }
+                    }
+                }
+
+                Users user = db.Users.Where(x => x.AspNetUserId == documentValidateSliceIn.id).FirstOrDefault();
+
+                document.SliceUser = user.UserId;
+                document.SliceStart = DateTime.Now;
+                document.EditedDate = DateTime.Now;
+
+                db.Entry(document).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(documentValidateSliceIn.id, documentValidateSliceIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentValidateSlice", "");
+            return documentValidateSliceOut;
+        }
+
+        public DocumentValidateClassificationOut GetDocumentValidateClassification(DocumentValidateClassificationIn documentValidateClassificationIn)
+        {
+            DocumentValidateClassificationOut documentValidateClassificationOut = new DocumentValidateClassificationOut();
+            registerEventRepository.SaveRegisterEvent(documentValidateClassificationIn.id, documentValidateClassificationIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentValidateClassification", "");
+
+            using (var db = new DBContext())
+            {
+                Documents document = db.Documents.Where(x => x.DocumentId == documentValidateClassificationIn.documentId).FirstOrDefault();
+
+                if (document == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                int time = 10;
+                int.TryParse(WebConfigurationManager.AppSettings["Dossier.Security.Time"], out time);
+
+                if (document.ClassificationStart != null)
+                {
+                    Users userOwner = db.Users.Where(x => x.UserId == document.ClassificationUser).FirstOrDefault();
+
+                    if (userOwner.AspNetUserId != documentValidateClassificationIn.id)
+                    {
+                        if (document.ClassificationStart.Value.AddMinutes(time) > DateTime.Now)
+                        {
+                            throw new Exception(string.Format(i18n.Resource.DocumentValidateMessage, userOwner.FirstName + " " + userOwner.LastName));
+                        }
+                    }
+                }
+
+                Users user = db.Users.Where(x => x.AspNetUserId == documentValidateClassificationIn.id).FirstOrDefault();
+
+                document.ClassificationUser = user.UserId;
+                document.ClassificationStart = DateTime.Now;
+                document.EditedDate = DateTime.Now;
+
+                db.Entry(document).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            registerEventRepository.SaveRegisterEvent(documentValidateClassificationIn.id, documentValidateClassificationIn.key, "Log - End", "Repository.DocumentRepository.GetDocumentValidateClassification", "");
+            return documentValidateClassificationOut;
         }
 
         #endregion
