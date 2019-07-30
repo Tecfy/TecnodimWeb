@@ -15,6 +15,8 @@ namespace Model.VM
 
         public string externalId { get; set; }
 
+        public string unityCode { get; set; }
+
         public string title { get; set; }
 
         public bool pb { get; set; }

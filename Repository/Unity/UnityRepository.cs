@@ -71,7 +71,7 @@ namespace Repository
                                    .Select(x => new UnitsDDLVM()
                                    {
                                        UnityId = x.UnityId,
-                                       Name = x.Name,
+                                       Name = x.ExternalId + " - " + x.Name,
                                    })
                                    .ToList();
             }
@@ -90,7 +90,7 @@ namespace Repository
                                    .Select(x => new UnitsDDLVM()
                                    {
                                        UnityId = x.UnityId,
-                                       Name = x.Units.Name,
+                                       Name = x.Units.ExternalId + " - " + x.Units.Name,
                                    })
                                    .ToList();
             }

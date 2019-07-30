@@ -16,6 +16,10 @@ namespace Model.In
 
         public string extension { get; set; }
 
+        public string unityName { get; set; }
+
+        public string unityCode { get; set; }
+
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
     }
 }

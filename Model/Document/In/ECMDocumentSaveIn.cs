@@ -29,5 +29,9 @@ namespace Model.In
         public List<AdditionalFieldSaveIn> additionalFields { get; set; }
 
         public string archive { get; set; }
+
+        public string unityCode { get; set; }
+
+        public string externalId { get; set; }
     }
 }
