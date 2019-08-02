@@ -526,6 +526,7 @@ namespace Repository
         {
             DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
             registerEventRepository.SaveRegisterEvent(documentsFinishedIn.id, documentsFinishedIn.key, "Log - Start", "Repository.DocumentRepository.GetDocumentsFinished", "");
+            DateTime yesterday = DateTime.Now.AddDays(-1);
 
             #region .: Documents Finished :.
 
@@ -535,7 +536,8 @@ namespace Repository
                                                .Where(x => x.Active == true
                                                         && x.DeletedDate == null
                                                         && x.Sent == false
-                                                        && x.Sending == false
+                                                        && (x.Sending == false || (x.Sending == true && x.SendingDate < yesterday))
+                                                        && (x.Processing == false || (x.Processing == true && x.ProcessingDate < yesterday))
                                                         && x.Documents.Active == true
                                                         && x.Documents.DeletedDate == null
                                                         && x.Documents.DocumentStatusId == (int)EDocumentStatus.Finished)
@@ -574,6 +576,21 @@ namespace Repository
                                                                        }).ToList()
                                                })
                                                .ToList();
+
+                foreach (var item in documentsFinishedOut.result)
+                {
+
+                    Slices slice = db.Slices.Where(x => x.SliceId == item.sliceId).FirstOrDefault();
+
+                    slice.Sent = false;
+                    slice.Sending = false;
+                    slice.SendingDate = null;
+                    slice.Processing = true;
+                    slice.ProcessingDate = DateTime.Now;
+
+                    db.Entry(slice).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
 
             #endregion
@@ -880,6 +897,7 @@ namespace Repository
                     using (var db = new DBContext())
                     {
                         slice.Sending = false;
+                        slice.Processing = false;
 
                         db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
