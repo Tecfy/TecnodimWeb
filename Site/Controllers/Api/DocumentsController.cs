@@ -276,5 +276,28 @@ namespace Site.Api.Controllers
 
             return documentValidateClassificationOut;
         }
+
+        [HttpGet]
+        public DocumentsFinishedOut GetDocumentsFinished()
+        {
+            DocumentsFinishedOut documentsFinishedOut = new DocumentsFinishedOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                DocumentsFinishedIn documentsFinishedIn = new DocumentsFinishedIn() { id = User.Identity.GetUserId(), key = Key };
+
+                documentsFinishedOut = documentRepository.GetDocumentsFinished(documentsFinishedIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetDocumentsFinished", ex.Message);
+
+                documentsFinishedOut.successMessage = null;
+                documentsFinishedOut.messages.Add(ex.Message);
+            }
+
+            return documentsFinishedOut;
+        }
     }
 }
