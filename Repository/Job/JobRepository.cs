@@ -8,6 +8,7 @@ using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web.Configuration;
@@ -330,6 +331,7 @@ namespace Repository
         {
             JobsFinishedOut jobsFinishedOut = new JobsFinishedOut();
             registerEventRepository.SaveRegisterEvent(jobsFinishedIn.id, jobsFinishedIn.key, "Log - Start", "Repository.JobRepository.GetJobsFinished", "");
+            DateTime yesterday = DateTime.Now.AddDays(-1);
 
             #region .: Documents Finished :.
 
@@ -339,7 +341,8 @@ namespace Repository
                                            .Where(x => x.Active == true
                                                && x.DeletedDate == null
                                                && x.Sent == false
-                                               && x.Sending == false
+                                               && (x.Sending == false || (x.Sending == true && x.SendingDate < yesterday))
+                                               && (x.Processing == false || (x.Processing == true && x.ProcessingDate < yesterday))
                                                && x.Jobs.Active == true
                                                && x.Jobs.DeletedDate == null
                                                && x.Jobs.JobStatusId == (int)EJobStatus.Finished)
@@ -365,6 +368,22 @@ namespace Repository
                                                                    }).ToList()
                                            })
                                            .ToList();
+
+                foreach (var item in jobsFinishedOut.result)
+                {
+
+                    JobCategories jobCategory = db.JobCategories.Where(x => x.JobCategoryId == item.jobCategoryId).FirstOrDefault();
+
+                    jobCategory.Sent = false;
+                    jobCategory.Sending = false;
+                    jobCategory.SendingDate = null;
+                    jobCategory.Processing = true;
+                    jobCategory.ProcessingDate = DateTime.Now;
+
+                    db.Entry(jobCategory).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
             }
 
             #endregion
@@ -431,7 +450,7 @@ namespace Repository
                     jobCategories.Sending = true;
                     jobCategories.SendingDate = DateTime.Now;
 
-                    db.Entry(jobCategories).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(jobCategories).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
@@ -572,6 +591,7 @@ namespace Repository
                     using (var db = new DBContext())
                     {
                         jobCategories.Sending = false;
+                        jobCategories.Processing = false;
 
                         db.Entry(jobCategories).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
