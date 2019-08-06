@@ -126,6 +126,29 @@ namespace Site.Api.Controllers
             return jobsByUserOut;
         }
 
+        [HttpGet]
+        public JobsFinishedOut GetJobsFinished()
+        {
+            JobsFinishedOut jobsFinishedOut = new JobsFinishedOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                JobsFinishedIn jobsFinishedIn = new JobsFinishedIn() { id = User.Identity.GetUserId(), key = Key };
+
+                jobsFinishedOut = jobRepository.GetJobsFinished(jobsFinishedIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobsController.GetJobsFinished", ex.Message);
+
+                jobsFinishedOut.successMessage = null;
+                jobsFinishedOut.messages.Add(ex.Message);
+            }
+
+            return jobsFinishedOut;
+        }
+
         #endregion
 
         #region .: Post :.
