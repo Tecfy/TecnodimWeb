@@ -202,64 +202,92 @@ namespace Repository
 
                     foreach (var item in ecmDocumentsOut.result)
                     {
-                        if (!string.IsNullOrEmpty(item.name) && !string.IsNullOrEmpty(item.registration) && !string.IsNullOrEmpty(item.externalId))
+                        try
                         {
-                            document = new Documents();
-                            document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
-
-                            int? unityId = unityRepository.GetByCode(item.unityCode, item.unity);
-                            if (unityId != null && unityId > 0)
+                            if (!string.IsNullOrEmpty(item.name) && !string.IsNullOrEmpty(item.registration) && !string.IsNullOrEmpty(item.externalId))
                             {
-                                if (document == null)
+                                document = new Documents();
+                                document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
+
+                                int? unityId = unityRepository.GetByCode(item.unityCode, item.unity);
+                                if (unityId != null && unityId > 0)
                                 {
-                                    document = new Documents
+                                    if (document == null)
                                     {
-                                        ExternalId = item.externalId,
-                                        DocumentStatusId = item.documentStatusId,
-                                        UnityId = unityId.Value,
-                                        Registration = item.registration,
-                                        Name = item.name
-                                    };
+                                        document = new Documents
+                                        {
+                                            ExternalId = item.externalId,
+                                            DocumentStatusId = item.documentStatusId,
+                                            UnityId = unityId.Value,
+                                            Registration = item.registration,
+                                            Name = item.name
+                                        };
 
-                                    db.Documents.Add(document);
-                                    db.SaveChanges();
+                                        db.Documents.Add(document);
+                                        db.SaveChanges();
 
-                                    List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                                        List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
                                     {
                                         new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
                                     };
-                                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(item.externalId, itens));
+                                        attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(item.externalId, itens));
+                                    }
+                                    else
+                                    {
+                                        if (!document.Active && document.DeletedDate != null)
+                                        {
+                                            document.DocumentStatusId = (int)EDocumentStatus.New;
+                                            document.Active = true;
+                                            document.CreatedDate = DateTime.Now;
+                                            document.EditedDate = DateTime.Now;
+                                            document.DeletedDate = null;
+                                            document.SliceDate = null;
+                                            document.ClassificationDate = null;
+                                            document.Pages = null;
+                                            document.Download = false;
+                                            document.DownloadDate = null;
+
+                                            db.Entry(document).State = System.Data.Entity.EntityState.Modified;
+                                            db.SaveChanges();
+                                        }
+                                        try
+                                        {
+                                            List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
+                                        {
+                                            new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
+                                        };
+
+                                            attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("ExternalId: {0}, Erro: {1}", document.ExternalId, ex.Message));
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    if (!document.Active && document.DeletedDate != null)
-                                    {
-                                        document.DocumentStatusId = (int)EDocumentStatus.New;
-                                        document.Active = true;
-                                        document.CreatedDate = DateTime.Now;
-                                        document.EditedDate = DateTime.Now;
-                                        document.DeletedDate = null;
-                                        document.SliceDate = null;
-                                        document.ClassificationDate = null;
-                                        document.Pages = null;
-                                        document.Download = false;
-                                        document.DownloadDate = null;
-
-                                        db.Entry(document).State = System.Data.Entity.EntityState.Modified;
-                                        db.SaveChanges();
-                                    }
-
-                                    List<ECMAttributeItemIn> itens = new List<ECMAttributeItemIn>
-                                    {
-                                        new ECMAttributeItemIn { attribute = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Attribute"].ToString(), value = WebConfigurationManager.AppSettings["Repository.DocumentRepository.Slice"].ToString() }
-                                    };
-                                    attributeApi.PostECMAttributeUpdate(new ECMAttributeIn(document.ExternalId, itens));
+                                    registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unityCode));
                                 }
                             }
                             else
                             {
-                                registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format(i18n.Resource.UnityNotFound, item.unityCode));
+                                registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("Parametro em branco. Name: {0}, Registration: {1}, ExternalId: {2}", item.name, item.registration, item.externalId));
                             }
+                        }
+                        catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                        {
+                            foreach (var validationErrors in dbEx.EntityValidationErrors)
+                            {
+                                foreach (var validationError in validationErrors.ValidationErrors)
+                                {
+                                    registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("Erro SQL ExternalId: {0}, Property: {1} Error: {2}", item.externalId, validationError.PropertyName, validationError.ErrorMessage));                                    
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("Erro Desconhecido: ExternalId: {0}, Erro: {1}", item.externalId, ex.Message));
                         }
                     }
                 }

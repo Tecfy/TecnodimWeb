@@ -37,6 +37,8 @@ namespace Site.Api.Controllers
 
                     foreach (var item in syncRuntimesOut.result)
                     {
+                        registerEventRepository.SaveRegisterEvent("", Key, "Log - Start", "Tecnodim.Controllers.SyncRuntimesController.GetSyncRuntimes", string.Format("Ultima Execução: {0}, Intervalo: {1}, Data atual: {2}, URL: {3}", item.LastExecution.ToString("dd/MM/yyyy HH:mm:ss"), item.Interval, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), item.URL));
+
                         if (item.LastExecution.AddMinutes(item.Interval) < DateTime.Now)
                         {
                             using (HttpClient httpClient = new HttpClient())
