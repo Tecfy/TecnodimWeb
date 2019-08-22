@@ -39,7 +39,7 @@ namespace Site.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
+                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMDocuments", string.Format("Message: {0} InnerException: {1} Source: {2} StackTrace: {3}", ex.Message, ex.InnerException, ex.Source, ex.StackTrace));
                 }
             });
 
