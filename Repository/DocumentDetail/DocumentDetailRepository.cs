@@ -122,6 +122,12 @@ namespace Repository
             DocumentDetailsOut documentDetailsOut = new DocumentDetailsOut();
             ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = new ECMDocumentDetailSaveOut();
             ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn = new ECMDocumentDetailSaveIn();
+            string units = string.Empty;
+
+            using (var db = new DBContext())
+            {
+                units = string.Join("', '", db.Units.Where(x => x.Active == true && x.DeletedDate == null).Select(x => x.ExternalId).ToList());
+            }
 
             registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
@@ -139,7 +145,8 @@ namespace Repository
                                  FROM BASE_ALUNOS_GESTAODOCUMENTOS 
                                     WHERE 
                                         CONTROLE IS NULL 
-                                        AND ('{1}'='' OR UNIDADE='{1}')
+                                        AND UNIDADE IN ('{1}')
+                                        AND RECMODIFIEDON >= '{2}'
                                     ORDER BY RECMODIFIEDON ASC";
             string queryStringUpdate = @"UPDATE BASE_ALUNOS_GESTAODOCUMENTOS SET CONTROLE='{0}' WHERE _key={1}";
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultSer"].ConnectionString;
@@ -152,13 +159,14 @@ namespace Repository
             {
                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - Start Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
-                var querySelect = String.Format(queryString, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString(), WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.Unity"].ToString());
+                var querySelect = String.Format(queryString, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString(), units, WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.RECMODIFIEDON"].ToString());
                 SqlCommand command = new SqlCommand(querySelect, connection);
 
                 registerEventRepository.SaveRegisterEvent(documentDetailsIn.id, documentDetailsIn.key, "Log - End Query", "Repository.DocumentDetailRepository.GetDocumentDetails", "");
 
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
+
                 try
                 {
                     while (reader.Read())

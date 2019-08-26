@@ -118,6 +118,7 @@ namespace Site.Adm.Controllers
                 UnityId = unityEditOut.result.UnityId,
                 ExternalId = unityEditOut.result.ExternalId,
                 Name = unityEditOut.result.Name,
+                Active = unityEditOut.result.Active
             };
 
             return View(unityEditIn);

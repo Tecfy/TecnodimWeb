@@ -9,33 +9,36 @@ else
 {
     foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UnityId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExternalId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            <div>
-                <a href="@Url.Action("Details", new { id = item.UnityId })" title="@i18n.Resource.View">
-                    <span data-feather="archive"></span>
-                </a>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnityId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                <div>
+                    <a href="@Url.Action("Details", new { id = item.UnityId })" title="@i18n.Resource.View">
+                        <span data-feather="archive"></span>
+                    </a>
 
-                <a href="@Url.Action("Edit", new { id = item.UnityId  })" title="@i18n.Resource.Edit">
-                    <span data-feather="edit"></span>
-                </a>
+                    <a href="@Url.Action("Edit", new { id = item.UnityId  })" title="@i18n.Resource.Edit">
+                        <span data-feather="edit"></span>
+                    </a>
 
-                <a href="javascript:void(0);" id="id-btn-dialog2" class="btnDelete" data-id="@(item.UnityId)" data-msg="@(string.Format(@i18n.Resource.ItemWillBeDeleted, item.Name))" title="@i18n.Resource.Delete">
-                    <span data-feather="trash-2"></span>
-                </a>
+                    <a href="javascript:void(0);" id="id-btn-dialog2" class="btnDelete" data-id="@(item.UnityId)" data-msg="@(string.Format(@i18n.Resource.ItemWillBeDeleted, item.Name))" title="@i18n.Resource.Delete">
+                        <span data-feather="trash-2"></span>
+                    </a>
 
-            </div>
-        </td>
+                </div>
+            </td>
 
-    </tr>
+        </tr>
     }
 }

@@ -12,5 +12,8 @@ namespace Model.VM
 
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string Name { get; set; }
+
+        [Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+        public bool Active { get; set; }
     }
 }
