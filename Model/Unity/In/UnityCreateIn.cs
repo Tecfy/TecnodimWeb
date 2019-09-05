@@ -16,5 +16,9 @@ namespace Model.In
         [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+        public bool Active { get; set; }
     }
 }
