@@ -30,11 +30,10 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                unitsOut.totalCount = db.Units.Count(x => x.Active == true && x.DeletedDate == null);
+                unitsOut.totalCount = db.Units.Count(x => x.DeletedDate == null);
 
                 unitsOut.result = db.Units
-                                   .Where(x => x.Active == true
-                                            && x.DeletedDate == null
+                                   .Where(x => x.DeletedDate == null
                                             &&
                                             (
                                                 string.IsNullOrEmpty(unitsIn.filter)
@@ -49,6 +48,7 @@ namespace Repository
                                        UnityId = x.UnityId,
                                        ExternalId = x.ExternalId,
                                        Name = x.Name,
+                                       Active = x.Active,
                                        CreatedDate = x.CreatedDate
                                    })
                                    .OrderBy(unitsIn.sort, !unitsIn.sortdirection.Equals("asc"))
@@ -105,12 +105,13 @@ namespace Repository
             using (var db = new DBContext())
             {
                 unityOut.result = db.Units
-                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UnityId == unityIn.UnityId)
+                                   .Where(x => x.DeletedDate == null && x.UnityId == unityIn.UnityId)
                                    .Select(x => new UnityVM()
                                    {
                                        UnityId = x.UnityId,
                                        ExternalId = x.ExternalId,
                                        Name = x.Name,
+                                       Active = x.Active
                                    }).FirstOrDefault();
             }
 
@@ -124,12 +125,13 @@ namespace Repository
             using (var db = new DBContext())
             {
                 unityEditOut.result = db.Units
-                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UnityId == unityIn.UnityId)
+                                   .Where(x => x.DeletedDate == null && x.UnityId == unityIn.UnityId)
                                    .Select(x => new UnityEditVM()
                                    {
                                        UnityId = x.UnityId,
                                        ExternalId = x.ExternalId,
                                        Name = x.Name,
+                                       Active = x.Active
                                    }).FirstOrDefault();
             }
 
@@ -143,7 +145,7 @@ namespace Repository
             using (var db = new DBContext())
             {
                 unityId = db.Units
-                            .Where(x => x.Active == true && x.DeletedDate == null && x.ExternalId == unitCode)
+                            .Where(x => x.DeletedDate == null && x.ExternalId == unitCode)
                             .Select(x => x.UnityId).FirstOrDefault();
 
                 if (unityId <= 0 || unityId == null)
@@ -165,19 +167,21 @@ namespace Repository
                 {
                     UnityId = unityCreateIn.UnityId,
                     ExternalId = unityCreateIn.ExternalId,
-                    Name = unityCreateIn.Name
+                    Name = unityCreateIn.Name,
+                    Active = unityCreateIn.Active
                 };
 
                 db.Units.Add(unit);
                 db.SaveChanges();
 
                 unityOut.result = db.Units
-                                   .Where(x => x.Active == true && x.DeletedDate == null && x.UnityId == unit.UnityId)
+                                   .Where(x => x.DeletedDate == null && x.UnityId == unit.UnityId)
                                    .Select(x => new UnityVM()
                                    {
                                        UnityId = x.UnityId,
                                        ExternalId = x.ExternalId,
                                        Name = x.Name,
+                                       Active = x.Active
                                    }).FirstOrDefault();
             }
 
@@ -195,17 +199,20 @@ namespace Repository
                 unit.EditedDate = DateTime.Now;
                 unit.ExternalId = unityEditIn.ExternalId;
                 unit.Name = unityEditIn.Name;
+                unit.Active = unityEditIn.Active;
 
                 db.Entry(unit).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
 
                 unityOut.result = db.Units
-                                  .Where(x => x.Active == true && x.DeletedDate == null && x.UnityId == unit.UnityId)
+                                  .Where(x => x.DeletedDate == null && x.UnityId == unit.UnityId)
                                   .Select(x => new UnityVM()
                                   {
                                       UnityId = x.UnityId,
                                       ExternalId = x.ExternalId,
                                       Name = x.Name,
+                                      Active = x.Active
+
                                   }).FirstOrDefault();
             }
 
