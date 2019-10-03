@@ -119,11 +119,6 @@
     <Compile Include="Document\Out\DocumentValidateSliceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentOut.cs" />
-    <Compile Include="Document\In\ECMDocumentsValidateAdInterfaceIn.cs" />
-    <Compile Include="Document\In\ECMDocumentsValidateIn.cs" />
-    <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
-    <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
-    <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
     <Compile Include="Permission\In\PermissionIn.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
     <Compile Include="Permission\Out\PermissionOut.cs" />

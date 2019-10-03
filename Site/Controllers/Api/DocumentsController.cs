@@ -69,57 +69,7 @@ namespace Site.Api.Controllers
             });
 
             return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [AllowAnonymous, HttpGet]
-        public HttpResponseMessage GetECMValidateDocuments()
-        {
-            var currentContext = HttpContext.Current;
-
-            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                HttpContext.Current = currentContext;
-                string Key = Guid.NewGuid().ToString();
-
-                try
-                {
-                    ECMDocumentsValidateIn ecmDocumentsValidateIn = new ECMDocumentsValidateIn() { id = "", key = Key };
-
-                    documentRepository.GetECMValidateDocuments(ecmDocumentsValidateIn);
-                }
-                catch (Exception ex)
-                {
-                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMValidateDocuments", ex.Message);
-                }
-            });
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [AllowAnonymous, HttpGet]
-        public HttpResponseMessage GetECMValidateAdInterfaceDocuments()
-        {
-            var currentContext = HttpContext.Current;
-
-            System.Threading.Tasks.Task objTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                HttpContext.Current = currentContext;
-                string Key = Guid.NewGuid().ToString();
-
-                try
-                {
-                    ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn = new ECMDocumentsValidateAdInterfaceIn() { id = "", key = Key };
-
-                    documentRepository.GetECMValidateAdInterfaceDocuments(eCMDocumentsValidateAdInterfaceIn);
-                }
-                catch (Exception ex)
-                {
-                    registerEventRepository.SaveRegisterEvent("", Key, "Erro", "Tecnodim.Controllers.DocumentsController.GetECMValidateAdInterfaceDocuments", ex.Message);
-                }
-            });
-
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
+        }      
 
         [Authorize(Roles = "Usuário"), HttpGet]
         public DocumentsOut GetDocumentSlices(int unityId, string registration = null, string name = null, string externalId = null, int documentId = 0, int documentStatusId = 0, int currentPage = 1, int qtdEntries = 50)
