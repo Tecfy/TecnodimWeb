@@ -380,67 +380,7 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
             return ecmDocumentsSendOut;
-        }
-
-        public ECMDocumentsValidateOut GetECMValidateDocuments(ECMDocumentsValidateIn ecmDocumentsValidateIn)
-        {
-            ECMDocumentsValidateOut ecmDocumentsValidateOut = new ECMDocumentsValidateOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
-            string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
-            string pathImages = Path.Combine(path, "Pages", "{0}");
-            string pathFile = Path.Combine(path, "Documents", "{0}.pdf");
-
-            ecmDocumentsValidateOut = documentApi.GetECMValidateDocuments();
-
-            if (ecmDocumentsValidateOut.result != null && ecmDocumentsValidateOut.result.Count > 0)
-            {
-                using (var db = new DBContext())
-                {
-                    Documents document = new Documents();
-
-                    foreach (var item in ecmDocumentsValidateOut.result)
-                    {
-                        document = new Documents();
-                        document = db.Documents.Where(x => x.ExternalId == item.externalId).FirstOrDefault();
-
-                        if (document != null)
-                        {
-                            if (document.DocumentStatusId != (int)EDocumentStatus.Sent)
-                            {
-                                if (File.Exists(string.Format(pathFile, document.ExternalId)))
-                                {
-                                    File.Delete(string.Format(pathFile, document.ExternalId));
-                                }
-
-                                if (Directory.Exists(string.Format(pathImages, document.Hash)))
-                                {
-                                    Directory.Delete(string.Format(pathImages, document.Hash), true);
-                                }
-
-                                document.DocumentStatusId = (int)EDocumentStatus.Canceled;
-
-                                db.Entry(document).State = System.Data.Entity.EntityState.Modified;
-                                db.SaveChanges();
-                            }
-                        }
-                    }
-                }
-            }
-
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsValidateIn.id, ecmDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
-            return ecmDocumentsValidateOut;
-        }
-
-        public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments(ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn)
-        {
-            ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.id, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
-
-            eCMDocumentsValidateAdInterfaceOut = documentApi.GetECMValidateAdInterfaceDocuments();
-
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.id, eCMDocumentsValidateAdInterfaceIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
-            return eCMDocumentsValidateAdInterfaceOut;
-        }
+        }       
 
         public void ConvertDocumentPB(string document)
         {
