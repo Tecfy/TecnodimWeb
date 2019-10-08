@@ -147,7 +147,6 @@ namespace Repository
                     command.Parameters.Add("@Units", SqlDbType.VarChar).Value = units;
                     command.Parameters.Add("@Top", SqlDbType.Int).Value = WebConfigurationManager.AppSettings["Repository.GetDocumentDetailSER.TOPLimit"].ToString();
                     command.Parameters.Add("@UserSE", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["SoftExpert.Username"].ToString();
-                    command.Parameters.Add("@CategorySE", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"].ToString();
 
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
