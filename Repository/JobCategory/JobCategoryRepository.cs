@@ -151,6 +151,8 @@ namespace Repository
                                               archive = jobCategorySaveIn.archive,
                                               code = x.Code,
                                               title = x.Categories.Name,
+                                              unityCode = x.Jobs.Units.ExternalId,
+                                              unityName = x.Jobs.Units.Name,
                                               dataJob = x.Jobs.CreatedDate,
                                               user = x.Jobs.Users.Registration,
                                               extension = ".pdf"

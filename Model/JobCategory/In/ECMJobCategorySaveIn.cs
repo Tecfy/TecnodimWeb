@@ -12,7 +12,11 @@ namespace Model.In
 
         public string code { get; set; }
 
-        public string title { get; set; }        
+        public string title { get; set; }
+
+        public string unityCode { get; set; }
+        
+        public string unityName { get; set; }
 
         public DateTime dataJob { get; set; }
 
