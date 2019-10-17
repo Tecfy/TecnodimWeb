@@ -257,6 +257,7 @@
     <Compile Include="Controllers\Adm\UsersController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CategoriesController.cs" />
+    <Compile Include="Controllers\Api\ImportUsersController.cs" />
     <Compile Include="Controllers\Api\PermissionsController.cs" />
     <Compile Include="Controllers\Api\ScanningsController.cs" />
     <Compile Include="Controllers\Api\ClassificationsController.cs" />
