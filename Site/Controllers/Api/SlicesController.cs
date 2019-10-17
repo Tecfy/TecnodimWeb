@@ -148,10 +148,17 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sliceIn.id = User.Identity.GetUserId();
-                    sliceIn.key = Key;
+                    if (sliceIn.pages == null || sliceIn.pages.Count() <= 0)
+                    {
+                        throw new Exception(i18n.Resource.PagesNotFound);
+                    }
+                    else
+                    {
+                        sliceIn.id = User.Identity.GetUserId();
+                        sliceIn.key = Key;
 
-                    sliceOut = sliceRepository.SaveSlice(sliceIn);
+                        sliceOut = sliceRepository.SaveSlice(sliceIn);
+                    }
                 }
                 else
                 {
