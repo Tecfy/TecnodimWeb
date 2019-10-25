@@ -119,11 +119,8 @@
     <Compile Include="Document\Out\DocumentValidateSliceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentOut.cs" />
-    <Compile Include="Document\In\ECMDocumentsValidateAdInterfaceIn.cs" />
-    <Compile Include="Document\In\ECMDocumentsValidateIn.cs" />
-    <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
-    <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
-    <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
+    <Compile Include="ImportUser\In\ImportUsersIn.cs" />
+    <Compile Include="ImportUser\Out\ImportUsersOut.cs" />
     <Compile Include="Permission\In\PermissionIn.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
     <Compile Include="Permission\Out\PermissionOut.cs" />
@@ -184,14 +181,11 @@
     <Compile Include="Scanning\Out\ScanningOut.cs" />
     <Compile Include="Common\In\PaginateIn.cs" />
     <Compile Include="Common\VM\IdentityModels.cs" />
-    <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailsIn.cs" />
     <Compile Include="DocumentDetail\In\DocumentDetailsByRegistrationIn.cs" />
-    <Compile Include="DocumentDetail\Out\ECMDocumentDetailSaveOut.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailsOut.cs" />
     <Compile Include="DocumentDetail\Out\DocumentDetailsByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\VM\DocumentDetailsByRegistrationVM.cs" />
-    <Compile Include="DocumentDetail\VM\ECMDocumentDetailSaveVM.cs" />
     <Compile Include="Document\In\DocumentsSentIn.cs" />
     <Compile Include="Document\In\DocumentsFinishedIn.cs" />
     <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
@@ -315,22 +309,13 @@
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
     <Folder Include="DeletedPage\VM\" />
+    <Folder Include="ImportUser\VM\" />
     <Folder Include="JobCategoryPage\In\" />
     <Folder Include="JobCategoryPage\Out\" />
     <Folder Include="JobStatus\VM\" />
     <Folder Include="Page\Out\" />
     <Folder Include="Scanning\VM\" />
     <Folder Include="SliceCategoryAdditionalField\VM\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\TecnodimWeb-API\i18n\i18n.csproj">
-      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
-      <Name>i18n</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Helper\Helper.csproj">
-      <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
-      <Name>Helper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -342,6 +327,16 @@
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework">
       <Version>2.2.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TecnodimWeb_API\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{cc7a6e2b-5825-491d-8ba0-2ab80ae6d913}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

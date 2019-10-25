@@ -97,42 +97,5 @@ namespace ApiTecnodim
         }
 
         #endregion
-
-        #region .: Posts :.
-
-        public ECMDocumentDetailSaveOut PostECMDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
-        {
-            try
-            {
-                var client = new RestClient(WebConfigurationManager.AppSettings["ApiTecnodim.URL"].ToString() + WebConfigurationManager.AppSettings["ApiTecnodim.DocumentDetailApi.PostECMDocumentDetailSave"].ToString());
-
-                var request = RestRequestHelper.Get(Method.POST, SimpleJson.SimpleJson.SerializeObject(eCMDocumentDetailSaveIn));
-
-                client.Timeout = (1000 * 60 * 60);
-                client.ReadWriteTimeout = (1000 * 60 * 60);
-
-                IRestResponse response = client.Execute(request);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception(string.Format("StatusCode: {0}. ErrorMessage: {1}.", response.StatusCode, response.ErrorMessage));
-                }
-
-                ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = SimpleJson.SimpleJson.DeserializeObject<ECMDocumentDetailSaveOut>(response.Content);
-
-                if (!eCMDocumentDetailSaveOut.success)
-                {
-                    throw new Exception(eCMDocumentDetailSaveOut.messages.FirstOrDefault());
-                }
-
-                return eCMDocumentDetailSaveOut;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        #endregion
     }
 }
