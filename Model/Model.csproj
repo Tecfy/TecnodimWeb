@@ -119,7 +119,9 @@
     <Compile Include="Document\Out\DocumentValidateSliceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentOut.cs" />
+    <Compile Include="ImportUser\In\ImportUserIn.cs" />
     <Compile Include="ImportUser\In\ImportUsersIn.cs" />
+    <Compile Include="ImportUser\Out\ImportUserOut.cs" />
     <Compile Include="ImportUser\Out\ImportUsersOut.cs" />
     <Compile Include="Permission\In\PermissionIn.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
