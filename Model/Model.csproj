@@ -207,6 +207,7 @@
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
     <Compile Include="JobCategory\In\JobCategoryIn.cs" />
     <Compile Include="JobCategoryPage\VM\JobCategoryPagesVM.cs" />
+    <Compile Include="Slice\In\SliceNewSaveIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimeSaveIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimesIn.cs" />
     <Compile Include="SyncRuntime\Out\SyncRuntimesOut.cs" />

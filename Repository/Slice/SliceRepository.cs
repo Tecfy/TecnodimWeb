@@ -219,6 +219,53 @@ namespace Repository
             return sliceOut;
         }
 
+        public SliceOut SliceNewSave(SliceNewSaveIn sliceNewSaveIn)
+        {
+            SliceOut sliceOut = new SliceOut();
+
+            registerEventRepository.SaveRegisterEvent(sliceNewSaveIn.id, sliceNewSaveIn.key, "Log - Start", "Repository.SliceRepository.SaveSlices", "");
+
+            using (var db = new DBContext())
+            {
+                Documents document = db.Documents.Where(x => x.DocumentId == sliceNewSaveIn.documentId).FirstOrDefault();
+
+                if (document == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                if (document.DocumentStatusId == (int)EDocumentStatus.New)
+                {
+                    documentRepository.PostDocumentUpdateSatus(new DocumentUpdateIn { id = sliceNewSaveIn.id, key = sliceNewSaveIn.key, documentId = document.DocumentId, documentStatusId = (int)EDocumentStatus.PartiallySlice });
+                }
+
+                int userId = 0;
+                userId = db.Users.Where(x => x.AspNetUserId == sliceNewSaveIn.id).FirstOrDefault().UserId;
+
+                Slices slice = new Slices
+                {
+                    DocumentId = document.DocumentId,
+                    Name = sliceNewSaveIn.name,
+                    SliceUserId = userId,
+                    SliceDate = DateTime.Now,
+                };
+
+                db.Slices.Add(slice);
+                db.SaveChanges();
+
+                foreach (var item in sliceNewSaveIn.pages)
+                {
+                    SlicePageIn slicePageIn = new SlicePageIn() { key = sliceNewSaveIn.id, id = sliceNewSaveIn.key, sliceId = slice.SliceId, page = item.page };
+                    slicePageRepository.SaveSlicePage(slicePageIn);
+                }
+
+                sliceOut.result.sliceId = slice.SliceId;
+            }
+
+            registerEventRepository.SaveRegisterEvent(sliceNewSaveIn.id, sliceNewSaveIn.key, "Log - End", "Repository.SliceRepository.SaveSlices", "");
+            return sliceOut;
+        }
+
         public SliceOut UpdateSlice(SliceUpdateIn sliceUpdateIn)
         {
             SliceOut sliceOut = new SliceOut();

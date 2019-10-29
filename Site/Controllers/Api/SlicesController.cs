@@ -138,6 +138,49 @@ namespace Site.Api.Controllers
 
         #region .: Post :.
 
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public SliceOut PostSliceNewSaveIn(SliceNewSaveIn sliceNewSaveIn)
+        {
+            SliceOut sliceOut = new SliceOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sliceNewSaveIn.id = User.Identity.GetUserId();
+                    sliceNewSaveIn.key = Key;
+                    
+                    sliceOut = sliceRepository.SliceNewSave(sliceNewSaveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+
+                return sliceOut;
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.PostSliceNewSaveIn", ex.Message);
+
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
+
+                return sliceOut;
+            }
+        }
+
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
         public SliceOut Post(SliceSaveIn sliceIn)
         {
