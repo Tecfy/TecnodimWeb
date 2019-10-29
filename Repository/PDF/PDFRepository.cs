@@ -128,7 +128,7 @@ namespace Repository
             {
                 DocumentIn documentIn = new DocumentIn() { documentId = documentId, id = user, key = Key };
 
-                documentRepository.GetECMDocument(documentIn, pathFile);
+                documentRepository.GetECMDocument(documentIn, pathFile, 1);
 
                 if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
                 {

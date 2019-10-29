@@ -8,10 +8,12 @@ using Model.Out;
 using Model.VM;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web.Configuration;
 using WebSupergoo.ABCpdf11;
 
@@ -30,7 +32,7 @@ namespace Repository
 
         #region .: ECM :.
 
-        public void GetECMDocument(DocumentIn documentIn, string pathFile)
+        public void GetECMDocument(DocumentIn documentIn, string pathFile, int exec)
         {
             Documents documents = new Documents();
             registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
@@ -152,7 +154,19 @@ namespace Repository
 
                 registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Erro: {0} PathFile: {1}", i18n.Resource.FileNotFound, pathFile));
 
-                throw new Exception(i18n.Resource.FileNotFound);
+                if (exec < 5)
+                {
+                    exec++;
+                    int sleep = 3000;
+                    int.TryParse(ConfigurationManager.AppSettings["SLEEP"], out sleep);
+
+                    Thread.Sleep(sleep);
+                    GetECMDocument(documentIn, pathFile, exec);
+                }
+                else
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(documentIn.id, documentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
@@ -281,7 +295,7 @@ namespace Repository
                             {
                                 foreach (var validationError in validationErrors.ValidationErrors)
                                 {
-                                    registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("Erro SQL ExternalId: {0}, Property: {1} Error: {2}", item.externalId, validationError.PropertyName, validationError.ErrorMessage));                                    
+                                    registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.id, ecmDocumentsIn.key, "Erro", "Repository.DocumentRepository.GetECMDocuments", string.Format("Erro SQL ExternalId: {0}, Property: {1} Error: {2}", item.externalId, validationError.PropertyName, validationError.ErrorMessage));
                                 }
                             }
                         }
@@ -380,7 +394,7 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentsSendIn.id, ecmDocumentsSendIn.key, "Log - End", "Repository.DocumentRepository.GetECMSendDocuments", "");
             return ecmDocumentsSendOut;
-        }       
+        }
 
         public void ConvertDocumentPB(string document)
         {
