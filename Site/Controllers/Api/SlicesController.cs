@@ -139,7 +139,7 @@ namespace Site.Api.Controllers
         #region .: Post :.
 
         [Authorize(Roles = "Usuário"), HttpPost]
-        public SliceOut PostSliceNewSaveIn(SliceNewSaveIn sliceNewSaveIn)
+        public SliceOut PostSliceMoveNew(SliceMoveNewIn sliceMoveNewIn)
         {
             SliceOut sliceOut = new SliceOut();
             string Key = Guid.NewGuid().ToString();
@@ -148,10 +148,10 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    sliceNewSaveIn.id = User.Identity.GetUserId();
-                    sliceNewSaveIn.key = Key;
+                    sliceMoveNewIn.id = User.Identity.GetUserId();
+                    sliceMoveNewIn.key = Key;
                     
-                    sliceOut = sliceRepository.SliceNewSave(sliceNewSaveIn);
+                    sliceOut = sliceRepository.MoveSliceNew(sliceMoveNewIn);
                 }
                 else
                 {
@@ -172,7 +172,93 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.PostSliceNewSaveIn", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.PostSliceMoveNew", ex.Message);
+
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
+
+                return sliceOut;
+            }
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public SliceOut PostSliceMoveExisting(SliceMoveExistingIn sliceMoveExistingIn)
+        {
+            SliceOut sliceOut = new SliceOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sliceMoveExistingIn.id = User.Identity.GetUserId();
+                    sliceMoveExistingIn.key = Key;
+
+                    sliceOut = sliceRepository.MoveSliceExisting(sliceMoveExistingIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+
+                return sliceOut;
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.PostSliceMoveExisting", ex.Message);
+
+                sliceOut.successMessage = null;
+                sliceOut.messages.Add(ex.Message);
+
+                return sliceOut;
+            }
+        }
+
+        [Authorize(Roles = "Usuário"), HttpPost]
+        public SliceOut PostSliceDelete(SliceDeleteIn sliceDeleteIn)
+        {
+            SliceOut sliceOut = new SliceOut();
+            string Key = Guid.NewGuid().ToString();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sliceDeleteIn.id = User.Identity.GetUserId();
+                    sliceDeleteIn.key = Key;
+
+                    sliceOut = sliceRepository.DeleteSlice(sliceDeleteIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+
+                return sliceOut;
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.SlicesController.SliceMoveDeleteIn", ex.Message);
 
                 sliceOut.successMessage = null;
                 sliceOut.messages.Add(ex.Message);

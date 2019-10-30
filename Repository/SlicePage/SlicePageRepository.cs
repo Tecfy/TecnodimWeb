@@ -2,6 +2,8 @@
 using Model.In;
 using Model.Out;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Repository
 {
@@ -31,6 +33,37 @@ namespace Repository
             return slicePageOut;
         }
 
+        public SlicePageOut MoveSlicePage(SlicePageMoveIn slicePageMoveIn)
+        {
+            SlicePageOut slicePageOut = new SlicePageOut();
+
+            registerEventRepository.SaveRegisterEvent(slicePageMoveIn.id, slicePageMoveIn.key, "Log - Start", "Repository.SlicePageRepository.MoveSlicePage", "");
+
+            using (var db = new DBContext())
+            {
+                SlicePages slicePages = db.SlicePages.Where(x => x.Active == true
+                                                            && x.DeletedDate == null
+                                                            && x.SliceId == slicePageMoveIn.sliceOldId
+                                                            && x.Page == slicePageMoveIn.page).FirstOrDefault();
+
+                if (slicePages == null)
+                {
+                    throw new Exception(i18n.Resource.RegisterNotFound);
+                }
+
+                slicePages.SliceId = slicePageMoveIn.sliceNewId;
+                slicePages.EditedDate = new DateTime();
+
+                db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                slicePageOut.result.slicePageId = slicePages.SlicePageId;
+            }
+
+            registerEventRepository.SaveRegisterEvent(slicePageMoveIn.id, slicePageMoveIn.key, "Log - End", "Repository.SlicePageRepository.MoveSlicePage", "");
+            return slicePageOut;
+        }
+
         public void DeleteSlicePage(SlicePageDeleteIn slicePageDeleteIn)
         {
             registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.id, slicePageDeleteIn.key, "Log - Start", "Repository.SlicePageRepository.DeleteSlicePage", "");
@@ -43,9 +76,44 @@ namespace Repository
 
                 db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                int countAssets = db.SlicePages.Count(x => x.Active == true && x.DeletedDate == null && x.SliceId == slicePages.SliceId);
+
+                if (countAssets <= 0)
+                {
+                    Slices slice = db.Slices.FirstOrDefault(x => x.SliceId == slicePages.SliceId);
+
+                    slice.DeletedDate = new DateTime();
+                    slice.Active = false;
+
+                    db.Slices.Add(slice);
+                    db.SaveChanges();
+                }
+
             }
 
             registerEventRepository.SaveRegisterEvent(slicePageDeleteIn.id, slicePageDeleteIn.key, "Log - End", "Repository.SlicePageRepository.DeleteSlicePage", "");
+        }
+
+        public void DeleteSlicePageBySlice(SlicePageDeleteBySliceIn slicePageDeleteBySliceIn)
+        {
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteBySliceIn.id, slicePageDeleteBySliceIn.key, "Log - Start", "Repository.SlicePageRepository.DeleteSlicePageBySlice", "");
+
+            using (var db = new DBContext())
+            {
+                List<SlicePages> slicePages = db.SlicePages.Where(x => x.Active == true && x.DeletedDate == null && x.SliceId == slicePageDeleteBySliceIn.sliceId).ToList();
+
+                foreach (var slicePage in slicePages)
+                {
+                    slicePage.Active = false;
+                    slicePage.DeletedDate = DateTime.Now;
+
+                    db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            registerEventRepository.SaveRegisterEvent(slicePageDeleteBySliceIn.id, slicePageDeleteBySliceIn.key, "Log - End", "Repository.SlicePageRepository.DeleteSlicePageBySlice", "");
         }
 
         public void UpdateSlicePage(SlicePageUpdateIn slicePageUpdateIn)
