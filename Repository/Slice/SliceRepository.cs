@@ -222,12 +222,14 @@ namespace Repository
         public SliceOut MoveSliceNew(SliceMoveNewIn sliceMoveIn)
         {
             SliceOut sliceOut = new SliceOut();
+            Slices slice = new Slices();
+            Slices sliceOld = new Slices();
 
             registerEventRepository.SaveRegisterEvent(sliceMoveIn.id, sliceMoveIn.key, "Log - Start", "Repository.SliceRepository.MoveSliceNew", "");
 
             using (var db = new DBContext())
             {
-                Slices sliceOld = db.Slices.FirstOrDefault(x => x.SliceId == sliceMoveIn.sliceId);
+                sliceOld = db.Slices.FirstOrDefault(x => x.SliceId == sliceMoveIn.sliceId);
 
                 if (sliceOld == null)
                 {
@@ -237,7 +239,7 @@ namespace Repository
                 int userId = 0;
                 userId = db.Users.Where(x => x.AspNetUserId == sliceMoveIn.id).FirstOrDefault().UserId;
 
-                Slices slice = new Slices
+                slice = new Slices
                 {
                     DocumentId = sliceOld.DocumentId,
                     Name = sliceMoveIn.name,
@@ -247,38 +249,47 @@ namespace Repository
 
                 db.Slices.Add(slice);
                 db.SaveChanges();
+            }
 
-                try
+            try
+            {
+                SlicePageMoveIn slicePageIn = new SlicePageMoveIn()
                 {
-                    SlicePageMoveIn slicePageIn = new SlicePageMoveIn()
-                    {
-                        key = sliceMoveIn.id,
-                        id = sliceMoveIn.key,
-                        sliceNewId = slice.SliceId,
-                        sliceOldId = sliceMoveIn.sliceId,
-                        page = sliceMoveIn.page
-                    };
-                    slicePageRepository.MoveSlicePage(slicePageIn);
-                }
-                catch (Exception)
+                    key = sliceMoveIn.id,
+                    id = sliceMoveIn.key,
+                    sliceNewId = slice.SliceId,
+                    sliceOldId = sliceMoveIn.sliceId,
+                    page = sliceMoveIn.page
+                };
+
+                slicePageRepository.MoveSlicePage(slicePageIn);
+            }           
+            catch (Exception)
+            {
+                using (var db = new DBContext())
                 {
-                    slice.DeletedDate = new DateTime();
+
+                    slice.DeletedDate = DateTime.Now;
+                    slice.EditedDate = DateTime.Now;
                     slice.Active = false;
 
-                    db.Slices.Add(slice);
+                    db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
-
-                    throw new Exception(i18n.Resource.UnknownError);
                 }
+                throw new Exception(i18n.Resource.UnknownError);
+            }
 
+            using (var db = new DBContext())
+            {
                 int countAssets = db.SlicePages.Count(x => x.Active == true && x.DeletedDate == null && x.SliceId == sliceMoveIn.sliceId);
 
                 if (countAssets <= 0)
                 {
-                    sliceOld.DeletedDate = new DateTime();
+                    sliceOld.DeletedDate = DateTime.Now;
+                    sliceOld.EditedDate = DateTime.Now; ;
                     sliceOld.Active = false;
 
-                    db.Slices.Add(sliceOld);
+                    db.Entry(sliceOld).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
 
@@ -325,10 +336,11 @@ namespace Repository
 
                 if (countAssets <= 0)
                 {
-                    sliceOld.DeletedDate = new DateTime();
+                    sliceOld.DeletedDate = DateTime.Now;
+                    sliceOld.EditedDate = DateTime.Now;
                     sliceOld.Active = false;
 
-                    db.Slices.Add(sliceOld);
+                    db.Entry(sliceOld).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
 
@@ -360,16 +372,18 @@ namespace Repository
                     id = sliceDeleteIn.key,
                     sliceId = sliceDeleteIn.sliceId
                 };
+
                 slicePageRepository.DeleteSlicePageBySlice(slicePageDeleteBySliceIn);
 
                 int countAssets = db.SlicePages.Count(x => x.Active == true && x.DeletedDate == null && x.SliceId == sliceDeleteIn.sliceId);
 
                 if (countAssets <= 0)
                 {
-                    slice.DeletedDate = new DateTime();
+                    slice.DeletedDate = DateTime.Now;
+                    slice.EditedDate = DateTime.Now;
                     slice.Active = false;
 
-                    db.Slices.Add(slice);
+                    db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
 

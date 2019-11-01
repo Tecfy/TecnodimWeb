@@ -52,7 +52,7 @@ namespace Repository
                 }
 
                 slicePages.SliceId = slicePageMoveIn.sliceNewId;
-                slicePages.EditedDate = new DateTime();
+                slicePages.EditedDate = DateTime.Now;
 
                 db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -83,10 +83,10 @@ namespace Repository
                 {
                     Slices slice = db.Slices.FirstOrDefault(x => x.SliceId == slicePages.SliceId);
 
-                    slice.DeletedDate = new DateTime();
+                    slice.DeletedDate = DateTime.Now;
                     slice.Active = false;
 
-                    db.Slices.Add(slice);
+                    db.Entry(slice).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
 
