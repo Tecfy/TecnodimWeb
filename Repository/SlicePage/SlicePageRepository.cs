@@ -108,7 +108,7 @@ namespace Repository
                     slicePage.Active = false;
                     slicePage.DeletedDate = DateTime.Now;
 
-                    db.Entry(slicePages).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(slicePage).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
                 }
             }
