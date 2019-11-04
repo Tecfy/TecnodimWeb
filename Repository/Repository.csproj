@@ -89,6 +89,7 @@
     <Compile Include="AspNetRole\AspNetRoleRepository.cs" />
     <Compile Include="CategoryAdditionalField\CategoryAdditionalFieldRepository.cs" />
     <Compile Include="DeletedPage\DeletedPageRepository.cs" />
+    <Compile Include="ResendDocument\ResendDocumentRepository.cs" />
     <Compile Include="ImportUser\ImportUserRepository.cs" />
     <Compile Include="Permission\PermissionRepository.cs" />
     <Compile Include="JobStatus\JobStatusRepository.cs" />
