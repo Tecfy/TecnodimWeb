@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Category\CategoryApi.cs" />
     <Compile Include="Attribute\AttributeApi.cs" />
+    <Compile Include="ImportUser\ImportUserApi.cs" />
     <Compile Include="Permission\PermissionApi.cs" />
     <Compile Include="DocumentDetail\DocumentDetailApi.cs" />
     <Compile Include="Document\DocumentApi.cs" />

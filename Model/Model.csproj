@@ -119,7 +119,9 @@
     <Compile Include="Document\Out\DocumentValidateSliceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentOut.cs" />
+    <Compile Include="ImportUser\In\ImportUserIn.cs" />
     <Compile Include="ImportUser\In\ImportUsersIn.cs" />
+    <Compile Include="ImportUser\Out\ImportUserOut.cs" />
     <Compile Include="ImportUser\Out\ImportUsersOut.cs" />
     <Compile Include="Permission\In\PermissionIn.cs" />
     <Compile Include="Permission\In\PermissionsIn.cs" />
@@ -205,6 +207,11 @@
     <Compile Include="CategoryAdditionalField\Out\CategoryAdditionalFieldEditOut.cs" />
     <Compile Include="JobCategory\In\JobCategoryIn.cs" />
     <Compile Include="JobCategoryPage\VM\JobCategoryPagesVM.cs" />
+    <Compile Include="SlicePage\In\SlicePageDeleteBySliceIn.cs" />
+    <Compile Include="SlicePage\In\SlicePageMoveIn.cs" />
+    <Compile Include="Slice\In\SliceMoveExistingIn.cs" />
+    <Compile Include="Slice\In\SliceDeleteIn.cs" />
+    <Compile Include="Slice\In\SliceMoveNewIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimeSaveIn.cs" />
     <Compile Include="SyncRuntime\In\SyncRuntimesIn.cs" />
     <Compile Include="SyncRuntime\Out\SyncRuntimesOut.cs" />
