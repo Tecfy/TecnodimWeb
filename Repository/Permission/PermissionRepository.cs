@@ -294,6 +294,19 @@ namespace Repository
                             db.AspNetUserClaims.Add(aspNetUserClaim);
                             db.SaveChanges();
                         }
+
+                        if (permissionsVM.resend)
+                        {
+                            AspNetUserClaims aspNetUserClaim = new AspNetUserClaims
+                            {
+                                UserId = user.AspNetUserId,
+                                ClaimType = EClaims.Reenviar.ToString(),
+                                ClaimValue = EClaims.Reenviar.ToString()
+                            };
+
+                            db.AspNetUserClaims.Add(aspNetUserClaim);
+                            db.SaveChanges();
+                        }
                     }
                 }
 
@@ -320,6 +333,7 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.PermissionRepository.PermissionsProcess", "");
         }
+
         private void PermissionProcess(PermissionVM permissionVM, string id, string key)
         {
             registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.PermissionRepository.PermissionsProcess", "");
@@ -511,6 +525,19 @@ namespace Repository
                                 UserId = user.AspNetUserId,
                                 ClaimType = EClaims.Digitalizar.ToString(),
                                 ClaimValue = EClaims.Digitalizar.ToString()
+                            };
+
+                            db.AspNetUserClaims.Add(aspNetUserClaim);
+                            db.SaveChanges();
+                        }
+
+                        if (permissionVM.resend)
+                        {
+                            AspNetUserClaims aspNetUserClaim = new AspNetUserClaims
+                            {
+                                UserId = user.AspNetUserId,
+                                ClaimType = EClaims.Reenviar.ToString(),
+                                ClaimValue = EClaims.Reenviar.ToString()
                             };
 
                             db.AspNetUserClaims.Add(aspNetUserClaim);
