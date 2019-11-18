@@ -4,7 +4,7 @@ namespace Model.VM
 {
     public class ResendDocumentsVM
     {
-        public string id { get; set; }
+        public string documentId { get; set; }
 
         public string registration { get; set; }
 
@@ -14,6 +14,6 @@ namespace Model.VM
 
         public string title { get; set; }
 
-        public List<ResendDocumentItemVM> itens { get; set; }
+        public List<ResendDocumentsItemVM> itens { get; set; }
     }
 }

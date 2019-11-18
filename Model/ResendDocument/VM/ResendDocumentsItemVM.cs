@@ -2,7 +2,7 @@
 
 namespace Model.VM
 {
-    public class ResendDocumentItemVM
+    public class ResendDocumentsItemVM
     {
         public string uri { get; set; }
 

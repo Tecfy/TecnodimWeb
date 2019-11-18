@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Model.In
+﻿namespace Model.In
 {
     public class ResendDocumentsIn : BaseIn
     {

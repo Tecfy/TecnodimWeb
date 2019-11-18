@@ -113,9 +113,13 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="ResendDocument\In\ResendDocumentSEIn.cs" />
+    <Compile Include="ResendDocument\In\ResendDocumentItemIn.cs" />
+    <Compile Include="ResendDocument\In\ResendDocumentIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentsIn.cs" />
+    <Compile Include="ResendDocument\Out\ResendDocumentOut.cs" />
     <Compile Include="ResendDocument\Out\ResendDocumentsOut.cs" />
-    <Compile Include="ResendDocument\VM\ResendDocumentItemVM.cs" />
+    <Compile Include="ResendDocument\VM\ResendDocumentsItemVM.cs" />
     <Compile Include="ResendDocument\VM\ResendDocumentsVM.cs" />
     <Compile Include="Document\In\DocumentValidateClassificationIn.cs" />
     <Compile Include="Document\In\DocumentValidateSliceIn.cs" />
