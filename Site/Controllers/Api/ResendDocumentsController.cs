@@ -48,10 +48,17 @@ namespace Site.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    resendDocumentIn.id = User.Identity.GetUserId();
-                    resendDocumentIn.key = Key;
+                    if (resendDocumentIn.itens == null || resendDocumentIn.itens.Count() <= 0)
+                    {
+                        throw new Exception(i18n.Resource.DocumentsNotFound);
+                    }
+                    else
+                    {
+                        resendDocumentIn.id = User.Identity.GetUserId();
+                        resendDocumentIn.key = Key;
 
-                    resendDocumentOut = resendDocumentRepository.SaveResendDocument(resendDocumentIn);
+                        resendDocumentOut = resendDocumentRepository.SaveResendDocument(resendDocumentIn);
+                    }
                 }
                 else
                 {
