@@ -46,6 +46,7 @@ namespace Repository
                     command.Parameters.Add("@Slice", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Slice"].ToString();
                     command.Parameters.Add("@Classify", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Classify"].ToString();
                     command.Parameters.Add("@Scans", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Scans"].ToString();
+                    command.Parameters.Add("@Resend", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Resend"].ToString();
                     command.Parameters.Add("@Status", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Status"].ToString();
                     command.Parameters.Add("@Grupocappservice", SqlDbType.VarChar).Value = WebConfigurationManager.AppSettings["ImportUsers.Grupocappservice"].ToString();
 

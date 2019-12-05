@@ -10,5 +10,7 @@ namespace Helper.Enum
         Classificar = 2,
         [Description("Digitalizar")]
         Digitalizar = 3,
+        [Description("Reenviar")]
+        Reenviar = 4,
     }
 }
