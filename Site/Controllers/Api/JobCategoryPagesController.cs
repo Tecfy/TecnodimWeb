@@ -9,26 +9,26 @@ using System.Web.Http.ModelBinding;
 
 namespace Site.Api.Controllers
 {
-    [RoutePrefix("Api/JobDeletedPages")]
-    public class JobDeletedPagesController : ApiController
+    [RoutePrefix("Api/JobCategoryPages")]
+    public class JobCategoryPagesController : ApiController
     {
         private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        private JobDeletedPageRepository jobDeletedPageRepository = new JobDeletedPageRepository();
+        private JobCategoryPageRepository jobCategoryPageRepository = new JobCategoryPageRepository();
 
         [Authorize(Roles = "Usuário"), HttpPost, Route("")]
-        public JobDeletedPageOut Post(JobDeletedPageIn jobDeletedPageIn)
+        public JobCategoryPageDeleteOut Post(JobCategoryPageDeleteIn jobCategoryPageDeleteIn)
         {
-            JobDeletedPageOut jobDeletedPageOut = new JobDeletedPageOut();
+            JobCategoryPageDeleteOut jobCategoryPageDeleteOut = new JobCategoryPageDeleteOut();
             string Key = Guid.NewGuid().ToString();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    jobDeletedPageIn.id = User.Identity.GetUserId();
-                    jobDeletedPageIn.key = Key;
+                    jobCategoryPageDeleteIn.id = User.Identity.GetUserId();
+                    jobCategoryPageDeleteIn.key = Key;
 
-                    jobDeletedPageOut = jobDeletedPageRepository.SaveJobDeletedPage(jobDeletedPageIn);
+                    jobCategoryPageDeleteOut = jobCategoryPageRepository.DeleteJobCategoryPage(jobCategoryPageDeleteIn);
                 }
                 else
                 {
@@ -47,13 +47,13 @@ namespace Site.Api.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobDeletedPagesController.Post", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.GetUserId(), Key, "Erro", "Tecnodim.Controllers.JobCategoryPagesController.Post", ex.Message);
 
-                jobDeletedPageOut.successMessage = null;
-                jobDeletedPageOut.messages.Add(ex.Message);
+                jobCategoryPageDeleteOut.successMessage = null;
+                jobCategoryPageDeleteOut.messages.Add(ex.Message);
             }
 
-            return jobDeletedPageOut;
+            return jobCategoryPageDeleteOut;
         }
     }
 }
