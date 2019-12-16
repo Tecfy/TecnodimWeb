@@ -359,6 +359,13 @@ namespace Repository
                                                pbEmbarked = x.Categories.PbEmbarked,
                                                user = x.Jobs.Users.Registration,
                                                extension = ".pdf",
+                                               pages = x.JobCategoryPages
+                                                            .Where(y => y.Active == true && y.DeletedDate == null)
+                                                            .Select(y => new JobCategoryPagesFinishedVM()
+                                                            {
+                                                                jobCategoryPageId = y.JobCategoryPageId,
+                                                                page = y.Page
+                                                            }).ToList(),
                                                additionalFields = x.JobCategoryAdditionalFields
                                                                    .Where(y => y.Active == true && y.DeletedDate == null)
                                                                    .Select(y => new AdditionalFieldSaveVM()
@@ -491,7 +498,8 @@ namespace Repository
                 PDFIn pdfIn = new PDFIn
                 {
                     archive = pathFile,
-                    pbEmbarked = jobsFinishedVM.pbEmbarked
+                    pbEmbarked = jobsFinishedVM.pbEmbarked,
+                    pagesJob = jobsFinishedVM.pages
                 };
 
                 string file = HelperDoc(pdfIn);
@@ -610,14 +618,15 @@ namespace Repository
         {
             string archive = string.Empty;
 
-            Doc docOld = new Doc();
-            Doc docNew = new Doc();
-            docOld.Read(pdfIn.archive);
+            Doc doc = new Doc();
+            doc.Read(pdfIn.archive);
 
-            archive = Convert.ToBase64String(docOld.GetData());
+            string pages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
+            doc.RemapPages(pages);
 
-            docOld.Clear();
-            docNew.Clear();
+            archive = Convert.ToBase64String(doc.GetData());
+
+            doc.Clear();
 
             return archive;
         }

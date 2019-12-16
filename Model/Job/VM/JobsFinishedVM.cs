@@ -26,6 +26,8 @@ namespace Model.VM
 
         public bool pbEmbarked { get; set; }
 
+        public List<JobCategoryPagesFinishedVM> pages { get; set; }
+
         public List<AdditionalFieldSaveVM> additionalFields { get; set; }
     }
 }

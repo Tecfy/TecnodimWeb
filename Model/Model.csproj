@@ -115,6 +115,7 @@
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
     <Compile Include="JobCategoryPage\In\JobCategoryPageDeleteIn.cs" />
     <Compile Include="JobCategoryPage\Out\JobCategoryPageDeleteOut.cs" />
+    <Compile Include="JobCategoryPage\VM\JobCategoryPagesFinishedVM.cs" />
     <Compile Include="Page\In\PageDeletedPageIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentSEIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentItemIn.cs" />

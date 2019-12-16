@@ -27,7 +27,7 @@ namespace Repository
 
                 jobCategoryPages.DeletedDate = DateTime.Now;
                 jobCategoryPages.EditedDate = DateTime.Now;
-                jobCategoryPages.Active = true;
+                jobCategoryPages.Active = false;
 
                 db.Entry(jobCategoryPages).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();

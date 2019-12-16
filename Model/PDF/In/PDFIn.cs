@@ -12,5 +12,7 @@ namespace Model.In
         public bool pbEmbarked { get; set; }
 
         public List<SlicePagesFinishedVM> pages { get; set; }
+
+        public List<JobCategoryPagesFinishedVM> pagesJob { get; set; }
     }
 }
