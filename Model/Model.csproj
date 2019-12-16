@@ -113,6 +113,9 @@
     <Compile Include="Category\VM\Adm\CategoryVM.cs" />
     <Compile Include="Category\VM\Api\ApiECMCategoriesVM.cs" />
     <Compile Include="Category\VM\Api\ApiCategorySearchVM.cs" />
+    <Compile Include="JobDeletedPage\In\JobDeletedPageIn.cs" />
+    <Compile Include="JobDeletedPage\Out\JobDeletedPageOut.cs" />
+    <Compile Include="Page\In\JobPageDeletedPageIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentSEIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentItemIn.cs" />
     <Compile Include="ResendDocument\In\ResendDocumentIn.cs" />
@@ -327,6 +330,7 @@
     <Folder Include="ImportUser\VM\" />
     <Folder Include="JobCategoryPage\In\" />
     <Folder Include="JobCategoryPage\Out\" />
+    <Folder Include="JobDeletedPage\VM\" />
     <Folder Include="JobStatus\VM\" />
     <Folder Include="Page\Out\" />
     <Folder Include="Scanning\VM\" />
