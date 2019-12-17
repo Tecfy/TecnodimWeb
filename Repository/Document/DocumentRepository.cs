@@ -904,7 +904,6 @@ namespace Repository
             Doc docNew = new Doc();
             docOld.Read(pdfIn.archive);
 
-            int theCount = docOld.PageCount;
             string thePages = String.Join(",", pdfIn.pages.Select(x => x.page).ToList());
             docOld.RemapPages(thePages);
 
