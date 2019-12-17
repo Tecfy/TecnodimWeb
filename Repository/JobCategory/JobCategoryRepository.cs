@@ -1,5 +1,4 @@
-﻿using ApiTecnodim;
-using DataEF.DataAccess;
+﻿using DataEF.DataAccess;
 using Helper.Enum;
 using Helper.ServerMap;
 using Model.In;
@@ -22,8 +21,6 @@ namespace Repository
         private CategoryAdditionalFieldRepository categoryAdditionalFieldRepository = new CategoryAdditionalFieldRepository();
         private JobCategoryAdditionalFieldRepository jobCategoryAdditionalFieldRepository = new JobCategoryAdditionalFieldRepository();
         private JobStatusRepository jobStatusRepository = new JobStatusRepository();
-        private JobCategoryApi jobCategoryApi = new JobCategoryApi();
-        private DocumentApi documentApi = new DocumentApi();
 
         #region .: API :.
 
@@ -89,15 +86,6 @@ namespace Repository
             return jobCategoryByIdOut;
         }
 
-        public ECMJobCategoryOut GetECMJobCategory(string externalId)
-        {
-            ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
-
-            eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(externalId);
-
-            return eCMJobCategoryOut;
-        }
-
         public JobCategoryCreateOut CreateJobCategory(JobCategoryCreateIn jobCategoryCreateIn)
         {
             JobCategoryCreateOut jobCategoryCreateOut = new JobCategoryCreateOut();
@@ -138,28 +126,13 @@ namespace Repository
 
             #region .: Job Category :.
 
-            ECMJobCategorySaveIn ecmJobCategorySaveIn = new ECMJobCategorySaveIn();
+            string code = string.Empty;
 
             using (var db = new DBContext())
             {
-                ecmJobCategorySaveIn = db.JobCategories
-                                          .Where(x => x.JobCategoryId == jobCategorySaveIn.jobCategoryId)
-                                          .Select(x => new ECMJobCategorySaveIn()
-                                          {
-                                              registration = x.Jobs.Registration,
-                                              categoryId = x.Categories.Code,
-                                              archive = jobCategorySaveIn.archive,
-                                              code = x.Code,
-                                              title = x.Categories.Name,
-                                              unityCode = x.Jobs.Units.ExternalId,
-                                              unityName = x.Jobs.Units.Name,
-                                              dataJob = x.Jobs.CreatedDate,
-                                              user = x.Jobs.Users.Registration,
-                                              extension = ".pdf"
-                                          })
-                                          .FirstOrDefault();
+                code = db.JobCategories.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategorySaveIn.jobCategoryId).FirstOrDefault()?.Code;
 
-                if (ecmJobCategorySaveIn == null)
+                if (string.IsNullOrEmpty(code))
                 {
                     throw new Exception(i18n.Resource.NoDataFound);
                 }
@@ -169,12 +142,7 @@ namespace Repository
 
             #region .: Sent New Document :.
 
-            ECMJobCategorySaveOut ecmJobCategorySaveOut = jobCategoryApi.SetECMJobCategorySave(ecmJobCategorySaveIn);
-
-            if (!ecmJobCategorySaveOut.success)
-            {
-                throw new Exception(ecmJobCategorySaveOut.messages.FirstOrDefault());
-            }
+            SaveArchive(Convert.FromBase64String(jobCategorySaveIn.archive), code, jobCategorySaveIn.id, jobCategorySaveIn.key);
 
             #endregion
 
@@ -247,7 +215,7 @@ namespace Repository
 
             #endregion
 
-            #region .: :.
+            #region .: Save file pages :.
 
             SavePDFs(jobCategorySaveIn.jobCategoryId, jobCategorySaveIn.id, jobCategorySaveIn.key, null, jobCategorySaveIn.archive);
 
@@ -304,21 +272,6 @@ namespace Repository
 
                 #endregion
 
-                #region .: Change job category additional fields :.
-
-                //List<JobCategoryAdditionalFields> jobCategoryAdditionalFields = db.JobCategoryAdditionalFields.Where(x => x.DeletedDate == null && x.Active == true && x.JobCategoryId == jobCategory.JobCategoryId).ToList();
-
-                //foreach (var item in jobCategoryAdditionalFields)
-                //{
-                //    item.Active = false;
-                //    item.DeletedDate = DateTime.Now;
-
-                //    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
-                //    db.SaveChanges();
-                //}
-
-                #endregion
-
                 #region .: Change job status :.
 
                 Jobs job = db.Jobs.Where(x => x.JobId == jobCategory.JobId).FirstOrDefault();
@@ -339,15 +292,6 @@ namespace Repository
             string name = jobCategory.Code + ".pdf";
             string pathImages = Path.Combine(path, "ScanningPages", "{0}");
             string pathFile = Path.Combine(path, "JobCategories", name);
-
-            try
-            {
-                documentApi.DeleteECMDocument(jobCategory.Code);
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(jobCategoryDisapproveIn.id, jobCategoryDisapproveIn.key, "Erro", "Repository.JobCategoryRepository.DisapproveJobCategory", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
-            }
 
             try
             {
@@ -503,15 +447,6 @@ namespace Repository
             string name = jobCategory.Code + ".pdf";
             string pathImages = Path.Combine(path, "ScanningPages", "{0}");
             string pathFile = Path.Combine(path, "JobCategories", name);
-
-            try
-            {
-                documentApi.DeleteECMDocument(jobCategory.Code);
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(jobCategoryDeletedIn.id, jobCategoryDeletedIn.key, "Erro", "Repository.JobCategoryRepository.DeletedJobCategory", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
-            }
 
             try
             {
@@ -726,33 +661,11 @@ namespace Repository
         {
             bool @return = false;
 
-            #region .: Valid Foders :.
+            #region .: Valid Files :.
 
             string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
             string pathImages = Path.Combine(path, "ScanningPages", hash.ToString(), "Images");
             string pathThumb = Path.Combine(path, "ScanningPages", hash.ToString(), "Thumbs");
-
-            string name = externalId + ".pdf";
-            string pathFile = Path.Combine(path, "JobCategories", name);
-
-            if (!Directory.Exists(pathImages))
-            {
-                Directory.CreateDirectory(pathImages);
-            }
-
-            if (!Directory.Exists(pathThumb))
-            {
-                Directory.CreateDirectory(pathThumb);
-            }
-
-            if (!Directory.Exists(Path.Combine(path, "JobCategories")))
-            {
-                Directory.CreateDirectory(Path.Combine(path, "JobCategories"));
-            }
-
-            #endregion
-
-            #region .: Valid Files :.
 
             if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
             {
@@ -760,30 +673,41 @@ namespace Repository
             }
             else
             {
-                GetECMJobCategory(externalId);
-
-                if (File.Exists(pathFile))
-                {
-                    SavePDFs(jobCategoryId, id, key, pathFile, null);
-
-                    if (Directory.GetFiles(pathImages).Length > 0 && Directory.GetFiles(pathThumb).Length > 0)
-                    {
-                        @return = true;
-                    }
-                    else
-                    {
-                        @return = false;
-                    }
-                }
-                else
-                {
-                    @return = false;
-                }
+                @return = false;
             }
 
             #endregion
 
             return @return;
+        }
+
+        private bool SaveArchive(byte[] archive, string externalId, string id, string key)
+        {
+            try
+            {
+                registerEventRepository.SaveRegisterEvent(id, key, "Log - Start", "Repository.JobCategoryRepository.SaveJobCategory", "");
+
+                string path = ServerMapHelper.GetServerMap(WebConfigurationManager.AppSettings["Path.Files"]);
+                string fileName = externalId + ".pdf";
+                string pathFile = Path.Combine(path, "JobCategories", fileName);
+
+                if (File.Exists(pathFile))
+                {
+                    File.Delete(pathFile);
+                }
+
+                File.WriteAllBytes(pathFile, archive);
+
+                registerEventRepository.SaveRegisterEvent(id, key, "Log - End", "Repository.JobCategoryRepository.SaveJobCategory", "");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobCategoryRepository.SaveJobCategory", string.Format("Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
+
+                throw new Exception(i18n.Resource.UnknownError);
+            }
         }
 
         #endregion

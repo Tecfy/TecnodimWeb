@@ -163,7 +163,6 @@
     <Compile Include="JobCategory\In\JobCategoryIncludeIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryDeletedIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryDisapproveIn.cs" />
-    <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryApproveOut.cs" />
     <Compile Include="Job\Out\JobByIdOut.cs" />
     <Compile Include="Job\Out\JobsSentOut.cs" />
@@ -314,9 +313,7 @@
     <Compile Include="User\VM\UserByTokenVM.cs" />
     <Compile Include="User\VM\UserVM.cs" />
     <Compile Include="User\VM\UsersVM.cs" />
-    <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
     <Compile Include="JobCategory\In\JobCategoryArchiveIn.cs" />
-    <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
     <Compile Include="JobCategory\Out\JobCategoryArchiveOut.cs" />
     <Compile Include="Job\In\JobsByRegistrationIn.cs" />
     <Compile Include="Job\Out\JobsByRegistrationOut.cs" />
