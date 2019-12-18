@@ -1,6 +1,5 @@
 ﻿using ApiTecnodim;
 using DataEF.DataAccess;
-using Helper;
 using Helper.Enum;
 using Helper.ServerMap;
 using Model.In;
@@ -21,7 +20,6 @@ namespace Repository
         private RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         private JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
         private JobCategoryApi jobCategoryApi = new JobCategoryApi();
-        private DocumentApi documentApi = new DocumentApi();
 
         #region .: API :.
 
@@ -234,15 +232,6 @@ namespace Repository
 
                     try
                     {
-                        documentApi.DeleteECMDocument(jobCategory.Code);
-                    }
-                    catch (Exception ex)
-                    {
-                        registerEventRepository.SaveRegisterEvent(jobDeleteIn.id, jobDeleteIn.key, "Erro", "Repository.JobRepository.DeleteJob", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
-                    }
-
-                    try
-                    {
                         if (File.Exists(string.Format(pathFile)))
                         {
                             File.Delete(string.Format(pathFile));
@@ -359,6 +348,13 @@ namespace Repository
                                                pbEmbarked = x.Categories.PbEmbarked,
                                                user = x.Jobs.Users.Registration,
                                                extension = ".pdf",
+                                               pages = x.JobCategoryPages
+                                                            .Where(y => y.Active == true && y.DeletedDate == null)
+                                                            .Select(y => new JobCategoryPagesFinishedVM()
+                                                            {
+                                                                jobCategoryPageId = y.JobCategoryPageId,
+                                                                page = y.Page
+                                                            }).ToList(),
                                                additionalFields = x.JobCategoryAdditionalFields
                                                                    .Where(y => y.Active == true && y.DeletedDate == null)
                                                                    .Select(y => new AdditionalFieldSaveVM()
@@ -465,23 +461,9 @@ namespace Repository
 
                 if (!File.Exists(pathFile))
                 {
-                    ECMJobCategoryOut eCMJobCategoryOut = jobCategoryApi.GetECMJobCategory(jobsFinishedVM.externalId);
+                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "File Not Found");
 
-                    if (!eCMJobCategoryOut.success || !File.Exists(pathFile))
-                    {
-                        if (!eCMJobCategoryOut.success)
-                        {
-                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "Document");
-
-                            throw new Exception(eCMJobCategoryOut.messages.FirstOrDefault());
-                        }
-                        else
-                        {
-                            registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", "File Not Found");
-
-                            throw new Exception(i18n.Resource.FileNotFound);
-                        }
-                    }
+                    throw new Exception(i18n.Resource.FileNotFound);
                 }
 
                 #endregion
@@ -491,7 +473,8 @@ namespace Repository
                 PDFIn pdfIn = new PDFIn
                 {
                     archive = pathFile,
-                    pbEmbarked = jobsFinishedVM.pbEmbarked
+                    pbEmbarked = jobsFinishedVM.pbEmbarked,
+                    pagesJob = jobsFinishedVM.pages
                 };
 
                 string file = HelperDoc(pdfIn);
@@ -558,15 +541,6 @@ namespace Repository
 
                 try
                 {
-                    documentApi.DeleteECMDocument(jobCategories.Code);
-                }
-                catch (Exception ex)
-                {
-                    registerEventRepository.SaveRegisterEvent(id, key, "Erro", "Repository.JobRepository.JobCategoryProcess", string.Format("Delete File Source: {0}.\n InnerException: {1}.\n Message: {2}", ex.Source, ex.InnerException, ex.Message));
-                }
-
-                try
-                {
                     if (File.Exists(string.Format(pathFile)))
                     {
                         File.Delete(string.Format(pathFile));
@@ -610,14 +584,15 @@ namespace Repository
         {
             string archive = string.Empty;
 
-            Doc docOld = new Doc();
-            Doc docNew = new Doc();
-            docOld.Read(pdfIn.archive);
+            Doc doc = new Doc();
+            doc.Read(pdfIn.archive);
 
-            archive = Convert.ToBase64String(docOld.GetData());
+            string pages = String.Join(",", pdfIn.pagesJob.Select(x => x.page).ToList());
+            doc.RemapPages(pages);
 
-            docOld.Clear();
-            docNew.Clear();
+            archive = Convert.ToBase64String(doc.GetData());
+
+            doc.Clear();
 
             return archive;
         }
